@@ -840,6 +840,28 @@ test('the focus is not given back to a reference that is no longer on the page',
     expect(await since(page, 'relocated', from)).toEqual([])
 })
 
+// Opening a note has the engine lay the page out again, and the page sends that relocation a moment later. A turn
+// asked for in that moment is answered by its own relocation, not by that older one.
+test('a turn asked for while a relocation is still to be sent is answered by its own', async ({ page }) => {
+    await openFootnoteBook(page)
+    // The turn is asked for from the engine's report of the new layout itself, once the page has heard it (its
+    // own listener comes first) and before it has sent it.
+    await page.evaluate(() => {
+        const { renderer } = document.getElementById('view') as any
+        const asked = (e: any) => {
+            if (e.detail.reason !== 'anchor') return
+            renderer.removeEventListener('relocate', asked)
+            ;(window as any).lirelle.receive(JSON.stringify({ type: 'next' }))
+        }
+        renderer.addEventListener('relocate', asked)
+    })
+    const from = await mark(page)
+    await tapIn(page, await mainFrame(page), '#ref1')
+    await waitFor(page, 'turning', from)
+    const turnAt = (await messages(page)).map(m => m.type).lastIndexOf('turning')
+    expect((await waitFor(page, 'relocated', turnAt + 1)).page).toBe(2)
+})
+
 // ---------------------------------------------------------------- the engine's bookkeeping
 
 test('opening and closing notes of the file on screen leaves that file loaded for the page', async ({ page }) => {
