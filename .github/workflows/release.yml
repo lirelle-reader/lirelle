@@ -21,16 +21,23 @@ jobs:
   release-please:
     needs: checks
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
-      pull-requests: write
+    # The app's key is kept there, with the signing secrets.
+    environment: release
     outputs:
       release_created: ${{ steps.release.outputs.release_created }}
       tag_name: ${{ steps.release.outputs.tag_name }}
     steps:
+      # The app's token, not the workflow's: a pull request opened with the workflow's token starts no workflow, so
+      # the release PR would never get the checks main requires.
+      - id: token
+        uses: actions/create-github-app-token@v3
+        with:
+          client-id: ${{ secrets.RELEASE_APP_CLIENT_ID }}
+          private-key: ${{ secrets.RELEASE_APP_PRIVATE_KEY }}
       - id: release
         uses: googleapis/release-please-action@v5
         with:
+          token: ${{ steps.token.outputs.token }}
           config-file: release-please-config.json
           manifest-file: .release-please-manifest.json
 
