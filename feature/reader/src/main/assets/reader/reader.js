@@ -915,6 +915,9 @@ const stuckInScroll = forward => {
 // A turn asked for by `next` or `prev`: announced, then answered once it is done.
 // Nothing at all where the engine has nothing to turn to in scrolled layout.
 const turnPage = (forward, turn) => {
+    // A relocation still to be sent while no turn is under way is of what came before (the layout a note's opening
+    // caused): it must not be taken for this turn's answer. During a turn, it may be that turn's own: it stays.
+    if (state.pendingMessage && !state.turn) flushRelocation()
     if (turnsArePaged()) beginTurn()
     if (forward && atEndNow()) {
         pastEnd()
