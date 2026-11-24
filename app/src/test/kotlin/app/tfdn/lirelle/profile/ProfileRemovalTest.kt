@@ -114,6 +114,8 @@ class ProfileRemovalTest {
             until("what the removed profile kept is deleted, and its record dropped") {
                 !left.files.exists() && !left.cache.exists() && device.listed() == setOf(FirstProfile)
             }
+            // The screens are recorded by their own collector, which may still be on its way to the last one.
+            until("the other profile is recorded as shown") { told.lastOrNull() == "profile $FirstProfile" }
             assertWithMessage("what the screens were shown")
                 .that(told).containsExactly("profile $SecondProfile", "wait", "profile $FirstProfile").inOrder()
             assertThat(store.profiles.value.map { it.id }).containsExactly(FirstProfile)
@@ -123,6 +125,7 @@ class ProfileRemovalTest {
             until("the last profile is closed, its folders deleted and its record dropped") {
                 device.open() == null && device.profileFolders().isEmpty() && device.listed()?.isEmpty() == true
             }
+            until("the sign-out is recorded as shown") { told.lastOrNull() == "signed out" }
             watching.cancelAndJoin()
             // No wait this time: nobody is left to change to. The sign-in screen offers the server just left.
             assertWithMessage("what the screens were shown")
