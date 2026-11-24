@@ -6,6 +6,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.isActive
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.TestScope
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
@@ -95,5 +96,40 @@ class ProfileGraphFactoryTest {
         val again = factory.opened(profile("p0", userId = 1))
         assertThat((again.component as Built).folders).isEqualTo(roots.of("p0"))
         assertThat(again.scope.isActive).isTrue()
+    }
+
+    /**
+     * A job of a profile that fails (a download reading a store on its way out) is reported and ends alone: it
+     * neither ends the profile's other jobs nor goes uncaught, which ends the app on a device.
+     */
+    @Test
+    fun `a job of a profile that fails is reported, and ends neither the others nor the app`() = runTest {
+        val registry = twoListed()
+        val warned = mutableListOf<Throwable?>()
+        val failing = IllegalStateException("a job failed")
+        val factory = ProfileGraphFactory(
+            registry,
+            roots,
+            avatars,
+            GraphMaking(
+                build = ::Built,
+                lifeOf = {
+                    object : ProfileLifeEntry {
+                        override fun starters() = setOf(ProfileStarter { scope -> scope.launch { throw failing } })
+
+                        override fun closers() = emptySet<ProfileCloser>()
+                    }
+                },
+                warn = { _, failure -> warned += failure },
+                graph = UnconfinedTestDispatcher(testScheduler),
+                io = UnconfinedTestDispatcher(testScheduler),
+            ),
+            registry,
+        )
+
+        val graph = factory.opened(profile("p0", userId = 1))
+
+        assertThat(warned).containsExactly(failing)
+        assertThat(graph.scope.isActive).isTrue()
     }
 }
