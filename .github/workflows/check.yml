@@ -39,8 +39,8 @@ jobs:
       - name: detekt
         run: ./gradlew detekt
 
-  # Lint and the unit tests each on a machine of their own: together, lint's analysis of every module and the
-  # compilation filled one runner's memory and stalled the build.
+  # Lint and the unit tests each on a machine of their own, in parallel: in one job, lint's analysis of every module
+  # alone took minutes before the first test ran.
   lint:
     runs-on: ubuntu-latest
     timeout-minutes: 45
