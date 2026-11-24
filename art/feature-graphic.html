@@ -1,6 +1,7 @@
 <!doctype html>
 <!-- Google Play's feature graphic, 1024 × 500: rendered to fastlane/metadata/android/*/images/featureGraphic.png by
-     art/render-feature-graphic.mjs. Its fonts are the app's own reading fonts (OFL, see REUSE.toml). -->
+     art/render-feature-graphic.mjs, in English and in French (the data-fr texts). Its fonts are the app's own reading
+     fonts (OFL, see REUSE.toml). -->
 <html lang="en">
 <head>
 <meta charset="utf-8">
@@ -14,7 +15,7 @@ body { margin: 0; }
 .name { display: flex; align-items: center; gap: 24px; }
 h1 { margin: 0; font-family: LirelleSerif, serif; font-weight: 700; font-size: 88px; line-height: 1; letter-spacing: -1px; }
 .ways { display: flex; gap: 40px; align-items: flex-start; }
-.way { display: flex; flex-direction: column; align-items: center; gap: 12px; width: 140px; font-size: 22px; }
+.way { display: flex; flex-direction: column; align-items: center; gap: 12px; width: 150px; font-size: 22px; white-space: nowrap; }
 p { margin: 0; font-size: 20px; opacity: 0.86; }
 </style>
 </head>
@@ -32,22 +33,22 @@ p { margin: 0; font-size: 20px; opacity: 0.86; }
   <div class="ways">
     <div class="way">
       <svg viewBox="0 0 48 48" width="56" height="56" aria-hidden="true" fill="none" stroke="#F2B544" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 10c6-2 12-1 18 3v26c-6-4-12-5-18-3z"/><path d="M42 10c-6-2-12-1-18 3v26c6-4 12-5 18-3z"/></svg>
-      <span>Books</span>
+      <span data-fr="Livres">Books</span>
     </div>
     <div class="way">
       <svg viewBox="0 0 48 48" width="56" height="56" aria-hidden="true" fill="none" stroke="#F2B544" stroke-width="2.5" stroke-linejoin="round"><rect x="7" y="6" width="34" height="36" rx="2"/><path d="M7 22h34M24 6v16M18 22v20"/></svg>
-      <span>Comics</span>
+      <span data-fr="BD">Comics</span>
     </div>
     <div class="way">
       <svg viewBox="0 0 48 48" width="56" height="56" aria-hidden="true" fill="none" stroke="#F2B544" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8 30v-6a16 16 0 0 1 32 0v6"/><rect x="6" y="28" width="9" height="13" rx="3"/><rect x="33" y="28" width="9" height="13" rx="3"/></svg>
-      <span>Audiobooks</span>
+      <span data-fr="Livres audio">Audiobooks</span>
     </div>
     <div class="way">
       <svg viewBox="0 0 48 48" width="56" height="56" aria-hidden="true" fill="none" stroke="#F2B544" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 22c6-2 12-1 18 3v17c-6-4-12-5-18-3z"/><path d="M42 22c-6-2-12-1-18 3v17c6-4 12-5 18-3z"/><path d="M18 13a8 8 0 0 1 12 0"/><path d="M13 8a15 15 0 0 1 22 0"/></svg>
-      <span>Read &amp; listen</span>
+      <span data-fr="Lire et écouter">Read &amp; listen</span>
     </div>
   </div>
-  <p>From your own BookOrbit or Komga server</p>
+  <p data-fr="Depuis votre propre serveur BookOrbit ou Komga">From your own BookOrbit or Komga server</p>
 </div>
 </body>
 </html>

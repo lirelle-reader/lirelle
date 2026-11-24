@@ -13,6 +13,12 @@ const page = await browser.newPage({ viewport: { width: 1024, height: 500 }, dev
 await page.goto('file://' + path.join(art, 'feature-graphic.html'))
 await page.evaluate(() => document.fonts.ready)
 for (const locale of ['en-US', 'fr-FR']) {
+    if (locale === 'fr-FR') {
+        await page.evaluate(() => {
+            document.documentElement.lang = 'fr'
+            for (const element of document.querySelectorAll('[data-fr]')) element.textContent = element.dataset.fr
+        })
+    }
     const out = path.join(art, '..', 'fastlane/metadata/android', locale, 'images/featureGraphic.png')
     await page.locator('.graphic').screenshot({ path: out })
     console.log(out)
