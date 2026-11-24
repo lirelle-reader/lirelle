@@ -60,3 +60,10 @@ SPDX-License-Identifier = "LicenseRef-FSF-verbatim"
 path = "CODE_OF_CONDUCT.md"
 SPDX-FileCopyrightText = "Organization for Ethical Source"
 SPDX-License-Identifier = "CC-BY-SA-4.0"
+
+# The store screenshots: the app (the project's) showing the demo library; some show Pepper&Carrot, which is under
+# CC BY 4.0 and must be credited (fastlane/CREDITS.md). The other works shown are in the public domain.
+[[annotations]]
+path = ["fastlane/metadata/android/*/images/*Screenshots/*.png"]
+SPDX-FileCopyrightText = ["2026 François-Xavier Payet and contributors", "David Revoy <www.peppercarrot.com>"]
+SPDX-License-Identifier = "GPL-3.0-or-later AND CC-BY-4.0"
