@@ -9,8 +9,31 @@ plugins {
     alias(libs.plugins.aboutLibraries.android)
 }
 
-val versionBase = providers.gradleProperty("lirelle.versionBase").get()
-val pipelineIid = providers.environmentVariable("CI_PIPELINE_IID").orNull?.toInt() ?: 1
+val appVersion = providers.gradleProperty("lirelle.version").get()
+
+/** Git's one-line answer, or null where git cannot answer (no repository, as in a source archive, or no git). */
+fun git(vararg args: String): String? = runCatching {
+    val run = providers.exec {
+        commandLine("git", *args)
+        isIgnoreExitValue = true
+    }
+    run.standardOutput.asText.get().trim().takeIf { run.result.get().exitValue == 0 }
+}.getOrNull()
+
+// versionCode: one more for each commit of main's first-parent line (one per merge, whatever the merge method),
+// releases and development builds alike; 1000 puts it above the builds of the former tracker (146 at most).
+// versionName: the version on its release's tag (v0.6.0 → 0.6.0), else the version and the commits since that tag
+// (0.6.0.12), or since the start before the first release.
+val releaseTag = git("describe", "--tags", "--match", "v*", "--abbrev=0")
+val commitCount = git("rev-list", "--count", "--first-parent", "HEAD")?.toIntOrNull()
+val sinceRelease =
+    git("rev-list", "--count", "--first-parent", releaseTag?.let { "$it..HEAD" } ?: "HEAD")?.toIntOrNull()
+val appVersionCode = commitCount?.let { 1000 + it } ?: 1
+val appVersionName = when {
+    sinceRelease == null -> "$appVersion.0"
+    sinceRelease == 0 && releaseTag == "v$appVersion" -> appVersion
+    else -> "$appVersion.$sinceRelease"
+}
 
 // The signing variables are LIRELLE_<name>, set by the CI; one set empty counts as not set.
 fun signingVariable(name: String) =
@@ -30,8 +53,8 @@ android {
         applicationId = "app.tfdn.lirelle"
         minSdk = libs.versions.minSdk.get().toInt()
         targetSdk = libs.versions.targetSdk.get().toInt()
-        versionCode = pipelineIid
-        versionName = "$versionBase.$pipelineIid"
+        versionCode = appVersionCode
+        versionName = appVersionName
     }
 
     signingConfigs {
