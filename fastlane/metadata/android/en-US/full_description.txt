@@ -1,0 +1,31 @@
+Lirelle reads, shows and plays the books, comics and audiobooks of your own server — BookOrbit, or Komga for comics. It signs in to a server you or a friend runs; there is no store, no account to create with us, and nothing to buy.
+
+<b>Books</b>
+• EPUB, MOBI, AZW/AZW3 and FB2, paged or scrolled
+• Bookmarks, highlights, notes and search
+• A reader to your liking: light, sepia, dark and black themes; serif, sans-serif, a font made for dyslexic readers, or the book's own; text size, line spacing, margins, alignment and hyphenation
+
+<b>Read & listen</b>
+• Audiobooks with chapters, playback speed, a sleep timer and audio bookmarks
+• Read-along: the sentence being read is highlighted in the book, for the books that carry it
+
+<b>Comics and manga</b>
+• CBZ, CBR, CB7, PDF and DjVu
+• Fit to the page or the width, two pages side by side, left-to-right or right-to-left per series
+• Panel by panel: the panels are found on the device and shown one after the other
+
+<b>Everywhere</b>
+• Download to read and listen offline; your progress goes back to the server when the network does
+• Reading history, and the progress made on your other devices
+• One profile per server and account, kept apart, switched in two taps
+• Layouts made for phones and tablets, in English and French
+
+<b>Your data stays yours</b>
+Lirelle has no ads, no analytics and no tracking: it only talks to the servers you add.
+
+<b>Free software</b>
+Lirelle is free software under the GNU GPL, version 3 or later: https://github.com/lirelle-reader/lirelle
+
+Lirelle needs Android 16 or later, and a BookOrbit or Komga server.
+
+Screenshots show Pepper&Carrot — art: David Revoy, www.peppercarrot.com (CC BY 4.0) — and public-domain books from Standard Ebooks and LibriVox.

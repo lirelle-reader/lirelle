@@ -1,0 +1,31 @@
+Lirelle lit, affiche et fait écouter les livres, BD et livres audio de votre propre serveur — BookOrbit, ou Komga pour les BD. Il se connecte à un serveur que vous ou un proche faites tourner : pas de boutique, pas de compte à créer chez nous, rien à acheter.
+
+<b>Livres</b>
+• EPUB, MOBI, AZW/AZW3 et FB2, en pages ou en défilement
+• Marque-pages, surlignages, notes et recherche
+• Une lecture à votre goût : thèmes clair, sépia, sombre et noir ; police à empattements, sans empattements, adaptée à la dyslexie, ou celle du livre ; taille du texte, interligne, marges, alignement et césure
+
+<b>Lire et écouter</b>
+• Livres audio avec chapitres, vitesse de lecture, minuterie de mise en veille et signets audio
+• Lecture synchronisée : la phrase lue est surlignée dans le livre, pour les livres qui la proposent
+
+<b>BD et mangas</b>
+• CBZ, CBR, CB7, PDF et DjVu
+• Ajusté à la page ou à la largeur, deux pages côte à côte, sens de lecture de gauche à droite ou de droite à gauche par série
+• Case par case : les cases sont trouvées sur l'appareil et montrées l'une après l'autre
+
+<b>Partout</b>
+• Téléchargement pour lire et écouter hors ligne ; votre progression repart vers le serveur dès que le réseau revient
+• Historique de lecture, et la progression faite sur vos autres appareils
+• Un profil par serveur et par compte, bien séparés, et on passe de l'un à l'autre en deux gestes
+• Des écrans pensés pour les téléphones et les tablettes, en français et en anglais
+
+<b>Vos données restent les vôtres</b>
+Lirelle n'a ni publicité, ni statistiques d'usage, ni pistage : il ne parle qu'aux serveurs que vous ajoutez.
+
+<b>Logiciel libre</b>
+Lirelle est un logiciel libre, sous licence GNU GPL version 3 ou ultérieure : https://github.com/lirelle-reader/lirelle
+
+Lirelle demande Android 16 ou plus récent, et un serveur BookOrbit ou Komga.
+
+Les captures d'écran montrent Pepper&Carrot — dessin : David Revoy, www.peppercarrot.com (CC BY 4.0) — et des livres du domaine public de Standard Ebooks et LibriVox.
