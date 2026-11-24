@@ -50,14 +50,8 @@ internal data class StopPlace(val zoom: Float, val offset: Offset)
  *
  * @param pages the pages of the spread in reading order.
  */
-internal fun spreadStops(pages: List<StopPage>, viewport: Size, direction: Direction): List<Rect>? = when {
-    pages.any { it.zones == PageZones.Unknown } -> null
-    pages.none { it.zones is PageZones.Cut } -> emptyList()
-    else -> pages.flatMap { page ->
-        val cut = page.zones as? PageZones.Cut
-        cut?.let { pageStops(it.zones, page.room, viewport, direction) } ?: listOfNotNull(page.room.takeIf(::shows))
-    }
-}
+internal fun spreadStops(pages: List<StopPage>, viewport: Size, direction: Direction): List<Rect>? =
+    keyedStops(pages, viewport, direction)?.map { it.rect }
 
 /**
  * The stops of one page: its zones, each widened by the margin, up to the middle of the gutter where another zone
@@ -73,13 +67,28 @@ internal fun pageStops(
     viewport: Size,
     direction: Direction,
     walkLarge: Boolean = WalkLargeZones,
-): List<Rect> = zones.flatMap { zone ->
+): List<Rect> = zoneStops(zones, room, viewport, direction, walkLarge).map { it.rect }
+
+/** A stop of a page: [rect], from the zone of that number, at [along] that zone (see [StopKey]). */
+internal class ZoneStop(val rect: Rect, val zone: Int, val along: Float)
+
+/** The stops of a page as [pageStops] makes them, each with the zone it shows and where along it. */
+internal fun zoneStops(
+    zones: List<Zone>,
+    room: Rect,
+    viewport: Size,
+    direction: Direction,
+    walkLarge: Boolean,
+): List<ZoneStop> = zones.flatMapIndexed { number, zone ->
     val stop = widened(zone, zones, room)
     val walk = if (walkLarge && stop != null) walkOf(stop, room, viewport) else null
-    when {
+    val stops = when {
         stop == null -> emptyList()
         walk == null -> listOf(stop)
         else -> walked(stop, walk, viewport, direction)
+    }
+    stops.mapIndexed { part, rect ->
+        ZoneStop(rect, number, along = if (stops.size > 1) part / stops.lastIndex.toFloat() else 0f)
     }
 }
 
@@ -97,7 +106,7 @@ internal fun stopPlace(stop: Rect, viewport: Size): StopPlace {
 }
 
 /** Whether [rect] is a part of the spread that can be shown: it has a size, and its sides are numbers. */
-private fun shows(rect: Rect): Boolean = rect.isFinite && !rect.isEmpty
+internal fun shows(rect: Rect): Boolean = rect.isFinite && !rect.isEmpty
 
 /** Whether the [viewport] is a screen something can be fitted to: it has a size, and its sides are numbers. */
 private fun hasRoom(viewport: Size): Boolean =

@@ -16,6 +16,8 @@ private const val InPlace = 0.5f
  * @property wholePageFirst whether each spread is shown whole before its first stop.
  * @property ahead the stops of the spread that many turns from the one shown (back under zero), as [stops] are;
  *   null where the album has no spread too.
+ * @property keys what each of the [stops] shows; null when they are not known.
+ * @property counted the stops of the spread shown as they were counted before.
  */
 internal class PanelSpread(
     val walk: PanelWalk,
@@ -23,6 +25,8 @@ internal class PanelSpread(
     val stops: List<Rect>?,
     val wholePageFirst: Boolean,
     val ahead: (turns: Int) -> List<Rect>? = { null },
+    val keys: List<StopKey>? = null,
+    val counted: CountedStops = CountedStops(),
 )
 
 /**
@@ -85,11 +89,15 @@ internal class PanelSteps(
      *
      * A spread that comes framed by the stop the turn that led to it asked for is at that stop at once: it slid in
      * so. One that comes framed and that no turn led to is whole: the turn was not taken, and it was jumped to.
+     *
+     * The stops of the spread shown counted again (the screen turned), the reader stays at the one that shows what
+     * its stop showed, whatever its number now.
      */
     fun arrive(today: (Turn) -> Unit) {
         val other = walk.spread != reading.index
         if (other && walk.atStop) moves.wholeAtOnce()
-        val led = walk.shown(reading.index, reading.wholePageFirst)
+        val renumbered = reading.counted.recount(reading.index, reading.keys, walk.at)
+        val led = walk.shown(reading.index, reading.wholePageFirst, renumbered)
         val stops = reading.stops
         if (stops == null) {
             if (moves.framed) whole()
