@@ -9,6 +9,7 @@ import dagger.hilt.EntryPoints
 import javax.inject.Inject
 import javax.inject.Provider
 import javax.inject.Singleton
+import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
 
@@ -73,7 +74,9 @@ class ProfileGraphFactory internal constructor(
      */
     suspend fun open(profile: Profile): ProfileGraph? {
         if (!reset.readied(profile)) return null
-        val scope = CoroutineScope(SupervisorJob() + making.graph)
+        // A job of the profile that fails ends alone and is reported: uncaught, it would end the app.
+        val failed = CoroutineExceptionHandler { _, failure -> making.warn("A job of a profile failed", failure) }
+        val scope = CoroutineScope(SupervisorJob() + making.graph + failed)
         val folders = roots.of(profile.id).also {
             it.files.mkdirs()
             it.cache.mkdirs()

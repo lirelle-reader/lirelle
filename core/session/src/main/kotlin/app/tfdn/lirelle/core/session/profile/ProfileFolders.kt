@@ -6,10 +6,13 @@ import androidx.datastore.preferences.core.PreferenceDataStoreFactory
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.emptyPreferences
 import java.io.File
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.onCompletion
 
 /**
  * Where a profile lives on the device: [files] for what must be kept, [cache] for what can be made again.
@@ -29,7 +32,22 @@ data class ProfileFolders(val files: File, val cache: File) {
             corruptionHandler = ReplaceFileCorruptionHandler { emptyPreferences() },
             // Ends with the profile, but a failed write does not end the profile.
             scope = CoroutineScope(life.coroutineContext + Dispatchers.IO + SupervisorJob(life.coroutineContext[Job])),
-        ) { dataStore(name) }
+        ) { dataStore(name) }.endingAsClosed()
+}
+
+/**
+ * The same store, whose data ends its reader as a cancellation once the store has closed with its profile. Read
+ * on its way out, a DataStore's data may end without a value, and `first()` would then fail with a
+ * NoSuchElementException where nothing catches it, in a job that the closing profile was ending anyway.
+ */
+internal fun DataStore<Preferences>.endingAsClosed(): DataStore<Preferences> {
+    val store = this
+    return object : DataStore<Preferences> by store {
+        override val data: Flow<Preferences> = store.data.onCompletion { failure ->
+            // Its data never ends while the store is open: a reader that stops (first()) ends it with a failure.
+            if (failure == null) throw CancellationException("The store has closed with its profile")
+        }
+    }
 }
 
 /** The folders of every profile, under the application's files and cache. */

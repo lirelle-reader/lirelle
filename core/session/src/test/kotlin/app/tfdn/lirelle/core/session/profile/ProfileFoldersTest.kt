@@ -1,5 +1,7 @@
 package app.tfdn.lirelle.core.session.profile
 
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import com.google.common.truth.Truth.assertThat
@@ -7,6 +9,8 @@ import java.io.File
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancelAndJoin
+import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.job
 import kotlinx.coroutines.runBlocking
@@ -77,5 +81,23 @@ class ProfileFoldersTest {
         again.coroutineContext.job.cancelAndJoin()
         roots.delete("p1")
         assertThat(roots.present()).isEmpty()
+    }
+
+    /**
+     * Read on its way out with its profile, a store's data may end without a value: `first()` would then fail
+     * with a NoSuchElementException where nothing catches it. A store of a profile ends its reader as a
+     * cancellation instead, as the profile's own jobs are.
+     */
+    @Test
+    fun `a store whose data ends without a value ends its reader as a cancellation`(): Unit = runBlocking {
+        val ending = object : DataStore<Preferences> {
+            override val data = emptyFlow<Preferences>()
+
+            override suspend fun updateData(transform: suspend (t: Preferences) -> Preferences) = error("not written")
+        }
+
+        val failure = runCatching { ending.endingAsClosed().data.first() }.exceptionOrNull()
+
+        assertThat(failure).isInstanceOf(CancellationException::class.java)
     }
 }
