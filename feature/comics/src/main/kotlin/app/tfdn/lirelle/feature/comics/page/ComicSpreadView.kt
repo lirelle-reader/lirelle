@@ -172,7 +172,8 @@ private fun panelSpread(
     val reading = state.panels
     if (!reading.on) return null
     val walk = remember(zoom) { PanelWalk() }
-    val stops = remember(frame, state.spread, reading.zones) { shown.stops(frame, reading.zones) }
+    val counted = remember(walk) { CountedStops() }
+    val keyed = remember(frame, state.spread, reading.zones) { shown.keyedStops(frame, reading.zones) }
     val fit = spreadFit(state.settings.fit, state.twoPages)
     // Worked out when a step turns the page: the stops of the spread turned to, as it will open.
     val ahead = { turns: Int ->
@@ -181,7 +182,15 @@ private fun panelSpread(
             laid.stops(laid.frame(frame.viewport, frame.direction, turns > 0), reading.zones)
         }
     }
-    return PanelSpread(walk, state.spreadIndex, stops, reading.wholePageFirst, ahead)
+    return PanelSpread(
+        walk = walk,
+        index = state.spreadIndex,
+        stops = keyed?.map { it.rect },
+        wholePageFirst = reading.wholePageFirst,
+        ahead = ahead,
+        keys = keyed?.map { it.key },
+        counted = counted,
+    )
 }
 
 /** Where the spreads slide, in the [viewport], around the spread shown. */
@@ -231,13 +240,17 @@ private class LaidSpread(
      * The stops of the spread read panel by panel, laid out as [frame] says, from what is known of its pages'
      * [zones]: empty when no page is cut, null while a page is not known.
      */
-    fun stops(frame: SpreadFrame, zones: Map<Int, PageZones>): List<Rect>? {
+    fun stops(frame: SpreadFrame, zones: Map<Int, PageZones>): List<Rect>? =
+        keyedStops(frame, zones)?.map { it.rect }
+
+    /** The [stops] of the spread, each with what it shows. */
+    fun keyedStops(frame: SpreadFrame, zones: Map<Int, PageZones>): List<KeyedStop>? {
         val drawn = pages.map { (index, _) -> index }
         val read = if (frame.direction == Direction.RightToLeft) drawn.reversed() else drawn
         val rooms = frame.pages.zip(read) { span, index ->
             StopPage(Rect(span.left, 0f, span.right, content.height), zones[index] ?: PageZones.Unknown)
         }
-        return spreadStops(rooms, frame.viewport, frame.direction)
+        return keyedStops(rooms, frame.viewport, frame.direction)
     }
 
     /** The pages whose picture is on the device, each with its room: those a zoom can ask sharper. */

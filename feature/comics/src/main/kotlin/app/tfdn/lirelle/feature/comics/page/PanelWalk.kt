@@ -70,10 +70,16 @@ internal class PanelWalk {
      * the turn that led to it asked, or, reached any other way (the album opening, the slider, a jump), to go to
      * its first stop unless the whole page is shown first.
      *
+     * The same spread again, its stops may have been counted again (the screen turned): the stop the reader is at,
+     * or the one a hand moved it away from, is then the one of number [renumbered].
+     *
      * @return whether it is another spread than before, and the turn that was on its way led to it.
      */
-    fun shown(index: Int, wholePageFirst: Boolean): Boolean {
-        if (index == spread) return false
+    fun shown(index: Int, wholePageFirst: Boolean, renumbered: Int? = null): Boolean {
+        if (index == spread) {
+            if (at != null && renumbered != null) at = renumbered
+            return false
+        }
         val turned = ahead?.takeIf { it.first == index }
         spread = index
         ahead = null
