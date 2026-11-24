@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="downloads_channel">Downloads</string>
+    <string name="downloads_format_text">Text</string>
+    <string name="downloads_format_pdf">PDF</string>
+    <string name="downloads_format_cbz">CBZ</string>
+    <string name="downloads_format_cbr">CBR</string>
+    <string name="downloads_format_cb7">CB7</string>
+    <string name="downloads_format_djvu">DjVu</string>
+    <string name="downloads_format_audiobook">Audiobook</string>
+    <string name="downloads_format_narration">Narration</string>
+    <!-- The text beside other formats, named as it is alone: "Text and audiobook", "PDF and audiobook". -->
+    <string name="downloads_formats_text_audiobook">%1$s and audiobook</string>
+    <string name="downloads_formats_text_narration">%1$s and narration</string>
+    <string name="downloads_formats_audiobook_narration">Audiobook and narration</string>
+    <string name="downloads_formats_all">%1$s, audiobook and narration</string>
+    <!-- How far a download made of pages is, the number following that of the pages it has: "12 pages of 48", "1 page of 48". -->
+    <plurals name="downloads_pages_of">
+        <item quantity="one">%1$d page of %2$d</item>
+        <item quantity="other">%1$d pages of %2$d</item>
+    </plurals>
+    <!-- The formats the device keeps of a book and their size: "Text and audiobook · 1.2 GB". -->
+    <string name="downloads_formats_size" translatable="false">%1$s · %2$s</string>
+    <string name="downloads_notification_downloading">Downloading</string>
+    <!-- The formats, what was received, the whole size: "Audiobook · 124 MB of 412 MB". -->
+    <string name="downloads_notification_progress">%1$s · %2$s of %3$s</string>
+    <!-- The formats and what was received, while the whole size is not known; or the pages received. -->
+    <string name="downloads_notification_received" translatable="false">%1$s · %2$s</string>
+    <string name="downloads_notification_waiting_wifi">Waiting for an unmetered network</string>
+    <!-- What waits for an unmetered network: "2 books". -->
+    <plurals name="downloads_notification_books">
+        <item quantity="one">%d book</item>
+        <item quantity="other">%d books</item>
+    </plurals>
+    <!-- The books that wait and what is left to fetch: "2 books · 666 MB left". -->
+    <string name="downloads_notification_waiting_left">%1$s · %2$s left</string>
+    <string name="downloads_notification_now">Download now</string>
+    <string name="downloads_notification_done">Downloads finished</string>
+    <plurals name="downloads_notification_done_books">
+        <item quantity="one">%d book downloaded</item>
+        <item quantity="other">%d books downloaded</item>
+    </plurals>
+    <!-- Books whose download failed, after those on the device: "2 books downloaded · 1 failed". -->
+    <plurals name="downloads_notification_done_failed">
+        <item quantity="one">%d failed</item>
+        <item quantity="other">%d failed</item>
+    </plurals>
+    <!-- The books on the device, then their size or how many failed. -->
+    <string name="downloads_notification_joined" translatable="false">%1$s · %2$s</string>
+    <string name="downloads_notification_cancel">Cancel</string>
+</resources>

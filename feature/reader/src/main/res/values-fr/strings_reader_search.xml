@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="reader_search_progress">Recherche… %d&#160;%%</string>
+    <string name="reader_search_untitled">Chapitre sans titre</string>
+    <string name="reader_search_summary">%1$s dans %2$s</string>
+    <plurals name="reader_search_results">
+        <item quantity="one">%d résultat</item>
+        <item quantity="many">%d résultats</item>
+        <item quantity="other">%d résultats</item>
+    </plurals>
+    <plurals name="reader_search_chapters">
+        <item quantity="one">%d chapitre</item>
+        <item quantity="many">%d chapitres</item>
+        <item quantity="other">%d chapitres</item>
+    </plurals>
+    <string name="reader_search_truncated">Plus de 1&#8239;000 résultats&#160;: précisez la recherche</string>
+    <string name="reader_search_go_to_result">Aller à ce résultat</string>
+    <string name="reader_search_none">Aucun résultat</string>
+
+    <string name="reader_search_counter">%1$d&#160;/&#160;%2$d</string>
+    <string name="reader_search_counter_none">–&#160;/&#160;%1$d</string>
+    <string name="reader_search_counter_spoken">Résultat %1$d sur %2$d</string>
+    <string name="reader_search_counter_more">%1$d&#160;/&#160;%2$d+</string>
+    <string name="reader_search_counter_none_more">–&#160;/&#160;%1$d+</string>
+    <string name="reader_search_counter_spoken_more">Résultat %1$d sur plus de %2$s</string>
+    <string name="reader_search_results_more">Plus de %1$s résultats</string>
+    <string name="reader_search_previous">Résultat précédent</string>
+    <string name="reader_search_next">Résultat suivant</string>
+    <string name="reader_search_back_to_results">Revenir aux résultats</string>
+    <string name="reader_search_close">Fermer la recherche</string>
+</resources>

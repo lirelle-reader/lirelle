@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- The search's panel. The field's hint is reader_search_book. -->
+    <!-- While the search runs: %d is how far it has got, from 0 to 100. -->
+    <string name="reader_search_progress">Searching… %d&#160;%%</string>
+    <!-- The heading of results in a part of the book that has no entry in the contents. -->
+    <string name="reader_search_untitled">Untitled chapter</string>
+    <!-- At the end of a search: %1$s is reader_search_results, %2$s is reader_search_chapters. -->
+    <string name="reader_search_summary">%1$s in %2$s</string>
+    <plurals name="reader_search_results">
+        <item quantity="one">%d result</item>
+        <item quantity="other">%d results</item>
+    </plurals>
+    <plurals name="reader_search_chapters">
+        <item quantity="one">%d chapter</item>
+        <item quantity="other">%d chapters</item>
+    </plurals>
+    <string name="reader_search_truncated">More than 1,000 results: try a longer search</string>
+    <!-- What a tap on a result does, as a screen reader says it. -->
+    <string name="reader_search_go_to_result">Go to this result</string>
+    <string name="reader_search_none">No results</string>
+
+    <!-- The search's bar on the page. %1$d is the result shown, %2$d how many there are. -->
+    <string name="reader_search_counter">%1$d&#160;/&#160;%2$d</string>
+    <!-- The counter before any result is shown on the page: %1$d is how many there are. -->
+    <string name="reader_search_counter_none">–&#160;/&#160;%1$d</string>
+    <!-- The counter, as a screen reader says it. -->
+    <string name="reader_search_counter_spoken">Result %1$d of %2$d</string>
+    <!-- The counter when the search stopped at its limit and there are more: "3 / 1000+". -->
+    <string name="reader_search_counter_more">%1$d&#160;/&#160;%2$d+</string>
+    <string name="reader_search_counter_none_more">–&#160;/&#160;%1$d+</string>
+    <!-- As a screen reader says them; the %s is the limit, with its thousands separator. -->
+    <string name="reader_search_counter_spoken_more">Result %1$d of more than %2$s</string>
+    <string name="reader_search_results_more">More than %1$s results</string>
+    <string name="reader_search_previous">Previous result</string>
+    <string name="reader_search_next">Next result</string>
+    <string name="reader_search_back_to_results">Back to the results</string>
+    <string name="reader_search_close">Close the search</string>
+</resources>

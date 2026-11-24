@@ -1,0 +1,28 @@
+{
+ "items": [
+  {
+   "fileId": 31,
+   "kobo": {
+    "contentPercent": null,
+    "source": null,
+    "type": null,
+    "value": null
+   },
+   "koreader": null,
+   "narration": {
+    "fragment": null,
+    "percentage": null,
+    "seconds": null,
+    "sectionIndex": null,
+    "updatedAt": null
+   },
+   "percentage": 25,
+   "text": {
+    "cfi": null,
+    "page": 12,
+    "updatedAt": "2026-11-17T09:12:44.501Z"
+   },
+   "updatedAt": "2026-11-17T09:12:44.501Z"
+  }
+ ]
+}

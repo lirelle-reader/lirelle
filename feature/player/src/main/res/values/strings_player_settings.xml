@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- The player settings screen, opened from the player's menu and from More -->
+    <string name="player_settings_title">Audio player</string>
+    <string name="player_settings_back">Back</string>
+    <string name="player_settings_skip_back">Skip back</string>
+    <string name="player_settings_skip_forward">Skip forward</string>
+    <!-- An interval on a chip: "15 s" -->
+    <string name="player_settings_seconds_short">%1$d s</string>
+    <!-- The same interval, as a screen reader says it -->
+    <plurals name="player_settings_seconds">
+        <item quantity="one">%d second</item>
+        <item quantity="other">%d seconds</item>
+    </plurals>
+    <string name="player_settings_playback">Playback</string>
+    <string name="player_settings_rewind">Rewind on resume</string>
+    <string name="player_settings_rewind_hint">After a pause, playback goes back 2 to 10 seconds, the longer the pause the further</string>
+    <string name="player_settings_fade">Fade out before stopping</string>
+    <string name="player_settings_fade_hint">The sound fades out gently over the last minute of the timer</string>
+    <string name="player_settings_shake">Shake to extend</string>
+    <string name="player_settings_shake_hint">Shaking the phone during the last minute of the timer starts it again</string>
+</resources>

@@ -1,0 +1,7075 @@
+{
+ "bookId": "1",
+ "fileId": "2",
+ "durationMs": 75423000,
+ "items": [
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s0",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 0,
+   "clipEndMs": 6240
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s0",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 6240,
+   "clipEndMs": 8220
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s1",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 8220,
+   "clipEndMs": 12080
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s2",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 12080,
+   "clipEndMs": 22240
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s3",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 22240,
+   "clipEndMs": 33400
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s4",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 33400,
+   "clipEndMs": 46020
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s5",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 46020,
+   "clipEndMs": 51480
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s6",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 51480,
+   "clipEndMs": 63660
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s7",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 63660,
+   "clipEndMs": 73980
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s8",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 73980,
+   "clipEndMs": 93540
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s9",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 93540,
+   "clipEndMs": 99140
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s10",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 99140,
+   "clipEndMs": 102600
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s11",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 102600,
+   "clipEndMs": 103680
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s12",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 103680,
+   "clipEndMs": 106100
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s13",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 106100,
+   "clipEndMs": 114520
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s14",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 114520,
+   "clipEndMs": 122200
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s15",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 122200,
+   "clipEndMs": 131360
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s16",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 131360,
+   "clipEndMs": 143480
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s17",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 143480,
+   "clipEndMs": 151960
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s18",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 151960,
+   "clipEndMs": 164820
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s19",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 164820,
+   "clipEndMs": 166500
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s20",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 166500,
+   "clipEndMs": 168040
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s21",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 168040,
+   "clipEndMs": 169440
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s22",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 169440,
+   "clipEndMs": 172000
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s23",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 172000,
+   "clipEndMs": 176180
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s24",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 176180,
+   "clipEndMs": 186060
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s25",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 186060,
+   "clipEndMs": 190960
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s26",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 190960,
+   "clipEndMs": 196720
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s27",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 196720,
+   "clipEndMs": 198520
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s28",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 198520,
+   "clipEndMs": 202780
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s29",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 202780,
+   "clipEndMs": 205260
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s30",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 205260,
+   "clipEndMs": 211640
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s31",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 211640,
+   "clipEndMs": 213380
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s32",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 213380,
+   "clipEndMs": 215320
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s33",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 215320,
+   "clipEndMs": 216480
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s34",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 216480,
+   "clipEndMs": 220980
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s35",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 220980,
+   "clipEndMs": 223280
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s36",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 223280,
+   "clipEndMs": 224980
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s37",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 224980,
+   "clipEndMs": 230220
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s38",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 230220,
+   "clipEndMs": 233920
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s39",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 233920,
+   "clipEndMs": 239220
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s40",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 239220,
+   "clipEndMs": 243620
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s41",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 243620,
+   "clipEndMs": 247000
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s42",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 247000,
+   "clipEndMs": 249120
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s43",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 249120,
+   "clipEndMs": 255600
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s44",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 255600,
+   "clipEndMs": 264180
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s45",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 264180,
+   "clipEndMs": 286340
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s46",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 286340,
+   "clipEndMs": 293220
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s47",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 293220,
+   "clipEndMs": 302800
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s48",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 302800,
+   "clipEndMs": 306660
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s49",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 306660,
+   "clipEndMs": 320160
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s50",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 320160,
+   "clipEndMs": 332640
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s51",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 332640,
+   "clipEndMs": 350460
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s52",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 350460,
+   "clipEndMs": 357540
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s53",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 357540,
+   "clipEndMs": 365000
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s54",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 365000,
+   "clipEndMs": 373220
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s55",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 373220,
+   "clipEndMs": 380560
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s56",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 380560,
+   "clipEndMs": 386560
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s57",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 386560,
+   "clipEndMs": 388700
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s58",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 388700,
+   "clipEndMs": 397060
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s59",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 397060,
+   "clipEndMs": 409120
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s60",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 409120,
+   "clipEndMs": 411680
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s61",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 411680,
+   "clipEndMs": 425920
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s62",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 425920,
+   "clipEndMs": 430100
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s63",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 430100,
+   "clipEndMs": 445100
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s64",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 445100,
+   "clipEndMs": 448880
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s65",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 448880,
+   "clipEndMs": 454240
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s66",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 454240,
+   "clipEndMs": 459120
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s67",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 459120,
+   "clipEndMs": 462940
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s68",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 462940,
+   "clipEndMs": 473860
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s69",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 473860,
+   "clipEndMs": 482800
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s70",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 482800,
+   "clipEndMs": 495720
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s71",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 495720,
+   "clipEndMs": 502280
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s72",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 502280,
+   "clipEndMs": 511040
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s73",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 511040,
+   "clipEndMs": 519480
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s74",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 519480,
+   "clipEndMs": 522260
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s75",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 522260,
+   "clipEndMs": 530540
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s76",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 530540,
+   "clipEndMs": 540160
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s77",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 540160,
+   "clipEndMs": 552940
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s78",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 552940,
+   "clipEndMs": 560220
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s79",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 560220,
+   "clipEndMs": 566860
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s80",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 566860,
+   "clipEndMs": 579440
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s81",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 579440,
+   "clipEndMs": 582880
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s82",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 582880,
+   "clipEndMs": 600760
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s83",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 600760,
+   "clipEndMs": 616900
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s84",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 616900,
+   "clipEndMs": 632880
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s85",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 632880,
+   "clipEndMs": 639300
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s86",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 639300,
+   "clipEndMs": 644980
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s87",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 644980,
+   "clipEndMs": 649320
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s88",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 649320,
+   "clipEndMs": 651160
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s89",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 651160,
+   "clipEndMs": 662060
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s90",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 662060,
+   "clipEndMs": 668360
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s91",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 668360,
+   "clipEndMs": 670720
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s92",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 670720,
+   "clipEndMs": 679440
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s93",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 679440,
+   "clipEndMs": 685060
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s94",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 685060,
+   "clipEndMs": 690460
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s95",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 690460,
+   "clipEndMs": 694880
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s96",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 694880,
+   "clipEndMs": 705100
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s97",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 705100,
+   "clipEndMs": 710940
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s98",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 710940,
+   "clipEndMs": 716620
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s99",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 716620,
+   "clipEndMs": 719960
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s100",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 719960,
+   "clipEndMs": 721840
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s101",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 721840,
+   "clipEndMs": 724000
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s102",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 724000,
+   "clipEndMs": 729880
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s103",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 729880,
+   "clipEndMs": 733980
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s104",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 733980,
+   "clipEndMs": 738900
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s105",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 738900,
+   "clipEndMs": 741160
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s106",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 741160,
+   "clipEndMs": 745400
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s107",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 745400,
+   "clipEndMs": 752900
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s108",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 752900,
+   "clipEndMs": 757980
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s109",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 757980,
+   "clipEndMs": 763880
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s110",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 763880,
+   "clipEndMs": 765900
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s111",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 765900,
+   "clipEndMs": 767540
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s112",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 767540,
+   "clipEndMs": 772360
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s113",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 772360,
+   "clipEndMs": 777160
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s114",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 777160,
+   "clipEndMs": 782500
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s115",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 782500,
+   "clipEndMs": 790340
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s116",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 790340,
+   "clipEndMs": 794860
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s117",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 794860,
+   "clipEndMs": 796400
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s118",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 796400,
+   "clipEndMs": 800060
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s119",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 800060,
+   "clipEndMs": 807760
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s120",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 807760,
+   "clipEndMs": 823900
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s121",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 823900,
+   "clipEndMs": 827960
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s122",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 827960,
+   "clipEndMs": 830940
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s123",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 830940,
+   "clipEndMs": 834200
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s124",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 834200,
+   "clipEndMs": 841560
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s125",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 841560,
+   "clipEndMs": 852000
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s126",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 852000,
+   "clipEndMs": 857520
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s127",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 857520,
+   "clipEndMs": 861960
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s128",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 861960,
+   "clipEndMs": 863380
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s129",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 863380,
+   "clipEndMs": 867540
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s130",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 867540,
+   "clipEndMs": 871940
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s131",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 871940,
+   "clipEndMs": 883140
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s132",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 883140,
+   "clipEndMs": 886600
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s133",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 886600,
+   "clipEndMs": 890460
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s134",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 890460,
+   "clipEndMs": 893680
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s135",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 893680,
+   "clipEndMs": 897380
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s136",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 897380,
+   "clipEndMs": 899940
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s137",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 899940,
+   "clipEndMs": 902820
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s138",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 902820,
+   "clipEndMs": 906000
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s139",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 906000,
+   "clipEndMs": 908440
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s140",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 908440,
+   "clipEndMs": 913760
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s141",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 913760,
+   "clipEndMs": 922820
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s142",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 922820,
+   "clipEndMs": 929800
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s143",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 929800,
+   "clipEndMs": 938500
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s144",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 938500,
+   "clipEndMs": 943780
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s145",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 943780,
+   "clipEndMs": 949900
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s146",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 949900,
+   "clipEndMs": 955840
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s147",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 955840,
+   "clipEndMs": 956980
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s148",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 956980,
+   "clipEndMs": 960520
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s149",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 960520,
+   "clipEndMs": 963120
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s150",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 963120,
+   "clipEndMs": 964380
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s151",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 964380,
+   "clipEndMs": 967560
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s152",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 967560,
+   "clipEndMs": 970780
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s153",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 970780,
+   "clipEndMs": 972880
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s154",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 972880,
+   "clipEndMs": 978580
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s155",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 978580,
+   "clipEndMs": 978660
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s156",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 978660,
+   "clipEndMs": 980800
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s157",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 980800,
+   "clipEndMs": 984180
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s158",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 984180,
+   "clipEndMs": 987560
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s159",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 987560,
+   "clipEndMs": 992120
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s160",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 992120,
+   "clipEndMs": 994240
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s161",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 994240,
+   "clipEndMs": 998260
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s162",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 998260,
+   "clipEndMs": 1000940
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s163",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 1000940,
+   "clipEndMs": 1009280
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s164",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 1009280,
+   "clipEndMs": 1011080
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s165",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 1011080,
+   "clipEndMs": 1016860
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s166",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 1016860,
+   "clipEndMs": 1022100
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s167",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 1022100,
+   "clipEndMs": 1027360
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s168",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 1027360,
+   "clipEndMs": 1037480
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s169",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 1037480,
+   "clipEndMs": 1040500
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s170",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 1040500,
+   "clipEndMs": 1043480
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s171",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 1043480,
+   "clipEndMs": 1049860
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s172",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 1049860,
+   "clipEndMs": 1060500
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s173",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 1060500,
+   "clipEndMs": 1063880
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s174",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 1063880,
+   "clipEndMs": 1066500
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s175",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 1066500,
+   "clipEndMs": 1077860
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s176",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 1077860,
+   "clipEndMs": 1078900
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s177",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 1078900,
+   "clipEndMs": 1081240
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s178",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 1081240,
+   "clipEndMs": 1082680
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s179",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 1082680,
+   "clipEndMs": 1089500
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s180",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 1089500,
+   "clipEndMs": 1105300
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s181",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 1105300,
+   "clipEndMs": 1107600
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s182",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 1107600,
+   "clipEndMs": 1112580
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s183",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 1112580,
+   "clipEndMs": 1120080
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s184",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 1120080,
+   "clipEndMs": 1131420
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s185",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 1131420,
+   "clipEndMs": 1137340
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s186",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 1137340,
+   "clipEndMs": 1139600
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s187",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 1139600,
+   "clipEndMs": 1142060
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s188",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 1142060,
+   "clipEndMs": 1147160
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s189",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 1147160,
+   "clipEndMs": 1158260
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s190",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 1158260,
+   "clipEndMs": 1162160
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s191",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 1162160,
+   "clipEndMs": 1167960
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s192",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 1167960,
+   "clipEndMs": 1172540
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s193",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 1172540,
+   "clipEndMs": 1179600
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s194",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 1179600,
+   "clipEndMs": 1188320
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s195",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 1188320,
+   "clipEndMs": 1190440
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s196",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 1190440,
+   "clipEndMs": 1191360
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s197",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 1191360,
+   "clipEndMs": 1194580
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s198",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 1194580,
+   "clipEndMs": 1200380
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s199",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 1200380,
+   "clipEndMs": 1211060
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s200",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 1211060,
+   "clipEndMs": 1219480
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s201",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 1219480,
+   "clipEndMs": 1224820
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s202",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 1224820,
+   "clipEndMs": 1233140
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s203",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 1233140,
+   "clipEndMs": 1235920
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s204",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 1235920,
+   "clipEndMs": 1239740
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s205",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 1239740,
+   "clipEndMs": 1247220
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s206",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 1247220,
+   "clipEndMs": 1255120
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s207",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 1255120,
+   "clipEndMs": 1266040
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s208",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 1266040,
+   "clipEndMs": 1270980
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s209",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 1270980,
+   "clipEndMs": 1276920
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s210",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 1276920,
+   "clipEndMs": 1285360
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s211",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 1285360,
+   "clipEndMs": 1294060
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s212",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 1294060,
+   "clipEndMs": 1298100
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s213",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 1298100,
+   "clipEndMs": 1303580
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s214",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 1303580,
+   "clipEndMs": 1306680
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s215",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 1306680,
+   "clipEndMs": 1314420
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s216",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 1314420,
+   "clipEndMs": 1316300
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s217",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 1316300,
+   "clipEndMs": 1319740
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s218",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 1319740,
+   "clipEndMs": 1332620
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s219",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 1332620,
+   "clipEndMs": 1341300
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s220",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 1341300,
+   "clipEndMs": 1343180
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s221",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 1343180,
+   "clipEndMs": 1345560
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s222",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 1345560,
+   "clipEndMs": 1349720
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s223",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 1349720,
+   "clipEndMs": 1352340
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s224",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 1352340,
+   "clipEndMs": 1360520
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s225",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 1360520,
+   "clipEndMs": 1364140
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s226",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 1364140,
+   "clipEndMs": 1368340
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s227",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 1368340,
+   "clipEndMs": 1374540
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s228",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 1374540,
+   "clipEndMs": 1390960
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s229",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 1390960,
+   "clipEndMs": 1406000
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s230",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 1406000,
+   "clipEndMs": 1416140
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s231",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 1416140,
+   "clipEndMs": 1438380
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s232",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 1438380,
+   "clipEndMs": 1444200
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s233",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 1444200,
+   "clipEndMs": 1461640
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s234",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 1461640,
+   "clipEndMs": 1464600
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s235",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 1464600,
+   "clipEndMs": 1469100
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s236",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 1469100,
+   "clipEndMs": 1472900
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s237",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 1472900,
+   "clipEndMs": 1480260
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s238",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 1480260,
+   "clipEndMs": 1484600
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s239",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 1484600,
+   "clipEndMs": 1487020
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s240",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 1487020,
+   "clipEndMs": 1488180
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s241",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 1488180,
+   "clipEndMs": 1491200
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s242",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 1491200,
+   "clipEndMs": 1500760
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s243",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 1500760,
+   "clipEndMs": 1503940
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s244",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 1503940,
+   "clipEndMs": 1509000
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s245",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 1509000,
+   "clipEndMs": 1520200
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s246",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 1520200,
+   "clipEndMs": 1522980
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s247",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 1522980,
+   "clipEndMs": 1525420
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s248",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 1525420,
+   "clipEndMs": 1532360
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s249",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 1532360,
+   "clipEndMs": 1541300
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s250",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 1541300,
+   "clipEndMs": 1544960
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s251",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 1544960,
+   "clipEndMs": 1552860
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s252",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 1552860,
+   "clipEndMs": 1561060
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s253",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 1561060,
+   "clipEndMs": 1571860
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s254",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 1571860,
+   "clipEndMs": 1574540
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s255",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 1574540,
+   "clipEndMs": 1577340
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s256",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 1577340,
+   "clipEndMs": 1579220
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s257",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 1579220,
+   "clipEndMs": 1590120
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s258",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 1590120,
+   "clipEndMs": 1594220
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s259",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 1594220,
+   "clipEndMs": 1597020
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s260",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 1597020,
+   "clipEndMs": 1602760
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s261",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 1602760,
+   "clipEndMs": 1607420
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s262",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 1607420,
+   "clipEndMs": 1610040
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s263",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 1610040,
+   "clipEndMs": 1617200
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s264",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 1617200,
+   "clipEndMs": 1622320
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s265",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 1622320,
+   "clipEndMs": 1624640
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s266",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 1624640,
+   "clipEndMs": 1627460
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s267",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 1627460,
+   "clipEndMs": 1636540
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s268",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 1636540,
+   "clipEndMs": 1637940
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s269",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 1637940,
+   "clipEndMs": 1639400
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s270",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 1639400,
+   "clipEndMs": 1640680
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s271",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 1640680,
+   "clipEndMs": 1643280
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s272",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 1643280,
+   "clipEndMs": 1645960
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s273",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 1645960,
+   "clipEndMs": 1655680
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s274",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 1655680,
+   "clipEndMs": 1660280
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s275",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 1660280,
+   "clipEndMs": 1662820
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s276",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 1662820,
+   "clipEndMs": 1669220
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s277",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 1669220,
+   "clipEndMs": 1671160
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s278",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 1671160,
+   "clipEndMs": 1674480
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s279",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 1674480,
+   "clipEndMs": 1687860
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s280",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 1687860,
+   "clipEndMs": 1697240
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s281",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 1697240,
+   "clipEndMs": 1702920
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s282",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 1702920,
+   "clipEndMs": 1706720
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s283",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 1706720,
+   "clipEndMs": 1710460
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s284",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 1710460,
+   "clipEndMs": 1718120
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s285",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 1718120,
+   "clipEndMs": 1724880
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s286",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 1724880,
+   "clipEndMs": 1729700
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s287",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 1729700,
+   "clipEndMs": 1736140
+  },
+  {
+   "sectionIndex": 5,
+   "textHref": "OEBPS/Text/section001.html",
+   "fragment": "p001-s287",
+   "audioHref": "OEBPS/Audio/track001.mp4",
+   "clipBeginMs": 1736140,
+   "clipEndMs": 1744100
+  },
+  {
+   "sectionIndex": 6,
+   "textHref": "OEBPS/Text/section002.html",
+   "fragment": "p002-s0",
+   "audioHref": "OEBPS/Audio/track002.mp4",
+   "clipBeginMs": 0,
+   "clipEndMs": 1900
+  },
+  {
+   "sectionIndex": 6,
+   "textHref": "OEBPS/Text/section002.html",
+   "fragment": "p002-s1",
+   "audioHref": "OEBPS/Audio/track002.mp4",
+   "clipBeginMs": 1900,
+   "clipEndMs": 5580
+  },
+  {
+   "sectionIndex": 6,
+   "textHref": "OEBPS/Text/section002.html",
+   "fragment": "p002-s2",
+   "audioHref": "OEBPS/Audio/track002.mp4",
+   "clipBeginMs": 5580,
+   "clipEndMs": 11080
+  },
+  {
+   "sectionIndex": 6,
+   "textHref": "OEBPS/Text/section002.html",
+   "fragment": "p002-s3",
+   "audioHref": "OEBPS/Audio/track002.mp4",
+   "clipBeginMs": 11080,
+   "clipEndMs": 16180
+  },
+  {
+   "sectionIndex": 6,
+   "textHref": "OEBPS/Text/section002.html",
+   "fragment": "p002-s4",
+   "audioHref": "OEBPS/Audio/track002.mp4",
+   "clipBeginMs": 16180,
+   "clipEndMs": 27600
+  },
+  {
+   "sectionIndex": 6,
+   "textHref": "OEBPS/Text/section002.html",
+   "fragment": "p002-s5",
+   "audioHref": "OEBPS/Audio/track002.mp4",
+   "clipBeginMs": 27600,
+   "clipEndMs": 35420
+  },
+  {
+   "sectionIndex": 6,
+   "textHref": "OEBPS/Text/section002.html",
+   "fragment": "p002-s6",
+   "audioHref": "OEBPS/Audio/track002.mp4",
+   "clipBeginMs": 35420,
+   "clipEndMs": 46820
+  },
+  {
+   "sectionIndex": 6,
+   "textHref": "OEBPS/Text/section002.html",
+   "fragment": "p002-s7",
+   "audioHref": "OEBPS/Audio/track002.mp4",
+   "clipBeginMs": 46820,
+   "clipEndMs": 50620
+  },
+  {
+   "sectionIndex": 6,
+   "textHref": "OEBPS/Text/section002.html",
+   "fragment": "p002-s8",
+   "audioHref": "OEBPS/Audio/track002.mp4",
+   "clipBeginMs": 50620,
+   "clipEndMs": 52960
+  },
+  {
+   "sectionIndex": 6,
+   "textHref": "OEBPS/Text/section002.html",
+   "fragment": "p002-s9",
+   "audioHref": "OEBPS/Audio/track002.mp4",
+   "clipBeginMs": 52960,
+   "clipEndMs": 62140
+  },
+  {
+   "sectionIndex": 6,
+   "textHref": "OEBPS/Text/section002.html",
+   "fragment": "p002-s10",
+   "audioHref": "OEBPS/Audio/track002.mp4",
+   "clipBeginMs": 62140,
+   "clipEndMs": 70300
+  },
+  {
+   "sectionIndex": 6,
+   "textHref": "OEBPS/Text/section002.html",
+   "fragment": "p002-s11",
+   "audioHref": "OEBPS/Audio/track002.mp4",
+   "clipBeginMs": 70300,
+   "clipEndMs": 74540
+  },
+  {
+   "sectionIndex": 6,
+   "textHref": "OEBPS/Text/section002.html",
+   "fragment": "p002-s12",
+   "audioHref": "OEBPS/Audio/track002.mp4",
+   "clipBeginMs": 74540,
+   "clipEndMs": 79080
+  },
+  {
+   "sectionIndex": 6,
+   "textHref": "OEBPS/Text/section002.html",
+   "fragment": "p002-s13",
+   "audioHref": "OEBPS/Audio/track002.mp4",
+   "clipBeginMs": 79080,
+   "clipEndMs": 84360
+  },
+  {
+   "sectionIndex": 6,
+   "textHref": "OEBPS/Text/section002.html",
+   "fragment": "p002-s14",
+   "audioHref": "OEBPS/Audio/track002.mp4",
+   "clipBeginMs": 84360,
+   "clipEndMs": 95100
+  },
+  {
+   "sectionIndex": 6,
+   "textHref": "OEBPS/Text/section002.html",
+   "fragment": "p002-s15",
+   "audioHref": "OEBPS/Audio/track002.mp4",
+   "clipBeginMs": 95100,
+   "clipEndMs": 111440
+  },
+  {
+   "sectionIndex": 6,
+   "textHref": "OEBPS/Text/section002.html",
+   "fragment": "p002-s16",
+   "audioHref": "OEBPS/Audio/track002.mp4",
+   "clipBeginMs": 111440,
+   "clipEndMs": 117720
+  },
+  {
+   "sectionIndex": 6,
+   "textHref": "OEBPS/Text/section002.html",
+   "fragment": "p002-s17",
+   "audioHref": "OEBPS/Audio/track002.mp4",
+   "clipBeginMs": 117720,
+   "clipEndMs": 140420
+  },
+  {
+   "sectionIndex": 6,
+   "textHref": "OEBPS/Text/section002.html",
+   "fragment": "p002-s18",
+   "audioHref": "OEBPS/Audio/track002.mp4",
+   "clipBeginMs": 140420,
+   "clipEndMs": 143140
+  },
+  {
+   "sectionIndex": 6,
+   "textHref": "OEBPS/Text/section002.html",
+   "fragment": "p002-s19",
+   "audioHref": "OEBPS/Audio/track002.mp4",
+   "clipBeginMs": 143140,
+   "clipEndMs": 149380
+  },
+  {
+   "sectionIndex": 6,
+   "textHref": "OEBPS/Text/section002.html",
+   "fragment": "p002-s20",
+   "audioHref": "OEBPS/Audio/track002.mp4",
+   "clipBeginMs": 149380,
+   "clipEndMs": 181200
+  },
+  {
+   "sectionIndex": 6,
+   "textHref": "OEBPS/Text/section002.html",
+   "fragment": "p002-s21",
+   "audioHref": "OEBPS/Audio/track002.mp4",
+   "clipBeginMs": 181200,
+   "clipEndMs": 189500
+  },
+  {
+   "sectionIndex": 6,
+   "textHref": "OEBPS/Text/section002.html",
+   "fragment": "p002-s22",
+   "audioHref": "OEBPS/Audio/track002.mp4",
+   "clipBeginMs": 189500,
+   "clipEndMs": 195240
+  },
+  {
+   "sectionIndex": 6,
+   "textHref": "OEBPS/Text/section002.html",
+   "fragment": "p002-s23",
+   "audioHref": "OEBPS/Audio/track002.mp4",
+   "clipBeginMs": 195240,
+   "clipEndMs": 203500
+  },
+  {
+   "sectionIndex": 6,
+   "textHref": "OEBPS/Text/section002.html",
+   "fragment": "p002-s24",
+   "audioHref": "OEBPS/Audio/track002.mp4",
+   "clipBeginMs": 203500,
+   "clipEndMs": 214160
+  },
+  {
+   "sectionIndex": 6,
+   "textHref": "OEBPS/Text/section002.html",
+   "fragment": "p002-s25",
+   "audioHref": "OEBPS/Audio/track002.mp4",
+   "clipBeginMs": 214160,
+   "clipEndMs": 220260
+  },
+  {
+   "sectionIndex": 6,
+   "textHref": "OEBPS/Text/section002.html",
+   "fragment": "p002-s26",
+   "audioHref": "OEBPS/Audio/track002.mp4",
+   "clipBeginMs": 220260,
+   "clipEndMs": 223280
+  },
+  {
+   "sectionIndex": 6,
+   "textHref": "OEBPS/Text/section002.html",
+   "fragment": "p002-s27",
+   "audioHref": "OEBPS/Audio/track002.mp4",
+   "clipBeginMs": 223280,
+   "clipEndMs": 232040
+  },
+  {
+   "sectionIndex": 6,
+   "textHref": "OEBPS/Text/section002.html",
+   "fragment": "p002-s28",
+   "audioHref": "OEBPS/Audio/track002.mp4",
+   "clipBeginMs": 232040,
+   "clipEndMs": 242120
+  },
+  {
+   "sectionIndex": 6,
+   "textHref": "OEBPS/Text/section002.html",
+   "fragment": "p002-s29",
+   "audioHref": "OEBPS/Audio/track002.mp4",
+   "clipBeginMs": 242120,
+   "clipEndMs": 244360
+  },
+  {
+   "sectionIndex": 6,
+   "textHref": "OEBPS/Text/section002.html",
+   "fragment": "p002-s30",
+   "audioHref": "OEBPS/Audio/track002.mp4",
+   "clipBeginMs": 244360,
+   "clipEndMs": 251160
+  },
+  {
+   "sectionIndex": 6,
+   "textHref": "OEBPS/Text/section002.html",
+   "fragment": "p002-s31",
+   "audioHref": "OEBPS/Audio/track002.mp4",
+   "clipBeginMs": 251160,
+   "clipEndMs": 261100
+  },
+  {
+   "sectionIndex": 6,
+   "textHref": "OEBPS/Text/section002.html",
+   "fragment": "p002-s32",
+   "audioHref": "OEBPS/Audio/track002.mp4",
+   "clipBeginMs": 261100,
+   "clipEndMs": 269880
+  },
+  {
+   "sectionIndex": 6,
+   "textHref": "OEBPS/Text/section002.html",
+   "fragment": "p002-s33",
+   "audioHref": "OEBPS/Audio/track002.mp4",
+   "clipBeginMs": 269880,
+   "clipEndMs": 271920
+  },
+  {
+   "sectionIndex": 6,
+   "textHref": "OEBPS/Text/section002.html",
+   "fragment": "p002-s34",
+   "audioHref": "OEBPS/Audio/track002.mp4",
+   "clipBeginMs": 271920,
+   "clipEndMs": 279400
+  },
+  {
+   "sectionIndex": 6,
+   "textHref": "OEBPS/Text/section002.html",
+   "fragment": "p002-s35",
+   "audioHref": "OEBPS/Audio/track002.mp4",
+   "clipBeginMs": 279400,
+   "clipEndMs": 289520
+  },
+  {
+   "sectionIndex": 6,
+   "textHref": "OEBPS/Text/section002.html",
+   "fragment": "p002-s36",
+   "audioHref": "OEBPS/Audio/track002.mp4",
+   "clipBeginMs": 289520,
+   "clipEndMs": 295020
+  },
+  {
+   "sectionIndex": 6,
+   "textHref": "OEBPS/Text/section002.html",
+   "fragment": "p002-s37",
+   "audioHref": "OEBPS/Audio/track002.mp4",
+   "clipBeginMs": 295020,
+   "clipEndMs": 301240
+  },
+  {
+   "sectionIndex": 6,
+   "textHref": "OEBPS/Text/section002.html",
+   "fragment": "p002-s38",
+   "audioHref": "OEBPS/Audio/track002.mp4",
+   "clipBeginMs": 301240,
+   "clipEndMs": 306920
+  },
+  {
+   "sectionIndex": 6,
+   "textHref": "OEBPS/Text/section002.html",
+   "fragment": "p002-s39",
+   "audioHref": "OEBPS/Audio/track002.mp4",
+   "clipBeginMs": 306920,
+   "clipEndMs": 312000
+  },
+  {
+   "sectionIndex": 6,
+   "textHref": "OEBPS/Text/section002.html",
+   "fragment": "p002-s40",
+   "audioHref": "OEBPS/Audio/track002.mp4",
+   "clipBeginMs": 312000,
+   "clipEndMs": 324100
+  },
+  {
+   "sectionIndex": 6,
+   "textHref": "OEBPS/Text/section002.html",
+   "fragment": "p002-s41",
+   "audioHref": "OEBPS/Audio/track002.mp4",
+   "clipBeginMs": 324100,
+   "clipEndMs": 343920
+  },
+  {
+   "sectionIndex": 6,
+   "textHref": "OEBPS/Text/section002.html",
+   "fragment": "p002-s42",
+   "audioHref": "OEBPS/Audio/track002.mp4",
+   "clipBeginMs": 343920,
+   "clipEndMs": 347800
+  },
+  {
+   "sectionIndex": 6,
+   "textHref": "OEBPS/Text/section002.html",
+   "fragment": "p002-s43",
+   "audioHref": "OEBPS/Audio/track002.mp4",
+   "clipBeginMs": 347800,
+   "clipEndMs": 353060
+  },
+  {
+   "sectionIndex": 6,
+   "textHref": "OEBPS/Text/section002.html",
+   "fragment": "p002-s44",
+   "audioHref": "OEBPS/Audio/track002.mp4",
+   "clipBeginMs": 353060,
+   "clipEndMs": 360960
+  },
+  {
+   "sectionIndex": 6,
+   "textHref": "OEBPS/Text/section002.html",
+   "fragment": "p002-s45",
+   "audioHref": "OEBPS/Audio/track002.mp4",
+   "clipBeginMs": 360960,
+   "clipEndMs": 377440
+  },
+  {
+   "sectionIndex": 6,
+   "textHref": "OEBPS/Text/section002.html",
+   "fragment": "p002-s46",
+   "audioHref": "OEBPS/Audio/track002.mp4",
+   "clipBeginMs": 377440,
+   "clipEndMs": 384440
+  },
+  {
+   "sectionIndex": 6,
+   "textHref": "OEBPS/Text/section002.html",
+   "fragment": "p002-s47",
+   "audioHref": "OEBPS/Audio/track002.mp4",
+   "clipBeginMs": 384440,
+   "clipEndMs": 389620
+  },
+  {
+   "sectionIndex": 6,
+   "textHref": "OEBPS/Text/section002.html",
+   "fragment": "p002-s48",
+   "audioHref": "OEBPS/Audio/track002.mp4",
+   "clipBeginMs": 389620,
+   "clipEndMs": 400440
+  },
+  {
+   "sectionIndex": 6,
+   "textHref": "OEBPS/Text/section002.html",
+   "fragment": "p002-s49",
+   "audioHref": "OEBPS/Audio/track002.mp4",
+   "clipBeginMs": 400440,
+   "clipEndMs": 412160
+  },
+  {
+   "sectionIndex": 6,
+   "textHref": "OEBPS/Text/section002.html",
+   "fragment": "p002-s50",
+   "audioHref": "OEBPS/Audio/track002.mp4",
+   "clipBeginMs": 412160,
+   "clipEndMs": 424380
+  },
+  {
+   "sectionIndex": 6,
+   "textHref": "OEBPS/Text/section002.html",
+   "fragment": "p002-s51",
+   "audioHref": "OEBPS/Audio/track002.mp4",
+   "clipBeginMs": 424380,
+   "clipEndMs": 430960
+  },
+  {
+   "sectionIndex": 6,
+   "textHref": "OEBPS/Text/section002.html",
+   "fragment": "p002-s52",
+   "audioHref": "OEBPS/Audio/track002.mp4",
+   "clipBeginMs": 430960,
+   "clipEndMs": 440960
+  },
+  {
+   "sectionIndex": 6,
+   "textHref": "OEBPS/Text/section002.html",
+   "fragment": "p002-s53",
+   "audioHref": "OEBPS/Audio/track002.mp4",
+   "clipBeginMs": 440960,
+   "clipEndMs": 446760
+  },
+  {
+   "sectionIndex": 6,
+   "textHref": "OEBPS/Text/section002.html",
+   "fragment": "p002-s54",
+   "audioHref": "OEBPS/Audio/track002.mp4",
+   "clipBeginMs": 446760,
+   "clipEndMs": 452600
+  },
+  {
+   "sectionIndex": 6,
+   "textHref": "OEBPS/Text/section002.html",
+   "fragment": "p002-s55",
+   "audioHref": "OEBPS/Audio/track002.mp4",
+   "clipBeginMs": 452600,
+   "clipEndMs": 459180
+  },
+  {
+   "sectionIndex": 6,
+   "textHref": "OEBPS/Text/section002.html",
+   "fragment": "p002-s56",
+   "audioHref": "OEBPS/Audio/track002.mp4",
+   "clipBeginMs": 459180,
+   "clipEndMs": 474920
+  },
+  {
+   "sectionIndex": 6,
+   "textHref": "OEBPS/Text/section002.html",
+   "fragment": "p002-s57",
+   "audioHref": "OEBPS/Audio/track002.mp4",
+   "clipBeginMs": 474920,
+   "clipEndMs": 488740
+  },
+  {
+   "sectionIndex": 6,
+   "textHref": "OEBPS/Text/section002.html",
+   "fragment": "p002-s58",
+   "audioHref": "OEBPS/Audio/track002.mp4",
+   "clipBeginMs": 488740,
+   "clipEndMs": 494240
+  },
+  {
+   "sectionIndex": 6,
+   "textHref": "OEBPS/Text/section002.html",
+   "fragment": "p002-s59",
+   "audioHref": "OEBPS/Audio/track002.mp4",
+   "clipBeginMs": 494240,
+   "clipEndMs": 504120
+  },
+  {
+   "sectionIndex": 6,
+   "textHref": "OEBPS/Text/section002.html",
+   "fragment": "p002-s60",
+   "audioHref": "OEBPS/Audio/track002.mp4",
+   "clipBeginMs": 504120,
+   "clipEndMs": 522060
+  },
+  {
+   "sectionIndex": 6,
+   "textHref": "OEBPS/Text/section002.html",
+   "fragment": "p002-s61",
+   "audioHref": "OEBPS/Audio/track002.mp4",
+   "clipBeginMs": 522060,
+   "clipEndMs": 535360
+  },
+  {
+   "sectionIndex": 6,
+   "textHref": "OEBPS/Text/section002.html",
+   "fragment": "p002-s62",
+   "audioHref": "OEBPS/Audio/track002.mp4",
+   "clipBeginMs": 535360,
+   "clipEndMs": 541880
+  },
+  {
+   "sectionIndex": 6,
+   "textHref": "OEBPS/Text/section002.html",
+   "fragment": "p002-s63",
+   "audioHref": "OEBPS/Audio/track002.mp4",
+   "clipBeginMs": 541880,
+   "clipEndMs": 553340
+  },
+  {
+   "sectionIndex": 6,
+   "textHref": "OEBPS/Text/section002.html",
+   "fragment": "p002-s64",
+   "audioHref": "OEBPS/Audio/track002.mp4",
+   "clipBeginMs": 553340,
+   "clipEndMs": 557900
+  },
+  {
+   "sectionIndex": 6,
+   "textHref": "OEBPS/Text/section002.html",
+   "fragment": "p002-s65",
+   "audioHref": "OEBPS/Audio/track002.mp4",
+   "clipBeginMs": 557900,
+   "clipEndMs": 566880
+  },
+  {
+   "sectionIndex": 6,
+   "textHref": "OEBPS/Text/section002.html",
+   "fragment": "p002-s66",
+   "audioHref": "OEBPS/Audio/track002.mp4",
+   "clipBeginMs": 566880,
+   "clipEndMs": 572320
+  },
+  {
+   "sectionIndex": 6,
+   "textHref": "OEBPS/Text/section002.html",
+   "fragment": "p002-s67",
+   "audioHref": "OEBPS/Audio/track002.mp4",
+   "clipBeginMs": 572320,
+   "clipEndMs": 578100
+  },
+  {
+   "sectionIndex": 6,
+   "textHref": "OEBPS/Text/section002.html",
+   "fragment": "p002-s68",
+   "audioHref": "OEBPS/Audio/track002.mp4",
+   "clipBeginMs": 578100,
+   "clipEndMs": 579520
+  },
+  {
+   "sectionIndex": 6,
+   "textHref": "OEBPS/Text/section002.html",
+   "fragment": "p002-s69",
+   "audioHref": "OEBPS/Audio/track002.mp4",
+   "clipBeginMs": 579520,
+   "clipEndMs": 582940
+  },
+  {
+   "sectionIndex": 6,
+   "textHref": "OEBPS/Text/section002.html",
+   "fragment": "p002-s70",
+   "audioHref": "OEBPS/Audio/track002.mp4",
+   "clipBeginMs": 582940,
+   "clipEndMs": 590040
+  },
+  {
+   "sectionIndex": 6,
+   "textHref": "OEBPS/Text/section002.html",
+   "fragment": "p002-s71",
+   "audioHref": "OEBPS/Audio/track002.mp4",
+   "clipBeginMs": 590040,
+   "clipEndMs": 599040
+  },
+  {
+   "sectionIndex": 6,
+   "textHref": "OEBPS/Text/section002.html",
+   "fragment": "p002-s72",
+   "audioHref": "OEBPS/Audio/track002.mp4",
+   "clipBeginMs": 599040,
+   "clipEndMs": 604000
+  },
+  {
+   "sectionIndex": 6,
+   "textHref": "OEBPS/Text/section002.html",
+   "fragment": "p002-s73",
+   "audioHref": "OEBPS/Audio/track002.mp4",
+   "clipBeginMs": 604000,
+   "clipEndMs": 607660
+  },
+  {
+   "sectionIndex": 6,
+   "textHref": "OEBPS/Text/section002.html",
+   "fragment": "p002-s74",
+   "audioHref": "OEBPS/Audio/track002.mp4",
+   "clipBeginMs": 607660,
+   "clipEndMs": 621020
+  },
+  {
+   "sectionIndex": 6,
+   "textHref": "OEBPS/Text/section002.html",
+   "fragment": "p002-s75",
+   "audioHref": "OEBPS/Audio/track002.mp4",
+   "clipBeginMs": 621020,
+   "clipEndMs": 628620
+  },
+  {
+   "sectionIndex": 6,
+   "textHref": "OEBPS/Text/section002.html",
+   "fragment": "p002-s76",
+   "audioHref": "OEBPS/Audio/track002.mp4",
+   "clipBeginMs": 628620,
+   "clipEndMs": 643280
+  },
+  {
+   "sectionIndex": 6,
+   "textHref": "OEBPS/Text/section002.html",
+   "fragment": "p002-s77",
+   "audioHref": "OEBPS/Audio/track002.mp4",
+   "clipBeginMs": 643280,
+   "clipEndMs": 655680
+  },
+  {
+   "sectionIndex": 6,
+   "textHref": "OEBPS/Text/section002.html",
+   "fragment": "p002-s78",
+   "audioHref": "OEBPS/Audio/track002.mp4",
+   "clipBeginMs": 655680,
+   "clipEndMs": 657960
+  },
+  {
+   "sectionIndex": 6,
+   "textHref": "OEBPS/Text/section002.html",
+   "fragment": "p002-s79",
+   "audioHref": "OEBPS/Audio/track002.mp4",
+   "clipBeginMs": 657960,
+   "clipEndMs": 663240
+  },
+  {
+   "sectionIndex": 6,
+   "textHref": "OEBPS/Text/section002.html",
+   "fragment": "p002-s80",
+   "audioHref": "OEBPS/Audio/track002.mp4",
+   "clipBeginMs": 663240,
+   "clipEndMs": 665920
+  },
+  {
+   "sectionIndex": 6,
+   "textHref": "OEBPS/Text/section002.html",
+   "fragment": "p002-s81",
+   "audioHref": "OEBPS/Audio/track002.mp4",
+   "clipBeginMs": 665920,
+   "clipEndMs": 670180
+  },
+  {
+   "sectionIndex": 6,
+   "textHref": "OEBPS/Text/section002.html",
+   "fragment": "p002-s82",
+   "audioHref": "OEBPS/Audio/track002.mp4",
+   "clipBeginMs": 670180,
+   "clipEndMs": 683180
+  },
+  {
+   "sectionIndex": 6,
+   "textHref": "OEBPS/Text/section002.html",
+   "fragment": "p002-s83",
+   "audioHref": "OEBPS/Audio/track002.mp4",
+   "clipBeginMs": 683180,
+   "clipEndMs": 684740
+  },
+  {
+   "sectionIndex": 6,
+   "textHref": "OEBPS/Text/section002.html",
+   "fragment": "p002-s84",
+   "audioHref": "OEBPS/Audio/track002.mp4",
+   "clipBeginMs": 684740,
+   "clipEndMs": 688580
+  },
+  {
+   "sectionIndex": 6,
+   "textHref": "OEBPS/Text/section002.html",
+   "fragment": "p002-s85",
+   "audioHref": "OEBPS/Audio/track002.mp4",
+   "clipBeginMs": 688580,
+   "clipEndMs": 690540
+  },
+  {
+   "sectionIndex": 6,
+   "textHref": "OEBPS/Text/section002.html",
+   "fragment": "p002-s86",
+   "audioHref": "OEBPS/Audio/track002.mp4",
+   "clipBeginMs": 690540,
+   "clipEndMs": 692960
+  },
+  {
+   "sectionIndex": 6,
+   "textHref": "OEBPS/Text/section002.html",
+   "fragment": "p002-s87",
+   "audioHref": "OEBPS/Audio/track002.mp4",
+   "clipBeginMs": 692960,
+   "clipEndMs": 697840
+  },
+  {
+   "sectionIndex": 6,
+   "textHref": "OEBPS/Text/section002.html",
+   "fragment": "p002-s88",
+   "audioHref": "OEBPS/Audio/track002.mp4",
+   "clipBeginMs": 697840,
+   "clipEndMs": 711360
+  },
+  {
+   "sectionIndex": 6,
+   "textHref": "OEBPS/Text/section002.html",
+   "fragment": "p002-s89",
+   "audioHref": "OEBPS/Audio/track002.mp4",
+   "clipBeginMs": 711360,
+   "clipEndMs": 720040
+  },
+  {
+   "sectionIndex": 6,
+   "textHref": "OEBPS/Text/section002.html",
+   "fragment": "p002-s90",
+   "audioHref": "OEBPS/Audio/track002.mp4",
+   "clipBeginMs": 720040,
+   "clipEndMs": 729820
+  },
+  {
+   "sectionIndex": 6,
+   "textHref": "OEBPS/Text/section002.html",
+   "fragment": "p002-s91",
+   "audioHref": "OEBPS/Audio/track002.mp4",
+   "clipBeginMs": 729820,
+   "clipEndMs": 747680
+  },
+  {
+   "sectionIndex": 6,
+   "textHref": "OEBPS/Text/section002.html",
+   "fragment": "p002-s92",
+   "audioHref": "OEBPS/Audio/track002.mp4",
+   "clipBeginMs": 747680,
+   "clipEndMs": 751140
+  },
+  {
+   "sectionIndex": 6,
+   "textHref": "OEBPS/Text/section002.html",
+   "fragment": "p002-s93",
+   "audioHref": "OEBPS/Audio/track002.mp4",
+   "clipBeginMs": 751140,
+   "clipEndMs": 770780
+  },
+  {
+   "sectionIndex": 6,
+   "textHref": "OEBPS/Text/section002.html",
+   "fragment": "p002-s94",
+   "audioHref": "OEBPS/Audio/track002.mp4",
+   "clipBeginMs": 770780,
+   "clipEndMs": 774260
+  },
+  {
+   "sectionIndex": 6,
+   "textHref": "OEBPS/Text/section002.html",
+   "fragment": "p002-s95",
+   "audioHref": "OEBPS/Audio/track002.mp4",
+   "clipBeginMs": 774260,
+   "clipEndMs": 782680
+  },
+  {
+   "sectionIndex": 6,
+   "textHref": "OEBPS/Text/section002.html",
+   "fragment": "p002-s96",
+   "audioHref": "OEBPS/Audio/track002.mp4",
+   "clipBeginMs": 782680,
+   "clipEndMs": 803560
+  },
+  {
+   "sectionIndex": 6,
+   "textHref": "OEBPS/Text/section002.html",
+   "fragment": "p002-s97",
+   "audioHref": "OEBPS/Audio/track002.mp4",
+   "clipBeginMs": 803560,
+   "clipEndMs": 813100
+  },
+  {
+   "sectionIndex": 6,
+   "textHref": "OEBPS/Text/section002.html",
+   "fragment": "p002-s98",
+   "audioHref": "OEBPS/Audio/track002.mp4",
+   "clipBeginMs": 813100,
+   "clipEndMs": 833840
+  },
+  {
+   "sectionIndex": 6,
+   "textHref": "OEBPS/Text/section002.html",
+   "fragment": "p002-s99",
+   "audioHref": "OEBPS/Audio/track002.mp4",
+   "clipBeginMs": 833840,
+   "clipEndMs": 845400
+  },
+  {
+   "sectionIndex": 6,
+   "textHref": "OEBPS/Text/section002.html",
+   "fragment": "p002-s100",
+   "audioHref": "OEBPS/Audio/track002.mp4",
+   "clipBeginMs": 845400,
+   "clipEndMs": 856800
+  },
+  {
+   "sectionIndex": 6,
+   "textHref": "OEBPS/Text/section002.html",
+   "fragment": "p002-s101",
+   "audioHref": "OEBPS/Audio/track002.mp4",
+   "clipBeginMs": 856800,
+   "clipEndMs": 867540
+  },
+  {
+   "sectionIndex": 6,
+   "textHref": "OEBPS/Text/section002.html",
+   "fragment": "p002-s102",
+   "audioHref": "OEBPS/Audio/track002.mp4",
+   "clipBeginMs": 867540,
+   "clipEndMs": 877880
+  },
+  {
+   "sectionIndex": 6,
+   "textHref": "OEBPS/Text/section002.html",
+   "fragment": "p002-s103",
+   "audioHref": "OEBPS/Audio/track002.mp4",
+   "clipBeginMs": 877880,
+   "clipEndMs": 885920
+  },
+  {
+   "sectionIndex": 6,
+   "textHref": "OEBPS/Text/section002.html",
+   "fragment": "p002-s104",
+   "audioHref": "OEBPS/Audio/track002.mp4",
+   "clipBeginMs": 885920,
+   "clipEndMs": 892440
+  },
+  {
+   "sectionIndex": 6,
+   "textHref": "OEBPS/Text/section002.html",
+   "fragment": "p002-s105",
+   "audioHref": "OEBPS/Audio/track002.mp4",
+   "clipBeginMs": 892440,
+   "clipEndMs": 899900
+  },
+  {
+   "sectionIndex": 6,
+   "textHref": "OEBPS/Text/section002.html",
+   "fragment": "p002-s106",
+   "audioHref": "OEBPS/Audio/track002.mp4",
+   "clipBeginMs": 899900,
+   "clipEndMs": 905500
+  },
+  {
+   "sectionIndex": 6,
+   "textHref": "OEBPS/Text/section002.html",
+   "fragment": "p002-s107",
+   "audioHref": "OEBPS/Audio/track002.mp4",
+   "clipBeginMs": 905500,
+   "clipEndMs": 910960
+  },
+  {
+   "sectionIndex": 6,
+   "textHref": "OEBPS/Text/section002.html",
+   "fragment": "p002-s108",
+   "audioHref": "OEBPS/Audio/track002.mp4",
+   "clipBeginMs": 910960,
+   "clipEndMs": 926160
+  },
+  {
+   "sectionIndex": 6,
+   "textHref": "OEBPS/Text/section002.html",
+   "fragment": "p002-s109",
+   "audioHref": "OEBPS/Audio/track002.mp4",
+   "clipBeginMs": 926160,
+   "clipEndMs": 938900
+  },
+  {
+   "sectionIndex": 6,
+   "textHref": "OEBPS/Text/section002.html",
+   "fragment": "p002-s110",
+   "audioHref": "OEBPS/Audio/track002.mp4",
+   "clipBeginMs": 938900,
+   "clipEndMs": 943980
+  },
+  {
+   "sectionIndex": 6,
+   "textHref": "OEBPS/Text/section002.html",
+   "fragment": "p002-s111",
+   "audioHref": "OEBPS/Audio/track002.mp4",
+   "clipBeginMs": 943980,
+   "clipEndMs": 952240
+  },
+  {
+   "sectionIndex": 6,
+   "textHref": "OEBPS/Text/section002.html",
+   "fragment": "p002-s112",
+   "audioHref": "OEBPS/Audio/track002.mp4",
+   "clipBeginMs": 952240,
+   "clipEndMs": 960980
+  },
+  {
+   "sectionIndex": 6,
+   "textHref": "OEBPS/Text/section002.html",
+   "fragment": "p002-s113",
+   "audioHref": "OEBPS/Audio/track002.mp4",
+   "clipBeginMs": 960980,
+   "clipEndMs": 975280
+  },
+  {
+   "sectionIndex": 6,
+   "textHref": "OEBPS/Text/section002.html",
+   "fragment": "p002-s114",
+   "audioHref": "OEBPS/Audio/track002.mp4",
+   "clipBeginMs": 975280,
+   "clipEndMs": 984420
+  },
+  {
+   "sectionIndex": 6,
+   "textHref": "OEBPS/Text/section002.html",
+   "fragment": "p002-s115",
+   "audioHref": "OEBPS/Audio/track002.mp4",
+   "clipBeginMs": 984420,
+   "clipEndMs": 997040
+  },
+  {
+   "sectionIndex": 6,
+   "textHref": "OEBPS/Text/section002.html",
+   "fragment": "p002-s116",
+   "audioHref": "OEBPS/Audio/track002.mp4",
+   "clipBeginMs": 997040,
+   "clipEndMs": 1000020
+  },
+  {
+   "sectionIndex": 6,
+   "textHref": "OEBPS/Text/section002.html",
+   "fragment": "p002-s117",
+   "audioHref": "OEBPS/Audio/track002.mp4",
+   "clipBeginMs": 1000020,
+   "clipEndMs": 1007900
+  },
+  {
+   "sectionIndex": 6,
+   "textHref": "OEBPS/Text/section002.html",
+   "fragment": "p002-s118",
+   "audioHref": "OEBPS/Audio/track002.mp4",
+   "clipBeginMs": 1007900,
+   "clipEndMs": 1024360
+  },
+  {
+   "sectionIndex": 6,
+   "textHref": "OEBPS/Text/section002.html",
+   "fragment": "p002-s119",
+   "audioHref": "OEBPS/Audio/track002.mp4",
+   "clipBeginMs": 1024360,
+   "clipEndMs": 1026000
+  },
+  {
+   "sectionIndex": 6,
+   "textHref": "OEBPS/Text/section002.html",
+   "fragment": "p002-s120",
+   "audioHref": "OEBPS/Audio/track002.mp4",
+   "clipBeginMs": 1026000,
+   "clipEndMs": 1031800
+  },
+  {
+   "sectionIndex": 6,
+   "textHref": "OEBPS/Text/section002.html",
+   "fragment": "p002-s121",
+   "audioHref": "OEBPS/Audio/track002.mp4",
+   "clipBeginMs": 1031800,
+   "clipEndMs": 1034140
+  },
+  {
+   "sectionIndex": 6,
+   "textHref": "OEBPS/Text/section002.html",
+   "fragment": "p002-s122",
+   "audioHref": "OEBPS/Audio/track002.mp4",
+   "clipBeginMs": 1034140,
+   "clipEndMs": 1036560
+  },
+  {
+   "sectionIndex": 6,
+   "textHref": "OEBPS/Text/section002.html",
+   "fragment": "p002-s123",
+   "audioHref": "OEBPS/Audio/track002.mp4",
+   "clipBeginMs": 1036560,
+   "clipEndMs": 1039960
+  },
+  {
+   "sectionIndex": 6,
+   "textHref": "OEBPS/Text/section002.html",
+   "fragment": "p002-s124",
+   "audioHref": "OEBPS/Audio/track002.mp4",
+   "clipBeginMs": 1039960,
+   "clipEndMs": 1046680
+  },
+  {
+   "sectionIndex": 6,
+   "textHref": "OEBPS/Text/section002.html",
+   "fragment": "p002-s125",
+   "audioHref": "OEBPS/Audio/track002.mp4",
+   "clipBeginMs": 1046680,
+   "clipEndMs": 1049620
+  },
+  {
+   "sectionIndex": 6,
+   "textHref": "OEBPS/Text/section002.html",
+   "fragment": "p002-s126",
+   "audioHref": "OEBPS/Audio/track002.mp4",
+   "clipBeginMs": 1049620,
+   "clipEndMs": 1055720
+  },
+  {
+   "sectionIndex": 6,
+   "textHref": "OEBPS/Text/section002.html",
+   "fragment": "p002-s127",
+   "audioHref": "OEBPS/Audio/track002.mp4",
+   "clipBeginMs": 1055720,
+   "clipEndMs": 1062860
+  },
+  {
+   "sectionIndex": 6,
+   "textHref": "OEBPS/Text/section002.html",
+   "fragment": "p002-s128",
+   "audioHref": "OEBPS/Audio/track002.mp4",
+   "clipBeginMs": 1062860,
+   "clipEndMs": 1065600
+  },
+  {
+   "sectionIndex": 6,
+   "textHref": "OEBPS/Text/section002.html",
+   "fragment": "p002-s129",
+   "audioHref": "OEBPS/Audio/track002.mp4",
+   "clipBeginMs": 1065600,
+   "clipEndMs": 1067740
+  },
+  {
+   "sectionIndex": 6,
+   "textHref": "OEBPS/Text/section002.html",
+   "fragment": "p002-s130",
+   "audioHref": "OEBPS/Audio/track002.mp4",
+   "clipBeginMs": 1067740,
+   "clipEndMs": 1071220
+  },
+  {
+   "sectionIndex": 6,
+   "textHref": "OEBPS/Text/section002.html",
+   "fragment": "p002-s131",
+   "audioHref": "OEBPS/Audio/track002.mp4",
+   "clipBeginMs": 1071220,
+   "clipEndMs": 1074800
+  },
+  {
+   "sectionIndex": 6,
+   "textHref": "OEBPS/Text/section002.html",
+   "fragment": "p002-s132",
+   "audioHref": "OEBPS/Audio/track002.mp4",
+   "clipBeginMs": 1074800,
+   "clipEndMs": 1078920
+  },
+  {
+   "sectionIndex": 6,
+   "textHref": "OEBPS/Text/section002.html",
+   "fragment": "p002-s133",
+   "audioHref": "OEBPS/Audio/track002.mp4",
+   "clipBeginMs": 1078920,
+   "clipEndMs": 1083120
+  },
+  {
+   "sectionIndex": 6,
+   "textHref": "OEBPS/Text/section002.html",
+   "fragment": "p002-s134",
+   "audioHref": "OEBPS/Audio/track002.mp4",
+   "clipBeginMs": 1083120,
+   "clipEndMs": 1085120
+  },
+  {
+   "sectionIndex": 6,
+   "textHref": "OEBPS/Text/section002.html",
+   "fragment": "p002-s135",
+   "audioHref": "OEBPS/Audio/track002.mp4",
+   "clipBeginMs": 1085120,
+   "clipEndMs": 1087080
+  },
+  {
+   "sectionIndex": 6,
+   "textHref": "OEBPS/Text/section002.html",
+   "fragment": "p002-s136",
+   "audioHref": "OEBPS/Audio/track002.mp4",
+   "clipBeginMs": 1087080,
+   "clipEndMs": 1090500
+  },
+  {
+   "sectionIndex": 6,
+   "textHref": "OEBPS/Text/section002.html",
+   "fragment": "p002-s137",
+   "audioHref": "OEBPS/Audio/track002.mp4",
+   "clipBeginMs": 1090500,
+   "clipEndMs": 1096080
+  },
+  {
+   "sectionIndex": 6,
+   "textHref": "OEBPS/Text/section002.html",
+   "fragment": "p002-s138",
+   "audioHref": "OEBPS/Audio/track002.mp4",
+   "clipBeginMs": 1096080,
+   "clipEndMs": 1101920
+  },
+  {
+   "sectionIndex": 6,
+   "textHref": "OEBPS/Text/section002.html",
+   "fragment": "p002-s139",
+   "audioHref": "OEBPS/Audio/track002.mp4",
+   "clipBeginMs": 1101920,
+   "clipEndMs": 1107020
+  },
+  {
+   "sectionIndex": 6,
+   "textHref": "OEBPS/Text/section002.html",
+   "fragment": "p002-s140",
+   "audioHref": "OEBPS/Audio/track002.mp4",
+   "clipBeginMs": 1107020,
+   "clipEndMs": 1113100
+  },
+  {
+   "sectionIndex": 6,
+   "textHref": "OEBPS/Text/section002.html",
+   "fragment": "p002-s140",
+   "audioHref": "OEBPS/Audio/track002.mp4",
+   "clipBeginMs": 1113100,
+   "clipEndMs": 1121020
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s0",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 0,
+   "clipEndMs": 2420
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s1",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 2420,
+   "clipEndMs": 6000
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s2",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 6000,
+   "clipEndMs": 13220
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s3",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 13220,
+   "clipEndMs": 17340
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s4",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 17340,
+   "clipEndMs": 20760
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s5",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 20760,
+   "clipEndMs": 26540
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s6",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 26540,
+   "clipEndMs": 33540
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s7",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 33540,
+   "clipEndMs": 36860
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s8",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 36860,
+   "clipEndMs": 41180
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s9",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 41180,
+   "clipEndMs": 48900
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s10",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 48900,
+   "clipEndMs": 55000
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s11",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 55000,
+   "clipEndMs": 58400
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s12",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 58400,
+   "clipEndMs": 65080
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s13",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 65080,
+   "clipEndMs": 69160
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s14",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 69160,
+   "clipEndMs": 71700
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s15",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 71700,
+   "clipEndMs": 75740
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s16",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 75740,
+   "clipEndMs": 77180
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s17",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 77180,
+   "clipEndMs": 81520
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s18",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 81520,
+   "clipEndMs": 83520
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s19",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 83520,
+   "clipEndMs": 86860
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s20",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 86860,
+   "clipEndMs": 92440
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s21",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 92440,
+   "clipEndMs": 100840
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s22",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 100840,
+   "clipEndMs": 106080
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s23",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 106080,
+   "clipEndMs": 108940
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s24",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 108940,
+   "clipEndMs": 116600
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s25",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 116600,
+   "clipEndMs": 121480
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s26",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 121480,
+   "clipEndMs": 124020
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s27",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 124020,
+   "clipEndMs": 132900
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s28",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 132900,
+   "clipEndMs": 150600
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s29",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 150600,
+   "clipEndMs": 159020
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s30",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 159020,
+   "clipEndMs": 163480
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s31",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 163480,
+   "clipEndMs": 167240
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s32",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 167240,
+   "clipEndMs": 168140
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s33",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 168140,
+   "clipEndMs": 169020
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s34",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 169020,
+   "clipEndMs": 174500
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s35",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 174500,
+   "clipEndMs": 176980
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s36",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 176980,
+   "clipEndMs": 182860
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s37",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 182860,
+   "clipEndMs": 188600
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s38",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 188600,
+   "clipEndMs": 193140
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s39",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 193140,
+   "clipEndMs": 201400
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s40",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 201400,
+   "clipEndMs": 203000
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s41",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 203000,
+   "clipEndMs": 204860
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s42",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 204860,
+   "clipEndMs": 206400
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s43",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 206400,
+   "clipEndMs": 214120
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s44",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 214120,
+   "clipEndMs": 215540
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s45",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 215540,
+   "clipEndMs": 222360
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s46",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 222360,
+   "clipEndMs": 228160
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s47",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 228160,
+   "clipEndMs": 228660
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s48",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 228660,
+   "clipEndMs": 230420
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s49",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 230420,
+   "clipEndMs": 232740
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s50",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 232740,
+   "clipEndMs": 233320
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s51",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 233320,
+   "clipEndMs": 235840
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s52",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 235840,
+   "clipEndMs": 236820
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s53",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 236820,
+   "clipEndMs": 242660
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s54",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 242660,
+   "clipEndMs": 252580
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s55",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 252580,
+   "clipEndMs": 254140
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s56",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 254140,
+   "clipEndMs": 255040
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s57",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 255040,
+   "clipEndMs": 256660
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s58",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 256660,
+   "clipEndMs": 258620
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s59",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 258620,
+   "clipEndMs": 259620
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s60",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 259620,
+   "clipEndMs": 261740
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s61",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 261740,
+   "clipEndMs": 262680
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s62",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 262680,
+   "clipEndMs": 269160
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s63",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 269160,
+   "clipEndMs": 270900
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s64",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 270900,
+   "clipEndMs": 273380
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s65",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 273380,
+   "clipEndMs": 274760
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s66",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 274760,
+   "clipEndMs": 277660
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s67",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 277660,
+   "clipEndMs": 278840
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s68",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 278840,
+   "clipEndMs": 281560
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s69",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 281560,
+   "clipEndMs": 283460
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s70",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 283460,
+   "clipEndMs": 285220
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s71",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 285220,
+   "clipEndMs": 288560
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s72",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 288560,
+   "clipEndMs": 292980
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s73",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 292980,
+   "clipEndMs": 295580
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s74",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 295580,
+   "clipEndMs": 298920
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s75",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 298920,
+   "clipEndMs": 301780
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s76",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 301780,
+   "clipEndMs": 305120
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s77",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 305120,
+   "clipEndMs": 310280
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s78",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 310280,
+   "clipEndMs": 312600
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s79",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 312600,
+   "clipEndMs": 316300
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s80",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 316300,
+   "clipEndMs": 319140
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s81",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 319140,
+   "clipEndMs": 319800
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s82",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 319800,
+   "clipEndMs": 324760
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s83",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 324760,
+   "clipEndMs": 328840
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s84",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 328840,
+   "clipEndMs": 330000
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s85",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 330000,
+   "clipEndMs": 332920
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s86",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 332920,
+   "clipEndMs": 337140
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s87",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 337140,
+   "clipEndMs": 338300
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s88",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 338300,
+   "clipEndMs": 340800
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s89",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 340800,
+   "clipEndMs": 342300
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s90",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 342300,
+   "clipEndMs": 344880
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s91",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 344880,
+   "clipEndMs": 347920
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s92",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 347920,
+   "clipEndMs": 351620
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s93",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 351620,
+   "clipEndMs": 353480
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s94",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 353480,
+   "clipEndMs": 356120
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s95",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 356120,
+   "clipEndMs": 358760
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s96",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 358760,
+   "clipEndMs": 366080
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s97",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 366080,
+   "clipEndMs": 374040
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s98",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 374040,
+   "clipEndMs": 384580
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s99",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 384580,
+   "clipEndMs": 391200
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s100",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 391200,
+   "clipEndMs": 396580
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s101",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 396580,
+   "clipEndMs": 401200
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s102",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 401200,
+   "clipEndMs": 406440
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s103",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 406440,
+   "clipEndMs": 412740
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s104",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 412740,
+   "clipEndMs": 416940
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s105",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 416940,
+   "clipEndMs": 425540
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s106",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 425540,
+   "clipEndMs": 428600
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s107",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 428600,
+   "clipEndMs": 437080
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s108",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 437080,
+   "clipEndMs": 439220
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s109",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 439220,
+   "clipEndMs": 441220
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s110",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 441220,
+   "clipEndMs": 443640
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s111",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 443640,
+   "clipEndMs": 448280
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s112",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 448280,
+   "clipEndMs": 452800
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s113",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 452800,
+   "clipEndMs": 455500
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s114",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 455500,
+   "clipEndMs": 458440
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s115",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 458440,
+   "clipEndMs": 463420
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s116",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 463420,
+   "clipEndMs": 469360
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s117",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 469360,
+   "clipEndMs": 475820
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s118",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 475820,
+   "clipEndMs": 480220
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s119",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 480220,
+   "clipEndMs": 486060
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s120",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 486060,
+   "clipEndMs": 488540
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s121",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 488540,
+   "clipEndMs": 491180
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s122",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 491180,
+   "clipEndMs": 499280
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s123",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 499280,
+   "clipEndMs": 505020
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s124",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 505020,
+   "clipEndMs": 513080
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s125",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 513080,
+   "clipEndMs": 519880
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s126",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 519880,
+   "clipEndMs": 524140
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s127",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 524140,
+   "clipEndMs": 532360
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s128",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 532360,
+   "clipEndMs": 550780
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s129",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 550780,
+   "clipEndMs": 557860
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s130",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 557860,
+   "clipEndMs": 572520
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s131",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 572520,
+   "clipEndMs": 575580
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s132",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 575580,
+   "clipEndMs": 579360
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s133",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 579360,
+   "clipEndMs": 582460
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s134",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 582460,
+   "clipEndMs": 592120
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s135",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 592120,
+   "clipEndMs": 598380
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s136",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 598380,
+   "clipEndMs": 602940
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s137",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 602940,
+   "clipEndMs": 609140
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s138",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 609140,
+   "clipEndMs": 613700
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s139",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 613700,
+   "clipEndMs": 619560
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s140",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 619560,
+   "clipEndMs": 622820
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s141",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 622820,
+   "clipEndMs": 627440
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s142",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 627440,
+   "clipEndMs": 632420
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s143",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 632420,
+   "clipEndMs": 638360
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s144",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 638360,
+   "clipEndMs": 651960
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s145",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 651960,
+   "clipEndMs": 668360
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s146",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 668360,
+   "clipEndMs": 676160
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s147",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 676160,
+   "clipEndMs": 683120
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s148",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 683120,
+   "clipEndMs": 688260
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s149",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 688260,
+   "clipEndMs": 691380
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s150",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 691380,
+   "clipEndMs": 698140
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s151",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 698140,
+   "clipEndMs": 702120
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s152",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 702120,
+   "clipEndMs": 710020
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s153",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 710020,
+   "clipEndMs": 714800
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s154",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 714800,
+   "clipEndMs": 718800
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s155",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 718800,
+   "clipEndMs": 731560
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s156",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 731560,
+   "clipEndMs": 736020
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s157",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 736020,
+   "clipEndMs": 739160
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s158",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 739160,
+   "clipEndMs": 743680
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s159",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 743680,
+   "clipEndMs": 756240
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s160",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 756240,
+   "clipEndMs": 762260
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s161",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 762260,
+   "clipEndMs": 773300
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s162",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 773300,
+   "clipEndMs": 782600
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s163",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 782600,
+   "clipEndMs": 792380
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s164",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 792380,
+   "clipEndMs": 800520
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s165",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 800520,
+   "clipEndMs": 812420
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s166",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 812420,
+   "clipEndMs": 823760
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s167",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 823760,
+   "clipEndMs": 829600
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s168",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 829600,
+   "clipEndMs": 836360
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s169",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 836360,
+   "clipEndMs": 843920
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s170",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 843920,
+   "clipEndMs": 853700
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s171",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 853700,
+   "clipEndMs": 859140
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s172",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 859140,
+   "clipEndMs": 861960
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s173",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 861960,
+   "clipEndMs": 865300
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s174",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 865300,
+   "clipEndMs": 867440
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s175",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 867440,
+   "clipEndMs": 884120
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s176",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 884120,
+   "clipEndMs": 886780
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s177",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 886780,
+   "clipEndMs": 889420
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s178",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 889420,
+   "clipEndMs": 894380
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s179",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 894380,
+   "clipEndMs": 903340
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s180",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 903340,
+   "clipEndMs": 906440
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s181",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 906440,
+   "clipEndMs": 914340
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s182",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 914340,
+   "clipEndMs": 917780
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s183",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 917780,
+   "clipEndMs": 918840
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s184",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 918840,
+   "clipEndMs": 920320
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s185",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 920320,
+   "clipEndMs": 924400
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s186",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 924400,
+   "clipEndMs": 932840
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s187",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 932840,
+   "clipEndMs": 936340
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s188",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 936340,
+   "clipEndMs": 942300
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s189",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 942300,
+   "clipEndMs": 947120
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s190",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 947120,
+   "clipEndMs": 951400
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s191",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 951400,
+   "clipEndMs": 954800
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s192",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 954800,
+   "clipEndMs": 958780
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s193",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 958780,
+   "clipEndMs": 961500
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s194",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 961500,
+   "clipEndMs": 972420
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s195",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 972420,
+   "clipEndMs": 975580
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s196",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 975580,
+   "clipEndMs": 976000
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s197",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 976000,
+   "clipEndMs": 978880
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s198",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 978880,
+   "clipEndMs": 983020
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s199",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 983020,
+   "clipEndMs": 986940
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s200",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 986940,
+   "clipEndMs": 989200
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s201",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 989200,
+   "clipEndMs": 991440
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s202",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 991440,
+   "clipEndMs": 992600
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s203",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 992600,
+   "clipEndMs": 1000080
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s204",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1000080,
+   "clipEndMs": 1002100
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s205",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1002100,
+   "clipEndMs": 1003680
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s206",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1003680,
+   "clipEndMs": 1005700
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s207",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1005700,
+   "clipEndMs": 1016440
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s208",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1016440,
+   "clipEndMs": 1018340
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s209",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1018340,
+   "clipEndMs": 1023100
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s210",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1023100,
+   "clipEndMs": 1026860
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s211",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1026860,
+   "clipEndMs": 1028940
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s212",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1028940,
+   "clipEndMs": 1029780
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s213",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1029780,
+   "clipEndMs": 1036380
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s214",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1036380,
+   "clipEndMs": 1038980
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s215",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1038980,
+   "clipEndMs": 1039860
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s216",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1039860,
+   "clipEndMs": 1041320
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s217",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1041320,
+   "clipEndMs": 1047080
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s218",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1047080,
+   "clipEndMs": 1052300
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s219",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1052300,
+   "clipEndMs": 1059260
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s220",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1059260,
+   "clipEndMs": 1071060
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s221",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1071060,
+   "clipEndMs": 1073260
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s222",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1073260,
+   "clipEndMs": 1080780
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s223",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1080780,
+   "clipEndMs": 1083800
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s224",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1083800,
+   "clipEndMs": 1088440
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s225",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1088440,
+   "clipEndMs": 1103380
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s226",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1103380,
+   "clipEndMs": 1111180
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s227",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1111180,
+   "clipEndMs": 1116760
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s228",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1116760,
+   "clipEndMs": 1120240
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s229",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1120240,
+   "clipEndMs": 1129780
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s230",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1129780,
+   "clipEndMs": 1139820
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s231",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1139820,
+   "clipEndMs": 1149120
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s232",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1149120,
+   "clipEndMs": 1151160
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s233",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1151160,
+   "clipEndMs": 1152540
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s234",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1152540,
+   "clipEndMs": 1157100
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s235",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1157100,
+   "clipEndMs": 1159020
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s236",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1159020,
+   "clipEndMs": 1160300
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s237",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1160300,
+   "clipEndMs": 1163760
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s238",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1163760,
+   "clipEndMs": 1166940
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s239",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1166940,
+   "clipEndMs": 1169540
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s240",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1169540,
+   "clipEndMs": 1176900
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s241",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1176900,
+   "clipEndMs": 1187100
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s242",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1187100,
+   "clipEndMs": 1192260
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s243",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1192260,
+   "clipEndMs": 1193640
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s244",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1193640,
+   "clipEndMs": 1194080
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s245",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1194080,
+   "clipEndMs": 1202400
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s246",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1202400,
+   "clipEndMs": 1211340
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s247",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1211340,
+   "clipEndMs": 1213160
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s248",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1213160,
+   "clipEndMs": 1214080
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s249",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1214080,
+   "clipEndMs": 1215760
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s250",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1215760,
+   "clipEndMs": 1217300
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s251",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1217300,
+   "clipEndMs": 1222320
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s252",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1222320,
+   "clipEndMs": 1223480
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s253",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1223480,
+   "clipEndMs": 1224700
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s254",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1224700,
+   "clipEndMs": 1225340
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s255",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1225340,
+   "clipEndMs": 1228840
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s256",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1228840,
+   "clipEndMs": 1231300
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s257",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1231300,
+   "clipEndMs": 1234160
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s258",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1234160,
+   "clipEndMs": 1243240
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s259",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1243240,
+   "clipEndMs": 1244640
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s260",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1244640,
+   "clipEndMs": 1248960
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s261",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1248960,
+   "clipEndMs": 1251260
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s262",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1251260,
+   "clipEndMs": 1253240
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s263",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1253240,
+   "clipEndMs": 1255280
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s264",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1255280,
+   "clipEndMs": 1260000
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s265",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1260000,
+   "clipEndMs": 1265380
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s266",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1265380,
+   "clipEndMs": 1271140
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s267",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1271140,
+   "clipEndMs": 1274040
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s268",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1274040,
+   "clipEndMs": 1276840
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s269",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1276840,
+   "clipEndMs": 1285380
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s270",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1285380,
+   "clipEndMs": 1288680
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s271",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1288680,
+   "clipEndMs": 1290800
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s272",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1290800,
+   "clipEndMs": 1296500
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s273",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1296500,
+   "clipEndMs": 1298740
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s274",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1298740,
+   "clipEndMs": 1303460
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s275",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1303460,
+   "clipEndMs": 1310680
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s276",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1310680,
+   "clipEndMs": 1314560
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s277",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1314560,
+   "clipEndMs": 1320140
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s278",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1320140,
+   "clipEndMs": 1324200
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s279",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1324200,
+   "clipEndMs": 1325620
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s280",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1325620,
+   "clipEndMs": 1329880
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s281",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1329880,
+   "clipEndMs": 1336340
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s282",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1336340,
+   "clipEndMs": 1344160
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s283",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1344160,
+   "clipEndMs": 1348120
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s284",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1348120,
+   "clipEndMs": 1352820
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s285",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1352820,
+   "clipEndMs": 1357120
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s286",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1357120,
+   "clipEndMs": 1361460
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s287",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1361460,
+   "clipEndMs": 1366620
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s288",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1366620,
+   "clipEndMs": 1369440
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s289",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1369440,
+   "clipEndMs": 1374460
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s290",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1374460,
+   "clipEndMs": 1377040
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s291",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1377040,
+   "clipEndMs": 1383960
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s292",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1383960,
+   "clipEndMs": 1393160
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s293",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1393160,
+   "clipEndMs": 1399820
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s294",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1399820,
+   "clipEndMs": 1401580
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s295",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1401580,
+   "clipEndMs": 1403480
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s296",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1403480,
+   "clipEndMs": 1405720
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s297",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1405720,
+   "clipEndMs": 1408680
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s298",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1408680,
+   "clipEndMs": 1412380
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s299",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1412380,
+   "clipEndMs": 1415240
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s300",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1415240,
+   "clipEndMs": 1417620
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s301",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1417620,
+   "clipEndMs": 1424460
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s302",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1424460,
+   "clipEndMs": 1427360
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s303",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1427360,
+   "clipEndMs": 1430400
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s304",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1430400,
+   "clipEndMs": 1433200
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s305",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1433200,
+   "clipEndMs": 1434140
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s306",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1434140,
+   "clipEndMs": 1438360
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s307",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1438360,
+   "clipEndMs": 1441260
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s308",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1441260,
+   "clipEndMs": 1444980
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s309",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1444980,
+   "clipEndMs": 1447620
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s310",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1447620,
+   "clipEndMs": 1449700
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s311",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1449700,
+   "clipEndMs": 1453220
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s312",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1453220,
+   "clipEndMs": 1456040
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s313",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1456040,
+   "clipEndMs": 1459020
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s314",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1459020,
+   "clipEndMs": 1464440
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s315",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1464440,
+   "clipEndMs": 1474560
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s316",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1474560,
+   "clipEndMs": 1480120
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s317",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1480120,
+   "clipEndMs": 1486860
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s318",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1486860,
+   "clipEndMs": 1489640
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s319",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1489640,
+   "clipEndMs": 1497240
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s320",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1497240,
+   "clipEndMs": 1503620
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s321",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1503620,
+   "clipEndMs": 1507400
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s322",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1507400,
+   "clipEndMs": 1509860
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s323",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1509860,
+   "clipEndMs": 1511360
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s324",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1511360,
+   "clipEndMs": 1513940
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s325",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1513940,
+   "clipEndMs": 1515440
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s326",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1515440,
+   "clipEndMs": 1517840
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s327",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1517840,
+   "clipEndMs": 1521220
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s328",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1521220,
+   "clipEndMs": 1525380
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s329",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1525380,
+   "clipEndMs": 1541960
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s330",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1541960,
+   "clipEndMs": 1544340
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s331",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1544340,
+   "clipEndMs": 1547140
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s332",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1547140,
+   "clipEndMs": 1552180
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s333",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1552180,
+   "clipEndMs": 1554180
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s334",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1554180,
+   "clipEndMs": 1554880
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s335",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1554880,
+   "clipEndMs": 1556440
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s336",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1556440,
+   "clipEndMs": 1559400
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s337",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1559400,
+   "clipEndMs": 1560800
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s338",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1560800,
+   "clipEndMs": 1564640
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s339",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1564640,
+   "clipEndMs": 1566000
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s340",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1566000,
+   "clipEndMs": 1567280
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s341",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1567280,
+   "clipEndMs": 1570120
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s342",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1570120,
+   "clipEndMs": 1580200
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s343",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1580200,
+   "clipEndMs": 1581520
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s344",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1581520,
+   "clipEndMs": 1582820
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s345",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1582820,
+   "clipEndMs": 1585000
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s346",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1585000,
+   "clipEndMs": 1587560
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s347",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1587560,
+   "clipEndMs": 1588500
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s348",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1588500,
+   "clipEndMs": 1589720
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s349",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1589720,
+   "clipEndMs": 1591020
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s350",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1591020,
+   "clipEndMs": 1592280
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s351",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1592280,
+   "clipEndMs": 1593460
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s352",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1593460,
+   "clipEndMs": 1600120
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s353",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1600120,
+   "clipEndMs": 1603740
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s354",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1603740,
+   "clipEndMs": 1606880
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s355",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1606880,
+   "clipEndMs": 1612300
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s356",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1612300,
+   "clipEndMs": 1613080
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s357",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1613080,
+   "clipEndMs": 1616880
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s358",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1616880,
+   "clipEndMs": 1618820
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s359",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1618820,
+   "clipEndMs": 1622140
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s360",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1622140,
+   "clipEndMs": 1622960
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s361",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1622960,
+   "clipEndMs": 1625160
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s362",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1625160,
+   "clipEndMs": 1627400
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s363",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1627400,
+   "clipEndMs": 1631740
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s364",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1631740,
+   "clipEndMs": 1633040
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s365",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1633040,
+   "clipEndMs": 1634500
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s366",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1634500,
+   "clipEndMs": 1640600
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s367",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1640600,
+   "clipEndMs": 1642720
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s368",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1642720,
+   "clipEndMs": 1646220
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s369",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1646220,
+   "clipEndMs": 1650320
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s370",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1650320,
+   "clipEndMs": 1652060
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s371",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1652060,
+   "clipEndMs": 1653420
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s372",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1653420,
+   "clipEndMs": 1656200
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s373",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1656200,
+   "clipEndMs": 1657960
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s374",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1657960,
+   "clipEndMs": 1658900
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s375",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1658900,
+   "clipEndMs": 1661280
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s376",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1661280,
+   "clipEndMs": 1664040
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s377",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1664040,
+   "clipEndMs": 1667900
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s378",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1667900,
+   "clipEndMs": 1670860
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s379",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1670860,
+   "clipEndMs": 1673040
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s380",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1673040,
+   "clipEndMs": 1679780
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s381",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1679780,
+   "clipEndMs": 1683160
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s382",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1683160,
+   "clipEndMs": 1685400
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s383",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1685400,
+   "clipEndMs": 1687780
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s384",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1687780,
+   "clipEndMs": 1691640
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s385",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1691640,
+   "clipEndMs": 1691820
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s386",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1691820,
+   "clipEndMs": 1692620
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s387",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1692620,
+   "clipEndMs": 1695460
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s388",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1695460,
+   "clipEndMs": 1697900
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s389",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1697900,
+   "clipEndMs": 1699700
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s390",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1699700,
+   "clipEndMs": 1703860
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s391",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1703860,
+   "clipEndMs": 1704760
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s392",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1704760,
+   "clipEndMs": 1706520
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s393",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1706520,
+   "clipEndMs": 1709220
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s394",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1709220,
+   "clipEndMs": 1711380
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s395",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1711380,
+   "clipEndMs": 1713820
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s396",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1713820,
+   "clipEndMs": 1718780
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s397",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1718780,
+   "clipEndMs": 1720800
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s398",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1720800,
+   "clipEndMs": 1723800
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s399",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1723800,
+   "clipEndMs": 1728720
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s400",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1728720,
+   "clipEndMs": 1750060
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s401",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1750060,
+   "clipEndMs": 1755940
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s402",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1755940,
+   "clipEndMs": 1761940
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s403",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1761940,
+   "clipEndMs": 1764260
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s404",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1764260,
+   "clipEndMs": 1767180
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s405",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1767180,
+   "clipEndMs": 1769140
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s406",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1769140,
+   "clipEndMs": 1773280
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s407",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1773280,
+   "clipEndMs": 1778340
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s408",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1778340,
+   "clipEndMs": 1779140
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s409",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1779140,
+   "clipEndMs": 1781920
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s410",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1781920,
+   "clipEndMs": 1784620
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s411",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1784620,
+   "clipEndMs": 1786600
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s412",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1786600,
+   "clipEndMs": 1789800
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s413",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1789800,
+   "clipEndMs": 1791560
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s414",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1791560,
+   "clipEndMs": 1793580
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s415",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1793580,
+   "clipEndMs": 1796040
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s416",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1796040,
+   "clipEndMs": 1799900
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s417",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1799900,
+   "clipEndMs": 1802120
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s418",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1802120,
+   "clipEndMs": 1805100
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s419",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1805100,
+   "clipEndMs": 1807580
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s420",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1807580,
+   "clipEndMs": 1810680
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s421",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1810680,
+   "clipEndMs": 1813040
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s422",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1813040,
+   "clipEndMs": 1818520
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s423",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1818520,
+   "clipEndMs": 1826160
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s424",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1826160,
+   "clipEndMs": 1828280
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s425",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1828280,
+   "clipEndMs": 1831200
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s426",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1831200,
+   "clipEndMs": 1833520
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s427",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1833520,
+   "clipEndMs": 1840880
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s428",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1840880,
+   "clipEndMs": 1843980
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s429",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1843980,
+   "clipEndMs": 1847340
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s430",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1847340,
+   "clipEndMs": 1848900
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s431",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1848900,
+   "clipEndMs": 1850860
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s432",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1850860,
+   "clipEndMs": 1856020
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s433",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1856020,
+   "clipEndMs": 1867000
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s434",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1867000,
+   "clipEndMs": 1870000
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s435",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1870000,
+   "clipEndMs": 1872340
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s436",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1872340,
+   "clipEndMs": 1880660
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s437",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1880660,
+   "clipEndMs": 1882060
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s438",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1882060,
+   "clipEndMs": 1885800
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s439",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1885800,
+   "clipEndMs": 1887340
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s440",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1887340,
+   "clipEndMs": 1892620
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s441",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1892620,
+   "clipEndMs": 1898920
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s442",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1898920,
+   "clipEndMs": 1905120
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s443",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1905120,
+   "clipEndMs": 1910960
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s444",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1910960,
+   "clipEndMs": 1918080
+  },
+  {
+   "sectionIndex": 41,
+   "textHref": "OEBPS/Text/section003.html",
+   "fragment": "p003-s444",
+   "audioHref": "OEBPS/Audio/track003.mp4",
+   "clipBeginMs": 1918080,
+   "clipEndMs": 1929640
+  }
+ ],
+ "sections": [
+  {
+   "index": 5,
+   "href": "OEBPS/Text/section001.html",
+   "label": "Chapter 1"
+  },
+  {
+   "index": 6,
+   "href": "OEBPS/Text/section002.html",
+   "label": "Chapter 2"
+  },
+  {
+   "index": 41,
+   "href": "OEBPS/Text/section003.html",
+   "label": "Chapter 3"
+  }
+ ],
+ "resources": [
+  {
+   "href": "OEBPS/Audio/track001.mp4",
+   "mediaType": "audio/mp4",
+   "sizeBytes": 42274000
+  },
+  {
+   "href": "OEBPS/Audio/track002.mp4",
+   "mediaType": "audio/mp4",
+   "sizeBytes": 27148619
+  },
+  {
+   "href": "OEBPS/Audio/track004.mp4",
+   "mediaType": "audio/mp4",
+   "sizeBytes": 29904977
+  },
+  {
+   "href": "OEBPS/Audio/track005.mp4",
+   "mediaType": "audio/mp4",
+   "sizeBytes": 29259136
+  },
+  {
+   "href": "OEBPS/Audio/track003.mp4",
+   "mediaType": "audio/mp4",
+   "sizeBytes": 46797680
+  }
+ ]
+}

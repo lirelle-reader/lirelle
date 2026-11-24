@@ -1,0 +1,57 @@
+{
+ "items": [
+  {
+   "bookCount": 67,
+   "coverBookId": 116,
+   "description": "Description 1",
+   "id": 273,
+   "imageUrl": "/api/v1/authors/273/thumbnail?t=1",
+   "lastAddedAt": "2017-08-20T10:05:17.785Z",
+   "name": "Author 7",
+   "sortName": "Sort name 1"
+  },
+  {
+   "bookCount": 53,
+   "coverBookId": 275,
+   "description": "Description 2",
+   "id": 274,
+   "imageUrl": "/api/v1/authors/274/thumbnail?t=1",
+   "lastAddedAt": "2017-06-20T13:57:00.898Z",
+   "name": "Author 11",
+   "sortName": "Sort name 2"
+  },
+  {
+   "bookCount": 52,
+   "coverBookId": 241,
+   "description": "Description 3",
+   "id": 276,
+   "imageUrl": "/api/v1/authors/276/thumbnail?t=1",
+   "lastAddedAt": "2017-07-21T06:10:21.048Z",
+   "name": "Author 12",
+   "sortName": "Sort name 3"
+  },
+  {
+   "bookCount": 42,
+   "coverBookId": 278,
+   "description": "Description 4",
+   "id": 277,
+   "imageUrl": "/api/v1/authors/277/thumbnail?t=1",
+   "lastAddedAt": "2025-05-28T12:40:17.536Z",
+   "name": "Author 13",
+   "sortName": "Sort name 4"
+  },
+  {
+   "bookCount": 33,
+   "coverBookId": 214,
+   "description": "Description 5",
+   "id": 279,
+   "imageUrl": "/api/v1/authors/279/thumbnail?t=1",
+   "lastAddedAt": "2018-09-04T09:22:34.871Z",
+   "name": "Author 10",
+   "sortName": "Sort name 5"
+  }
+ ],
+ "page": 0,
+ "size": 5,
+ "total": 119
+}

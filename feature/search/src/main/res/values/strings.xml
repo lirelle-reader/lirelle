@@ -1,0 +1,22 @@
+<resources>
+    <string name="search_hint">Title, author or series</string>
+    <string name="search_clear">Clear the search</string>
+    <string name="search_recent">Recent searches</string>
+    <string name="search_recent_clear">Clear</string>
+    <string name="search_recent_clear_description">Clear the recent searches</string>
+    <string name="search_recent_remove">Remove %1$s from the recent searches</string>
+    <string name="search_genres">Genres</string>
+    <string name="search_genre_description">%1$s, %2$s</string>
+    <string name="search_books">Books</string>
+    <string name="search_series">Series</string>
+    <string name="search_authors">Authors</string>
+    <string name="search_see_all_count">See all (%1$d)</string>
+    <string name="search_nothing">Nothing matches “%1$s”.</string>
+    <string name="search_series_title">Series: “%1$s”</string>
+    <string name="search_authors_title">Authors: “%1$s”</string>
+    <string name="search_books_title">Books: “%1$s”</string>
+    <plurals name="search_book_count">
+        <item quantity="one">%1$d book</item>
+        <item quantity="other">%1$d books</item>
+    </plurals>
+</resources>

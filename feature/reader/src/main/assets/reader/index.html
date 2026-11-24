@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self' blob: 'unsafe-inline'; img-src 'self' blob: data:; font-src 'self' blob: data:; media-src blob:; connect-src 'self'; frame-src blob:; object-src 'none'; base-uri 'none'; form-action 'none'">
+<title>Lirelle reader</title>
+<style>
+html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background: #ffffff;
+    -webkit-user-select: none;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+    overscroll-behavior: none;
+}
+foliate-view {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+/* The note panel (notes.js): a sheet at the bottom of the screen over a dimmed page. It is laid
+   out, unseen, while its note loads, so that the note's view has a size to measure. */
+#note-layer {
+    position: fixed;
+    inset: 0;
+    z-index: 10;
+}
+/* Closed, it stays laid out: a view let go of may still be finishing its work in it. */
+#note-layer[hidden] {
+    display: block;
+    visibility: hidden;
+    pointer-events: none;
+}
+#note-layer[data-state="loading"] {
+    visibility: hidden;
+    pointer-events: none;
+}
+#note-scrim {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+}
+#note-panel {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    box-sizing: border-box;
+    width: min(100%, 720px);
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    max-height: 45vh;
+    overflow: hidden;
+    border-radius: 16px 16px 0 0;
+    box-shadow: 0 -2px 12px rgba(0, 0, 0, 0.3);
+    background: #ffffff;
+    color: #000000;
+    outline: none;
+    font-family: system-ui, sans-serif;
+    font-size: 16px;
+}
+#note-grip {
+    flex: none;
+    width: 32px;
+    height: 4px;
+    margin: 8px auto 0;
+    border-radius: 2px;
+    background: currentColor;
+    opacity: 0.35;
+}
+#note-head {
+    flex: none;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 4px 8px 0 20px;
+    min-height: 48px;
+}
+#note-title {
+    flex: 1 1 auto;
+    min-width: 0;
+    margin: 0;
+    font-size: 1em;
+    font-weight: 600;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+#note-go {
+    flex: 0 1 auto;
+    min-width: 0;
+    max-width: 60%;
+    min-height: 48px;
+    padding: 0 12px;
+    border: 0;
+    background: transparent;
+    color: inherit;
+    font: inherit;
+    font-weight: 600;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    -webkit-user-select: none;
+    user-select: none;
+}
+/* The note's room: under the header and at the bottom with the note view's own margin, the same on
+   either side as the title's. Its height, padding included, is set by notes.js. */
+#note-body {
+    flex: 0 1 auto;
+    min-height: 0;
+    box-sizing: border-box;
+    padding: 8px 20px 12px;
+}
+#note-body foliate-view {
+    height: 100%;
+}
+/* A view let go of, disposed once the engine is done with it. */
+#note-body foliate-view[data-lirelle-retired] {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    height: 0;
+    visibility: hidden;
+    pointer-events: none;
+}
+</style>
+</head>
+<body>
+<foliate-view id="view"></foliate-view>
+<div id="note-layer" hidden>
+<div id="note-scrim"></div>
+<div id="note-panel" role="dialog" aria-modal="true" aria-labelledby="note-title" tabindex="-1">
+<div id="note-grip" aria-hidden="true"></div>
+<div id="note-head">
+<h2 id="note-title"></h2>
+<button id="note-go" type="button"></button>
+</div>
+<div id="note-body"></div>
+</div>
+</div>
+<script type="module" src="reader.js"></script>
+</body>
+</html>

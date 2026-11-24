@@ -1,0 +1,428 @@
+{
+ "books": [
+  {
+   "addedAt": "2026-11-11T13:25:52.033Z",
+   "authors": [
+    "Author 1"
+   ],
+   "coverAspectRatio": "2/3",
+   "coverVersion": "ebook:2026-11-11T13:26:04.186Z:2026-11-11T13:31:59.146Z",
+   "files": [
+    {
+     "format": "epub",
+     "id": 3,
+     "mediaOverlay": {
+      "available": true,
+      "durationSeconds": 51752.30000000005
+     },
+     "role": "primary",
+     "sizeBytes": 415560339
+    },
+    {
+     "format": "epub",
+     "id": 4,
+     "mediaOverlay": {
+      "available": false,
+      "durationSeconds": null
+     },
+     "role": "content",
+     "sizeBytes": 1278329
+    },
+    {
+     "format": "mp3",
+     "id": 5,
+     "role": "content",
+     "sizeBytes": 27807684
+    },
+    {
+     "format": "mp3",
+     "id": 6,
+     "role": "content",
+     "sizeBytes": 14711768
+    },
+    {
+     "format": "mp3",
+     "id": 7,
+     "role": "content",
+     "sizeBytes": 10167925
+    },
+    {
+     "format": "mp3",
+     "id": 8,
+     "role": "content",
+     "sizeBytes": 9543285
+    },
+    {
+     "format": "mp3",
+     "id": 9,
+     "role": "content",
+     "sizeBytes": 5525235
+    },
+    {
+     "format": "mp3",
+     "id": 10,
+     "role": "content",
+     "sizeBytes": 2893137
+    },
+    {
+     "format": "mp3",
+     "id": 11,
+     "role": "content",
+     "sizeBytes": 5541117
+    },
+    {
+     "format": "mp3",
+     "id": 12,
+     "role": "content",
+     "sizeBytes": 11650844
+    },
+    {
+     "format": "mp3",
+     "id": 13,
+     "role": "content",
+     "sizeBytes": 34296499
+    },
+    {
+     "format": "mp3",
+     "id": 14,
+     "role": "content",
+     "sizeBytes": 19160736
+    },
+    {
+     "format": "mp3",
+     "id": 15,
+     "role": "content",
+     "sizeBytes": 15587603
+    },
+    {
+     "format": "mp3",
+     "id": 16,
+     "role": "content",
+     "sizeBytes": 1979270
+    },
+    {
+     "format": "mp3",
+     "id": 17,
+     "role": "content",
+     "sizeBytes": 20005222
+    },
+    {
+     "format": "mp3",
+     "id": 18,
+     "role": "content",
+     "sizeBytes": 3112357
+    },
+    {
+     "format": "mp3",
+     "id": 19,
+     "role": "content",
+     "sizeBytes": 12731688
+    },
+    {
+     "format": "mp3",
+     "id": 20,
+     "role": "content",
+     "sizeBytes": 11472586
+    },
+    {
+     "format": "mp3",
+     "id": 21,
+     "role": "content",
+     "sizeBytes": 1894842
+    },
+    {
+     "format": "mp3",
+     "id": 22,
+     "role": "content",
+     "sizeBytes": 16521115
+    },
+    {
+     "format": "mp3",
+     "id": 23,
+     "role": "content",
+     "sizeBytes": 8060158
+    },
+    {
+     "format": "mp3",
+     "id": 24,
+     "role": "content",
+     "sizeBytes": 6568880
+    },
+    {
+     "format": "mp3",
+     "id": 25,
+     "role": "content",
+     "sizeBytes": 3429379
+    },
+    {
+     "format": "mp3",
+     "id": 26,
+     "role": "content",
+     "sizeBytes": 10345350
+    },
+    {
+     "format": "mp3",
+     "id": 27,
+     "role": "content",
+     "sizeBytes": 8862640
+    },
+    {
+     "format": "mp3",
+     "id": 28,
+     "role": "content",
+     "sizeBytes": 8636733
+    },
+    {
+     "format": "mp3",
+     "id": 29,
+     "role": "content",
+     "sizeBytes": 11716047
+    },
+    {
+     "format": "mp3",
+     "id": 30,
+     "role": "content",
+     "sizeBytes": 9204948
+    },
+    {
+     "format": "mp3",
+     "id": 31,
+     "role": "content",
+     "sizeBytes": 13305337
+    },
+    {
+     "format": "mp3",
+     "id": 32,
+     "role": "content",
+     "sizeBytes": 2809337
+    },
+    {
+     "format": "mp3",
+     "id": 33,
+     "role": "content",
+     "sizeBytes": 4270313
+    },
+    {
+     "format": "mp3",
+     "id": 34,
+     "role": "content",
+     "sizeBytes": 5116262
+    },
+    {
+     "format": "mp3",
+     "id": 35,
+     "role": "content",
+     "sizeBytes": 12460850
+    },
+    {
+     "format": "mp3",
+     "id": 36,
+     "role": "content",
+     "sizeBytes": 10315257
+    },
+    {
+     "format": "mp3",
+     "id": 37,
+     "role": "content",
+     "sizeBytes": 11828687
+    },
+    {
+     "format": "mp3",
+     "id": 38,
+     "role": "content",
+     "sizeBytes": 22493960
+    },
+    {
+     "format": "mp3",
+     "id": 39,
+     "role": "content",
+     "sizeBytes": 14515747
+    },
+    {
+     "format": "mp3",
+     "id": 40,
+     "role": "content",
+     "sizeBytes": 23501660
+    },
+    {
+     "format": "mp3",
+     "id": 41,
+     "role": "content",
+     "sizeBytes": 21813941
+    },
+    {
+     "format": "mp3",
+     "id": 42,
+     "role": "content",
+     "sizeBytes": 5732543
+    },
+    {
+     "format": "mp3",
+     "id": 43,
+     "role": "content",
+     "sizeBytes": 1427355
+    },
+    {
+     "format": "mp3",
+     "id": 44,
+     "role": "content",
+     "sizeBytes": 3153108
+    }
+   ],
+   "genres": [
+    "Genre 1",
+    "Genre 2"
+   ],
+   "hasCover": true,
+   "id": 1,
+   "isbn13": "9780000000002",
+   "language": "fr",
+   "libraryId": 2,
+   "narrators": [
+    "Narrator 1"
+   ],
+   "pageCount": 389,
+   "publishedDate": "1993-04-02",
+   "publishedYear": 1993,
+   "publisher": "Publisher 1",
+   "rating": null,
+   "readStatus": null,
+   "readingProgress": null,
+   "seriesId": null,
+   "seriesIndex": null,
+   "seriesMemberships": [],
+   "seriesName": null,
+   "status": "present",
+   "subtitle": null,
+   "title": "Book 1",
+   "updatedAt": "2026-11-11T13:40:59.636Z"
+  },
+  {
+   "addedAt": "2026-11-10T11:46:46.069Z",
+   "authors": [
+    "Author 2"
+   ],
+   "coverAspectRatio": "2/3",
+   "coverVersion": "ebook:2026-11-10T13:06:08.462Z:2026-11-10T11:46:46.387Z",
+   "files": [
+    {
+     "format": "epub",
+     "id": 47,
+     "mediaOverlay": {
+      "available": true,
+      "durationSeconds": 38191.460000000065
+     },
+     "role": "primary",
+     "sizeBytes": 607385246
+    },
+    {
+     "format": "epub",
+     "id": 48,
+     "mediaOverlay": {
+      "available": false,
+      "durationSeconds": null
+     },
+     "role": "content",
+     "sizeBytes": 890705
+    },
+    {
+     "format": "m4b",
+     "id": 49,
+     "role": "content",
+     "sizeBytes": 606399910
+    }
+   ],
+   "genres": [
+    "Genre 3",
+    "Genre 4"
+   ],
+   "hasCover": true,
+   "id": 45,
+   "isbn13": "9780000000002",
+   "language": "fr",
+   "libraryId": 2,
+   "narrators": [
+    "Narrator 2"
+   ],
+   "pageCount": 356,
+   "publishedDate": "2021-04-28",
+   "publishedYear": 2021,
+   "publisher": "Publisher 2",
+   "rating": null,
+   "readStatus": null,
+   "readingProgress": null,
+   "seriesId": 46,
+   "seriesIndex": "1",
+   "seriesMemberships": [],
+   "seriesName": "Series 1",
+   "status": "present",
+   "subtitle": null,
+   "title": "Book 2",
+   "updatedAt": "2026-11-11T12:17:23.474Z"
+  },
+  {
+   "addedAt": "2026-11-10T11:46:45.428Z",
+   "authors": [
+    "Author 2"
+   ],
+   "coverAspectRatio": "2/3",
+   "coverVersion": "ebook:2026-11-10T13:09:05.304Z:2026-11-10T11:46:45.745Z",
+   "files": [
+    {
+     "format": "epub",
+     "id": 51,
+     "mediaOverlay": {
+      "available": true,
+      "durationSeconds": 39033.67999999996
+     },
+     "role": "primary",
+     "sizeBytes": 620343406
+    },
+    {
+     "format": "epub",
+     "id": 52,
+     "mediaOverlay": {
+      "available": false,
+      "durationSeconds": null
+     },
+     "role": "content",
+     "sizeBytes": 538310
+    },
+    {
+     "format": "m4b",
+     "id": 53,
+     "role": "content",
+     "sizeBytes": 619836290
+    }
+   ],
+   "genres": [
+    "Genre 3",
+    "Genre 4"
+   ],
+   "hasCover": true,
+   "id": 50,
+   "isbn13": "9780000000002",
+   "language": "fr",
+   "libraryId": 2,
+   "narrators": [
+    "Narrator 2"
+   ],
+   "pageCount": 384,
+   "publishedDate": "2022-04-27",
+   "publishedYear": 2022,
+   "publisher": "Publisher 2",
+   "rating": null,
+   "readStatus": null,
+   "readingProgress": null,
+   "seriesId": 46,
+   "seriesIndex": "2",
+   "seriesMemberships": [],
+   "seriesName": "Series 1",
+   "status": "present",
+   "subtitle": null,
+   "title": "Book 3",
+   "updatedAt": "2026-11-11T12:17:23.084Z"
+  }
+ ],
+ "total": 6
+}

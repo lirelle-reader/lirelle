@@ -1,0 +1,199 @@
+{
+ "bookTotal": 33,
+ "items": [
+  {
+   "addedAt": "2017-08-20T10:05:17.785Z",
+   "authors": [
+    "Author 7"
+   ],
+   "coverAspectRatio": "2/3",
+   "coverVersion": "ebook:2026-08-28T19:26:18.476Z:-",
+   "files": [
+    {
+     "format": "epub",
+     "id": 239,
+     "mediaOverlay": {
+      "available": false,
+      "durationSeconds": null
+     },
+     "role": "primary",
+     "sizeBytes": 454660
+    },
+    {
+     "format": "jpg",
+     "id": 240,
+     "role": "cover",
+     "sizeBytes": 162632
+    }
+   ],
+   "genres": [
+    "Genre 3",
+    "Genre 9"
+   ],
+   "hasCover": true,
+   "id": 116,
+   "isbn13": "9780000000002",
+   "language": "fr",
+   "libraryId": 2,
+   "narrators": [],
+   "pageCount": 218,
+   "publishedDate": null,
+   "publishedYear": 1939,
+   "publisher": "Publisher 7",
+   "rating": null,
+   "readStatus": null,
+   "readingProgress": null,
+   "seriesId": 103,
+   "seriesIndex": "15",
+   "seriesMemberships": [
+    {
+     "displayOrder": 0,
+     "expectedBookCount": 44,
+     "seriesId": 103,
+     "seriesIndex": "15",
+     "seriesName": "Series 5"
+    },
+    {
+     "displayOrder": 1,
+     "expectedBookCount": 5,
+     "seriesId": 237,
+     "seriesIndex": "3",
+     "seriesName": "Series 10"
+    },
+    {
+     "displayOrder": 2,
+     "expectedBookCount": 4,
+     "seriesId": 238,
+     "seriesIndex": "2",
+     "seriesName": "Series 11"
+    }
+   ],
+   "seriesName": "Series 5",
+   "status": "present",
+   "subtitle": null,
+   "title": "Book 21",
+   "updatedAt": "2026-08-28T19:28:17.181Z"
+  },
+  {
+   "addedAt": "2017-08-20T10:05:17.732Z",
+   "authors": [
+    "Author 7"
+   ],
+   "coverAspectRatio": "2/3",
+   "coverVersion": "ebook:2026-08-28T19:25:29.132Z:-",
+   "files": [
+    {
+     "format": "epub",
+     "id": 225,
+     "mediaOverlay": {
+      "available": false,
+      "durationSeconds": null
+     },
+     "role": "primary",
+     "sizeBytes": 252550
+    },
+    {
+     "format": "jpg",
+     "id": 226,
+     "role": "cover",
+     "sizeBytes": 46979
+    }
+   ],
+   "genres": [
+    "Genre 3",
+    "Genre 9"
+   ],
+   "hasCover": true,
+   "id": 110,
+   "isbn13": null,
+   "language": "fr",
+   "libraryId": 2,
+   "narrators": [],
+   "pageCount": 250,
+   "publishedDate": "1936-01-07",
+   "publishedYear": 1936,
+   "publisher": "Publisher 7",
+   "rating": null,
+   "readStatus": null,
+   "readingProgress": null,
+   "seriesId": 103,
+   "seriesIndex": "8",
+   "seriesMemberships": [
+    {
+     "displayOrder": 0,
+     "expectedBookCount": 44,
+     "seriesId": 103,
+     "seriesIndex": "8",
+     "seriesName": "Series 5"
+    }
+   ],
+   "seriesName": "Series 5",
+   "status": "present",
+   "subtitle": null,
+   "title": "Book 15",
+   "updatedAt": "2026-08-28T19:28:17.152Z"
+  },
+  {
+   "addedAt": "2017-08-20T10:05:17.706Z",
+   "authors": [
+    "Author 7"
+   ],
+   "coverAspectRatio": "2/3",
+   "coverVersion": "ebook:2026-08-28T19:25:36.153Z:-",
+   "files": [
+    {
+     "format": "epub",
+     "id": 251,
+     "mediaOverlay": {
+      "available": false,
+      "durationSeconds": null
+     },
+     "role": "primary",
+     "sizeBytes": 357352
+    },
+    {
+     "format": "jpg",
+     "id": 252,
+     "role": "cover",
+     "sizeBytes": 172448
+    }
+   ],
+   "genres": [
+    "Genre 3",
+    "Genre 9"
+   ],
+   "hasCover": true,
+   "id": 124,
+   "isbn13": "9780000000002",
+   "language": "fr",
+   "libraryId": 2,
+   "narrators": [],
+   "pageCount": 218,
+   "publishedDate": null,
+   "publishedYear": 1947,
+   "publisher": "Publisher 7",
+   "rating": null,
+   "readStatus": null,
+   "readingProgress": null,
+   "seriesId": 103,
+   "seriesIndex": "24",
+   "seriesMemberships": [
+    {
+     "displayOrder": 0,
+     "expectedBookCount": 44,
+     "seriesId": 103,
+     "seriesIndex": "24",
+     "seriesName": "Series 5"
+    }
+   ],
+   "seriesName": "Series 5",
+   "status": "present",
+   "subtitle": null,
+   "title": "Book 29",
+   "updatedAt": "2026-08-28T19:28:17.166Z"
+  }
+ ],
+ "page": 0,
+ "size": 3,
+ "total": 33
+}

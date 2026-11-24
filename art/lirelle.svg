@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="18 18 72 72" width="512" height="512">
+  <title>Lirelle</title>
+  <!-- The launcher icon (app/src/main/res/drawable/ic_launcher_foreground.xml) on its background colour: a book seen
+       from its edge, opened at a right angle; the cover draws an L, the pages fan out of its inner corner. -->
+  <rect x="18" y="18" width="72" height="72" fill="#1B2340"/>
+  <g transform="translate(-4.5,2) translate(58.5,52) scale(0.7) translate(-58.5,-52)" fill="none">
+    <path d="M39.5,73.5L64.2,65.5M39.5,73.5L73.5,48.8M39.5,73.5L52.4,55.7M39.5,73.5L51.2,37.4"
+        stroke="#F2B544" stroke-linecap="round" stroke-width="4.6"/>
+    <path d="M36,27V77H81" stroke="#F6F2E9" stroke-linecap="round" stroke-linejoin="round" stroke-width="7"/>
+  </g>
+</svg>

@@ -1,0 +1,28 @@
+[
+ {
+  "bookId": 2,
+  "cfi": "epubcfi(/6/8!/4/14/1:0)",
+  "chapterId": null,
+  "clientId": "00000000-0000-4000-8000-000000000001",
+  "createdAt": "2026-11-03T22:10:00.000Z",
+  "id": 51,
+  "note": "Kobo note: check the map in the appendix.",
+  "origin": "kobo",
+  "positionSeconds": null,
+  "title": "The Harbour",
+  "updatedAt": "2026-11-03T22:10:00.000Z"
+ },
+ {
+  "bookId": 2,
+  "cfi": null,
+  "chapterId": null,
+  "clientId": "00000000-0000-4000-8000-000000000002",
+  "createdAt": "2026-11-04T06:30:00.000Z",
+  "id": 52,
+  "note": null,
+  "origin": "koreader",
+  "positionSeconds": null,
+  "title": "p. 112",
+  "updatedAt": "2026-11-04T06:30:00.000Z"
+ }
+]

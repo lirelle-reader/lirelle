@@ -1,0 +1,83 @@
+{
+ "addedAt": "2017-08-20T10:05:17.403Z",
+ "audioMetadata": null,
+ "authors": [
+  {
+   "id": 273,
+   "name": "Author 7",
+   "sortName": "Sort name 1"
+  }
+ ],
+ "collections": [],
+ "coverAspectRatio": "2/3",
+ "coverMedia": [
+  "ebook"
+ ],
+ "coverVersion": "ebook:2026-08-28T19:25:40.037Z:-",
+ "covers": {
+  "audio": null,
+  "ebook": {
+   "height": 730,
+   "source": "extracted",
+   "updatedAt": "2026-08-28T19:25:40.037Z",
+   "width": 491
+  }
+ },
+ "description": "Description 7",
+ "files": [
+  {
+   "createdAt": "2026-08-24T08:19:02.571Z",
+   "durationSeconds": null,
+   "format": "epub",
+   "id": 215,
+   "mediaOverlay": {
+    "available": false,
+    "durationSeconds": null
+   },
+   "role": "primary",
+   "sizeBytes": 358450
+  },
+  {
+   "createdAt": "2026-08-24T08:19:02.588Z",
+   "durationSeconds": null,
+   "format": "jpg",
+   "id": 216,
+   "mediaOverlay": null,
+   "role": "cover",
+   "sizeBytes": 84538
+  }
+ ],
+ "genres": [
+  "Genre 3",
+  "Genre 9"
+ ],
+ "id": 104,
+ "isbn10": null,
+ "isbn13": "9780000000002",
+ "language": "fr",
+ "libraryId": 2,
+ "libraryName": "Library 1",
+ "pageCount": 223,
+ "personalNote": null,
+ "publishedDate": null,
+ "publishedYear": 1932,
+ "publisher": "Publisher 7",
+ "rating": null,
+ "readStatus": null,
+ "seriesId": 103,
+ "seriesIndex": "1",
+ "seriesMemberships": [
+  {
+   "displayOrder": 0,
+   "expectedBookCount": 44,
+   "seriesId": 103,
+   "seriesIndex": "1",
+   "seriesName": "Series 5"
+  }
+ ],
+ "seriesName": "Series 5",
+ "status": "present",
+ "subtitle": null,
+ "title": "Book 9",
+ "updatedAt": "2026-08-28T19:28:17.422Z"
+}

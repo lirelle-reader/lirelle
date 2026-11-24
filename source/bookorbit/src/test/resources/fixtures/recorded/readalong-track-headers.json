@@ -1,0 +1,17 @@
+{
+ "full": {
+  "status": 200,
+  "content-type": "audio/mpeg",
+  "content-length": "1969096",
+  "accept-ranges": "bytes",
+  "cache-control": "private, max-age=3600"
+ },
+ "range": {
+  "status": 206,
+  "content-type": "audio/mpeg",
+  "content-length": "1000",
+  "content-range": "bytes 1000-1999/1969096",
+  "accept-ranges": "bytes",
+  "cache-control": "private, max-age=3600"
+ }
+}

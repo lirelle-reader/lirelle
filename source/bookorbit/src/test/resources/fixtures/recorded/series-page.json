@@ -1,0 +1,1036 @@
+{
+ "facets": {
+  "all": 65,
+  "complete": 17,
+  "hasGaps": 12,
+  "inProgress": 7,
+  "notStarted": 41
+ },
+ "items": [
+  {
+   "authors": [
+    "Author 7"
+   ],
+   "bookCount": 32,
+   "coverBookIds": [
+    104,
+    105,
+    106,
+    107,
+    108,
+    109,
+    110,
+    111,
+    112
+   ],
+   "expectedBookCount": 44,
+   "id": 103,
+   "lastAddedAt": "2017-08-20 10:05:17.785287+00",
+   "libraryNames": [
+    "Library 1"
+   ],
+   "name": "Series 5",
+   "nextBookId": 104,
+   "nextIndex": "1",
+   "nextTitle": "Book 9",
+   "ownedVolumeCount": 32,
+   "readCount": 0,
+   "readVolumeCount": 0,
+   "readingCount": 0,
+   "readingVolumeCount": 0,
+   "volumes": [
+    {
+     "bookId": 104,
+     "index": 1,
+     "status": "unread",
+     "title": "Book 9"
+    },
+    {
+     "bookId": 105,
+     "index": 2,
+     "status": "unread",
+     "title": "Book 10"
+    },
+    {
+     "bookId": 106,
+     "index": 3,
+     "status": "unread",
+     "title": "Book 11"
+    },
+    {
+     "bookId": null,
+     "index": 4,
+     "status": "missing",
+     "title": null
+    },
+    {
+     "bookId": 107,
+     "index": 5,
+     "status": "unread",
+     "title": "Book 12"
+    },
+    {
+     "bookId": 108,
+     "index": 6,
+     "status": "unread",
+     "title": "Book 13"
+    },
+    {
+     "bookId": 109,
+     "index": 7,
+     "status": "unread",
+     "title": "Book 14"
+    },
+    {
+     "bookId": 110,
+     "index": 8,
+     "status": "unread",
+     "title": "Book 15"
+    },
+    {
+     "bookId": 111,
+     "index": 9,
+     "status": "unread",
+     "title": "Book 16"
+    },
+    {
+     "bookId": 112,
+     "index": 10,
+     "status": "unread",
+     "title": "Book 17"
+    },
+    {
+     "bookId": 113,
+     "index": 11,
+     "status": "unread",
+     "title": "Book 18"
+    },
+    {
+     "bookId": null,
+     "index": 12,
+     "status": "missing",
+     "title": null
+    },
+    {
+     "bookId": 114,
+     "index": 13,
+     "status": "unread",
+     "title": "Book 19"
+    },
+    {
+     "bookId": 115,
+     "index": 14,
+     "status": "unread",
+     "title": "Book 20"
+    },
+    {
+     "bookId": 116,
+     "index": 15,
+     "status": "unread",
+     "title": "Book 21"
+    },
+    {
+     "bookId": 117,
+     "index": 16,
+     "status": "unread",
+     "title": "Book 22"
+    },
+    {
+     "bookId": 118,
+     "index": 17,
+     "status": "unread",
+     "title": "Book 23"
+    },
+    {
+     "bookId": 119,
+     "index": 18,
+     "status": "unread",
+     "title": "Book 24"
+    },
+    {
+     "bookId": 120,
+     "index": 19,
+     "status": "unread",
+     "title": "Book 25"
+    },
+    {
+     "bookId": 121,
+     "index": 20,
+     "status": "unread",
+     "title": "Book 26"
+    },
+    {
+     "bookId": null,
+     "index": 21,
+     "status": "missing",
+     "title": null
+    },
+    {
+     "bookId": 122,
+     "index": 22,
+     "status": "unread",
+     "title": "Book 27"
+    },
+    {
+     "bookId": 123,
+     "index": 23,
+     "status": "unread",
+     "title": "Book 28"
+    },
+    {
+     "bookId": 124,
+     "index": 24,
+     "status": "unread",
+     "title": "Book 29"
+    },
+    {
+     "bookId": null,
+     "index": 25,
+     "status": "missing",
+     "title": null
+    },
+    {
+     "bookId": null,
+     "index": 26,
+     "status": "missing",
+     "title": null
+    },
+    {
+     "bookId": null,
+     "index": 27,
+     "status": "missing",
+     "title": null
+    },
+    {
+     "bookId": 125,
+     "index": 28,
+     "status": "unread",
+     "title": "Book 30"
+    },
+    {
+     "bookId": null,
+     "index": 29,
+     "status": "missing",
+     "title": null
+    },
+    {
+     "bookId": null,
+     "index": 30,
+     "status": "missing",
+     "title": null
+    },
+    {
+     "bookId": null,
+     "index": 31,
+     "status": "missing",
+     "title": null
+    },
+    {
+     "bookId": 126,
+     "index": 32,
+     "status": "unread",
+     "title": "Book 31"
+    },
+    {
+     "bookId": 127,
+     "index": 33,
+     "status": "unread",
+     "title": "Book 32"
+    },
+    {
+     "bookId": 128,
+     "index": 34,
+     "status": "unread",
+     "title": "Book 33"
+    },
+    {
+     "bookId": 129,
+     "index": 35,
+     "status": "unread",
+     "title": "Book 34"
+    },
+    {
+     "bookId": 130,
+     "index": 36,
+     "status": "unread",
+     "title": "Book 35"
+    },
+    {
+     "bookId": null,
+     "index": 37,
+     "status": "missing",
+     "title": null
+    },
+    {
+     "bookId": null,
+     "index": 38,
+     "status": "missing",
+     "title": null
+    },
+    {
+     "bookId": 131,
+     "index": 39,
+     "status": "unread",
+     "title": "Book 36"
+    },
+    {
+     "bookId": 132,
+     "index": 40,
+     "status": "unread",
+     "title": "Book 37"
+    },
+    {
+     "bookId": 133,
+     "index": 41,
+     "status": "unread",
+     "title": "Book 38"
+    },
+    {
+     "bookId": null,
+     "index": 42,
+     "status": "missing",
+     "title": null
+    },
+    {
+     "bookId": 134,
+     "index": 43,
+     "status": "unread",
+     "title": "Book 39"
+    },
+    {
+     "bookId": 135,
+     "index": 44,
+     "status": "unread",
+     "title": "Book 40"
+    }
+   ]
+  },
+  {
+   "authors": [
+    "Author 8"
+   ],
+   "bookCount": 24,
+   "coverBookIds": [
+    137,
+    138,
+    139,
+    140,
+    141,
+    142,
+    143,
+    144,
+    145
+   ],
+   "expectedBookCount": 42,
+   "id": 136,
+   "lastAddedAt": "2017-06-24 10:24:23+00",
+   "libraryNames": [
+    "Library 1"
+   ],
+   "name": "Series 6",
+   "nextBookId": 137,
+   "nextIndex": "1",
+   "nextTitle": "Book 41",
+   "ownedVolumeCount": 24,
+   "readCount": 0,
+   "readVolumeCount": 0,
+   "readingCount": 0,
+   "readingVolumeCount": 0,
+   "volumes": [
+    {
+     "bookId": 137,
+     "index": 1,
+     "status": "unread",
+     "title": "Book 41"
+    },
+    {
+     "bookId": 138,
+     "index": 2,
+     "status": "unread",
+     "title": "Book 42"
+    },
+    {
+     "bookId": 139,
+     "index": 3,
+     "status": "unread",
+     "title": "Book 43"
+    },
+    {
+     "bookId": 140,
+     "index": 4,
+     "status": "unread",
+     "title": "Book 44"
+    },
+    {
+     "bookId": 141,
+     "index": 5,
+     "status": "unread",
+     "title": "Book 45"
+    },
+    {
+     "bookId": 142,
+     "index": 6,
+     "status": "unread",
+     "title": "Book 46"
+    },
+    {
+     "bookId": 143,
+     "index": 7,
+     "status": "unread",
+     "title": "Book 47"
+    },
+    {
+     "bookId": 144,
+     "index": 8,
+     "status": "unread",
+     "title": "Book 48"
+    },
+    {
+     "bookId": 145,
+     "index": 9,
+     "status": "unread",
+     "title": "Book 49"
+    },
+    {
+     "bookId": 146,
+     "index": 10,
+     "status": "unread",
+     "title": "Book 50"
+    },
+    {
+     "bookId": 147,
+     "index": 11,
+     "status": "unread",
+     "title": "Book 51"
+    },
+    {
+     "bookId": 148,
+     "index": 12,
+     "status": "unread",
+     "title": "Book 52"
+    },
+    {
+     "bookId": 149,
+     "index": 13,
+     "status": "unread",
+     "title": "Book 53"
+    },
+    {
+     "bookId": 150,
+     "index": 14,
+     "status": "unread",
+     "title": "Book 54"
+    },
+    {
+     "bookId": 151,
+     "index": 15,
+     "status": "unread",
+     "title": "Book 55"
+    },
+    {
+     "bookId": 152,
+     "index": 16,
+     "status": "unread",
+     "title": "Book 56"
+    },
+    {
+     "bookId": 153,
+     "index": 17,
+     "status": "unread",
+     "title": "Book 57"
+    },
+    {
+     "bookId": 154,
+     "index": 18,
+     "status": "unread",
+     "title": "Book 58"
+    },
+    {
+     "bookId": 155,
+     "index": 19,
+     "status": "unread",
+     "title": "Book 59"
+    },
+    {
+     "bookId": 156,
+     "index": 20,
+     "status": "unread",
+     "title": "Book 60"
+    },
+    {
+     "bookId": 157,
+     "index": 21,
+     "status": "unread",
+     "title": "Book 61"
+    },
+    {
+     "bookId": 158,
+     "index": 22,
+     "status": "unread",
+     "title": "Book 62"
+    },
+    {
+     "bookId": 159,
+     "index": 23,
+     "status": "unread",
+     "title": "Book 63"
+    },
+    {
+     "bookId": 160,
+     "index": 24,
+     "status": "unread",
+     "title": "Book 64"
+    },
+    {
+     "bookId": null,
+     "index": 25,
+     "status": "missing",
+     "title": null
+    },
+    {
+     "bookId": null,
+     "index": 26,
+     "status": "missing",
+     "title": null
+    },
+    {
+     "bookId": null,
+     "index": 27,
+     "status": "missing",
+     "title": null
+    },
+    {
+     "bookId": null,
+     "index": 28,
+     "status": "missing",
+     "title": null
+    },
+    {
+     "bookId": null,
+     "index": 29,
+     "status": "missing",
+     "title": null
+    },
+    {
+     "bookId": null,
+     "index": 30,
+     "status": "missing",
+     "title": null
+    },
+    {
+     "bookId": null,
+     "index": 31,
+     "status": "missing",
+     "title": null
+    },
+    {
+     "bookId": null,
+     "index": 32,
+     "status": "missing",
+     "title": null
+    },
+    {
+     "bookId": null,
+     "index": 33,
+     "status": "missing",
+     "title": null
+    },
+    {
+     "bookId": null,
+     "index": 34,
+     "status": "missing",
+     "title": null
+    },
+    {
+     "bookId": null,
+     "index": 35,
+     "status": "missing",
+     "title": null
+    },
+    {
+     "bookId": null,
+     "index": 36,
+     "status": "missing",
+     "title": null
+    },
+    {
+     "bookId": null,
+     "index": 37,
+     "status": "missing",
+     "title": null
+    },
+    {
+     "bookId": null,
+     "index": 38,
+     "status": "missing",
+     "title": null
+    },
+    {
+     "bookId": null,
+     "index": 39,
+     "status": "missing",
+     "title": null
+    },
+    {
+     "bookId": null,
+     "index": 40,
+     "status": "missing",
+     "title": null
+    },
+    {
+     "bookId": null,
+     "index": 41,
+     "status": "missing",
+     "title": null
+    },
+    {
+     "bookId": null,
+     "index": 42,
+     "status": "missing",
+     "title": null
+    }
+   ]
+  },
+  {
+   "authors": [
+    "Author 9"
+   ],
+   "bookCount": 20,
+   "coverBookIds": [
+    162,
+    163,
+    164,
+    165,
+    166,
+    167,
+    168,
+    169,
+    170
+   ],
+   "expectedBookCount": 20,
+   "id": 161,
+   "lastAddedAt": "2026-09-07 13:39:53.939323+00",
+   "libraryNames": [
+    "Library 1"
+   ],
+   "name": "Series 7",
+   "nextBookId": 162,
+   "nextIndex": "1",
+   "nextTitle": "Book 65",
+   "ownedVolumeCount": 20,
+   "readCount": 0,
+   "readVolumeCount": 0,
+   "readingCount": 0,
+   "readingVolumeCount": 0,
+   "volumes": [
+    {
+     "bookId": 162,
+     "index": 1,
+     "status": "unread",
+     "title": "Book 65"
+    },
+    {
+     "bookId": 163,
+     "index": 2,
+     "status": "unread",
+     "title": "Book 66"
+    },
+    {
+     "bookId": 164,
+     "index": 3,
+     "status": "unread",
+     "title": "Book 67"
+    },
+    {
+     "bookId": 165,
+     "index": 4,
+     "status": "unread",
+     "title": "Book 68"
+    },
+    {
+     "bookId": 166,
+     "index": 5,
+     "status": "unread",
+     "title": "Book 69"
+    },
+    {
+     "bookId": 167,
+     "index": 6,
+     "status": "unread",
+     "title": "Book 70"
+    },
+    {
+     "bookId": 168,
+     "index": 7,
+     "status": "unread",
+     "title": "Book 71"
+    },
+    {
+     "bookId": 169,
+     "index": 8,
+     "status": "unread",
+     "title": "Book 72"
+    },
+    {
+     "bookId": 170,
+     "index": 9,
+     "status": "unread",
+     "title": "Book 73"
+    },
+    {
+     "bookId": 171,
+     "index": 10,
+     "status": "unread",
+     "title": "Book 74"
+    },
+    {
+     "bookId": 172,
+     "index": 11,
+     "status": "unread",
+     "title": "Book 75"
+    },
+    {
+     "bookId": 173,
+     "index": 12,
+     "status": "unread",
+     "title": "Book 76"
+    },
+    {
+     "bookId": 174,
+     "index": 13,
+     "status": "unread",
+     "title": "Book 77"
+    },
+    {
+     "bookId": 175,
+     "index": 14,
+     "status": "unread",
+     "title": "Book 78"
+    },
+    {
+     "bookId": 176,
+     "index": 15,
+     "status": "unread",
+     "title": "Book 79"
+    },
+    {
+     "bookId": 177,
+     "index": 16,
+     "status": "unread",
+     "title": "Book 80"
+    },
+    {
+     "bookId": 178,
+     "index": 17,
+     "status": "unread",
+     "title": "Book 81"
+    },
+    {
+     "bookId": 179,
+     "index": 18,
+     "status": "unread",
+     "title": "Book 82"
+    },
+    {
+     "bookId": 180,
+     "index": 19,
+     "status": "unread",
+     "title": "Book 83"
+    },
+    {
+     "bookId": 181,
+     "index": 20,
+     "status": "unread",
+     "title": "Book 84"
+    }
+   ]
+  },
+  {
+   "authors": [
+    "Author 10"
+   ],
+   "bookCount": 17,
+   "coverBookIds": [
+    182,
+    183,
+    184,
+    185,
+    186,
+    187,
+    188,
+    189,
+    190
+   ],
+   "expectedBookCount": 17,
+   "id": 143,
+   "lastAddedAt": "2018-08-29 09:43:51.026093+00",
+   "libraryNames": [
+    "Library 1"
+   ],
+   "name": "Series 8",
+   "nextBookId": 182,
+   "nextIndex": "1",
+   "nextTitle": "Book 85",
+   "ownedVolumeCount": 17,
+   "readCount": 0,
+   "readVolumeCount": 0,
+   "readingCount": 0,
+   "readingVolumeCount": 0,
+   "volumes": [
+    {
+     "bookId": 182,
+     "index": 1,
+     "status": "unread",
+     "title": "Book 85"
+    },
+    {
+     "bookId": 183,
+     "index": 2,
+     "status": "unread",
+     "title": "Book 86"
+    },
+    {
+     "bookId": 184,
+     "index": 3,
+     "status": "unread",
+     "title": "Book 87"
+    },
+    {
+     "bookId": 185,
+     "index": 4,
+     "status": "unread",
+     "title": "Book 88"
+    },
+    {
+     "bookId": 186,
+     "index": 5,
+     "status": "unread",
+     "title": "Book 89"
+    },
+    {
+     "bookId": 187,
+     "index": 6,
+     "status": "unread",
+     "title": "Book 90"
+    },
+    {
+     "bookId": 188,
+     "index": 7,
+     "status": "unread",
+     "title": "Book 91"
+    },
+    {
+     "bookId": 189,
+     "index": 8,
+     "status": "unread",
+     "title": "Book 92"
+    },
+    {
+     "bookId": null,
+     "index": 9,
+     "status": "missing",
+     "title": null
+    },
+    {
+     "bookId": 190,
+     "index": 10,
+     "status": "unread",
+     "title": "Book 93"
+    },
+    {
+     "bookId": 191,
+     "index": 11,
+     "status": "unread",
+     "title": "Book 94"
+    },
+    {
+     "bookId": 192,
+     "index": 12,
+     "status": "unread",
+     "title": "Book 95"
+    },
+    {
+     "bookId": 193,
+     "index": 13,
+     "status": "unread",
+     "title": "Book 96"
+    },
+    {
+     "bookId": null,
+     "index": 14,
+     "status": "missing",
+     "title": null
+    },
+    {
+     "bookId": 194,
+     "index": 15,
+     "status": "unread",
+     "title": "Book 97"
+    },
+    {
+     "bookId": 195,
+     "index": 16,
+     "status": "unread",
+     "title": "Book 98"
+    },
+    {
+     "bookId": 196,
+     "index": null,
+     "status": "unread",
+     "title": "Book 99"
+    },
+    {
+     "bookId": 197,
+     "index": null,
+     "status": "unread",
+     "title": "Book 100"
+    },
+    {
+     "bookId": 198,
+     "index": null,
+     "status": "unread",
+     "title": "Book 101"
+    }
+   ]
+  },
+  {
+   "authors": [
+    "Author 10"
+   ],
+   "bookCount": 16,
+   "coverBookIds": [
+    199,
+    200,
+    201,
+    202,
+    203,
+    204,
+    205,
+    206,
+    207
+   ],
+   "expectedBookCount": 17,
+   "id": 137,
+   "lastAddedAt": "2018-09-04 09:22:34.871964+00",
+   "libraryNames": [
+    "Library 1"
+   ],
+   "name": "Series 9",
+   "nextBookId": 199,
+   "nextIndex": "1",
+   "nextTitle": "Book 102",
+   "ownedVolumeCount": 16,
+   "readCount": 0,
+   "readVolumeCount": 0,
+   "readingCount": 0,
+   "readingVolumeCount": 0,
+   "volumes": [
+    {
+     "bookId": 199,
+     "index": 1,
+     "status": "unread",
+     "title": "Book 102"
+    },
+    {
+     "bookId": 200,
+     "index": 2,
+     "status": "unread",
+     "title": "Book 103"
+    },
+    {
+     "bookId": 201,
+     "index": 3,
+     "status": "unread",
+     "title": "Book 104"
+    },
+    {
+     "bookId": 202,
+     "index": 4,
+     "status": "unread",
+     "title": "Book 105"
+    },
+    {
+     "bookId": 203,
+     "index": 5,
+     "status": "unread",
+     "title": "Book 106"
+    },
+    {
+     "bookId": 204,
+     "index": 6,
+     "status": "unread",
+     "title": "Book 107"
+    },
+    {
+     "bookId": 205,
+     "index": 7,
+     "status": "unread",
+     "title": "Book 108"
+    },
+    {
+     "bookId": 206,
+     "index": 8,
+     "status": "unread",
+     "title": "Book 109"
+    },
+    {
+     "bookId": 207,
+     "index": 9,
+     "status": "unread",
+     "title": "Book 110"
+    },
+    {
+     "bookId": 208,
+     "index": 10,
+     "status": "unread",
+     "title": "Book 111"
+    },
+    {
+     "bookId": 209,
+     "index": 11,
+     "status": "unread",
+     "title": "Book 112"
+    },
+    {
+     "bookId": 210,
+     "index": 12,
+     "status": "unread",
+     "title": "Book 113"
+    },
+    {
+     "bookId": 211,
+     "index": 13,
+     "status": "unread",
+     "title": "Book 114"
+    },
+    {
+     "bookId": null,
+     "index": 14,
+     "status": "missing",
+     "title": null
+    },
+    {
+     "bookId": 212,
+     "index": 15,
+     "status": "unread",
+     "title": "Book 115"
+    },
+    {
+     "bookId": 213,
+     "index": 16,
+     "status": "unread",
+     "title": "Book 116"
+    },
+    {
+     "bookId": 214,
+     "index": 17,
+     "status": "unread",
+     "title": "Book 117"
+    }
+   ]
+  }
+ ],
+ "page": 0,
+ "size": 5,
+ "total": 65
+}

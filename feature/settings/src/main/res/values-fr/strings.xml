@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings_title">Réglages</string>
+    <string name="settings_appearance">Apparence</string>
+    <string name="settings_reading">Lecture</string>
+    <string name="settings_comics">Bandes dessinées</string>
+    <string name="settings_player">Lecteur audio</string>
+    <string name="settings_downloads">Téléchargements</string>
+    <string name="settings_appearance_theme_system">Thème : comme le système</string>
+    <string name="settings_appearance_theme_light">Thème : clair</string>
+    <string name="settings_appearance_theme_dark">Thème : sombre</string>
+    <string name="settings_reading_about">Thème, police, mise en page, gestes</string>
+    <string name="settings_comics_about">Ajustement, double page, fond</string>
+    <string name="settings_player_about">Sauts, reprise, minuterie de veille</string>
+    <string name="settings_downloads_about">Données mobiles, espace utilisé</string>
+    <string name="settings_readers_note">Les réglages de lecture, de bandes dessinées et d’écoute se changent aussi pendant la lecture, depuis chaque lecteur.</string>
+    <string name="appearance_app_theme">Thème de l’application</string>
+    <string name="appearance_system">Système</string>
+    <string name="appearance_light">Clair</string>
+    <string name="appearance_dark">Sombre</string>
+    <string name="appearance_system_meaning">Système : l’application suit le mode clair ou sombre de l’appareil.</string>
+    <string name="appearance_light_meaning">Clair : l’application reste claire, quel que soit le mode de l’appareil.</string>
+    <string name="appearance_dark_meaning">Sombre : l’application reste sombre, quel que soit le mode de l’appareil.</string>
+    <string name="appearance_reading_note">Le thème de lecture « Auto » suit ce choix. Les autres thèmes de lecture (clair, sépia, sombre, noir) ne changent pas.</string>
+    <string name="about_title">À propos</string>
+    <string name="about_what">Lire et écouter les livres de votre serveur BookOrbit ou Komga</string>
+    <string name="about_copyright">© 2026 François-Xavier Payet et contributeurs</string>
+    <string name="about_version">Version</string>
+    <string name="about_app_licence">Licence</string>
+    <string name="about_app_licence_about">Logiciel libre sous GNU GPL v3 ou ultérieure, sans aucune garantie</string>
+    <string name="about_licences">Licences open source</string>
+    <string name="about_licences_about">Les logiciels et polices dont Lirelle se sert</string>
+    <string name="licences_hint">Touchez un composant pour lire le texte de sa licence.</string>
+    <string name="licences_bundled">Embarqués dans l’application</string>
+    <string name="licences_libraries">Bibliothèques</string>
+    <string name="app_licence_copyright">Copyright © 2026 François-Xavier Payet et contributeurs.</string>
+    <string name="app_licence_free">Lirelle est un logiciel libre : vous pouvez le redistribuer et le modifier selon les termes de la GNU General Public License publiée par la Free Software Foundation, version 3 ou (à votre choix) toute version ultérieure.</string>
+    <string name="app_licence_warranty">Lirelle est distribué dans l’espoir qu’il sera utile, mais SANS AUCUNE GARANTIE, sans même la garantie implicite de qualité marchande ou d’adéquation à un usage particulier.</string>
+    <string name="app_licence_original">Le texte de la licence ci-dessous est l’original anglais, seule version qui fait foi.</string>
+</resources>

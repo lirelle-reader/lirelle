@@ -1,0 +1,12 @@
+# gitleaks (secret scanning): its default rules, less the made-up keys of the tests.
+# Values rather than fingerprints: a fingerprint holds a line number and breaks when a line moves.
+[extend]
+useDefault = true
+
+[[allowlists]]
+description = "Made-up keys of the tests"
+regexes = [
+    '''^4f1c0b6e9d8a4c2f$''',
+    '''^4f1c0b6e9d8a4c2f8e7d6c5b4a392817$''',
+    '''^0123456789abcdef-secret$''',
+]

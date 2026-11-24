@@ -1,0 +1,385 @@
+[
+ {
+  "authors": [
+   "Author 10"
+  ],
+  "coverAspectRatio": "2/3",
+  "coverVersion": "ebook:2026-08-28T19:26:38.468Z:-",
+  "hasCover": true,
+  "id": 195,
+  "isAudiobook": false,
+  "isComic": false,
+  "readStatus": null,
+  "title": "Book 98",
+  "updatedAt": "2026-08-28T19:28:27.125Z"
+ },
+ {
+  "authors": [
+   "Author 15"
+  ],
+  "coverAspectRatio": "2/3",
+  "coverVersion": "ebook:2026-08-28T19:25:41.325Z:-",
+  "hasCover": true,
+  "id": 305,
+  "isAudiobook": false,
+  "isComic": false,
+  "readStatus": null,
+  "title": "Book 162",
+  "updatedAt": "2026-11-11T12:16:51.793Z"
+ },
+ {
+  "authors": [
+   "Author 10"
+  ],
+  "coverAspectRatio": "2/3",
+  "coverVersion": "ebook:2026-08-28T19:26:34.284Z:-",
+  "hasCover": true,
+  "id": 196,
+  "isAudiobook": false,
+  "isComic": false,
+  "readStatus": null,
+  "title": "Book 99",
+  "updatedAt": "2026-08-28T19:28:27.500Z"
+ },
+ {
+  "authors": [
+   "Author 10"
+  ],
+  "coverAspectRatio": "2/3",
+  "coverVersion": "ebook:2026-08-28T19:25:56.406Z:-",
+  "hasCover": true,
+  "id": 197,
+  "isAudiobook": false,
+  "isComic": false,
+  "readStatus": null,
+  "title": "Book 100",
+  "updatedAt": "2026-08-28T19:28:27.479Z"
+ },
+ {
+  "authors": [
+   "Author 10"
+  ],
+  "coverAspectRatio": "2/3",
+  "coverVersion": "ebook:2026-08-28T19:26:06.963Z:-",
+  "hasCover": true,
+  "id": 193,
+  "isAudiobook": false,
+  "isComic": false,
+  "readStatus": null,
+  "title": "Book 96",
+  "updatedAt": "2026-08-28T19:28:27.435Z"
+ },
+ {
+  "authors": [
+   "Author 16"
+  ],
+  "coverAspectRatio": "2/3",
+  "coverVersion": "ebook:2026-08-28T19:25:43.703Z:2026-11-11T13:59:02.204Z",
+  "hasCover": true,
+  "id": 306,
+  "isAudiobook": false,
+  "isComic": false,
+  "readStatus": {
+   "finishedAt": null,
+   "source": "manual",
+   "startedAt": null,
+   "status": "read",
+   "updatedAt": "2026-08-24T14:10:11.159Z"
+  },
+  "title": "Book 163",
+  "updatedAt": "2026-11-11T15:11:38.976Z"
+ },
+ {
+  "authors": [
+   "Author 17"
+  ],
+  "coverAspectRatio": "2/3",
+  "coverVersion": "ebook:2026-08-28T19:25:52.844Z:-",
+  "hasCover": true,
+  "id": 307,
+  "isAudiobook": false,
+  "isComic": false,
+  "readStatus": null,
+  "title": "Book 164",
+  "updatedAt": "2026-09-29T19:54:50.785Z"
+ },
+ {
+  "authors": [
+   "Author 18"
+  ],
+  "coverAspectRatio": "2/3",
+  "coverVersion": "ebook:2026-08-28T19:26:20.208Z:-",
+  "hasCover": true,
+  "id": 308,
+  "isAudiobook": false,
+  "isComic": false,
+  "readStatus": null,
+  "title": "Book 165",
+  "updatedAt": "2026-08-28T19:28:22.506Z"
+ },
+ {
+  "authors": [
+   "Author 16"
+  ],
+  "coverAspectRatio": "2/3",
+  "coverVersion": "ebook:2026-08-28T19:25:46.819Z:2026-11-11T14:01:31.310Z",
+  "hasCover": true,
+  "id": 309,
+  "isAudiobook": false,
+  "isComic": false,
+  "readStatus": null,
+  "title": "Book 166",
+  "updatedAt": "2026-11-11T14:42:43.719Z"
+ },
+ {
+  "authors": [
+   "Author 17"
+  ],
+  "coverAspectRatio": "2/3",
+  "coverVersion": "ebook:2026-08-28T19:25:36.757Z:-",
+  "hasCover": true,
+  "id": 310,
+  "isAudiobook": false,
+  "isComic": false,
+  "readStatus": null,
+  "title": "Book 167",
+  "updatedAt": "2026-09-29T19:54:50.160Z"
+ },
+ {
+  "authors": [
+   "Author 19"
+  ],
+  "coverAspectRatio": "2/3",
+  "coverVersion": "ebook:2026-08-28T19:26:01.344Z:-",
+  "hasCover": true,
+  "id": 311,
+  "isAudiobook": false,
+  "isComic": false,
+  "readStatus": {
+   "finishedAt": null,
+   "source": "manual",
+   "startedAt": null,
+   "status": "read",
+   "updatedAt": "2026-08-24T14:10:11.159Z"
+  },
+  "title": "Book 168",
+  "updatedAt": "2026-11-11T12:17:14.781Z"
+ },
+ {
+  "authors": [
+   "Author 20"
+  ],
+  "coverAspectRatio": "2/3",
+  "coverVersion": "ebook:2026-08-28T19:25:46.136Z:-",
+  "hasCover": true,
+  "id": 216,
+  "isAudiobook": false,
+  "isComic": false,
+  "readStatus": null,
+  "title": "Book 169",
+  "updatedAt": "2026-08-28T19:28:19.317Z"
+ },
+ {
+  "authors": [
+   "Author 19"
+  ],
+  "coverAspectRatio": "2/3",
+  "coverVersion": "ebook:2026-08-28T19:26:31.177Z:-",
+  "hasCover": true,
+  "id": 312,
+  "isAudiobook": false,
+  "isComic": false,
+  "readStatus": {
+   "finishedAt": null,
+   "source": "manual",
+   "startedAt": null,
+   "status": "read",
+   "updatedAt": "2026-08-24T14:10:11.159Z"
+  },
+  "title": "Book 170",
+  "updatedAt": "2026-11-11T12:17:15.242Z"
+ },
+ {
+  "authors": [
+   "Author 17"
+  ],
+  "coverAspectRatio": "2/3",
+  "coverVersion": "ebook:2026-08-28T19:25:34.257Z:-",
+  "hasCover": true,
+  "id": 313,
+  "isAudiobook": false,
+  "isComic": false,
+  "readStatus": null,
+  "title": "Book 171",
+  "updatedAt": "2026-09-29T19:54:47.618Z"
+ },
+ {
+  "authors": [
+   "Author 10"
+  ],
+  "coverAspectRatio": "2/3",
+  "coverVersion": "ebook:2026-08-28T19:26:08.804Z:-",
+  "hasCover": true,
+  "id": 194,
+  "isAudiobook": false,
+  "isComic": false,
+  "readStatus": null,
+  "title": "Book 97",
+  "updatedAt": "2026-09-02T15:46:53.630Z"
+ },
+ {
+  "authors": [
+   "Author 10"
+  ],
+  "coverAspectRatio": "2/3",
+  "coverVersion": "ebook:2026-08-28T19:26:27.430Z:-",
+  "hasCover": true,
+  "id": 198,
+  "isAudiobook": false,
+  "isComic": false,
+  "readStatus": null,
+  "title": "Book 101",
+  "updatedAt": "2026-09-02T15:46:53.582Z"
+ },
+ {
+  "authors": [
+   "Author 21"
+  ],
+  "coverAspectRatio": "2/3",
+  "coverVersion": "ebook:2026-08-28T19:26:20.568Z:2026-11-12T11:30:20.934Z",
+  "hasCover": true,
+  "id": 314,
+  "isAudiobook": false,
+  "isComic": false,
+  "readStatus": null,
+  "title": "Book 172",
+  "updatedAt": "2026-11-12T11:43:19.960Z"
+ },
+ {
+  "authors": [
+   "Author 1"
+  ],
+  "coverAspectRatio": "2/3",
+  "coverVersion": "ebook:2026-08-28T19:26:07.672Z:-",
+  "hasCover": true,
+  "id": 315,
+  "isAudiobook": false,
+  "isComic": false,
+  "readStatus": null,
+  "title": "Book 173",
+  "updatedAt": "2026-09-02T15:47:24.401Z"
+ },
+ {
+  "authors": [
+   "Author 22"
+  ],
+  "coverAspectRatio": "2/3",
+  "coverVersion": "ebook:2026-08-28T19:25:27.994Z:-",
+  "hasCover": true,
+  "id": 316,
+  "isAudiobook": false,
+  "isComic": false,
+  "readStatus": {
+   "finishedAt": null,
+   "source": "manual",
+   "startedAt": null,
+   "status": "read",
+   "updatedAt": "2026-08-24T14:10:11.159Z"
+  },
+  "title": "Book 174",
+  "updatedAt": "2026-08-28T19:28:25.126Z"
+ },
+ {
+  "authors": [
+   "Author 23",
+   "Author 24",
+   "Author 25",
+   "Author 26"
+  ],
+  "coverAspectRatio": "2/3",
+  "coverVersion": "ebook:2026-08-28T19:25:52.014Z:-",
+  "hasCover": true,
+  "id": 317,
+  "isAudiobook": false,
+  "isComic": false,
+  "readStatus": null,
+  "title": "Book 175",
+  "updatedAt": "2026-08-28T19:28:26.255Z"
+ },
+ {
+  "authors": [
+   "Author 10"
+  ],
+  "coverAspectRatio": "2/3",
+  "coverVersion": "ebook:2026-08-28T19:26:06.738Z:-",
+  "hasCover": true,
+  "id": 186,
+  "isAudiobook": false,
+  "isComic": false,
+  "readStatus": null,
+  "title": "Book 89",
+  "updatedAt": "2026-11-11T12:09:20.778Z"
+ },
+ {
+  "authors": [
+   "Author 21"
+  ],
+  "coverAspectRatio": "2/3",
+  "coverVersion": "ebook:2026-08-28T19:25:56.928Z:2026-11-12T11:32:16.453Z",
+  "hasCover": true,
+  "id": 318,
+  "isAudiobook": false,
+  "isComic": false,
+  "readStatus": null,
+  "title": "Book 176",
+  "updatedAt": "2026-11-12T12:04:33.611Z"
+ },
+ {
+  "authors": [
+   "Author 27"
+  ],
+  "coverAspectRatio": "2/3",
+  "coverVersion": "ebook:2026-08-28T19:26:35.373Z:-",
+  "hasCover": true,
+  "id": 319,
+  "isAudiobook": false,
+  "isComic": false,
+  "readStatus": null,
+  "title": "Book 177",
+  "updatedAt": "2026-09-29T19:59:49.918Z"
+ },
+ {
+  "authors": [
+   "Author 22"
+  ],
+  "coverAspectRatio": "2/3",
+  "coverVersion": "ebook:2026-08-28T19:25:57.218Z:-",
+  "hasCover": true,
+  "id": 320,
+  "isAudiobook": false,
+  "isComic": false,
+  "readStatus": {
+   "finishedAt": null,
+   "source": "manual",
+   "startedAt": null,
+   "status": "read",
+   "updatedAt": "2026-08-24T14:10:11.159Z"
+  },
+  "title": "Book 178",
+  "updatedAt": "2026-08-28T19:28:25.171Z"
+ },
+ {
+  "authors": [
+   "Author 28"
+  ],
+  "coverAspectRatio": "2/3",
+  "coverVersion": "ebook:2026-08-28T19:26:32.271Z:-",
+  "hasCover": true,
+  "id": 321,
+  "isAudiobook": false,
+  "isComic": false,
+  "readStatus": null,
+  "title": "Book 179",
+  "updatedAt": "2026-08-28T19:28:21.708Z"
+ }
+]

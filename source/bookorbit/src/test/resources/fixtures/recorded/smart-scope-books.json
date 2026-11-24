@@ -1,0 +1,217 @@
+{
+ "bookTotal": 54,
+ "items": [
+  {
+   "addedAt": "2026-11-08T14:28:41.720Z",
+   "authors": [
+    "Author 1"
+   ],
+   "coverAspectRatio": "2/3",
+   "coverVersion": "ebook:2026-11-08T14:28:53.881Z:2026-11-11T11:49:24.710Z",
+   "files": [
+    {
+     "format": "epub",
+     "id": 57,
+     "mediaOverlay": {
+      "available": true,
+      "durationSeconds": 129987.53999999951
+     },
+     "role": "primary",
+     "sizeBytes": 1075059157
+    },
+    {
+     "format": "epub",
+     "id": 58,
+     "mediaOverlay": {
+      "available": false,
+      "durationSeconds": null
+     },
+     "role": "content",
+     "sizeBytes": 2799773
+    },
+    {
+     "format": "m4b",
+     "id": 59,
+     "role": "content",
+     "sizeBytes": 1072565298
+    }
+   ],
+   "genres": [
+    "Genre 7",
+    "Genre 4"
+   ],
+   "hasCover": true,
+   "id": 56,
+   "isbn13": "9780000000002",
+   "language": "fr",
+   "libraryId": 2,
+   "narrators": [
+    "Narrator 9"
+   ],
+   "pageCount": 936,
+   "publishedDate": "2013-02-28",
+   "publishedYear": 2013,
+   "publisher": "Publisher 1",
+   "rating": null,
+   "readStatus": {
+    "finishedAt": null,
+    "source": "auto",
+    "startedAt": "2026-11-10T00:00:00.000Z",
+    "status": "reading",
+    "updatedAt": "2026-11-13T06:57:02.262Z"
+   },
+   "readingProgress": 11.146635,
+   "seriesId": null,
+   "seriesIndex": null,
+   "seriesMemberships": [],
+   "seriesName": null,
+   "status": "present",
+   "subtitle": null,
+   "title": "Book 5",
+   "updatedAt": "2026-11-11T11:49:24.710Z"
+  },
+  {
+   "addedAt": "2026-09-25T11:25:14.363Z",
+   "authors": [
+    "Author 14"
+   ],
+   "coverAspectRatio": "2/3",
+   "coverVersion": "ebook:2026-09-25T11:25:26.565Z:2026-11-11T12:15:53.981Z",
+   "files": [
+    {
+     "format": "epub",
+     "id": 296,
+     "mediaOverlay": {
+      "available": true,
+      "durationSeconds": 18033.719999999987
+     },
+     "role": "primary",
+     "sizeBytes": 582208855
+    },
+    {
+     "format": "epub",
+     "id": 297,
+     "mediaOverlay": {
+      "available": false,
+      "durationSeconds": null
+     },
+     "role": "content",
+     "sizeBytes": 1397660
+    },
+    {
+     "format": "m4b",
+     "id": 298,
+     "role": "content",
+     "sizeBytes": 580356716
+    }
+   ],
+   "genres": [
+    "Genre 7"
+   ],
+   "hasCover": true,
+   "id": 294,
+   "isbn13": "9780000000002",
+   "language": "en",
+   "libraryId": 2,
+   "narrators": [
+    "Narrator 11"
+   ],
+   "pageCount": 245,
+   "publishedDate": "2023-11-14",
+   "publishedYear": 2023,
+   "publisher": "Publisher 9",
+   "rating": null,
+   "readStatus": null,
+   "readingProgress": null,
+   "seriesId": 295,
+   "seriesIndex": "7",
+   "seriesMemberships": [
+    {
+     "displayOrder": 0,
+     "expectedBookCount": 8,
+     "seriesId": 295,
+     "seriesIndex": "7",
+     "seriesName": "Series 12"
+    }
+   ],
+   "seriesName": "Series 12",
+   "status": "present",
+   "subtitle": "Subtitle 2",
+   "title": "Book 120",
+   "updatedAt": "2026-11-11T12:16:08.867Z"
+  },
+  {
+   "addedAt": "2026-09-25T11:25:02.050Z",
+   "authors": [
+    "Author 14"
+   ],
+   "coverAspectRatio": "2/3",
+   "coverVersion": "ebook:2026-09-25T11:25:14.271Z:2026-11-11T12:16:28.269Z",
+   "files": [
+    {
+     "format": "epub",
+     "id": 300,
+     "mediaOverlay": {
+      "available": true,
+      "durationSeconds": 20718.11499999999
+     },
+     "role": "primary",
+     "sizeBytes": 330676892
+    },
+    {
+     "format": "epub",
+     "id": 301,
+     "mediaOverlay": {
+      "available": false,
+      "durationSeconds": null
+     },
+     "role": "content",
+     "sizeBytes": 1426744
+    },
+    {
+     "format": "m4b",
+     "id": 302,
+     "role": "content",
+     "sizeBytes": 329790672
+    }
+   ],
+   "genres": [
+    "Genre 7"
+   ],
+   "hasCover": true,
+   "id": 299,
+   "isbn13": "9780000000002",
+   "language": "en",
+   "libraryId": 2,
+   "narrators": [
+    "Narrator 11"
+   ],
+   "pageCount": 245,
+   "publishedDate": "2026-05-05",
+   "publishedYear": 2026,
+   "publisher": "Publisher 9",
+   "rating": null,
+   "readStatus": null,
+   "readingProgress": null,
+   "seriesId": 295,
+   "seriesIndex": "8",
+   "seriesMemberships": [
+    {
+     "displayOrder": 0,
+     "expectedBookCount": 8,
+     "seriesId": 295,
+     "seriesIndex": "8",
+     "seriesName": "Series 12"
+    }
+   ],
+   "seriesName": "Series 12",
+   "status": "present",
+   "subtitle": "Subtitle 2",
+   "title": "Book 121",
+   "updatedAt": "2026-11-11T12:16:45.959Z"
+  }
+ ],
+ "page": 0,
+ "size": 3,
+ "total": 54
+}

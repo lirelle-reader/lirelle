@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- The chapters, speed and sleep timer sheets -->
+    <plurals name="player_chapters_count">
+        <item quantity="one">%d chapter</item>
+        <item quantity="other">%d chapters</item>
+    </plurals>
+    <!-- The same count, of a book in parts -->
+    <plurals name="player_parts_count">
+        <item quantity="one">%d part</item>
+        <item quantity="other">%d parts</item>
+    </plurals>
+    <!-- What a screen reader adds to a chapter's row -->
+    <string name="player_chapter_heard">heard</string>
+    <string name="player_chapter_playing">playing</string>
+    <string name="player_speed_for_book">For this book</string>
+    <string name="player_speed_slower">Slower</string>
+    <string name="player_speed_faster">Faster</string>
+    <string name="player_speed_time_left">Time left at this speed: %1$s</string>
+    <string name="player_sleep_title">Sleep timer</string>
+    <string name="player_sleep_stops_in">Stops in %1$s</string>
+    <string name="player_sleep_stops_chapter">Stops at the end of the chapter</string>
+    <string name="player_sleep_end_of_chapter">End of chapter</string>
+    <plurals name="player_sleep_minutes">
+        <item quantity="one">%d minute</item>
+        <item quantity="other">%d minutes</item>
+    </plurals>
+    <string name="player_sleep_shake">Shake to extend</string>
+    <string name="player_sleep_shake_hint">During the last minute</string>
+    <string name="player_sleep_stop">Stop the timer</string>
+</resources>

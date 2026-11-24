@@ -1,0 +1,156 @@
+{
+ "books": [
+  {
+   "addedAt": "2017-07-21T08:10:58.235Z",
+   "authors": [
+    "Author 32"
+   ],
+   "coverAspectRatio": "2/3",
+   "coverVersion": "ebook:2026-08-28T19:26:07.888Z:-",
+   "files": [
+    {
+     "format": "epub",
+     "id": 387,
+     "mediaOverlay": {
+      "available": false,
+      "durationSeconds": null
+     },
+     "role": "primary",
+     "sizeBytes": 692028
+    },
+    {
+     "format": "jpg",
+     "id": 388,
+     "role": "cover",
+     "sizeBytes": 302617
+    }
+   ],
+   "genres": [
+    "Genre 9",
+    "Genre 15"
+   ],
+   "hasCover": true,
+   "id": 386,
+   "isbn13": "9780000000002",
+   "language": "fr",
+   "libraryId": 2,
+   "narrators": [],
+   "pageCount": 285,
+   "publishedDate": "1960-06-20",
+   "publishedYear": 1960,
+   "publisher": "Publisher 13",
+   "rating": null,
+   "readStatus": null,
+   "readingProgress": null,
+   "seriesId": 285,
+   "seriesIndex": "3",
+   "seriesMemberships": [],
+   "seriesName": "Series 14",
+   "status": "present",
+   "subtitle": null,
+   "title": "Book 199",
+   "updatedAt": "2026-11-11T12:17:12.961Z"
+  },
+  {
+   "addedAt": "2025-08-12T09:29:10.862Z",
+   "authors": [
+    "Author 33"
+   ],
+   "coverAspectRatio": "2/3",
+   "coverVersion": "ebook:2026-08-28T19:25:51.835Z:-",
+   "files": [
+    {
+     "format": "epub",
+     "id": 391,
+     "mediaOverlay": {
+      "available": false,
+      "durationSeconds": null
+     },
+     "role": "primary",
+     "sizeBytes": 496796
+    },
+    {
+     "format": "jpg",
+     "id": 392,
+     "role": "cover",
+     "sizeBytes": 90203
+    }
+   ],
+   "genres": [
+    "Genre 7"
+   ],
+   "hasCover": true,
+   "id": 389,
+   "isbn13": "9780000000002",
+   "language": "en",
+   "libraryId": 2,
+   "narrators": [],
+   "pageCount": 252,
+   "publishedDate": "2017-07-21",
+   "publishedYear": 2017,
+   "publisher": "Publisher 14",
+   "rating": null,
+   "readStatus": null,
+   "readingProgress": null,
+   "seriesId": 390,
+   "seriesIndex": "4",
+   "seriesMemberships": [],
+   "seriesName": "Series 15",
+   "status": "present",
+   "subtitle": null,
+   "title": "Book 200",
+   "updatedAt": "2026-08-28T19:28:21.783Z"
+  },
+  {
+   "addedAt": "2018-08-11T17:04:26.930Z",
+   "authors": [
+    "Author 34"
+   ],
+   "coverAspectRatio": "2/3",
+   "coverVersion": "ebook:2026-08-28T19:25:57.965Z:-",
+   "files": [
+    {
+     "format": "epub",
+     "id": 395,
+     "mediaOverlay": {
+      "available": false,
+      "durationSeconds": null
+     },
+     "role": "primary",
+     "sizeBytes": 347814
+    },
+    {
+     "format": "jpg",
+     "id": 396,
+     "role": "cover",
+     "sizeBytes": 60471
+    }
+   ],
+   "genres": [
+    "Genre 4"
+   ],
+   "hasCover": true,
+   "id": 393,
+   "isbn13": "9780000000002",
+   "language": "fr",
+   "libraryId": 2,
+   "narrators": [],
+   "pageCount": 596,
+   "publishedDate": null,
+   "publishedYear": 2004,
+   "publisher": "Publisher 7",
+   "rating": null,
+   "readStatus": null,
+   "readingProgress": null,
+   "seriesId": 394,
+   "seriesIndex": "13",
+   "seriesMemberships": [],
+   "seriesName": "Series 16",
+   "status": "present",
+   "subtitle": null,
+   "title": "Book 201",
+   "updatedAt": "2026-08-28T19:28:26.522Z"
+  }
+ ],
+ "total": null
+}

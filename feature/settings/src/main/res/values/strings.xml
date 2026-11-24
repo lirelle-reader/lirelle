@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings_title">Settings</string>
+    <string name="settings_appearance">Appearance</string>
+    <string name="settings_reading">Reading</string>
+    <string name="settings_comics">Comics</string>
+    <string name="settings_player">Player</string>
+    <string name="settings_downloads">Downloads</string>
+    <!-- Under the name of each page in the list: what it holds; for Appearance, the theme chosen -->
+    <string name="settings_appearance_theme_system">Theme: system</string>
+    <string name="settings_appearance_theme_light">Theme: light</string>
+    <string name="settings_appearance_theme_dark">Theme: dark</string>
+    <string name="settings_reading_about">Theme, font, layout, gestures</string>
+    <string name="settings_comics_about">Fit, two pages, background</string>
+    <string name="settings_player_about">Skips, resume, sleep timer</string>
+    <string name="settings_downloads_about">Mobile data, space used</string>
+    <string name="settings_readers_note">Reading, comics and listening settings can also be changed while reading, from each reader.</string>
+    <string name="appearance_app_theme">App theme</string>
+    <string name="appearance_system">System</string>
+    <string name="appearance_light">Light</string>
+    <string name="appearance_dark">Dark</string>
+    <!-- What the chosen theme does, under the three tiles -->
+    <string name="appearance_system_meaning">System: the app follows the device\'s light or dark mode.</string>
+    <string name="appearance_light_meaning">Light: the app stays light, whatever the device\'s mode.</string>
+    <string name="appearance_dark_meaning">Dark: the app stays dark, whatever the device\'s mode.</string>
+    <string name="appearance_reading_note">The reading theme \"Auto\" follows this choice. The other reading themes (light, sepia, dark, black) do not change.</string>
+    <string name="about_title">About</string>
+    <!-- The app's name, under its mark -->
+    <string name="about_app_name" translatable="false">Lirelle</string>
+    <string name="about_what">Read and listen to the books of your BookOrbit or Komga server</string>
+    <!-- Under the line saying what the app is -->
+    <string name="about_copyright">© 2026 François-Xavier Payet and contributors</string>
+    <string name="about_version">Version</string>
+    <!-- The row that opens the app's own licence -->
+    <string name="about_app_licence">Licence</string>
+    <string name="about_app_licence_about">Free software under the GNU GPL v3 or later, with no warranty</string>
+    <string name="about_licences">Open-source licences</string>
+    <string name="about_licences_about">The software and fonts Lirelle uses</string>
+    <string name="licences_hint">Tap a component to read its licence.</string>
+    <string name="licences_bundled">Bundled in the app</string>
+    <string name="licences_libraries">Libraries</string>
+    <!-- The chip of a component under several licences: the first one's short name, then how many others -->
+    <string name="licences_more" translatable="false">%1$s +%2$d</string>
+    <!-- The notice above the app's licence: the copyright, the freedoms, the absence of warranty -->
+    <string name="app_licence_copyright">Copyright © 2026 François-Xavier Payet and contributors.</string>
+    <string name="app_licence_free">Lirelle is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.</string>
+    <string name="app_licence_warranty">Lirelle is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.</string>
+    <!-- Said only where the notice is a translation: the licence below is the English original. Empty in English. -->
+    <string name="app_licence_original"></string>
+</resources>

@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- The Profiles page: the current profile, the others, and what adds or removes one. -->
+    <string name="account_back">Back</string>
+    <string name="profiles_current">Current profile</string>
+    <string name="profiles_others">Other profiles</string>
+    <string name="account_username">Username</string>
+    <string name="account_email">E-mail</string>
+    <string name="account_server">Server</string>
+    <string name="account_server_version">Server version</string>
+    <string name="account_error_unreachable">Could not load your account. Check your connection.</string>
+    <string name="account_error_unexpected">Could not load your account. Try again later.</string>
+    <string name="account_retry">Try again</string>
+    <string name="profiles_remove">Remove this profile</string>
+    <!-- What a screen reader says of the button at the end of a profile's row. %1$s: the username, %2$s: the kind of server ("BookOrbit"). -->
+    <string name="profiles_more_actions">More actions for %1$s, %2$s</string>
+
+    <!-- The confirmation of a removal. -->
+    <string name="profiles_remove_title">Remove this profile?</string>
+    <string name="profiles_remove_body">This profile will be signed out and everything the device keeps for it will be erased. Nothing changes on the server.</string>
+    <!-- Of a profile that is not the current one: its server is not told, so nothing says that it is signed out. -->
+    <string name="profiles_remove_body_sleeping">Everything the device keeps for this profile will be erased. Nothing changes on the server.</string>
+    <!-- The same two, for a profile whose server gave the device a key (Komga's): the key is revoked there, the profile current or not. -->
+    <string name="profiles_remove_body_key">This profile will be signed out and everything the device keeps for it will be erased. Its key will be revoked on the server.</string>
+    <string name="profiles_remove_body_sleeping_key">Everything the device keeps for this profile will be erased. Its key will be revoked on the server.</string>
+    <string name="profiles_remove_cancel">Cancel</string>
+    <string name="profiles_remove_confirm">Remove</string>
+    <!-- Of a profile that is not the current one: it is not opened to be counted. -->
+    <string name="profiles_remove_sleeping">Its downloads and anything not sent yet will be erased with it.</string>
+    <plurals name="profiles_remove_downloads">
+        <item quantity="one">%1$d downloaded book (%2$s) will be deleted from this device.</item>
+        <item quantity="other">%1$d downloaded books (%2$s) will be deleted from this device.</item>
+    </plurals>
+    <!-- %1$s: what has not been sent, for example "2 reading positions and 1 bookmark". The quantity is their total. -->
+    <plurals name="profiles_remove_pending">
+        <item quantity="one">%1$s has not been sent to the server yet: it will be lost.</item>
+        <item quantity="other">%1$s have not been sent to the server yet: they will be lost.</item>
+    </plurals>
+    <plurals name="account_pending_positions">
+        <item quantity="one">%1$d reading position</item>
+        <item quantity="other">%1$d reading positions</item>
+    </plurals>
+    <plurals name="account_pending_sessions">
+        <item quantity="one">%1$d reading session</item>
+        <item quantity="other">%1$d reading sessions</item>
+    </plurals>
+    <plurals name="account_pending_bookmarks">
+        <item quantity="one">%1$d bookmark</item>
+        <item quantity="other">%1$d bookmarks</item>
+    </plurals>
+    <plurals name="account_pending_highlights">
+        <item quantity="one">%1$d highlight</item>
+        <item quantity="other">%1$d highlights</item>
+    </plurals>
+    <!-- A list of three or more: every item but the last, then the last. -->
+    <string name="account_pending_join">%1$s, %2$s</string>
+    <string name="account_pending_join_last">%1$s and %2$s</string>
+    <!-- The profile button and the list of profiles it opens; the title of the Profiles page too. -->
+    <string name="profiles_title">Profiles</string>
+    <!-- What a screen reader says of the profile button. %1$s: the username, %2$s: the kind of server ("BookOrbit"). -->
+    <string name="profiles_button">Profiles: %1$s, %2$s</string>
+    <!-- What a screen reader says of a profile's row. %1$s: "camille · BookOrbit", %2$s: its server. -->
+    <string name="profiles_row_said">%1$s, %2$s</string>
+    <!-- %1$s: what is said of the profile so far. -->
+    <string name="profiles_said_current">%1$s, current profile</string>
+    <string name="profiles_said_sign_in_needed">%1$s, sign-in needed</string>
+    <string name="profiles_add">Add a profile</string>
+    <string name="profiles_manage">Manage profiles</string>
+</resources>

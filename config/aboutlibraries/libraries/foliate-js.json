@@ -1,0 +1,14 @@
+{
+  "uniqueId": "bundled:foliate-js",
+  "name": "foliate-js",
+  "description": "The engine that lays out and pages the books in the reader.",
+  "developers": [
+    {
+      "name": "John Factotum"
+    }
+  ],
+  "tag": "bundled",
+  "licenses": [
+    "MIT-foliate-js"
+  ]
+}

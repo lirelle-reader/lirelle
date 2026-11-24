@@ -1,0 +1,132 @@
+{
+    "libraries": [
+        {
+            "uniqueId": "org.example:zebra-android",
+            "artifactVersion": "1.0.0",
+            "name": "zebra",
+            "description": "The same library, as its artifact for one platform.",
+            "website": "https://example.org/zebra",
+            "developers": [
+                {
+                    "name": "Zoe Zebra"
+                }
+            ],
+            "licenses": [
+                "Apache-2.0"
+            ]
+        },
+        {
+            "uniqueId": "org.example:zebra",
+            "artifactVersion": "1.0.0",
+            "name": "zebra",
+            "description": "A library whose name starts with a small letter.",
+            "website": "https://example.org/zebra",
+            "developers": [
+                {
+                    "name": "Zoe Zebra"
+                },
+                {
+                    "name": "Second Author"
+                }
+            ],
+            "organization": {
+                "name": "The Zebra Organisation"
+            },
+            "licenses": [
+                "Apache-2.0"
+            ]
+        },
+        {
+            "uniqueId": "bundled:reading-font",
+            "name": "Reading Font",
+            "description": "A font the app ships.",
+            "developers": [
+                {
+                    "name": "The Font Authors"
+                }
+            ],
+            "licenses": [
+                "OFL-1.1-reading-font"
+            ],
+            "tag": "bundled"
+        },
+        {
+            "uniqueId": "org.example:alpha",
+            "artifactVersion": "2.1.0",
+            "name": "Alpha",
+            "description": "A library under two licences, with an organisation and no developer.",
+            "developers": [],
+            "organization": {
+                "name": "The Alpha Organisation"
+            },
+            "licenses": [
+                "Apache-2.0",
+                "Example-Terms"
+            ]
+        },
+        {
+            "uniqueId": "org.example:orphan",
+            "artifactVersion": "0.3.0",
+            "name": "Mango",
+            "description": "A library that names nobody.",
+            "developers": [],
+            "licenses": [
+                "No-Text"
+            ]
+        },
+        {
+            "uniqueId": "bundled:engine",
+            "name": "engine",
+            "description": "An engine the app ships.",
+            "developers": [
+                {
+                    "name": "Ann Engineer"
+                }
+            ],
+            "licenses": [
+                "MIT-engine"
+            ],
+            "tag": "bundled"
+        }
+    ],
+    "licenses": {
+        "Apache-2.0": {
+            "content": "Apache License\nVersion 2.0, January 2004",
+            "hash": "Apache-2.0",
+            "internalHash": "Apache-2.0",
+            "url": "https://spdx.org/licenses/Apache-2.0.html",
+            "spdxId": "Apache-2.0",
+            "name": "Apache License 2.0"
+        },
+        "Example-Terms": {
+            "content": "The terms of the example.",
+            "hash": "Example-Terms",
+            "internalHash": "Example-Terms",
+            "url": "https://example.org/terms",
+            "name": "Example Terms"
+        },
+        "No-Text": {
+            "hash": "No-Text",
+            "internalHash": "No-Text",
+            "url": "https://example.org/no-text",
+            "spdxId": "BSD-3-Clause",
+            "name": "BSD 3-Clause \"New\" or \"Revised\" License"
+        },
+        "MIT-engine": {
+            "content": "MIT License\n\nCopyright (c) 2022 Ann Engineer",
+            "hash": "MIT-engine",
+            "internalHash": "MIT-engine",
+            "url": "https://spdx.org/licenses/MIT.html",
+            "spdxId": "MIT",
+            "name": "MIT License"
+        },
+        "OFL-1.1-reading-font": {
+            "content": "Copyright 2017 The Font Authors\n\nSIL OPEN FONT LICENSE Version 1.1",
+            "hash": "OFL-1.1-reading-font",
+            "internalHash": "OFL-1.1-reading-font",
+            "url": "https://spdx.org/licenses/OFL-1.1.html",
+            "spdxId": "OFL-1.1",
+            "name": "SIL Open Font License 1.1"
+        }
+    }
+}

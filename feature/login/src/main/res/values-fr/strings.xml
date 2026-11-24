@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Not "Connectez-vous…": at the largest font sizes on a narrow phone, that word cannot break and does not fit. -->
+    <string name="server_title">Connexion à votre serveur</string>
+    <string name="server_address_label">Adresse du serveur</string>
+    <string name="server_address_hint">Par exemple books.example.com</string>
+    <string name="server_continue">Continuer</string>
+    <string name="server_error_invalid_address">Saisissez une adresse valide, par exemple books.example.com.</string>
+    <string name="cleartext_dialog_title">Connexion non chiffrée</string>
+    <string name="cleartext_dialog_message">%1$s utilise HTTP. Votre mot de passe et votre session circuleront en clair sur le réseau. Ne continuez que sur un réseau de confiance.</string>
+    <string name="cleartext_dialog_confirm">Continuer quand même</string>
+    <string name="cleartext_dialog_cancel">Annuler</string>
+
+    <string name="sign_in_title">Connexion</string>
+    <string name="sign_in_change_server">Changer de serveur</string>
+    <string name="sign_in_cleartext_notice">Les échanges avec ce serveur ne sont pas chiffrés.</string>
+    <string name="sign_in_username">Identifiant</string>
+    <!-- The identifier field, for a server whose accounts are named by their email address. -->
+    <string name="sign_in_email">Adresse e-mail</string>
+    <string name="sign_in_password">Mot de passe</string>
+    <string name="sign_in_submit">Se connecter</string>
+    <string name="sign_in_with_provider">Continuer avec %1$s</string>
+    <string name="sign_in_no_method">Ce serveur ne propose aucun mode de connexion utilisable par Lirelle.</string>
+    <string name="sign_in_retry">Réessayer</string>
+    <!-- Read by a screen reader: the button that closes the identity provider's page. -->
+    <string name="provider_page_close">Fermer</string>
+
+    <string name="add_profile_title">Ajouter un profil</string>
+    <string name="add_profile_text">Un autre compte, sur ce serveur ou sur un autre. Vos profils restent séparés.</string>
+    <string name="sign_in_again_title">Se reconnecter</string>
+    <!-- The profile: its username, then the kind of its server ("camille · BookOrbit"). -->
+    <string name="sign_in_back_to_profile">Revenir à %1$s</string>
+    <string name="sign_in_back">Retour</string>
+
+    <string name="error_server_unreachable">Serveur injoignable. Vérifiez l\'adresse et votre connexion.</string>
+    <string name="error_unknown_server">Cette adresse n\'est ni un serveur BookOrbit ni un serveur Komga.</string>
+    <string name="error_invalid_credentials">Identifiant ou mot de passe incorrect.</string>
+    <!-- The same, for a server whose accounts are named by their email address. -->
+    <string name="error_invalid_email_credentials">Adresse e-mail ou mot de passe incorrect.</string>
+    <plurals name="error_account_locked">
+        <item quantity="one">Compte verrouillé après trop de tentatives. Réessayez dans %d minute.</item>
+        <item quantity="many">Compte verrouillé après trop de tentatives. Réessayez dans %d minutes.</item>
+        <item quantity="other">Compte verrouillé après trop de tentatives. Réessayez dans %d minutes.</item>
+    </plurals>
+    <string name="error_too_many_attempts">Trop de tentatives. Patientez un instant avant de réessayer.</string>
+    <string name="error_default_password">Ce compte utilise encore son mot de passe par défaut. Changez-le dans l\'interface web de BookOrbit, puis reconnectez-vous.</string>
+    <string name="error_oidc_cancelled">Connexion annulée.</string>
+    <string name="error_oidc_refused">Le fournisseur d\'identité ou le serveur a refusé cette connexion.</string>
+    <!-- The account was recognised, but the server would not finish the sign-in. -->
+    <string name="error_sign_in_refused">La connexion n\'a pas abouti.</string>
+    <!-- The identity provider's flow led to a sign-in page without encryption, which the app did not show. -->
+    <string name="error_unencrypted_sign_in_page">Cette page de connexion n\'est pas chiffrée (http). Lirelle n\'ouvre que des pages de connexion chiffrées.</string>
+    <string name="error_browser_unavailable">Aucun navigateur n\'est disponible pour se connecter.</string>
+    <string name="error_session_expired">Votre session a expiré. Reconnectez-vous.</string>
+    <string name="error_server_failed">Le serveur rencontre un problème. Réessayez plus tard.</string>
+    <string name="error_unexpected">Une erreur est survenue côté serveur. Réessayez plus tard.</string>
+</resources>

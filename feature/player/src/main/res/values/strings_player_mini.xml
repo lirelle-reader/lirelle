@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- The mini-player above the navigation -->
+    <string name="player_mini_open">Open the player</string>
+    <string name="player_mini_rate">Rate</string>
+    <string name="player_mini_rate_book">Rate the book</string>
+    <!-- Stopping listening: the book is closed, the mini-player and the notification go away -->
+    <string name="player_stop_listening">Stop listening</string>
+    <string name="player_stopped">Listening stopped</string>
+    <string name="player_stopped_undo">Undo</string>
+    <!-- The mini-player while a read-along book's narration plays: the section heard -->
+    <string name="player_mini_narration">Narration · %1$s</string>
+    <!-- The mini-player at the end of a read-along book's narration -->
+    <string name="player_mini_narration_finished">Narration finished</string>
+    <!-- What a tap on the mini-player does during a narration: the book opens in the reader, where it is heard -->
+    <string name="player_mini_open_reader">Open the reader</string>
+</resources>

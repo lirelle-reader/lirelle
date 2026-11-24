@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- The panel at the end of the book -->
+    <string name="reader_end_finished">Vous avez terminé ce livre</string>
+    <string name="reader_end_rating">Votre note (facultative)</string>
+    <plurals name="reader_end_stars">
+        <item quantity="one">%1$d étoile</item>
+        <item quantity="many">%1$d étoiles</item>
+        <item quantity="other">%1$d étoiles</item>
+    </plurals>
+    <string name="reader_end_rating_failed">La note n\'a pas pu être enregistrée.</string>
+    <string name="reader_end_sending">Enregistrement de la note…</string>
+    <string name="reader_end_next_volume">Tome suivant</string>
+    <string name="reader_end_view">Voir</string>
+    <string name="reader_end_close">Fermer le livre</string>
+    <!-- The row for what the device keeps of the finished book -->
+    <string name="reader_end_device">Sur cet appareil</string>
+    <string name="reader_end_device_delete">Supprimer</string>
+    <string name="reader_end_device_deleted">Supprimé de cet appareil</string>
+    <string name="reader_end_device_undo">Annuler</string>
+</resources>

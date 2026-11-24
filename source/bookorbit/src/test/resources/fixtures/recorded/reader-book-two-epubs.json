@@ -1,0 +1,131 @@
+{
+ "addedAt": "2026-09-01T09:00:47.616Z",
+ "audioMetadata": {
+  "abridged": false,
+  "chapters": [
+   {
+    "startMs": 0,
+    "title": "Book 3"
+   },
+   {
+    "startMs": 3451000,
+    "title": "Book 4"
+   },
+   {
+    "startMs": 7134000,
+    "title": "Book 5"
+   }
+  ],
+  "durationSeconds": 9200,
+  "narrators": [
+   {
+    "displayOrder": 0,
+    "id": 13,
+    "name": "Narrator 1",
+    "sortName": null
+   }
+  ]
+ },
+ "authors": [
+  {
+   "id": 9,
+   "name": "Author 1",
+   "sortName": "Sort name 1"
+  }
+ ],
+ "collections": [],
+ "coverAspectRatio": "2/3",
+ "coverMedia": [
+  "ebook",
+  "audio"
+ ],
+ "coverVersion": "ebook:2026-09-01T09:06:24.790Z:2026-11-11T12:24:11.238Z",
+ "covers": {
+  "audio": {
+   "height": 1500,
+   "source": "custom",
+   "updatedAt": "2026-11-11T12:24:11.238Z",
+   "width": 1500
+  },
+  "ebook": {
+   "height": 800,
+   "source": "extracted",
+   "updatedAt": "2026-09-01T09:06:24.790Z",
+   "width": 500
+  }
+ },
+ "description": "Description 1",
+ "files": [
+  {
+   "contentVersion": "2026-11-11T13:01:19.621Z",
+   "createdAt": "2026-09-01T09:00:47.616Z",
+   "durationSeconds": null,
+   "fileHash": "0123456789abcdef0123456789abcdef",
+   "format": "epub",
+   "id": 10,
+   "mediaOverlay": {
+    "available": false,
+    "durationSeconds": null
+   },
+   "role": "content",
+   "sizeBytes": 211362
+  },
+  {
+   "contentVersion": "2026-11-11T13:01:20.971Z",
+   "createdAt": "2026-11-11T12:20:49.730Z",
+   "durationSeconds": 9200,
+   "fileHash": "0123456789abcdef0123456789abcdef",
+   "format": "m4b",
+   "id": 11,
+   "mediaOverlay": null,
+   "role": "content",
+   "sizeBytes": 296201802
+  },
+  {
+   "contentVersion": "2026-11-11T20:57:00.828Z",
+   "createdAt": "2026-11-11T12:22:47.179Z",
+   "durationSeconds": null,
+   "fileHash": "0123456789abcdef0123456789abcdef",
+   "format": "epub",
+   "id": 12,
+   "mediaOverlay": {
+    "available": true,
+    "durationSeconds": 9199.860000000015
+   },
+   "role": "primary",
+   "sizeBytes": 296255315
+  }
+ ],
+ "genres": [
+  "Genre 1"
+ ],
+ "id": 6,
+ "isbn10": "0000000000",
+ "isbn13": "9780000000002",
+ "language": "en",
+ "libraryId": 7,
+ "libraryName": "Library 1",
+ "pageCount": 96,
+ "personalNote": null,
+ "publishedDate": "2017-05-02",
+ "publishedYear": 2017,
+ "publisher": "Publisher 1",
+ "rating": null,
+ "readStatus": null,
+ "seriesId": 8,
+ "seriesIndex": "1",
+ "seriesMemberships": [
+  {
+   "displayOrder": 0,
+   "expectedBookCount": 8,
+   "seriesId": 8,
+   "seriesIndex": "1",
+   "seriesName": "Series 1"
+  }
+ ],
+ "seriesName": "Series 1",
+ "status": "present",
+ "subtitle": null,
+ "title": "Book 2",
+ "updatedAt": "2026-11-11T12:24:19.590Z"
+}

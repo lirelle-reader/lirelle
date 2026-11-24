@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="server_title">Connect to your server</string>
+    <string name="server_address_label">Server address</string>
+    <string name="server_address_hint">For example books.example.com</string>
+    <string name="server_continue">Continue</string>
+    <string name="server_error_invalid_address">Enter a valid address, for example books.example.com.</string>
+    <string name="cleartext_dialog_title">Unencrypted connection</string>
+    <string name="cleartext_dialog_message">%1$s uses HTTP. Your password and your session will travel unencrypted on the network. Only continue on a network you trust.</string>
+    <string name="cleartext_dialog_confirm">Continue anyway</string>
+    <string name="cleartext_dialog_cancel">Cancel</string>
+
+    <string name="sign_in_title">Sign in</string>
+    <string name="sign_in_change_server">Change server</string>
+    <string name="sign_in_cleartext_notice">Exchanges with this server are not encrypted.</string>
+    <string name="sign_in_username">Username</string>
+    <!-- The identifier field, for a server whose accounts are named by their email address. -->
+    <string name="sign_in_email">Email address</string>
+    <string name="sign_in_password">Password</string>
+    <string name="sign_in_submit">Sign in</string>
+    <string name="sign_in_with_provider">Continue with %1$s</string>
+    <string name="sign_in_no_method">This server offers no sign-in method that Lirelle can use.</string>
+    <string name="sign_in_retry">Try again</string>
+    <!-- Read by a screen reader: the button that closes the identity provider's page. -->
+    <string name="provider_page_close">Close</string>
+
+    <string name="add_profile_title">Add a profile</string>
+    <string name="add_profile_text">Another account, on this server or another. Your profiles stay separate.</string>
+    <string name="sign_in_again_title">Sign in again</string>
+    <!-- The profile: its username, then the kind of its server ("camille · BookOrbit"). -->
+    <string name="sign_in_back_to_profile">Back to %1$s</string>
+    <string name="sign_in_back">Back</string>
+
+    <string name="error_server_unreachable">Could not reach the server. Check the address and your connection.</string>
+    <string name="error_unknown_server">This address is not a BookOrbit or Komga server.</string>
+    <string name="error_invalid_credentials">Wrong username or password.</string>
+    <!-- The same, for a server whose accounts are named by their email address. -->
+    <string name="error_invalid_email_credentials">Wrong email address or password.</string>
+    <plurals name="error_account_locked">
+        <item quantity="one">Account locked after too many attempts. Try again in %d minute.</item>
+        <item quantity="other">Account locked after too many attempts. Try again in %d minutes.</item>
+    </plurals>
+    <string name="error_too_many_attempts">Too many attempts. Wait a moment before trying again.</string>
+    <string name="error_default_password">This account still uses its default password. Change it in the BookOrbit web interface, then sign in again.</string>
+    <string name="error_oidc_cancelled">Sign-in was cancelled.</string>
+    <string name="error_oidc_refused">The identity provider or the server refused this sign-in.</string>
+    <!-- The account was recognised, but the server would not finish the sign-in. -->
+    <string name="error_sign_in_refused">The sign-in did not succeed.</string>
+    <!-- The identity provider's flow led to a sign-in page without encryption, which the app did not show. -->
+    <string name="error_unencrypted_sign_in_page">This sign-in page is not encrypted (http). Lirelle only opens encrypted sign-in pages.</string>
+    <string name="error_browser_unavailable">No browser is available to sign in.</string>
+    <string name="error_session_expired">Your session has expired. Sign in again.</string>
+    <string name="error_server_failed">The server has a problem. Try again later.</string>
+    <string name="error_unexpected">Something went wrong on the server. Try again later.</string>
+</resources>

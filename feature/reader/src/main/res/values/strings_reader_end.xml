@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- The panel at the end of the book -->
+    <string name="reader_end_finished">You finished this book</string>
+    <string name="reader_end_rating">Your rating (optional)</string>
+    <plurals name="reader_end_stars">
+        <item quantity="one">%1$d star</item>
+        <item quantity="other">%1$d stars</item>
+    </plurals>
+    <string name="reader_end_rating_failed">The rating could not be saved.</string>
+    <string name="reader_end_sending">Saving the rating…</string>
+    <string name="reader_end_next_volume">Next volume</string>
+    <string name="reader_end_view">View</string>
+    <string name="reader_end_close">Close the book</string>
+    <!-- The row for what the device keeps of the finished book -->
+    <string name="reader_end_device">On this device</string>
+    <string name="reader_end_device_delete">Delete</string>
+    <string name="reader_end_device_deleted">Deleted from this device</string>
+    <string name="reader_end_device_undo">Undo</string>
+</resources>

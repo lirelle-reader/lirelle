@@ -1,0 +1,23 @@
+<resources>
+    <string name="search_hint">Titre, auteur ou série</string>
+    <string name="search_clear">Effacer la recherche</string>
+    <string name="search_recent">Recherches récentes</string>
+    <string name="search_recent_clear">Effacer</string>
+    <string name="search_recent_clear_description">Effacer les recherches récentes</string>
+    <string name="search_recent_remove">Retirer %1$s des recherches récentes</string>
+    <string name="search_genres">Genres</string>
+    <string name="search_genre_description">%1$s, %2$s</string>
+    <string name="search_books">Livres</string>
+    <string name="search_series">Séries</string>
+    <string name="search_authors">Auteurs</string>
+    <string name="search_see_all_count">Tout voir (%1$d)</string>
+    <string name="search_nothing">Rien ne correspond à « %1$s ».</string>
+    <string name="search_series_title">Séries : « %1$s »</string>
+    <string name="search_authors_title">Auteurs : « %1$s »</string>
+    <string name="search_books_title">Livres : « %1$s »</string>
+    <plurals name="search_book_count">
+        <item quantity="one">%1$d livre</item>
+        <item quantity="many">%1$d livres</item>
+        <item quantity="other">%1$d livres</item>
+    </plurals>
+</resources>

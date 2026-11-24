@@ -1,0 +1,622 @@
+{
+ "addedAt": "2026-11-11T13:25:52.033Z",
+ "audioMetadata": {
+  "abridged": false,
+  "chapters": [
+   {
+    "startMs": 0,
+    "title": "Book 122"
+   },
+   {
+    "startMs": 3382000,
+    "title": "Book 123"
+   },
+   {
+    "startMs": 5127000,
+    "title": "Book 124"
+   },
+   {
+    "startMs": 6304000,
+    "title": "Book 125"
+   },
+   {
+    "startMs": 7403000,
+    "title": "Book 126"
+   },
+   {
+    "startMs": 7999000,
+    "title": "Book 127"
+   },
+   {
+    "startMs": 8266000,
+    "title": "Book 128"
+   },
+   {
+    "startMs": 8864000,
+    "title": "Book 129"
+   },
+   {
+    "startMs": 10226000,
+    "title": "Book 130"
+   },
+   {
+    "startMs": 14419000,
+    "title": "Book 131"
+   },
+   {
+    "startMs": 16720000,
+    "title": "Book 132"
+   },
+   {
+    "startMs": 18574000,
+    "title": "Book 133"
+   },
+   {
+    "startMs": 18727000,
+    "title": "Book 134"
+   },
+   {
+    "startMs": 21133000,
+    "title": "Book 135"
+   },
+   {
+    "startMs": 21428000,
+    "title": "Book 136"
+   },
+   {
+    "startMs": 22925000,
+    "title": "Book 137"
+   },
+   {
+    "startMs": 24265000,
+    "title": "Book 138"
+   },
+   {
+    "startMs": 24408000,
+    "title": "Book 139"
+   },
+   {
+    "startMs": 26379000,
+    "title": "Book 140"
+   },
+   {
+    "startMs": 27292000,
+    "title": "Book 141"
+   },
+   {
+    "startMs": 28019000,
+    "title": "Book 142"
+   },
+   {
+    "startMs": 28353000,
+    "title": "Book 143"
+   },
+   {
+    "startMs": 29552000,
+    "title": "Book 144"
+   },
+   {
+    "startMs": 30566000,
+    "title": "Book 145"
+   },
+   {
+    "startMs": 31551000,
+    "title": "Book 146"
+   },
+   {
+    "startMs": 32921000,
+    "title": "Book 147"
+   },
+   {
+    "startMs": 33977000,
+    "title": "Book 148"
+   },
+   {
+    "startMs": 35546000,
+    "title": "Book 149"
+   },
+   {
+    "startMs": 35803000,
+    "title": "Book 150"
+   },
+   {
+    "startMs": 36243000,
+    "title": "Book 151"
+   },
+   {
+    "startMs": 36788000,
+    "title": "Book 152"
+   },
+   {
+    "startMs": 38251000,
+    "title": "Book 153"
+   },
+   {
+    "startMs": 39446000,
+    "title": "Book 154"
+   },
+   {
+    "startMs": 40830000,
+    "title": "Book 155"
+   },
+   {
+    "startMs": 43548000,
+    "title": "Book 156"
+   },
+   {
+    "startMs": 45268000,
+    "title": "Book 157"
+   },
+   {
+    "startMs": 48111000,
+    "title": "Book 158"
+   },
+   {
+    "startMs": 50744000,
+    "title": "Book 159"
+   },
+   {
+    "startMs": 51366000,
+    "title": "Book 160"
+   },
+   {
+    "startMs": 51450000,
+    "title": "Book 161"
+   }
+  ],
+  "durationSeconds": 51750,
+  "narrators": [
+   {
+    "displayOrder": 0,
+    "id": 304,
+    "name": "Narrator 1",
+    "sortName": null
+   }
+  ]
+ },
+ "authors": [
+  {
+   "id": 303,
+   "name": "Author 1",
+   "sortName": "Sort name 6"
+  }
+ ],
+ "collections": [
+  {
+   "id": 286,
+   "name": "Name 1"
+  }
+ ],
+ "coverAspectRatio": "2/3",
+ "coverMedia": [
+  "ebook",
+  "audio"
+ ],
+ "coverVersion": "ebook:2026-11-11T13:26:04.186Z:2026-11-11T13:31:59.146Z",
+ "covers": {
+  "audio": {
+   "height": 2400,
+   "source": "custom",
+   "updatedAt": "2026-11-11T13:31:59.146Z",
+   "width": 2400
+  },
+  "ebook": {
+   "height": 2172,
+   "source": "extracted",
+   "updatedAt": "2026-11-11T13:26:04.186Z",
+   "width": 1400
+  }
+ },
+ "description": "Description 6",
+ "files": [
+  {
+   "createdAt": "2026-11-11T13:30:20.820Z",
+   "durationSeconds": 3382,
+   "format": "mp3",
+   "id": 5,
+   "mediaOverlay": null,
+   "role": "content",
+   "sizeBytes": 27807684
+  },
+  {
+   "createdAt": "2026-11-11T13:30:32.871Z",
+   "durationSeconds": 1745,
+   "format": "mp3",
+   "id": 6,
+   "mediaOverlay": null,
+   "role": "content",
+   "sizeBytes": 14711768
+  },
+  {
+   "createdAt": "2026-11-11T13:30:44.897Z",
+   "durationSeconds": 1177,
+   "format": "mp3",
+   "id": 7,
+   "mediaOverlay": null,
+   "role": "content",
+   "sizeBytes": 10167925
+  },
+  {
+   "createdAt": "2026-11-11T13:30:56.932Z",
+   "durationSeconds": 1099,
+   "format": "mp3",
+   "id": 8,
+   "mediaOverlay": null,
+   "role": "content",
+   "sizeBytes": 9543285
+  },
+  {
+   "createdAt": "2026-11-11T13:31:08.964Z",
+   "durationSeconds": 596,
+   "format": "mp3",
+   "id": 9,
+   "mediaOverlay": null,
+   "role": "content",
+   "sizeBytes": 5525235
+  },
+  {
+   "createdAt": "2026-11-11T13:31:09.001Z",
+   "durationSeconds": 267,
+   "format": "mp3",
+   "id": 10,
+   "mediaOverlay": null,
+   "role": "content",
+   "sizeBytes": 2893137
+  },
+  {
+   "createdAt": "2026-11-11T13:31:09.019Z",
+   "durationSeconds": 598,
+   "format": "mp3",
+   "id": 11,
+   "mediaOverlay": null,
+   "role": "content",
+   "sizeBytes": 5541117
+  },
+  {
+   "createdAt": "2026-11-11T13:31:09.036Z",
+   "durationSeconds": 1362,
+   "format": "mp3",
+   "id": 12,
+   "mediaOverlay": null,
+   "role": "content",
+   "sizeBytes": 11650844
+  },
+  {
+   "createdAt": "2026-11-11T13:31:09.052Z",
+   "durationSeconds": 4193,
+   "format": "mp3",
+   "id": 13,
+   "mediaOverlay": null,
+   "role": "content",
+   "sizeBytes": 34296499
+  },
+  {
+   "createdAt": "2026-11-11T13:31:09.068Z",
+   "durationSeconds": 2301,
+   "format": "mp3",
+   "id": 14,
+   "mediaOverlay": null,
+   "role": "content",
+   "sizeBytes": 19160736
+  },
+  {
+   "createdAt": "2026-11-11T13:31:09.083Z",
+   "durationSeconds": 1854,
+   "format": "mp3",
+   "id": 15,
+   "mediaOverlay": null,
+   "role": "content",
+   "sizeBytes": 15587603
+  },
+  {
+   "createdAt": "2026-11-11T13:31:09.099Z",
+   "durationSeconds": 153,
+   "format": "mp3",
+   "id": 16,
+   "mediaOverlay": null,
+   "role": "content",
+   "sizeBytes": 1979270
+  },
+  {
+   "createdAt": "2026-11-11T13:31:09.115Z",
+   "durationSeconds": 2406,
+   "format": "mp3",
+   "id": 17,
+   "mediaOverlay": null,
+   "role": "content",
+   "sizeBytes": 20005222
+  },
+  {
+   "createdAt": "2026-11-11T13:31:09.131Z",
+   "durationSeconds": 295,
+   "format": "mp3",
+   "id": 18,
+   "mediaOverlay": null,
+   "role": "content",
+   "sizeBytes": 3112357
+  },
+  {
+   "createdAt": "2026-11-11T13:31:09.147Z",
+   "durationSeconds": 1497,
+   "format": "mp3",
+   "id": 19,
+   "mediaOverlay": null,
+   "role": "content",
+   "sizeBytes": 12731688
+  },
+  {
+   "createdAt": "2026-11-11T13:31:09.168Z",
+   "durationSeconds": 1340,
+   "format": "mp3",
+   "id": 20,
+   "mediaOverlay": null,
+   "role": "content",
+   "sizeBytes": 11472586
+  },
+  {
+   "createdAt": "2026-11-11T13:31:09.184Z",
+   "durationSeconds": 143,
+   "format": "mp3",
+   "id": 21,
+   "mediaOverlay": null,
+   "role": "content",
+   "sizeBytes": 1894842
+  },
+  {
+   "createdAt": "2026-11-11T13:31:09.200Z",
+   "durationSeconds": 1971,
+   "format": "mp3",
+   "id": 22,
+   "mediaOverlay": null,
+   "role": "content",
+   "sizeBytes": 16521115
+  },
+  {
+   "createdAt": "2026-11-11T13:31:09.216Z",
+   "durationSeconds": 913,
+   "format": "mp3",
+   "id": 23,
+   "mediaOverlay": null,
+   "role": "content",
+   "sizeBytes": 8060158
+  },
+  {
+   "createdAt": "2026-11-11T13:31:09.231Z",
+   "durationSeconds": 727,
+   "format": "mp3",
+   "id": 24,
+   "mediaOverlay": null,
+   "role": "content",
+   "sizeBytes": 6568880
+  },
+  {
+   "createdAt": "2026-11-11T13:31:09.247Z",
+   "durationSeconds": 334,
+   "format": "mp3",
+   "id": 25,
+   "mediaOverlay": null,
+   "role": "content",
+   "sizeBytes": 3429379
+  },
+  {
+   "createdAt": "2026-11-11T13:31:09.262Z",
+   "durationSeconds": 1199,
+   "format": "mp3",
+   "id": 26,
+   "mediaOverlay": null,
+   "role": "content",
+   "sizeBytes": 10345350
+  },
+  {
+   "createdAt": "2026-11-11T13:31:09.277Z",
+   "durationSeconds": 1014,
+   "format": "mp3",
+   "id": 27,
+   "mediaOverlay": null,
+   "role": "content",
+   "sizeBytes": 8862640
+  },
+  {
+   "createdAt": "2026-11-11T13:31:09.292Z",
+   "durationSeconds": 985,
+   "format": "mp3",
+   "id": 28,
+   "mediaOverlay": null,
+   "role": "content",
+   "sizeBytes": 8636733
+  },
+  {
+   "createdAt": "2026-11-11T13:31:09.308Z",
+   "durationSeconds": 1370,
+   "format": "mp3",
+   "id": 29,
+   "mediaOverlay": null,
+   "role": "content",
+   "sizeBytes": 11716047
+  },
+  {
+   "createdAt": "2026-11-11T13:31:09.328Z",
+   "durationSeconds": 1056,
+   "format": "mp3",
+   "id": 30,
+   "mediaOverlay": null,
+   "role": "content",
+   "sizeBytes": 9204948
+  },
+  {
+   "createdAt": "2026-11-11T13:31:09.350Z",
+   "durationSeconds": 1569,
+   "format": "mp3",
+   "id": 31,
+   "mediaOverlay": null,
+   "role": "content",
+   "sizeBytes": 13305337
+  },
+  {
+   "createdAt": "2026-11-11T13:31:09.381Z",
+   "durationSeconds": 257,
+   "format": "mp3",
+   "id": 32,
+   "mediaOverlay": null,
+   "role": "content",
+   "sizeBytes": 2809337
+  },
+  {
+   "createdAt": "2026-11-11T13:31:09.398Z",
+   "durationSeconds": 440,
+   "format": "mp3",
+   "id": 33,
+   "mediaOverlay": null,
+   "role": "content",
+   "sizeBytes": 4270313
+  },
+  {
+   "createdAt": "2026-11-11T13:31:09.416Z",
+   "durationSeconds": 545,
+   "format": "mp3",
+   "id": 34,
+   "mediaOverlay": null,
+   "role": "content",
+   "sizeBytes": 5116262
+  },
+  {
+   "createdAt": "2026-11-11T13:31:09.434Z",
+   "durationSeconds": 1463,
+   "format": "mp3",
+   "id": 35,
+   "mediaOverlay": null,
+   "role": "content",
+   "sizeBytes": 12460850
+  },
+  {
+   "createdAt": "2026-11-11T13:31:09.451Z",
+   "durationSeconds": 1195,
+   "format": "mp3",
+   "id": 36,
+   "mediaOverlay": null,
+   "role": "content",
+   "sizeBytes": 10315257
+  },
+  {
+   "createdAt": "2026-11-11T13:31:09.468Z",
+   "durationSeconds": 1384,
+   "format": "mp3",
+   "id": 37,
+   "mediaOverlay": null,
+   "role": "content",
+   "sizeBytes": 11828687
+  },
+  {
+   "createdAt": "2026-11-11T13:31:09.485Z",
+   "durationSeconds": 2718,
+   "format": "mp3",
+   "id": 38,
+   "mediaOverlay": null,
+   "role": "content",
+   "sizeBytes": 22493960
+  },
+  {
+   "createdAt": "2026-11-11T13:31:09.501Z",
+   "durationSeconds": 1720,
+   "format": "mp3",
+   "id": 39,
+   "mediaOverlay": null,
+   "role": "content",
+   "sizeBytes": 14515747
+  },
+  {
+   "createdAt": "2026-11-11T13:31:09.516Z",
+   "durationSeconds": 2843,
+   "format": "mp3",
+   "id": 40,
+   "mediaOverlay": null,
+   "role": "content",
+   "sizeBytes": 23501660
+  },
+  {
+   "createdAt": "2026-11-11T13:31:09.532Z",
+   "durationSeconds": 2633,
+   "format": "mp3",
+   "id": 41,
+   "mediaOverlay": null,
+   "role": "content",
+   "sizeBytes": 21813941
+  },
+  {
+   "createdAt": "2026-11-11T13:31:09.547Z",
+   "durationSeconds": 622,
+   "format": "mp3",
+   "id": 42,
+   "mediaOverlay": null,
+   "role": "content",
+   "sizeBytes": 5732543
+  },
+  {
+   "createdAt": "2026-11-11T13:31:09.562Z",
+   "durationSeconds": 84,
+   "format": "mp3",
+   "id": 43,
+   "mediaOverlay": null,
+   "role": "content",
+   "sizeBytes": 1427355
+  },
+  {
+   "createdAt": "2026-11-11T13:31:09.579Z",
+   "durationSeconds": 300,
+   "format": "mp3",
+   "id": 44,
+   "mediaOverlay": null,
+   "role": "content",
+   "sizeBytes": 3153108
+  },
+  {
+   "createdAt": "2026-11-11T13:26:04.073Z",
+   "durationSeconds": null,
+   "format": "epub",
+   "id": 4,
+   "mediaOverlay": {
+    "available": false,
+    "durationSeconds": null
+   },
+   "role": "content",
+   "sizeBytes": 1278329
+  },
+  {
+   "createdAt": "2026-11-11T13:40:59.633Z",
+   "durationSeconds": null,
+   "format": "epub",
+   "id": 3,
+   "mediaOverlay": {
+    "available": true,
+    "durationSeconds": 51752.30000000005
+   },
+   "role": "primary",
+   "sizeBytes": 415560339
+  }
+ ],
+ "genres": [
+  "Genre 1",
+  "Genre 2"
+ ],
+ "id": 1,
+ "isbn10": "0000000000",
+ "isbn13": "9780000000002",
+ "language": "fr",
+ "libraryId": 2,
+ "libraryName": "Library 1",
+ "pageCount": 389,
+ "personalNote": null,
+ "publishedDate": "1993-04-02",
+ "publishedYear": 1993,
+ "publisher": "Publisher 1",
+ "rating": null,
+ "readStatus": null,
+ "seriesId": null,
+ "seriesIndex": null,
+ "seriesMemberships": [],
+ "seriesName": null,
+ "status": "present",
+ "subtitle": null,
+ "title": "Book 1",
+ "updatedAt": "2026-11-11T13:40:59.636Z"
+}

@@ -1,0 +1,75 @@
+foliate-js
+Source:  https://github.com/johnfactotum/foliate-js
+Commit:  78914aef4466eb960965702401634c2cb348e9b1
+Date:    2026-05-01T19:24:25Z (committer date)
+Licence: MIT, see LICENSE
+
+Files taken, byte for byte, from that commit:
+  view.js  epub.js  epubcfi.js  paginator.js  fixed-layout.js
+  progress.js  overlayer.js  text-walker.js  search.js  footnotes.js  LICENSE
+  mobi.js  fb2.js  vendor/fflate.js
+
+vendor/fflate.js is fflate (https://github.com/101arrowz/fflate, MIT), built
+and minified by the engine's author and kept in the engine's repository: it is
+taken from there as the other files are, and inflates the fonts of a Kindle
+book. Its licence is in vendor/LICENSE-fflate, a file of this project: the
+engine's repository carries the code without its notice.
+
+Local changes: none.
+
+The project publishes no release, so the commit is the version. To update:
+fetch the same files at the new commit, replace them here, change the commit
+and the date above, and run the tests in reader-tests/.
+
+What the page works around instead of patching (see ../reader.js):
+  - a section that fails to load is noticed by wrapping each section's load();
+  - transitional relocations (blank edge pages, the offset left by the previous
+    section) are filtered, and bursts are coalesced;
+  - the first scroll after a navigation in scrolled flow is not reported by the
+    paginator, so the page nudges it by one pixel;
+  - a search still being consumed keeps adding its results after a new one
+    starts, so ../find.js runs one search at a time and waits for the old one
+    to stop (at the end of the section it is matching) before the next begins;
+  - footnotes.js cancels a link before it knows whether it leads to a note: a
+    missing target on its heuristic path then fails with the link already
+    cancelled, and a missing fragment on its certain path shows the whole file.
+    ../notes.js follows the link itself in both cases, and also when what would
+    be shown is longer than a note;
+  - the loader of epub.js counts a second user of a loaded section only once
+    (`ref(href)` without a parent), so closing the second note view that
+    showed the section on screen revoked the main view's document: ../reader.js
+    counts the users of each section itself, next to the wrapped load(), and
+    lets the engine load a section for the first and unload it after the last;
+  - a paginator closed while its section loads, or before its next frame or
+    its fonts, fails on its missing view (destroy(), setStyles(), fonts.ready)
+    and keeps the section loaded: ../notes.js keeps a note view it lets go of
+    in the page, unseen, until the engine is done with it;
+  - a paginator lays its section out again on each change of its size, also
+    when the document on screen has no body (its book closed while it loaded),
+    and fails there: ../reader.js wraps render() to pass such a document by;
+  - a turn locks the paginator, which then drops any other navigation without a
+    word: ../reader.js has a move of the host wait for a turn under way;
+  - mobi.js opens a Kindle book whose text is encrypted and shows what it
+    decodes of it: ../formats.js reads the encryption field of the book's
+    first record itself and refuses the book; it also reads past the end of a
+    file cut short as if nothing were there, and fb2.js makes a book of what
+    the browser could parse of a file that is not well-formed: ../formats.js
+    checks the list of records of the one and parses the other first, and
+    refuses a book in which nothing can be read;
+  - mobi.js gives the documents of a Kindle book their addresses itself, without
+    the `data` event epub.js sends, so resource hints cannot be taken out there:
+    ../formats.js replaces the book's `serializer`, through which each document
+    goes on its way to an address, by one that takes them out first;
+  - the sections of mobi.js and fb2.js have no unload(), and some of a KF8 book
+    no load(): the wrapping of ../reader.js takes them as they are;
+  - a KF8 book resolves a link in its own time (resolveHref() is asynchronous):
+    ../reader.js waits for it where it labels the sections. ../notes.js does
+    not: a link to a note of such a book is followed, never shown in the panel.
+
+What is left as it is: the engine registers and outlines all the results of a
+section before handing them over, so when the cap of ../find.js lands in the
+middle of a section or just before one with results, or a search stops while a
+section is being matched, that section may be outlined with results the host
+was never sent. And when a new book gives up waiting for the old book's search
+(after 8 s), that search, resuming late, may leave outlines of the old book in
+the new one until the next search there.

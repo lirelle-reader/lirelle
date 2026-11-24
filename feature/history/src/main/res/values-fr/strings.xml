@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="history_title">Historique</string>
+    <string name="history_back">Retour</string>
+    <string name="history_period_all">Tout</string>
+    <string name="history_outcome_completed">Terminées</string>
+    <string name="history_outcome_skimmed">Survolées</string>
+    <string name="history_outcome_abandoned">Abandonnées</string>
+    <string name="history_total_reads">Lectures</string>
+    <string name="history_total_books">Livres</string>
+    <string name="history_total_pages">Pages</string>
+    <string name="history_total_time">Temps</string>
+    <string name="history_total_days">Jours lus</string>
+    <string name="history_total_rating">Note moy.</string>
+    <string name="history_goal">Objectif %1$d / %2$d</string>
+    <string name="history_record_longest_book">Plus long</string>
+    <string name="history_record_most_reread">Plus relu</string>
+    <string name="history_record_longest_read">Lecture la plus longue</string>
+    <string name="history_record_fastest">Plus rapide</string>
+    <string name="history_month_undated">Sans date</string>
+    <string name="history_duration_hours">%d h</string>
+    <string name="history_duration_minutes">%d min</string>
+    <string name="history_rating_description">Noté %d sur 5</string>
+    <string name="history_load_more_retry">Appuyer pour charger plus</string>
+    <string name="history_empty">Aucune lecture terminée</string>
+    <string name="history_empty_filtered">Rien sous ce filtre</string>
+    <plurals name="history_read_number">
+        <item quantity="one">%dʳᵉ lecture</item>
+        <item quantity="many">%dᵉ lecture</item>
+        <item quantity="other">%dᵉ lecture</item>
+    </plurals>
+    <plurals name="history_reads_count">
+        <item quantity="one">%d lecture</item>
+        <item quantity="many">%d lectures</item>
+        <item quantity="other">%d lectures</item>
+    </plurals>
+    <plurals name="history_pages_count">
+        <item quantity="one">%d page</item>
+        <item quantity="many">%d pages</item>
+        <item quantity="other">%d pages</item>
+    </plurals>
+    <plurals name="history_session_count">
+        <item quantity="one">%d séance</item>
+        <item quantity="many">%d séances</item>
+        <item quantity="other">%d séances</item>
+    </plurals>
+    <plurals name="history_highlight_count">
+        <item quantity="one">%d surlignage</item>
+        <item quantity="many">%d surlignages</item>
+        <item quantity="other">%d surlignages</item>
+    </plurals>
+    <plurals name="history_journal_count">
+        <item quantity="one">%d note</item>
+        <item quantity="many">%d notes</item>
+        <item quantity="other">%d notes</item>
+    </plurals>
+    <plurals name="history_record_pages">
+        <item quantity="one">%d p</item>
+        <item quantity="many">%d p</item>
+        <item quantity="other">%d p</item>
+    </plurals>
+    <plurals name="history_record_days">
+        <item quantity="one">%d j</item>
+        <item quantity="many">%d j</item>
+        <item quantity="other">%d j</item>
+    </plurals>
+    <string name="history_record_rate">%d p/j</string>
+    <plurals name="history_record_times">
+        <item quantity="one">%d×</item>
+        <item quantity="many">%d×</item>
+        <item quantity="other">%d×</item>
+    </plurals>
+    <string name="read_detail_title">Lecture</string>
+    <string name="read_detail_dates">Période</string>
+    <string name="read_detail_dates_range">%1$s – %2$s</string>
+    <string name="read_detail_time">Temps de lecture</string>
+    <string name="read_detail_read_number">N° de lecture</string>
+    <string name="read_detail_sessions">Séances</string>
+    <string name="read_detail_rate_hint">Touchez une étoile pour noter</string>
+    <string name="read_detail_rate_star">Noter %d sur 5</string>
+    <string name="read_detail_rate_error">La note n’a pas pu être enregistrée</string>
+    <string name="read_detail_highlights">Surlignages</string>
+    <string name="read_detail_journal">Carnet</string>
+    <string name="read_detail_open_book">Ouvrir la fiche</string>
+    <string name="read_detail_untitled">Livre inconnu</string>
+    <string name="read_detail_removed">Retiré du serveur</string>
+    <string name="history_removed_short">Retiré</string>
+</resources>

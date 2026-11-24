@@ -1,0 +1,78 @@
+package app.tfdn.lirelle.feature.library.authors
+
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import androidx.paging.PagingData
+import androidx.paging.cachedIn
+import app.tfdn.lirelle.core.library.LibraryPreferences
+import app.tfdn.lirelle.core.library.LibraryRepository
+import app.tfdn.lirelle.core.library.model.Author
+import app.tfdn.lirelle.core.library.model.AuthorSort
+import app.tfdn.lirelle.core.library.model.SortDirection
+import app.tfdn.lirelle.core.network.ApiError
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.shareIn
+import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
+
+data class AuthorsUiState(
+    val sort: AuthorSort = AuthorSort.Name,
+    val direction: SortDirection = SortDirection.Ascending,
+    val total: Int? = null,
+)
+
+internal val AuthorSort.defaultDirection: SortDirection
+    get() = if (this == AuthorSort.Name) SortDirection.Ascending else SortDirection.Descending
+
+private const val PreferencesKey = "authors"
+
+@OptIn(ExperimentalCoroutinesApi::class)
+@HiltViewModel
+class AuthorsViewModel @Inject constructor(
+    private val repository: LibraryRepository,
+    private val preferences: LibraryPreferences,
+) : ViewModel() {
+
+    private val order: Flow<Pair<AuthorSort, SortDirection>> = preferences.view(PreferencesKey).map { prefs ->
+        val sort = prefs.sort?.let { name -> AuthorSort.entries.firstOrNull { it.name == name } } ?: AuthorSort.Name
+        val direction = when (prefs.descending) {
+            null -> sort.defaultDirection
+            true -> SortDirection.Descending
+            false -> SortDirection.Ascending
+        }
+        sort to direction
+    }.distinctUntilChanged()
+
+    private val lists = order
+        .map { (sort, direction) -> repository.authors(sort, direction) }
+        .shareIn(viewModelScope, SharingStarted.Eagerly, replay = 1)
+
+    val authors: Flow<PagingData<Author>> = lists.flatMapLatest { it.items }.cachedIn(viewModelScope)
+
+    val state: StateFlow<AuthorsUiState> = combine(order, lists.flatMapLatest { it.total }) { order, total ->
+        AuthorsUiState(order.first, order.second, total)
+    }.stateIn(viewModelScope, SharingStarted.Eagerly, AuthorsUiState())
+
+    fun onSort(sort: AuthorSort) {
+        val current = state.value
+        val descending = if (sort == current.sort) {
+            current.direction == SortDirection.Ascending
+        } else {
+            sort.defaultDirection == SortDirection.Descending
+        }
+        viewModelScope.launch {
+            preferences.update(PreferencesKey) { it.copy(sort = sort.name, descending = descending) }
+        }
+    }
+
+    fun errorOf(throwable: Throwable): ApiError = repository.errorOf(throwable)
+}

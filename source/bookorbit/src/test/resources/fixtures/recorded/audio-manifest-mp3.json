@@ -1,0 +1,741 @@
+{
+ "assets": [
+  {
+   "assetId": "aud_49",
+   "durationMs": 3382000,
+   "etag": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
+   "fileId": 50,
+   "format": "mp3",
+   "sequence": 0,
+   "sizeBytes": 27807684
+  },
+  {
+   "assetId": "aud_51",
+   "durationMs": 1745000,
+   "etag": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
+   "fileId": 52,
+   "format": "mp3",
+   "sequence": 1,
+   "sizeBytes": 14711768
+  },
+  {
+   "assetId": "aud_53",
+   "durationMs": 1177000,
+   "etag": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
+   "fileId": 54,
+   "format": "mp3",
+   "sequence": 2,
+   "sizeBytes": 10167925
+  },
+  {
+   "assetId": "aud_55",
+   "durationMs": 1099000,
+   "etag": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
+   "fileId": 56,
+   "format": "mp3",
+   "sequence": 3,
+   "sizeBytes": 9543285
+  },
+  {
+   "assetId": "aud_57",
+   "durationMs": 596000,
+   "etag": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
+   "fileId": 58,
+   "format": "mp3",
+   "sequence": 4,
+   "sizeBytes": 5525235
+  },
+  {
+   "assetId": "aud_59",
+   "durationMs": 267000,
+   "etag": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
+   "fileId": 60,
+   "format": "mp3",
+   "sequence": 5,
+   "sizeBytes": 2893137
+  },
+  {
+   "assetId": "aud_61",
+   "durationMs": 598000,
+   "etag": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
+   "fileId": 62,
+   "format": "mp3",
+   "sequence": 6,
+   "sizeBytes": 5541117
+  },
+  {
+   "assetId": "aud_63",
+   "durationMs": 1362000,
+   "etag": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
+   "fileId": 64,
+   "format": "mp3",
+   "sequence": 7,
+   "sizeBytes": 11650844
+  },
+  {
+   "assetId": "aud_65",
+   "durationMs": 4193000,
+   "etag": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
+   "fileId": 66,
+   "format": "mp3",
+   "sequence": 8,
+   "sizeBytes": 34296499
+  },
+  {
+   "assetId": "aud_67",
+   "durationMs": 2301000,
+   "etag": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
+   "fileId": 68,
+   "format": "mp3",
+   "sequence": 9,
+   "sizeBytes": 19160736
+  },
+  {
+   "assetId": "aud_69",
+   "durationMs": 1854000,
+   "etag": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
+   "fileId": 70,
+   "format": "mp3",
+   "sequence": 10,
+   "sizeBytes": 15587603
+  },
+  {
+   "assetId": "aud_71",
+   "durationMs": 153000,
+   "etag": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
+   "fileId": 72,
+   "format": "mp3",
+   "sequence": 11,
+   "sizeBytes": 1979270
+  },
+  {
+   "assetId": "aud_73",
+   "durationMs": 2406000,
+   "etag": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
+   "fileId": 74,
+   "format": "mp3",
+   "sequence": 12,
+   "sizeBytes": 20005222
+  },
+  {
+   "assetId": "aud_75",
+   "durationMs": 295000,
+   "etag": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
+   "fileId": 76,
+   "format": "mp3",
+   "sequence": 13,
+   "sizeBytes": 3112357
+  },
+  {
+   "assetId": "aud_77",
+   "durationMs": 1497000,
+   "etag": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
+   "fileId": 78,
+   "format": "mp3",
+   "sequence": 14,
+   "sizeBytes": 12731688
+  },
+  {
+   "assetId": "aud_79",
+   "durationMs": 1340000,
+   "etag": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
+   "fileId": 80,
+   "format": "mp3",
+   "sequence": 15,
+   "sizeBytes": 11472586
+  },
+  {
+   "assetId": "aud_81",
+   "durationMs": 143000,
+   "etag": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
+   "fileId": 82,
+   "format": "mp3",
+   "sequence": 16,
+   "sizeBytes": 1894842
+  },
+  {
+   "assetId": "aud_83",
+   "durationMs": 1971000,
+   "etag": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
+   "fileId": 84,
+   "format": "mp3",
+   "sequence": 17,
+   "sizeBytes": 16521115
+  },
+  {
+   "assetId": "aud_85",
+   "durationMs": 913000,
+   "etag": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
+   "fileId": 86,
+   "format": "mp3",
+   "sequence": 18,
+   "sizeBytes": 8060158
+  },
+  {
+   "assetId": "aud_87",
+   "durationMs": 727000,
+   "etag": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
+   "fileId": 88,
+   "format": "mp3",
+   "sequence": 19,
+   "sizeBytes": 6568880
+  },
+  {
+   "assetId": "aud_89",
+   "durationMs": 334000,
+   "etag": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
+   "fileId": 90,
+   "format": "mp3",
+   "sequence": 20,
+   "sizeBytes": 3429379
+  },
+  {
+   "assetId": "aud_91",
+   "durationMs": 1199000,
+   "etag": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
+   "fileId": 92,
+   "format": "mp3",
+   "sequence": 21,
+   "sizeBytes": 10345350
+  },
+  {
+   "assetId": "aud_93",
+   "durationMs": 1014000,
+   "etag": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
+   "fileId": 94,
+   "format": "mp3",
+   "sequence": 22,
+   "sizeBytes": 8862640
+  },
+  {
+   "assetId": "aud_95",
+   "durationMs": 985000,
+   "etag": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
+   "fileId": 96,
+   "format": "mp3",
+   "sequence": 23,
+   "sizeBytes": 8636733
+  },
+  {
+   "assetId": "aud_97",
+   "durationMs": 1370000,
+   "etag": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
+   "fileId": 98,
+   "format": "mp3",
+   "sequence": 24,
+   "sizeBytes": 11716047
+  },
+  {
+   "assetId": "aud_99",
+   "durationMs": 1056000,
+   "etag": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
+   "fileId": 100,
+   "format": "mp3",
+   "sequence": 25,
+   "sizeBytes": 9204948
+  },
+  {
+   "assetId": "aud_101",
+   "durationMs": 1569000,
+   "etag": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
+   "fileId": 102,
+   "format": "mp3",
+   "sequence": 26,
+   "sizeBytes": 13305337
+  },
+  {
+   "assetId": "aud_103",
+   "durationMs": 257000,
+   "etag": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
+   "fileId": 104,
+   "format": "mp3",
+   "sequence": 27,
+   "sizeBytes": 2809337
+  },
+  {
+   "assetId": "aud_105",
+   "durationMs": 440000,
+   "etag": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
+   "fileId": 106,
+   "format": "mp3",
+   "sequence": 28,
+   "sizeBytes": 4270313
+  },
+  {
+   "assetId": "aud_107",
+   "durationMs": 545000,
+   "etag": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
+   "fileId": 108,
+   "format": "mp3",
+   "sequence": 29,
+   "sizeBytes": 5116262
+  },
+  {
+   "assetId": "aud_109",
+   "durationMs": 1463000,
+   "etag": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
+   "fileId": 110,
+   "format": "mp3",
+   "sequence": 30,
+   "sizeBytes": 12460850
+  },
+  {
+   "assetId": "aud_111",
+   "durationMs": 1195000,
+   "etag": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
+   "fileId": 112,
+   "format": "mp3",
+   "sequence": 31,
+   "sizeBytes": 10315257
+  },
+  {
+   "assetId": "aud_113",
+   "durationMs": 1384000,
+   "etag": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
+   "fileId": 114,
+   "format": "mp3",
+   "sequence": 32,
+   "sizeBytes": 11828687
+  },
+  {
+   "assetId": "aud_115",
+   "durationMs": 2718000,
+   "etag": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
+   "fileId": 116,
+   "format": "mp3",
+   "sequence": 33,
+   "sizeBytes": 22493960
+  },
+  {
+   "assetId": "aud_117",
+   "durationMs": 1720000,
+   "etag": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
+   "fileId": 118,
+   "format": "mp3",
+   "sequence": 34,
+   "sizeBytes": 14515747
+  },
+  {
+   "assetId": "aud_119",
+   "durationMs": 2843000,
+   "etag": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
+   "fileId": 120,
+   "format": "mp3",
+   "sequence": 35,
+   "sizeBytes": 23501660
+  },
+  {
+   "assetId": "aud_121",
+   "durationMs": 2633000,
+   "etag": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
+   "fileId": 122,
+   "format": "mp3",
+   "sequence": 36,
+   "sizeBytes": 21813941
+  },
+  {
+   "assetId": "aud_123",
+   "durationMs": 622000,
+   "etag": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
+   "fileId": 124,
+   "format": "mp3",
+   "sequence": 37,
+   "sizeBytes": 5732543
+  },
+  {
+   "assetId": "aud_125",
+   "durationMs": 84000,
+   "etag": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
+   "fileId": 126,
+   "format": "mp3",
+   "sequence": 38,
+   "sizeBytes": 1427355
+  },
+  {
+   "assetId": "aud_127",
+   "durationMs": 300000,
+   "etag": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
+   "fileId": 128,
+   "format": "mp3",
+   "sequence": 39,
+   "sizeBytes": 3153108
+  }
+ ],
+ "book": {
+  "authors": [
+   "Author 2"
+  ],
+  "hasCover": true,
+  "id": 48,
+  "narrators": [
+   "Narrator 2"
+  ],
+  "title": "Book 46"
+ },
+ "chapters": [
+  {
+   "assetId": "aud_49",
+   "assetOffsetMs": 0,
+   "endMs": 3382000,
+   "id": 129,
+   "sequence": 0,
+   "startMs": 0,
+   "title": "Book 47"
+  },
+  {
+   "assetId": "aud_51",
+   "assetOffsetMs": 0,
+   "endMs": 5127000,
+   "id": 130,
+   "sequence": 1,
+   "startMs": 3382000,
+   "title": "Book 48"
+  },
+  {
+   "assetId": "aud_53",
+   "assetOffsetMs": 0,
+   "endMs": 6304000,
+   "id": 131,
+   "sequence": 2,
+   "startMs": 5127000,
+   "title": "Book 49"
+  },
+  {
+   "assetId": "aud_55",
+   "assetOffsetMs": 0,
+   "endMs": 7403000,
+   "id": 132,
+   "sequence": 3,
+   "startMs": 6304000,
+   "title": "Book 50"
+  },
+  {
+   "assetId": "aud_57",
+   "assetOffsetMs": 0,
+   "endMs": 7999000,
+   "id": 133,
+   "sequence": 4,
+   "startMs": 7403000,
+   "title": "Book 51"
+  },
+  {
+   "assetId": "aud_59",
+   "assetOffsetMs": 0,
+   "endMs": 8266000,
+   "id": 134,
+   "sequence": 5,
+   "startMs": 7999000,
+   "title": "Book 52"
+  },
+  {
+   "assetId": "aud_61",
+   "assetOffsetMs": 0,
+   "endMs": 8864000,
+   "id": 135,
+   "sequence": 6,
+   "startMs": 8266000,
+   "title": "Book 53"
+  },
+  {
+   "assetId": "aud_63",
+   "assetOffsetMs": 0,
+   "endMs": 10226000,
+   "id": 136,
+   "sequence": 7,
+   "startMs": 8864000,
+   "title": "Book 54"
+  },
+  {
+   "assetId": "aud_65",
+   "assetOffsetMs": 0,
+   "endMs": 14419000,
+   "id": 137,
+   "sequence": 8,
+   "startMs": 10226000,
+   "title": "Book 55"
+  },
+  {
+   "assetId": "aud_67",
+   "assetOffsetMs": 0,
+   "endMs": 16720000,
+   "id": 138,
+   "sequence": 9,
+   "startMs": 14419000,
+   "title": "Book 56"
+  },
+  {
+   "assetId": "aud_69",
+   "assetOffsetMs": 0,
+   "endMs": 18574000,
+   "id": 139,
+   "sequence": 10,
+   "startMs": 16720000,
+   "title": "Book 57"
+  },
+  {
+   "assetId": "aud_71",
+   "assetOffsetMs": 0,
+   "endMs": 18727000,
+   "id": 140,
+   "sequence": 11,
+   "startMs": 18574000,
+   "title": "Book 58"
+  },
+  {
+   "assetId": "aud_73",
+   "assetOffsetMs": 0,
+   "endMs": 21133000,
+   "id": 141,
+   "sequence": 12,
+   "startMs": 18727000,
+   "title": "Book 59"
+  },
+  {
+   "assetId": "aud_75",
+   "assetOffsetMs": 0,
+   "endMs": 21428000,
+   "id": 142,
+   "sequence": 13,
+   "startMs": 21133000,
+   "title": "Book 60"
+  },
+  {
+   "assetId": "aud_77",
+   "assetOffsetMs": 0,
+   "endMs": 22925000,
+   "id": 143,
+   "sequence": 14,
+   "startMs": 21428000,
+   "title": "Book 61"
+  },
+  {
+   "assetId": "aud_79",
+   "assetOffsetMs": 0,
+   "endMs": 24265000,
+   "id": 144,
+   "sequence": 15,
+   "startMs": 22925000,
+   "title": "Book 62"
+  },
+  {
+   "assetId": "aud_81",
+   "assetOffsetMs": 0,
+   "endMs": 24408000,
+   "id": 145,
+   "sequence": 16,
+   "startMs": 24265000,
+   "title": "Book 63"
+  },
+  {
+   "assetId": "aud_83",
+   "assetOffsetMs": 0,
+   "endMs": 26379000,
+   "id": 146,
+   "sequence": 17,
+   "startMs": 24408000,
+   "title": "Book 64"
+  },
+  {
+   "assetId": "aud_85",
+   "assetOffsetMs": 0,
+   "endMs": 27292000,
+   "id": 147,
+   "sequence": 18,
+   "startMs": 26379000,
+   "title": "Book 65"
+  },
+  {
+   "assetId": "aud_87",
+   "assetOffsetMs": 0,
+   "endMs": 28019000,
+   "id": 148,
+   "sequence": 19,
+   "startMs": 27292000,
+   "title": "Book 66"
+  },
+  {
+   "assetId": "aud_89",
+   "assetOffsetMs": 0,
+   "endMs": 28353000,
+   "id": 149,
+   "sequence": 20,
+   "startMs": 28019000,
+   "title": "Book 67"
+  },
+  {
+   "assetId": "aud_91",
+   "assetOffsetMs": 0,
+   "endMs": 29552000,
+   "id": 150,
+   "sequence": 21,
+   "startMs": 28353000,
+   "title": "Book 68"
+  },
+  {
+   "assetId": "aud_93",
+   "assetOffsetMs": 0,
+   "endMs": 30566000,
+   "id": 151,
+   "sequence": 22,
+   "startMs": 29552000,
+   "title": "Book 69"
+  },
+  {
+   "assetId": "aud_95",
+   "assetOffsetMs": 0,
+   "endMs": 31551000,
+   "id": 152,
+   "sequence": 23,
+   "startMs": 30566000,
+   "title": "Book 70"
+  },
+  {
+   "assetId": "aud_97",
+   "assetOffsetMs": 0,
+   "endMs": 32921000,
+   "id": 153,
+   "sequence": 24,
+   "startMs": 31551000,
+   "title": "Book 71"
+  },
+  {
+   "assetId": "aud_99",
+   "assetOffsetMs": 0,
+   "endMs": 33977000,
+   "id": 154,
+   "sequence": 25,
+   "startMs": 32921000,
+   "title": "Book 72"
+  },
+  {
+   "assetId": "aud_101",
+   "assetOffsetMs": 0,
+   "endMs": 35546000,
+   "id": 155,
+   "sequence": 26,
+   "startMs": 33977000,
+   "title": "Book 73"
+  },
+  {
+   "assetId": "aud_103",
+   "assetOffsetMs": 0,
+   "endMs": 35803000,
+   "id": 156,
+   "sequence": 27,
+   "startMs": 35546000,
+   "title": "Book 74"
+  },
+  {
+   "assetId": "aud_105",
+   "assetOffsetMs": 0,
+   "endMs": 36243000,
+   "id": 157,
+   "sequence": 28,
+   "startMs": 35803000,
+   "title": "Book 75"
+  },
+  {
+   "assetId": "aud_107",
+   "assetOffsetMs": 0,
+   "endMs": 36788000,
+   "id": 158,
+   "sequence": 29,
+   "startMs": 36243000,
+   "title": "Book 76"
+  },
+  {
+   "assetId": "aud_109",
+   "assetOffsetMs": 0,
+   "endMs": 38251000,
+   "id": 159,
+   "sequence": 30,
+   "startMs": 36788000,
+   "title": "Book 77"
+  },
+  {
+   "assetId": "aud_111",
+   "assetOffsetMs": 0,
+   "endMs": 39446000,
+   "id": 160,
+   "sequence": 31,
+   "startMs": 38251000,
+   "title": "Book 78"
+  },
+  {
+   "assetId": "aud_113",
+   "assetOffsetMs": 0,
+   "endMs": 40830000,
+   "id": 161,
+   "sequence": 32,
+   "startMs": 39446000,
+   "title": "Book 79"
+  },
+  {
+   "assetId": "aud_115",
+   "assetOffsetMs": 0,
+   "endMs": 43548000,
+   "id": 162,
+   "sequence": 33,
+   "startMs": 40830000,
+   "title": "Book 80"
+  },
+  {
+   "assetId": "aud_117",
+   "assetOffsetMs": 0,
+   "endMs": 45268000,
+   "id": 163,
+   "sequence": 34,
+   "startMs": 43548000,
+   "title": "Book 81"
+  },
+  {
+   "assetId": "aud_119",
+   "assetOffsetMs": 0,
+   "endMs": 48111000,
+   "id": 164,
+   "sequence": 35,
+   "startMs": 45268000,
+   "title": "Book 82"
+  },
+  {
+   "assetId": "aud_121",
+   "assetOffsetMs": 0,
+   "endMs": 50744000,
+   "id": 165,
+   "sequence": 36,
+   "startMs": 48111000,
+   "title": "Book 83"
+  },
+  {
+   "assetId": "aud_123",
+   "assetOffsetMs": 0,
+   "endMs": 51366000,
+   "id": 166,
+   "sequence": 37,
+   "startMs": 50744000,
+   "title": "Book 84"
+  },
+  {
+   "assetId": "aud_125",
+   "assetOffsetMs": 0,
+   "endMs": 51450000,
+   "id": 167,
+   "sequence": 38,
+   "startMs": 51366000,
+   "title": "Book 85"
+  },
+  {
+   "assetId": "aud_127",
+   "assetOffsetMs": 0,
+   "endMs": 51750000,
+   "id": 168,
+   "sequence": 39,
+   "startMs": 51450000,
+   "title": "Book 86"
+  }
+ ],
+ "revision": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
+ "schema": "bookorbit.audiobook-manifest",
+ "schemaVersion": 2,
+ "totalDurationMs": 51750000
+}

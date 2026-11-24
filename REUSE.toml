@@ -1,0 +1,62 @@
+version = 1
+
+# Everything is Lirelle's own work, under the GPL version 3 or later, unless an annotation below says otherwise.
+[[annotations]]
+path = "**"
+SPDX-FileCopyrightText = "2026 François-Xavier Payet and contributors"
+SPDX-License-Identifier = "GPL-3.0-or-later"
+
+# The reading engine, taken byte for byte from foliate-js (see its VERSION file).
+[[annotations]]
+path = "feature/reader/src/main/assets/reader/foliate/**"
+SPDX-FileCopyrightText = "2022 John Factotum"
+SPDX-License-Identifier = "MIT"
+
+# fflate, carried by the reading engine's repository.
+[[annotations]]
+path = "feature/reader/src/main/assets/reader/foliate/vendor/**"
+SPDX-FileCopyrightText = "2026 Arjun Barrett"
+SPDX-License-Identifier = "MIT"
+
+# The reading fonts: fonts/LICENSES.md says where each comes from and how it was changed.
+[[annotations]]
+path = ["feature/reader/src/main/assets/fonts/LirelleSerif-*.woff2"]
+SPDX-FileCopyrightText = "2017 The Literata Project Authors"
+SPDX-License-Identifier = "OFL-1.1"
+
+[[annotations]]
+path = ["feature/reader/src/main/assets/fonts/LirelleSans-*.woff2"]
+SPDX-FileCopyrightText = "2020 Braille Institute of America, Inc."
+SPDX-License-Identifier = "OFL-1.1"
+
+[[annotations]]
+path = ["feature/reader/src/main/assets/fonts/LirelleDyslexic-*.woff2"]
+SPDX-FileCopyrightText = "2019 Abbie Gonzalez"
+SPDX-License-Identifier = "OFL-1.1"
+
+[[annotations]]
+path = "feature/reader/src/main/assets/fonts/LICENSES.md"
+SPDX-FileCopyrightText = [
+    "2017 The Literata Project Authors",
+    "2020 Braille Institute of America, Inc.",
+    "2019 Abbie Gonzalez",
+]
+SPDX-License-Identifier = "OFL-1.1"
+
+# The Gradle wrapper, Gradle's own work.
+[[annotations]]
+path = ["gradlew", "gradlew.bat", "gradle/wrapper/**"]
+SPDX-FileCopyrightText = "2015 the original author or authors"
+SPDX-License-Identifier = "Apache-2.0"
+
+# The app's copy of the licence text, which the app shows: the Free Software Foundation's own text.
+[[annotations]]
+path = "app/src/main/res/raw/gpl_3_0_or_later.txt"
+SPDX-FileCopyrightText = "2007 Free Software Foundation, Inc. <https://fsf.org/>"
+SPDX-License-Identifier = "LicenseRef-FSF-verbatim"
+
+# The code of conduct, adapted from the Contributor Covenant 3.0.
+[[annotations]]
+path = "CODE_OF_CONDUCT.md"
+SPDX-FileCopyrightText = "Organization for Ethical Source"
+SPDX-License-Identifier = "CC-BY-SA-4.0"

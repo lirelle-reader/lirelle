@@ -1,0 +1,28 @@
+{
+ "items": [
+  {
+   "fileId": 1,
+   "kobo": {
+    "contentPercent": null,
+    "source": null,
+    "type": null,
+    "value": null
+   },
+   "koreader": null,
+   "narration": {
+    "fragment": null,
+    "percentage": null,
+    "seconds": null,
+    "sectionIndex": null,
+    "updatedAt": null
+   },
+   "percentage": 30,
+   "text": {
+    "cfi": "epubcfi(/6/8!/4/2/1:0)",
+    "page": null,
+    "updatedAt": "2026-11-14T07:45:01.809Z"
+   },
+   "updatedAt": "2026-11-14T07:45:01.809Z"
+  }
+ ]
+}

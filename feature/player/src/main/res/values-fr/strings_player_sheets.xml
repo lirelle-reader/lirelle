@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <plurals name="player_chapters_count">
+        <item quantity="one">%d chapitre</item>
+        <item quantity="many">%d chapitres</item>
+        <item quantity="other">%d chapitres</item>
+    </plurals>
+    <plurals name="player_parts_count">
+        <item quantity="one">%d partie</item>
+        <item quantity="many">%d parties</item>
+        <item quantity="other">%d parties</item>
+    </plurals>
+    <string name="player_chapter_heard">écouté</string>
+    <string name="player_chapter_playing">en cours</string>
+    <string name="player_speed_for_book">Pour ce livre</string>
+    <string name="player_speed_slower">Moins vite</string>
+    <string name="player_speed_faster">Plus vite</string>
+    <string name="player_speed_time_left">Durée restante à cette vitesse : %1$s</string>
+    <string name="player_sleep_title">Minuterie de sommeil</string>
+    <string name="player_sleep_stops_in">Arrêt dans %1$s</string>
+    <string name="player_sleep_stops_chapter">Arrêt en fin de chapitre</string>
+    <string name="player_sleep_end_of_chapter">Fin du chapitre</string>
+    <plurals name="player_sleep_minutes">
+        <item quantity="one">%d minute</item>
+        <item quantity="many">%d minutes</item>
+        <item quantity="other">%d minutes</item>
+    </plurals>
+    <string name="player_sleep_shake">Secouer pour prolonger</string>
+    <string name="player_sleep_shake_hint">Pendant la dernière minute</string>
+    <string name="player_sleep_stop">Arrêter la minuterie</string>
+</resources>

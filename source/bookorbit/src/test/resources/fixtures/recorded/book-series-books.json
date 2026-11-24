@@ -1,0 +1,482 @@
+[
+ {
+  "authors": [
+   "Author 7"
+  ],
+  "coverAspectRatio": "2/3",
+  "coverVersion": "ebook:2026-08-28T19:25:40.037Z:-",
+  "hasCover": true,
+  "id": 104,
+  "isAudiobook": false,
+  "isComic": false,
+  "readStatus": null,
+  "seriesIndex": "1",
+  "title": "Book 9",
+  "updatedAt": "2026-08-28T19:28:17.422Z"
+ },
+ {
+  "authors": [
+   "Author 7"
+  ],
+  "coverAspectRatio": "2/3",
+  "coverVersion": "ebook:2026-08-28T19:25:45.250Z:-",
+  "hasCover": true,
+  "id": 105,
+  "isAudiobook": false,
+  "isComic": false,
+  "readStatus": null,
+  "seriesIndex": "2",
+  "title": "Book 10",
+  "updatedAt": "2026-08-28T19:28:17.564Z"
+ },
+ {
+  "authors": [
+   "Author 7"
+  ],
+  "coverAspectRatio": "2/3",
+  "coverVersion": "ebook:2026-08-28T19:25:43.555Z:-",
+  "hasCover": true,
+  "id": 106,
+  "isAudiobook": false,
+  "isComic": false,
+  "readStatus": null,
+  "seriesIndex": "3",
+  "title": "Book 11",
+  "updatedAt": "2026-08-28T19:28:17.767Z"
+ },
+ {
+  "authors": [
+   "Author 7"
+  ],
+  "coverAspectRatio": "2/3",
+  "coverVersion": "ebook:2026-08-28T19:26:07.060Z:-",
+  "hasCover": true,
+  "id": 107,
+  "isAudiobook": false,
+  "isComic": false,
+  "readStatus": null,
+  "seriesIndex": "5",
+  "title": "Book 12",
+  "updatedAt": "2026-08-29T08:09:21.343Z"
+ },
+ {
+  "authors": [
+   "Author 7"
+  ],
+  "coverAspectRatio": "2/3",
+  "coverVersion": "ebook:2026-08-28T19:26:06.048Z:-",
+  "hasCover": true,
+  "id": 108,
+  "isAudiobook": false,
+  "isComic": false,
+  "readStatus": null,
+  "seriesIndex": "6",
+  "title": "Book 13",
+  "updatedAt": "2026-08-28T19:28:17.496Z"
+ },
+ {
+  "authors": [
+   "Author 7"
+  ],
+  "coverAspectRatio": "2/3",
+  "coverVersion": "ebook:2026-08-28T19:26:24.470Z:-",
+  "hasCover": true,
+  "id": 109,
+  "isAudiobook": false,
+  "isComic": false,
+  "readStatus": null,
+  "seriesIndex": "7",
+  "title": "Book 14",
+  "updatedAt": "2026-08-29T08:09:20.806Z"
+ },
+ {
+  "authors": [
+   "Author 7"
+  ],
+  "coverAspectRatio": "2/3",
+  "coverVersion": "ebook:2026-08-28T19:25:29.132Z:-",
+  "hasCover": true,
+  "id": 110,
+  "isAudiobook": false,
+  "isComic": false,
+  "readStatus": null,
+  "seriesIndex": "8",
+  "title": "Book 15",
+  "updatedAt": "2026-08-28T19:28:17.152Z"
+ },
+ {
+  "authors": [
+   "Author 7"
+  ],
+  "coverAspectRatio": "2/3",
+  "coverVersion": "ebook:2026-08-28T19:26:30.441Z:-",
+  "hasCover": true,
+  "id": 111,
+  "isAudiobook": false,
+  "isComic": false,
+  "readStatus": null,
+  "seriesIndex": "9",
+  "title": "Book 16",
+  "updatedAt": "2026-08-28T19:28:17.537Z"
+ },
+ {
+  "authors": [
+   "Author 7"
+  ],
+  "coverAspectRatio": "2/3",
+  "coverVersion": "ebook:2026-08-28T19:25:44.954Z:-",
+  "hasCover": true,
+  "id": 112,
+  "isAudiobook": false,
+  "isComic": false,
+  "readStatus": null,
+  "seriesIndex": "10",
+  "title": "Book 17",
+  "updatedAt": "2026-08-28T19:28:17.607Z"
+ },
+ {
+  "authors": [
+   "Author 7"
+  ],
+  "coverAspectRatio": "2/3",
+  "coverVersion": "ebook:2026-08-28T19:26:18.110Z:-",
+  "hasCover": true,
+  "id": 113,
+  "isAudiobook": false,
+  "isComic": false,
+  "readStatus": null,
+  "seriesIndex": "11",
+  "title": "Book 18",
+  "updatedAt": "2026-08-28T19:28:17.279Z"
+ },
+ {
+  "authors": [
+   "Author 7"
+  ],
+  "coverAspectRatio": "2/3",
+  "coverVersion": "ebook:2026-08-28T19:25:25.826Z:-",
+  "hasCover": true,
+  "id": 114,
+  "isAudiobook": false,
+  "isComic": false,
+  "readStatus": null,
+  "seriesIndex": "13",
+  "title": "Book 19",
+  "updatedAt": "2026-08-28T19:28:17.070Z"
+ },
+ {
+  "authors": [
+   "Author 7"
+  ],
+  "coverAspectRatio": "2/3",
+  "coverVersion": "ebook:2026-08-28T19:26:16.963Z:-",
+  "hasCover": true,
+  "id": 115,
+  "isAudiobook": false,
+  "isComic": false,
+  "readStatus": null,
+  "seriesIndex": "14",
+  "title": "Book 20",
+  "updatedAt": "2026-08-28T19:28:17.875Z"
+ },
+ {
+  "authors": [
+   "Author 7"
+  ],
+  "coverAspectRatio": "2/3",
+  "coverVersion": "ebook:2026-08-28T19:26:18.476Z:-",
+  "hasCover": true,
+  "id": 116,
+  "isAudiobook": false,
+  "isComic": false,
+  "readStatus": null,
+  "seriesIndex": "15",
+  "title": "Book 21",
+  "updatedAt": "2026-08-28T19:28:17.181Z"
+ },
+ {
+  "authors": [
+   "Author 7"
+  ],
+  "coverAspectRatio": "2/3",
+  "coverVersion": "ebook:2026-08-28T19:26:32.077Z:-",
+  "hasCover": true,
+  "id": 117,
+  "isAudiobook": false,
+  "isComic": false,
+  "readStatus": null,
+  "seriesIndex": "16",
+  "title": "Book 22",
+  "updatedAt": "2026-11-11T12:16:50.054Z"
+ },
+ {
+  "authors": [
+   "Author 7"
+  ],
+  "coverAspectRatio": "2/3",
+  "coverVersion": "ebook:2026-08-28T19:25:29.580Z:-",
+  "hasCover": true,
+  "id": 118,
+  "isAudiobook": false,
+  "isComic": false,
+  "readStatus": null,
+  "seriesIndex": "17",
+  "title": "Book 23",
+  "updatedAt": "2026-08-29T08:09:22.043Z"
+ },
+ {
+  "authors": [
+   "Author 7"
+  ],
+  "coverAspectRatio": "2/3",
+  "coverVersion": "ebook:2026-08-28T19:25:29.895Z:-",
+  "hasCover": true,
+  "id": 119,
+  "isAudiobook": false,
+  "isComic": false,
+  "readStatus": null,
+  "seriesIndex": "18",
+  "title": "Book 24",
+  "updatedAt": "2026-11-11T12:16:51.108Z"
+ },
+ {
+  "authors": [
+   "Author 7"
+  ],
+  "coverAspectRatio": "2/3",
+  "coverVersion": "ebook:2026-08-28T19:26:39.185Z:-",
+  "hasCover": true,
+  "id": 120,
+  "isAudiobook": false,
+  "isComic": false,
+  "readStatus": null,
+  "seriesIndex": "19",
+  "title": "Book 25",
+  "updatedAt": "2026-09-02T15:46:53.215Z"
+ },
+ {
+  "authors": [
+   "Author 7"
+  ],
+  "coverAspectRatio": "2/3",
+  "coverVersion": "ebook:2026-08-28T19:25:40.817Z:-",
+  "hasCover": true,
+  "id": 121,
+  "isAudiobook": false,
+  "isComic": false,
+  "readStatus": null,
+  "seriesIndex": "20",
+  "title": "Book 26",
+  "updatedAt": "2026-08-28T19:28:17.482Z"
+ },
+ {
+  "authors": [
+   "Author 7"
+  ],
+  "coverAspectRatio": "2/3",
+  "coverVersion": "ebook:2026-08-28T19:25:54.349Z:-",
+  "hasCover": true,
+  "id": 122,
+  "isAudiobook": false,
+  "isComic": false,
+  "readStatus": null,
+  "seriesIndex": "22",
+  "title": "Book 27",
+  "updatedAt": "2026-08-28T19:28:22.817Z"
+ },
+ {
+  "authors": [
+   "Author 7"
+  ],
+  "coverAspectRatio": "2/3",
+  "coverVersion": "ebook:2026-08-28T19:25:46.437Z:-",
+  "hasCover": true,
+  "id": 123,
+  "isAudiobook": false,
+  "isComic": false,
+  "readStatus": null,
+  "seriesIndex": "23",
+  "title": "Book 28",
+  "updatedAt": "2026-08-28T19:28:17.753Z"
+ },
+ {
+  "authors": [
+   "Author 7"
+  ],
+  "coverAspectRatio": "2/3",
+  "coverVersion": "ebook:2026-08-28T19:25:36.153Z:-",
+  "hasCover": true,
+  "id": 124,
+  "isAudiobook": false,
+  "isComic": false,
+  "readStatus": null,
+  "seriesIndex": "24",
+  "title": "Book 29",
+  "updatedAt": "2026-08-28T19:28:17.166Z"
+ },
+ {
+  "authors": [
+   "Author 7"
+  ],
+  "coverAspectRatio": "2/3",
+  "coverVersion": "ebook:2026-08-28T19:25:58.614Z:-",
+  "hasCover": true,
+  "id": 125,
+  "isAudiobook": false,
+  "isComic": false,
+  "readStatus": null,
+  "seriesIndex": "28",
+  "title": "Book 30",
+  "updatedAt": "2026-08-28T19:28:18.120Z"
+ },
+ {
+  "authors": [
+   "Author 7"
+  ],
+  "coverAspectRatio": "2/3",
+  "coverVersion": "ebook:2026-08-28T19:26:22.180Z:-",
+  "hasCover": true,
+  "id": 126,
+  "isAudiobook": false,
+  "isComic": false,
+  "readStatus": null,
+  "seriesIndex": "32",
+  "title": "Book 31",
+  "updatedAt": "2026-08-29T08:09:21.692Z"
+ },
+ {
+  "authors": [
+   "Author 7"
+  ],
+  "coverAspectRatio": "2/3",
+  "coverVersion": "ebook:2026-08-28T19:25:31.748Z:-",
+  "hasCover": true,
+  "id": 127,
+  "isAudiobook": false,
+  "isComic": false,
+  "readStatus": null,
+  "seriesIndex": "33",
+  "title": "Book 32",
+  "updatedAt": "2026-11-11T12:16:50.767Z"
+ },
+ {
+  "authors": [
+   "Author 7"
+  ],
+  "coverAspectRatio": "2/3",
+  "coverVersion": "ebook:2026-08-28T19:26:05.706Z:-",
+  "hasCover": true,
+  "id": 128,
+  "isAudiobook": false,
+  "isComic": false,
+  "readStatus": null,
+  "seriesIndex": "34",
+  "title": "Book 33",
+  "updatedAt": "2026-08-28T19:28:22.712Z"
+ },
+ {
+  "authors": [
+   "Author 7"
+  ],
+  "coverAspectRatio": "2/3",
+  "coverVersion": "ebook:2026-08-28T19:25:28.377Z:-",
+  "hasCover": true,
+  "id": 129,
+  "isAudiobook": false,
+  "isComic": false,
+  "readStatus": null,
+  "seriesIndex": "35",
+  "title": "Book 34",
+  "updatedAt": "2026-08-28T19:28:22.663Z"
+ },
+ {
+  "authors": [
+   "Author 7"
+  ],
+  "coverAspectRatio": "2/3",
+  "coverVersion": "ebook:2026-08-28T19:25:29.442Z:-",
+  "hasCover": true,
+  "id": 130,
+  "isAudiobook": false,
+  "isComic": false,
+  "readStatus": null,
+  "seriesIndex": "36",
+  "title": "Book 35",
+  "updatedAt": "2026-08-28T19:28:17.467Z"
+ },
+ {
+  "authors": [
+   "Author 7"
+  ],
+  "coverAspectRatio": "2/3",
+  "coverVersion": "ebook:2026-08-28T19:25:44.213Z:-",
+  "hasCover": true,
+  "id": 131,
+  "isAudiobook": false,
+  "isComic": false,
+  "readStatus": null,
+  "seriesIndex": "39",
+  "title": "Book 36",
+  "updatedAt": "2026-08-28T19:28:17.668Z"
+ },
+ {
+  "authors": [
+   "Author 7"
+  ],
+  "coverAspectRatio": "2/3",
+  "coverVersion": "ebook:2026-08-28T19:26:11.145Z:-",
+  "hasCover": true,
+  "id": 132,
+  "isAudiobook": false,
+  "isComic": false,
+  "readStatus": null,
+  "seriesIndex": "40",
+  "title": "Book 37",
+  "updatedAt": "2026-08-28T19:28:17.380Z"
+ },
+ {
+  "authors": [
+   "Author 7"
+  ],
+  "coverAspectRatio": "2/3",
+  "coverVersion": "ebook:2026-08-28T19:25:26.698Z:-",
+  "hasCover": true,
+  "id": 133,
+  "isAudiobook": false,
+  "isComic": false,
+  "readStatus": null,
+  "seriesIndex": "41",
+  "title": "Book 38",
+  "updatedAt": "2026-08-28T19:28:17.323Z"
+ },
+ {
+  "authors": [
+   "Author 7"
+  ],
+  "coverAspectRatio": "2/3",
+  "coverVersion": "ebook:2026-08-28T19:26:16.843Z:-",
+  "hasCover": true,
+  "id": 134,
+  "isAudiobook": false,
+  "isComic": false,
+  "readStatus": null,
+  "seriesIndex": "43",
+  "title": "Book 39",
+  "updatedAt": "2026-08-28T19:28:17.523Z"
+ },
+ {
+  "authors": [
+   "Author 7"
+  ],
+  "coverAspectRatio": "2/3",
+  "coverVersion": "ebook:2026-08-28T19:25:37.981Z:-",
+  "hasCover": true,
+  "id": 135,
+  "isAudiobook": false,
+  "isComic": false,
+  "readStatus": null,
+  "seriesIndex": "44",
+  "title": "Book 40",
+  "updatedAt": "2026-08-28T19:28:17.265Z"
+ }
+]

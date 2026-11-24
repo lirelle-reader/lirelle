@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="downloads_channel">Téléchargements</string>
+    <string name="downloads_format_text">Texte</string>
+    <string name="downloads_format_pdf">PDF</string>
+    <string name="downloads_format_cbz">CBZ</string>
+    <string name="downloads_format_cbr">CBR</string>
+    <string name="downloads_format_cb7">CB7</string>
+    <string name="downloads_format_djvu">DjVu</string>
+    <string name="downloads_format_audiobook">Livre audio</string>
+    <string name="downloads_format_narration">Narration</string>
+    <string name="downloads_formats_text_audiobook">%1$s et livre audio</string>
+    <string name="downloads_formats_text_narration">%1$s et narration</string>
+    <string name="downloads_formats_audiobook_narration">Livre audio et narration</string>
+    <string name="downloads_formats_all">%1$s, livre audio et narration</string>
+    <plurals name="downloads_pages_of">
+        <item quantity="one">%1$d page sur %2$d</item>
+        <item quantity="many">%1$d pages sur %2$d</item>
+        <item quantity="other">%1$d pages sur %2$d</item>
+    </plurals>
+    <string name="downloads_notification_downloading">Téléchargement</string>
+    <string name="downloads_notification_progress">%1$s · %2$s sur %3$s</string>
+    <string name="downloads_notification_waiting_wifi">En attente d\'un réseau non limité</string>
+    <plurals name="downloads_notification_books">
+        <item quantity="one">%d livre</item>
+        <item quantity="other">%d livres</item>
+    </plurals>
+    <string name="downloads_notification_waiting_left">%1$s · %2$s restants</string>
+    <string name="downloads_notification_now">Télécharger maintenant</string>
+    <string name="downloads_notification_done">Téléchargements terminés</string>
+    <plurals name="downloads_notification_done_books">
+        <item quantity="one">%d livre téléchargé</item>
+        <item quantity="other">%d livres téléchargés</item>
+    </plurals>
+    <plurals name="downloads_notification_done_failed">
+        <item quantity="one">%d en échec</item>
+        <item quantity="other">%d en échec</item>
+    </plurals>
+    <string name="downloads_notification_cancel">Annuler</string>
+</resources>

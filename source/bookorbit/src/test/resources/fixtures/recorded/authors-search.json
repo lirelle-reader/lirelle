@@ -1,0 +1,17 @@
+{
+ "items": [
+  {
+   "bookCount": 67,
+   "coverBookId": 116,
+   "description": "Description 1",
+   "id": 273,
+   "imageUrl": "/api/v1/authors/273/thumbnail?t=1",
+   "lastAddedAt": "2017-08-20T10:05:17.785Z",
+   "name": "Author 7",
+   "sortName": "Sort name 1"
+  }
+ ],
+ "page": 0,
+ "size": 3,
+ "total": 1
+}

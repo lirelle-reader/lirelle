@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--
+        The window shown until Compose draws its first frame. It follows the system dark
+        mode and uses the theme's own background colour, so the first frame does not flash
+        another colour. Everything after that first frame is themed by LirelleTheme.
+    -->
+    <style name="Theme.Lirelle" parent="@android:style/Theme.DeviceDefault.DayNight">
+        <item name="android:windowActionBar">false</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowBackground">@color/window_background</item>
+    </style>
+</resources>

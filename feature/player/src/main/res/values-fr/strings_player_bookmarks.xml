@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="player_bookmark">Marque-page</string>
+    <string name="player_bookmark_added">Marque-page ajouté</string>
+    <string name="player_bookmark_edit">Modifier</string>
+    <string name="player_bookmark_exists">Un marque-page existe déjà ici</string>
+    <string name="player_bookmark_failed">Le marque-page n’a pas pu être ajouté</string>
+    <string name="player_bookmark_go">Aller au marque-page</string>
+    <string name="player_bookmark_delete">Supprimer</string>
+    <string name="player_bookmark_deleted">Marque-page supprimé</string>
+    <string name="player_bookmark_undo">Annuler</string>
+    <string name="player_bookmark_options">Modifier ou supprimer</string>
+    <string name="player_bookmarks_tab">Marque-pages · %1$d</string>
+    <string name="player_bookmarks_empty">Ajoutez un marque-page avec le bouton Marque-page</string>
+    <string name="player_bookmark_dialog_title">Modifier le marque-page</string>
+    <string name="player_bookmark_title">Titre</string>
+    <string name="player_bookmark_title_needed">Un titre est nécessaire</string>
+    <string name="player_bookmark_note">Note (facultative)</string>
+    <string name="player_bookmark_note_hint">Une idée, une citation, pourquoi ce passage…</string>
+    <string name="player_bookmark_cancel">Annuler</string>
+    <string name="player_bookmark_save">Enregistrer</string>
+</resources>

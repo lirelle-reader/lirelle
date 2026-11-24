@@ -1,0 +1,12 @@
+{
+  "name": "lirelle-reader-tests",
+  "private": true,
+  "description": "Headless-browser tests of the reader page (feature/reader/src/main/assets/reader)",
+  "scripts": {
+    "test": "playwright test",
+    "books": "python3 books/build.py"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.65.1"
+  }
+}

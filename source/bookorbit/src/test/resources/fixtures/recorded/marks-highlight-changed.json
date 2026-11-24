@@ -1,0 +1,19 @@
+{
+ "bookId": 2,
+ "cfi": "epubcfi(/6/8!/4/2,/1:0,/1:24)",
+ "chapterIndex": null,
+ "chapterTitle": "Chapter 1",
+ "color": "#38BDF8",
+ "createdAt": "2026-11-14T13:17:00.562Z",
+ "highlightedAt": "2026-11-14T13:17:00.562Z",
+ "id": 3,
+ "jumpFileId": 4,
+ "note": "Note 2",
+ "origin": "web",
+ "pageno": null,
+ "positionStatus": "exact",
+ "starredAt": null,
+ "style": "highlight",
+ "text": "Highlighted text 1",
+ "updatedAt": "2026-11-14T13:17:00.729Z"
+}

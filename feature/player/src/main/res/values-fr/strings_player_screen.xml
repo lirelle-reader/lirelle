@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="player_now_playing">En écoute</string>
+    <string name="player_minimise">Réduire le lecteur</string>
+    <string name="player_more">Plus d’options</string>
+    <string name="player_menu_book">Page du livre</string>
+    <string name="player_menu_settings">Réglages du lecteur</string>
+    <string name="player_credits_both">%1$s · lu par %2$s</string>
+    <string name="player_credits_narrators">Lu par %1$s</string>
+    <string name="player_names_two">%1$s et %2$s</string>
+    <plurals name="player_names_others">
+        <item quantity="one">%1$s et %2$d autre</item>
+        <item quantity="many">%1$s et %2$d autres</item>
+        <item quantity="other">%1$s et %2$d autres</item>
+    </plurals>
+    <string name="player_joined">%1$s · %2$s</string>
+    <string name="player_book_chapter">Chapitre %1$d sur %2$d</string>
+    <string name="player_book_part">Partie %1$d sur %2$d</string>
+    <string name="player_book_percent">%1$d %%</string>
+    <plurals name="player_book_left">
+        <item quantity="one">%1$s restante</item>
+        <item quantity="many">%1$s restantes</item>
+        <item quantity="other">%1$s restantes</item>
+    </plurals>
+    <string name="player_duration_minutes">%1$d min</string>
+    <string name="player_duration_hours">%1$d h %2$02d</string>
+    <string name="player_remaining">−%1$s</string>
+    <string name="player_chapter_bar">Position dans le chapitre</string>
+    <string name="player_chapter_bar_state">%1$s sur %2$s</string>
+    <string name="player_play">Lecture</string>
+    <string name="player_pause">Pause</string>
+    <string name="player_rate">Noter le livre</string>
+    <string name="player_speed">Vitesse</string>
+    <string name="player_speed_value">%1$s×</string>
+    <string name="player_sleep">Sommeil</string>
+    <string name="player_chapters">Chapitres</string>
+    <string name="player_parts">Parties</string>
+    <string name="player_offline">Pas de connexion : la lecture reprendra au retour du réseau</string>
+    <string name="player_unreachable">Le serveur est injoignable : appuyez sur lecture pour réessayer</string>
+    <string name="player_loading">Chargement du livre</string>
+    <string name="player_load_failed">Ce livre n’a pas pu être chargé</string>
+    <string name="player_nothing">Aucune écoute en cours</string>
+    <string name="player_finished">Terminé</string>
+    <string name="player_newer_position">Aller à %1$s</string>
+    <string name="player_newer_position_at">Aller à %1$s (%2$s)</string>
+    <string name="player_newer_position_in_chapter">%1$s · %2$s</string>
+    <string name="player_newer_position_go">Y aller</string>
+    <string name="player_newer_position_ignore">Ignorer</string>
+    <string name="player_load_retry">Réessayer</string>
+    <string name="player_dismiss">Masquer</string>
+    <string name="player_go_back">Revenir</string>
+</resources>

@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="media_audio_only">Livre audio</string>
+    <string name="media_text_and_audio">Texte et audio</string>
+    <string name="media_read_along">Lecture synchronisée</string>
+    <string name="media_comic">BD</string>
+    <string name="media_pdf">PDF</string>
+    <string name="media_djvu">DjVu</string>
+    <string name="book_progress_description">%1$d %% lu</string>
+    <string name="book_read_description">Lu</string>
+    <string name="book_volume_description">Tome %1$s</string>
+    <!-- Said by a screen reader after the rest of a book's description: lower case. -->
+    <string name="book_downloaded_description">téléchargé</string>
+    <string name="book_downloading_description">téléchargement en cours</string>
+    <string name="book_update_description">mise à jour disponible</string>
+    <string name="book_series_volume">%1$s nº %2$s</string>
+    <string name="state_retry">Réessayer</string>
+    <string name="library_error_unreachable">Serveur injoignable. Vérifiez votre connexion.</string>
+    <string name="library_error_not_found">Ce livre n\'est plus disponible.</string>
+    <string name="library_error_server_failed">Le serveur rencontre un problème. Réessayez plus tard.</string>
+    <string name="library_error_unexpected">Une erreur est survenue côté serveur. Réessayez plus tard.</string>
+    <string name="list_page_error">Impossible de charger la suite.</string>
+    <string name="navigate_back">Retour</string>
+    <string name="text_more">Lire la suite</string>
+    <string name="text_less">Réduire</string>
+    <string name="row_see_all">Tout voir</string>
+    <string name="row_see_all_description">Tout voir : %1$s</string>
+    <string name="progress_percent">%1$d %%</string>
+    <string name="book_open_page">Ouvrir la fiche du livre</string>
+    <string name="continue_read_label">Lire %1$s</string>
+    <string name="continue_listen_label">Écouter %1$s</string>
+    <string name="continue_time_left_hours">%1$d h %2$02d</string>
+    <string name="continue_time_left_minutes">%1$d min</string>
+    <string name="continue_time_left_description">encore %1$s</string>
+    <string name="continue_hours_and_minutes">%1$s %2$s</string>
+    <plurals name="continue_hours_spoken">
+        <item quantity="one">%d heure</item>
+        <item quantity="many">%d heures</item>
+        <item quantity="other">%d heures</item>
+    </plurals>
+    <plurals name="continue_minutes_spoken">
+        <item quantity="one">%d minute</item>
+        <item quantity="many">%d minutes</item>
+        <item quantity="other">%d minutes</item>
+    </plurals>
+    <string name="date_today">aujourd’hui</string>
+    <string name="date_yesterday">hier</string>
+    <string name="relative_just_now">À l’instant</string>
+    <string name="sheet_grip">Poignée de la feuille</string>
+    <string name="sheet_close">Fermer</string>
+    <string name="no_network_title">Pas de réseau</string>
+    <string name="no_network_message">Cette page a besoin du serveur. Vos livres téléchargés restent disponibles, et la page se rechargera seule au retour du réseau.</string>
+    <string name="no_network_open_downloads">Voir mes livres hors ligne</string>
+    <!-- A profile whose session has expired: wherever that is said, and the action that ends it. -->
+    <string name="sign_in_needed">Reconnexion nécessaire</string>
+    <string name="sign_in_again">Se reconnecter</string>
+    <!-- A screen that needs the server while the profile's session has expired. %1$s: "camille · BookOrbit". -->
+    <string name="sign_in_needed_message">La session de %1$s a expiré.</string>
+    <!-- The same, for a profile whose server refused the key it signs in with. %1$s: "camille · Komga". -->
+    <string name="sign_in_needed_key_message">La connexion de %1$s n\'est plus valable.</string>
+    <string name="settings_back">Retour</string>
+    <!-- A profile: its username, then the kind of its server. -->
+    <string name="profile_label">%1$s · %2$s</string>
+    <string name="server_kind_bookorbit">BookOrbit</string>
+    <string name="server_kind_komga">Komga</string>
+</resources>

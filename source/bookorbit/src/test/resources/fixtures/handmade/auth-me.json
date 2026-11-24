@@ -1,0 +1,1 @@
+{"id":1,"username":"reader","name":"Ann Reader","email":"ann@example.com","active":true,"isSuperuser":false,"isDefaultPassword":false,"settings":{},"avatarUrl":null,"provisioningMethod":"local","authenticationMethod":"password","permissions":["library_download"]}

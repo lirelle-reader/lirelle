@@ -1,0 +1,15 @@
+{
+  "uniqueId": "bundled:fflate",
+  "name": "fflate",
+  "description": "Reads compressed book files for the reading engine.",
+  "website": "https://github.com/101arrowz/fflate",
+  "developers": [
+    {
+      "name": "Arjun Barrett"
+    }
+  ],
+  "tag": "bundled",
+  "licenses": [
+    "MIT-fflate"
+  ]
+}

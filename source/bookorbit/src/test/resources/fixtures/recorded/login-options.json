@@ -1,0 +1,14 @@
+{
+  "allowRegistration": false,
+  "oidcProviders": [
+    {
+      "clientId": "client-id",
+      "displayName": "Provider",
+      "enabled": true,
+      "iconUrl": null,
+      "scopes": "openid profile email",
+      "slug": "provider"
+    }
+  ],
+  "passwordLoginEnabled": true
+}

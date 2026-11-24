@@ -1,0 +1,409 @@
+{
+ "bookTotal": 3,
+ "items": [
+  {
+   "addedAt": "2026-11-08T14:28:41.720Z",
+   "authors": [
+    "Author 1"
+   ],
+   "coverAspectRatio": "2/3",
+   "coverVersion": "ebook:2026-11-08T14:28:53.881Z:2026-11-11T11:49:24.710Z",
+   "files": [
+    {
+     "format": "epub",
+     "id": 57,
+     "mediaOverlay": {
+      "available": true,
+      "durationSeconds": 129987.53999999951
+     },
+     "role": "primary",
+     "sizeBytes": 1075059157
+    },
+    {
+     "format": "epub",
+     "id": 58,
+     "mediaOverlay": {
+      "available": false,
+      "durationSeconds": null
+     },
+     "role": "content",
+     "sizeBytes": 2799773
+    },
+    {
+     "format": "m4b",
+     "id": 59,
+     "role": "content",
+     "sizeBytes": 1072565298
+    }
+   ],
+   "genres": [
+    "Genre 7",
+    "Genre 4"
+   ],
+   "hasCover": true,
+   "id": 56,
+   "isbn13": "9780000000002",
+   "language": "fr",
+   "libraryId": 2,
+   "narrators": [
+    "Narrator 9"
+   ],
+   "pageCount": 936,
+   "publishedDate": "2013-02-28",
+   "publishedYear": 2013,
+   "publisher": "Publisher 1",
+   "rating": null,
+   "readStatus": {
+    "finishedAt": null,
+    "source": "auto",
+    "startedAt": "2026-11-10T00:00:00.000Z",
+    "status": "reading",
+    "updatedAt": "2026-11-13T06:57:02.262Z"
+   },
+   "readingProgress": 11.146635,
+   "seriesId": null,
+   "seriesIndex": null,
+   "seriesMemberships": [],
+   "seriesName": null,
+   "status": "present",
+   "subtitle": null,
+   "title": "Book 5",
+   "updatedAt": "2026-11-11T11:49:24.710Z"
+  },
+  {
+   "addedAt": "2026-09-23T05:42:02.289Z",
+   "authors": [
+    "Author 5"
+   ],
+   "coverAspectRatio": "2/3",
+   "coverVersion": "ebook:2026-09-23T05:42:56.212Z:2026-11-11T11:49:54.273Z",
+   "files": [
+    {
+     "format": "epub",
+     "id": 64,
+     "mediaOverlay": {
+      "available": true,
+      "durationSeconds": 83110.15999999984
+     },
+     "role": "primary",
+     "sizeBytes": 583073149
+    },
+    {
+     "format": "epub",
+     "id": 65,
+     "mediaOverlay": {
+      "available": false,
+      "durationSeconds": null
+     },
+     "role": "content",
+     "sizeBytes": 968256
+    },
+    {
+     "format": "mp3",
+     "id": 66,
+     "role": "content",
+     "sizeBytes": 19897032
+    },
+    {
+     "format": "mp3",
+     "id": 67,
+     "role": "content",
+     "sizeBytes": 19471656
+    },
+    {
+     "format": "mp3",
+     "id": 68,
+     "role": "content",
+     "sizeBytes": 18606288
+    },
+    {
+     "format": "mp3",
+     "id": 69,
+     "role": "content",
+     "sizeBytes": 18474996
+    },
+    {
+     "format": "mp3",
+     "id": 70,
+     "role": "content",
+     "sizeBytes": 18819228
+    },
+    {
+     "format": "mp3",
+     "id": 71,
+     "role": "content",
+     "sizeBytes": 18649380
+    },
+    {
+     "format": "mp3",
+     "id": 72,
+     "role": "content",
+     "sizeBytes": 20094096
+    },
+    {
+     "format": "mp3",
+     "id": 73,
+     "role": "content",
+     "sizeBytes": 19785648
+    },
+    {
+     "format": "mp3",
+     "id": 74,
+     "role": "content",
+     "sizeBytes": 19401096
+    },
+    {
+     "format": "mp3",
+     "id": 75,
+     "role": "content",
+     "sizeBytes": 19218901
+    },
+    {
+     "format": "mp3",
+     "id": 76,
+     "role": "content",
+     "sizeBytes": 19984729
+    },
+    {
+     "format": "mp3",
+     "id": 77,
+     "role": "content",
+     "sizeBytes": 19254433
+    },
+    {
+     "format": "mp3",
+     "id": 78,
+     "role": "content",
+     "sizeBytes": 20164909
+    },
+    {
+     "format": "mp3",
+     "id": 79,
+     "role": "content",
+     "sizeBytes": 19514749
+    },
+    {
+     "format": "mp3",
+     "id": 80,
+     "role": "content",
+     "sizeBytes": 18391585
+    },
+    {
+     "format": "mp3",
+     "id": 81,
+     "role": "content",
+     "sizeBytes": 17829625
+    },
+    {
+     "format": "mp3",
+     "id": 82,
+     "role": "content",
+     "sizeBytes": 18732793
+    },
+    {
+     "format": "mp3",
+     "id": 83,
+     "role": "content",
+     "sizeBytes": 18563449
+    },
+    {
+     "format": "mp3",
+     "id": 84,
+     "role": "content",
+     "sizeBytes": 18600493
+    },
+    {
+     "format": "mp3",
+     "id": 85,
+     "role": "content",
+     "sizeBytes": 18267601
+    },
+    {
+     "format": "mp3",
+     "id": 86,
+     "role": "content",
+     "sizeBytes": 20476885
+    },
+    {
+     "format": "mp3",
+     "id": 87,
+     "role": "content",
+     "sizeBytes": 20415397
+    },
+    {
+     "format": "mp3",
+     "id": 88,
+     "role": "content",
+     "sizeBytes": 18710869
+    },
+    {
+     "format": "mp3",
+     "id": 89,
+     "role": "content",
+     "sizeBytes": 17390389
+    },
+    {
+     "format": "mp3",
+     "id": 90,
+     "role": "content",
+     "sizeBytes": 18662989
+    },
+    {
+     "format": "mp3",
+     "id": 91,
+     "role": "content",
+     "sizeBytes": 16492765
+    },
+    {
+     "format": "mp3",
+     "id": 92,
+     "role": "content",
+     "sizeBytes": 18397885
+    },
+    {
+     "format": "mp3",
+     "id": 93,
+     "role": "content",
+     "sizeBytes": 17570569
+    },
+    {
+     "format": "mp3",
+     "id": 94,
+     "role": "content",
+     "sizeBytes": 18196789
+    },
+    {
+     "format": "mp3",
+     "id": 95,
+     "role": "content",
+     "sizeBytes": 17992669
+    },
+    {
+     "format": "mp3",
+     "id": 96,
+     "role": "content",
+     "sizeBytes": 18666013
+    },
+    {
+     "format": "mp3",
+     "id": 97,
+     "role": "content",
+     "sizeBytes": 18114385
+    },
+    {
+     "format": "mp3",
+     "id": 98,
+     "role": "content",
+     "sizeBytes": 17450365
+    },
+    {
+     "format": "mp3",
+     "id": 99,
+     "role": "content",
+     "sizeBytes": 16299733
+    }
+   ],
+   "genres": [
+    "Genre 7"
+   ],
+   "hasCover": true,
+   "id": 62,
+   "isbn13": "9780000000002",
+   "language": "en",
+   "libraryId": 2,
+   "narrators": [
+    "Narrator 10"
+   ],
+   "pageCount": 677,
+   "publishedDate": "1992-09-01",
+   "publishedYear": 1992,
+   "publisher": "Publisher 5",
+   "rating": null,
+   "readStatus": {
+    "finishedAt": null,
+    "source": "auto",
+    "startedAt": "2026-10-14T00:00:00.000Z",
+    "status": "reading",
+    "updatedAt": "2026-11-12T21:35:50.660Z"
+   },
+   "readingProgress": 86.130264,
+   "seriesId": 63,
+   "seriesIndex": "1",
+   "seriesMemberships": [
+    {
+     "displayOrder": 0,
+     "expectedBookCount": 3,
+     "seriesId": 63,
+     "seriesIndex": "1",
+     "seriesName": "Series 3"
+    }
+   ],
+   "seriesName": "Series 3",
+   "status": "present",
+   "subtitle": "Subtitle 2",
+   "title": "Book 7",
+   "updatedAt": "2026-11-11T12:37:07.996Z"
+  },
+  {
+   "addedAt": "2026-09-16T13:52:42.777Z",
+   "authors": [
+    "Author 6"
+   ],
+   "coverAspectRatio": "2/3",
+   "coverVersion": "ebook:2026-09-16T13:59:36.964Z:-",
+   "files": [
+    {
+     "format": "epub",
+     "id": 102,
+     "mediaOverlay": {
+      "available": false,
+      "durationSeconds": null
+     },
+     "role": "primary",
+     "sizeBytes": 761903
+    }
+   ],
+   "genres": [
+    "Genre 1"
+   ],
+   "hasCover": true,
+   "id": 100,
+   "isbn13": "9780000000002",
+   "language": "en",
+   "libraryId": 2,
+   "narrators": [],
+   "pageCount": 320,
+   "publishedDate": "2010-06-01",
+   "publishedYear": 2010,
+   "publisher": "Publisher 6",
+   "rating": null,
+   "readStatus": {
+    "finishedAt": null,
+    "source": "auto",
+    "startedAt": "2026-11-05T00:00:00.000Z",
+    "status": "reading",
+    "updatedAt": "2026-11-08T09:51:03.101Z"
+   },
+   "readingProgress": 6.54,
+   "seriesId": 101,
+   "seriesIndex": "1",
+   "seriesMemberships": [
+    {
+     "displayOrder": 0,
+     "expectedBookCount": 13,
+     "seriesId": 101,
+     "seriesIndex": "1",
+     "seriesName": "Series 4"
+    }
+   ],
+   "seriesName": "Series 4",
+   "status": "present",
+   "subtitle": null,
+   "title": "Book 8",
+   "updatedAt": "2026-09-16T13:59:36.964Z"
+  }
+ ],
+ "page": 0,
+ "size": 3,
+ "total": 3
+}

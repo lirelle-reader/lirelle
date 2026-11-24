@@ -1,0 +1,426 @@
+{
+ "assets": [
+  {
+   "assetId": "aud_2",
+   "durationMs": 38190000,
+   "etag": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
+   "fileId": 3,
+   "format": "m4b",
+   "sequence": 0,
+   "sizeBytes": 606399910
+  }
+ ],
+ "book": {
+  "authors": [
+   "Author 1"
+  ],
+  "hasCover": true,
+  "id": 1,
+  "narrators": [
+   "Narrator 1"
+  ],
+  "title": "Book 1"
+ },
+ "chapters": [
+  {
+   "assetId": "aud_2",
+   "assetOffsetMs": 0,
+   "endMs": 797650,
+   "id": 4,
+   "sequence": 0,
+   "startMs": 0,
+   "title": "Book 2"
+  },
+  {
+   "assetId": "aud_2",
+   "assetOffsetMs": 797650,
+   "endMs": 1590750,
+   "id": 5,
+   "sequence": 1,
+   "startMs": 797650,
+   "title": "Book 3"
+  },
+  {
+   "assetId": "aud_2",
+   "assetOffsetMs": 1590750,
+   "endMs": 2508843,
+   "id": 6,
+   "sequence": 2,
+   "startMs": 1590750,
+   "title": "Book 4"
+  },
+  {
+   "assetId": "aud_2",
+   "assetOffsetMs": 2508843,
+   "endMs": 3393918,
+   "id": 7,
+   "sequence": 3,
+   "startMs": 2508843,
+   "title": "Book 5"
+  },
+  {
+   "assetId": "aud_2",
+   "assetOffsetMs": 3393918,
+   "endMs": 4113016,
+   "id": 8,
+   "sequence": 4,
+   "startMs": 3393918,
+   "title": "Book 6"
+  },
+  {
+   "assetId": "aud_2",
+   "assetOffsetMs": 4113016,
+   "endMs": 4891093,
+   "id": 9,
+   "sequence": 5,
+   "startMs": 4113016,
+   "title": "Book 7"
+  },
+  {
+   "assetId": "aud_2",
+   "assetOffsetMs": 4891093,
+   "endMs": 5934179,
+   "id": 10,
+   "sequence": 6,
+   "startMs": 4891093,
+   "title": "Book 8"
+  },
+  {
+   "assetId": "aud_2",
+   "assetOffsetMs": 5934179,
+   "endMs": 6852272,
+   "id": 11,
+   "sequence": 7,
+   "startMs": 5934179,
+   "title": "Book 9"
+  },
+  {
+   "assetId": "aud_2",
+   "assetOffsetMs": 6852272,
+   "endMs": 7542369,
+   "id": 12,
+   "sequence": 8,
+   "startMs": 6852272,
+   "title": "Book 10"
+  },
+  {
+   "assetId": "aud_2",
+   "assetOffsetMs": 7542369,
+   "endMs": 8338465,
+   "id": 13,
+   "sequence": 9,
+   "startMs": 7542369,
+   "title": "Book 11"
+  },
+  {
+   "assetId": "aud_2",
+   "assetOffsetMs": 8338465,
+   "endMs": 9148562,
+   "id": 14,
+   "sequence": 10,
+   "startMs": 8338465,
+   "title": "Book 12"
+  },
+  {
+   "assetId": "aud_2",
+   "assetOffsetMs": 9148562,
+   "endMs": 10167639,
+   "id": 15,
+   "sequence": 11,
+   "startMs": 9148562,
+   "title": "Book 13"
+  },
+  {
+   "assetId": "aud_2",
+   "assetOffsetMs": 10167639,
+   "endMs": 11262715,
+   "id": 16,
+   "sequence": 12,
+   "startMs": 10167639,
+   "title": "Book 14"
+  },
+  {
+   "assetId": "aud_2",
+   "assetOffsetMs": 11262715,
+   "endMs": 12062804,
+   "id": 17,
+   "sequence": 13,
+   "startMs": 11262715,
+   "title": "Book 15"
+  },
+  {
+   "assetId": "aud_2",
+   "assetOffsetMs": 12062804,
+   "endMs": 12922894,
+   "id": 18,
+   "sequence": 14,
+   "startMs": 12062804,
+   "title": "Book 16"
+  },
+  {
+   "assetId": "aud_2",
+   "assetOffsetMs": 12922894,
+   "endMs": 13479987,
+   "id": 19,
+   "sequence": 15,
+   "startMs": 12922894,
+   "title": "Book 17"
+  },
+  {
+   "assetId": "aud_2",
+   "assetOffsetMs": 13479987,
+   "endMs": 14557717,
+   "id": 20,
+   "sequence": 16,
+   "startMs": 13479987,
+   "title": "Book 18"
+  },
+  {
+   "assetId": "aud_2",
+   "assetOffsetMs": 14557717,
+   "endMs": 15420802,
+   "id": 21,
+   "sequence": 17,
+   "startMs": 14557717,
+   "title": "Book 19"
+  },
+  {
+   "assetId": "aud_2",
+   "assetOffsetMs": 15420802,
+   "endMs": 16493888,
+   "id": 22,
+   "sequence": 18,
+   "startMs": 15420802,
+   "title": "Book 20"
+  },
+  {
+   "assetId": "aud_2",
+   "assetOffsetMs": 16493888,
+   "endMs": 17328970,
+   "id": 23,
+   "sequence": 19,
+   "startMs": 16493888,
+   "title": "Book 21"
+  },
+  {
+   "assetId": "aud_2",
+   "assetOffsetMs": 17328970,
+   "endMs": 18040057,
+   "id": 24,
+   "sequence": 20,
+   "startMs": 17328970,
+   "title": "Book 22"
+  },
+  {
+   "assetId": "aud_2",
+   "assetOffsetMs": 18040057,
+   "endMs": 19080148,
+   "id": 25,
+   "sequence": 21,
+   "startMs": 18040057,
+   "title": "Book 23"
+  },
+  {
+   "assetId": "aud_2",
+   "assetOffsetMs": 19080148,
+   "endMs": 20211238,
+   "id": 26,
+   "sequence": 22,
+   "startMs": 19080148,
+   "title": "Book 24"
+  },
+  {
+   "assetId": "aud_2",
+   "assetOffsetMs": 20211238,
+   "endMs": 20926342,
+   "id": 27,
+   "sequence": 23,
+   "startMs": 20211238,
+   "title": "Book 25"
+  },
+  {
+   "assetId": "aud_2",
+   "assetOffsetMs": 20926342,
+   "endMs": 21629442,
+   "id": 28,
+   "sequence": 24,
+   "startMs": 20926342,
+   "title": "Book 26"
+  },
+  {
+   "assetId": "aud_2",
+   "assetOffsetMs": 21629442,
+   "endMs": 22462550,
+   "id": 29,
+   "sequence": 25,
+   "startMs": 21629442,
+   "title": "Book 27"
+  },
+  {
+   "assetId": "aud_2",
+   "assetOffsetMs": 22462550,
+   "endMs": 23550613,
+   "id": 30,
+   "sequence": 26,
+   "startMs": 22462550,
+   "title": "Book 28"
+  },
+  {
+   "assetId": "aud_2",
+   "assetOffsetMs": 23550613,
+   "endMs": 23964717,
+   "id": 31,
+   "sequence": 27,
+   "startMs": 23550613,
+   "title": "Book 29"
+  },
+  {
+   "assetId": "aud_2",
+   "assetOffsetMs": 23964717,
+   "endMs": 25231806,
+   "id": 32,
+   "sequence": 28,
+   "startMs": 23964717,
+   "title": "Book 30"
+  },
+  {
+   "assetId": "aud_2",
+   "assetOffsetMs": 25231806,
+   "endMs": 25846879,
+   "id": 33,
+   "sequence": 29,
+   "startMs": 25231806,
+   "title": "Book 31"
+  },
+  {
+   "assetId": "aud_2",
+   "assetOffsetMs": 25846879,
+   "endMs": 26978967,
+   "id": 34,
+   "sequence": 30,
+   "startMs": 25846879,
+   "title": "Book 32"
+  },
+  {
+   "assetId": "aud_2",
+   "assetOffsetMs": 26978967,
+   "endMs": 27994050,
+   "id": 35,
+   "sequence": 31,
+   "startMs": 26978967,
+   "title": "Book 33"
+  },
+  {
+   "assetId": "aud_2",
+   "assetOffsetMs": 27994050,
+   "endMs": 28751136,
+   "id": 36,
+   "sequence": 32,
+   "startMs": 27994050,
+   "title": "Book 34"
+  },
+  {
+   "assetId": "aud_2",
+   "assetOffsetMs": 28751136,
+   "endMs": 29632217,
+   "id": 37,
+   "sequence": 33,
+   "startMs": 28751136,
+   "title": "Book 35"
+  },
+  {
+   "assetId": "aud_2",
+   "assetOffsetMs": 29632217,
+   "endMs": 30370309,
+   "id": 38,
+   "sequence": 34,
+   "startMs": 29632217,
+   "title": "Book 36"
+  },
+  {
+   "assetId": "aud_2",
+   "assetOffsetMs": 30370309,
+   "endMs": 31202396,
+   "id": 39,
+   "sequence": 35,
+   "startMs": 30370309,
+   "title": "Book 37"
+  },
+  {
+   "assetId": "aud_2",
+   "assetOffsetMs": 31202396,
+   "endMs": 32475476,
+   "id": 40,
+   "sequence": 36,
+   "startMs": 31202396,
+   "title": "Book 38"
+  },
+  {
+   "assetId": "aud_2",
+   "assetOffsetMs": 32475476,
+   "endMs": 33959556,
+   "id": 41,
+   "sequence": 37,
+   "startMs": 32475476,
+   "title": "Book 39"
+  },
+  {
+   "assetId": "aud_2",
+   "assetOffsetMs": 33959556,
+   "endMs": 35331623,
+   "id": 42,
+   "sequence": 38,
+   "startMs": 33959556,
+   "title": "Book 40"
+  },
+  {
+   "assetId": "aud_2",
+   "assetOffsetMs": 35331623,
+   "endMs": 36183702,
+   "id": 43,
+   "sequence": 39,
+   "startMs": 35331623,
+   "title": "Book 41"
+  },
+  {
+   "assetId": "aud_2",
+   "assetOffsetMs": 36183702,
+   "endMs": 36810803,
+   "id": 44,
+   "sequence": 40,
+   "startMs": 36183702,
+   "title": "Book 42"
+  },
+  {
+   "assetId": "aud_2",
+   "assetOffsetMs": 36810803,
+   "endMs": 37581891,
+   "id": 45,
+   "sequence": 41,
+   "startMs": 36810803,
+   "title": "Book 43"
+  },
+  {
+   "assetId": "aud_2",
+   "assetOffsetMs": 37581891,
+   "endMs": 37967992,
+   "id": 46,
+   "sequence": 42,
+   "startMs": 37581891,
+   "title": "Book 44"
+  },
+  {
+   "assetId": "aud_2",
+   "assetOffsetMs": 37967992,
+   "endMs": 38190000,
+   "id": 47,
+   "sequence": 43,
+   "startMs": 37967992,
+   "title": "Book 45"
+  }
+ ],
+ "revision": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
+ "schema": "bookorbit.audiobook-manifest",
+ "schemaVersion": 2,
+ "totalDurationMs": 38190000
+}

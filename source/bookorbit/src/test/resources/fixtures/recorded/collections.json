@@ -1,0 +1,16 @@
+[
+ {
+  "bookCount": 3,
+  "coverAspectRatio": "2/3",
+  "createdAt": "2026-11-13T13:05:24.504Z",
+  "description": null,
+  "displayOrder": 0,
+  "id": 286,
+  "isOwner": true,
+  "isPublic": false,
+  "name": "Shelf 1",
+  "syncToKobo": false,
+  "updatedAt": "2026-11-13T13:05:24.504Z",
+  "userId": 273
+ }
+]

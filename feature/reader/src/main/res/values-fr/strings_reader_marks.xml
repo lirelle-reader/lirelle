@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="reader_bookmark_at">Marque-page à %d&#160;%%</string>
+
+    <string name="reader_highlight_yellow">Surligner en jaune</string>
+    <string name="reader_highlight_green">Surligner en vert</string>
+    <string name="reader_highlight_blue">Surligner en bleu</string>
+    <string name="reader_highlight_pink">Surligner en rose</string>
+
+    <string name="reader_selection_note">Note</string>
+    <string name="reader_selection_translate">Traduire</string>
+    <string name="reader_selection_define">Définir</string>
+    <string name="reader_selection_search">Rechercher</string>
+    <string name="reader_selection_more">Plus</string>
+    <string name="reader_selection_pane">Actions sur la sélection</string>
+    <string name="reader_selection_copy">Copier</string>
+    <string name="reader_selection_share">Partager</string>
+    <string name="reader_selection_search_web">Rechercher sur le web</string>
+
+    <string name="reader_highlight_pane">Surlignage</string>
+    <string name="reader_highlight_note">Note</string>
+    <string name="reader_highlight_note_count">%1$s / %2$s</string>
+    <string name="reader_highlight_copy">Copier</string>
+    <string name="reader_highlight_delete">Supprimer</string>
+    <string name="reader_highlight_save">Enregistrer</string>
+    <string name="reader_note_discard_title">Abandonner cette note&#160;?</string>
+    <string name="reader_note_discard">Abandonner</string>
+    <string name="reader_note_keep_editing">Reprendre</string>
+
+    <string name="reader_highlight_deleted">Surlignage supprimé</string>
+    <string name="reader_bookmark_deleted">Marque-page supprimé</string>
+    <plurals name="reader_bookmarks_deleted">
+        <item quantity="one">%d marque-page supprimé</item>
+        <item quantity="many">%d marque-pages supprimés</item>
+        <item quantity="other">%d marque-pages supprimés</item>
+    </plurals>
+    <string name="reader_undo">Annuler</string>
+
+    <string name="reader_page_bookmarked">Page marquée</string>
+
+    <string name="reader_tab_contents">Sommaire</string>
+    <string name="reader_tab_bookmarks">Marque-pages</string>
+    <string name="reader_tab_notes">Notes</string>
+    <string name="reader_mark_from_ereader">depuis la liseuse</string>
+    <string name="reader_mark_approximate">position approximative</string>
+    <string name="reader_mark_not_found">introuvable dans ce fichier</string>
+    <string name="reader_bookmark_delete">Supprimer le marque-page&#160;: %1$s</string>
+    <string name="reader_bookmarks_empty">Aucun marque-page pour l’instant.</string>
+    <string name="reader_bookmarks_empty_corner">Aucun marque-page pour l’instant. Touchez le coin supérieur droit d’une page pour en ajouter un.</string>
+    <string name="reader_notes_empty">Aucun surlignage pour l’instant. Appuyez longuement sur le texte pour le sélectionner.</string>
+</resources>

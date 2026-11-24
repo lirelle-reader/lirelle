@@ -1,0 +1,14 @@
+{
+  "active": true,
+  "authenticationMethod": "api_key",
+  "avatarUrl": null,
+  "email": "reader@example.com",
+  "id": 1,
+  "isDefaultPassword": false,
+  "isSuperuser": false,
+  "name": "Ann Reader",
+  "permissions": [],
+  "provisioningMethod": "local",
+  "settings": {},
+  "username": "reader"
+}

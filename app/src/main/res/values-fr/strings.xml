@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="destination_home">Accueil</string>
+    <string name="destination_library">Bibliothèque</string>
+    <string name="destination_downloads">Hors ligne</string>
+    <string name="destination_more">Plus</string>
+    <string name="destination_search">Recherche</string>
+    <!-- Shown alone when the update of an older installation could not finish at this start -->
+    <string name="update_unfinished">La mise à jour n\'a pas pu se terminer. Libérez de l\'espace sur l\'appareil, puis rouvrez Lirelle.</string>
+    <string name="profile_changing">Changement de profil…</string>
+    <string name="more_account">Profils</string>
+    <string name="more_account_description">Comptes, serveurs et connexion</string>
+    <string name="more_history">Historique</string>
+    <string name="more_history_description">Votre journal de lecture</string>
+    <string name="more_settings">Réglages</string>
+    <string name="more_settings_description">Apparence, lecture, audio, téléchargements</string>
+    <string name="more_about">À propos</string>
+    <string name="more_about_description">Version, licences</string>
+
+    <!-- The Downloads page of the settings -->
+    <string name="more_downloads">Téléchargements</string>
+    <string name="more_downloads_metered">Autoriser les réseaux limités</string>
+    <string name="more_downloads_metered_off">Désactivé : les téléchargements attendent un réseau non limité</string>
+    <string name="more_downloads_metered_on">Activé : les téléchargements utilisent tous les réseaux</string>
+    <string name="more_downloads_space">Espace utilisé</string>
+    <plurals name="more_downloads_space_detail">
+        <item quantity="one">%1$d livre · %2$s libres sur l\'appareil</item>
+        <item quantity="many">%1$d livres · %2$s libres sur l\'appareil</item>
+        <item quantity="other">%1$d livres · %2$s libres sur l\'appareil</item>
+    </plurals>
+    <string name="more_downloads_delete_all">Supprimer tous les téléchargements</string>
+    <string name="more_downloads_delete_all_title">Tout supprimer ?</string>
+    <plurals name="more_downloads_delete_all_message">
+        <item quantity="one">%1$d livre téléchargé (%2$s) sera supprimé de cet appareil. Votre progression, vos marque-pages et vos surlignages sont conservés.</item>
+        <item quantity="many">Les %1$d livres téléchargés (%2$s) seront supprimés de cet appareil. Votre progression, vos marque-pages et vos surlignages sont conservés.</item>
+        <item quantity="other">Les %1$d livres téléchargés (%2$s) seront supprimés de cet appareil. Votre progression, vos marque-pages et vos surlignages sont conservés.</item>
+    </plurals>
+    <string name="more_downloads_delete_all_confirm">Supprimer</string>
+    <string name="more_downloads_cancel">Annuler</string>
+</resources>

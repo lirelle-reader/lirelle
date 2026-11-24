@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="downloads_title">Downloads</string>
+
+    <string name="downloads_storage_used">%1$s downloaded</string>
+    <plurals name="downloads_book_count">
+        <item quantity="one">%1$d book</item>
+        <item quantity="other">%1$d books</item>
+    </plurals>
+    <string name="downloads_storage_free">%1$s free on the device</string>
+    <string name="downloads_storage_none">No downloads</string>
+    <string name="downloads_storage_none_yet">Nothing downloaded yet</string>
+    <string name="downloads_storage_bar">Device storage: downloads take %1$s, %2$s free out of %3$s</string>
+
+    <string name="downloads_wifi_title">Waiting for an unmetered network</string>
+    <plurals name="downloads_wifi_left">
+        <item quantity="one">%1$d book, %2$s left. Downloads will resume on their own on an unmetered network.</item>
+        <item quantity="other">%1$d books, %2$s left. Downloads will resume on their own on an unmetered network.</item>
+    </plurals>
+    <plurals name="downloads_wifi_waiting">
+        <item quantity="one">%1$d book waiting. Downloads will resume on their own on an unmetered network.</item>
+        <item quantity="other">%1$d books waiting. Downloads will resume on their own on an unmetered network.</item>
+    </plurals>
+    <string name="downloads_wifi_now">Download now</string>
+    <string name="downloads_wifi_always">Always allow metered networks</string>
+    <string name="downloads_mobile_allowed">Metered networks allowed</string>
+    <string name="downloads_waiting_network">Waiting for the network</string>
+
+    <string name="downloads_in_progress">In progress</string>
+    <string name="downloads_downloaded">Downloaded</string>
+    <string name="downloads_progress_of">%1$s · %2$s of %3$s</string>
+    <string name="downloads_progress_received">%1$s · %2$s</string>
+    <string name="downloads_progress_queued_size">%1$s · %2$s · queued</string>
+    <string name="downloads_progress_queued">%1$s · queued</string>
+    <string name="downloads_progress_status">%1$s · %2$s</string>
+    <string name="downloads_progress_wait_wifi">waiting for an unmetered network</string>
+    <string name="downloads_progress_wait_network">waiting for the network</string>
+    <string name="downloads_failure_no_space">Not enough space: %1$s missing</string>
+    <string name="downloads_failure_not_epub">The file received is not a readable book</string>
+    <string name="downloads_failure_damaged">To download again</string>
+    <string name="downloads_failure_not_allowed">Downloads are not allowed for this account</string>
+    <string name="downloads_retry">Retry</string>
+    <string name="downloads_cancel">Cancel the download of %1$s</string>
+    <string name="downloads_untitled">Book</string>
+
+    <string name="downloads_updates">Updates</string>
+    <string name="downloads_updates_summary">%1$s · %2$s</string>
+    <string name="downloads_update_all">Update all</string>
+    <string name="downloads_update_size">Update · %1$s</string>
+    <string name="downloads_update">Update</string>
+    <string name="downloads_update_description">Update %1$s</string>
+    <string name="downloads_progress_update">Update</string>
+    <string name="downloads_update_failed">Update failed: %1$s</string>
+    <string name="downloads_cancel_update">Cancel the update of %1$s</string>
+    <string name="downloads_gone">No longer on the server</string>
+    <string name="downloads_update_ready">Update ready: applied when the book is closed</string>
+
+    <string name="downloads_row_menu">Options for %1$s</string>
+    <string name="downloads_row_menu_action">Show the options</string>
+    <string name="downloads_delete">Delete from the device</string>
+    <string name="downloads_deleted">Download deleted</string>
+    <string name="downloads_undo">Undo</string>
+    <string name="downloads_in_use">In use</string>
+
+    <string name="downloads_sheet_subtitle">%1$s · %2$s downloaded</string>
+    <string name="downloads_sheet_text_kept">Kept with the narration, which needs it</string>
+    <string name="downloads_sheet_note">Your progress, bookmarks and highlights are kept. The book stays in your library.</string>
+    <string name="downloads_sheet_cancel">Cancel</string>
+    <string name="downloads_sheet_confirm">Delete · %1$s</string>
+    <string name="downloads_sheet_confirm_nothing">Delete</string>
+
+    <string name="downloads_empty_title">Your books, without a network</string>
+    <string name="downloads_empty_message">Open a book\'s page and tap “Download” to keep it on this device. You will find it here, on a plane as well as online.</string>
+    <string name="downloads_browse">Browse the library</string>
+</resources>

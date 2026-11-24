@@ -1,0 +1,413 @@
+{
+ "books": [
+  {
+   "addedAt": "2021-09-28T11:52:26.317Z",
+   "authors": [
+    "Author 29"
+   ],
+   "coverAspectRatio": "2/3",
+   "coverVersion": "ebook:2026-08-28T19:26:28.337Z:2026-11-11T12:10:05.381Z",
+   "files": [
+    {
+     "format": "epub",
+     "id": 339,
+     "mediaOverlay": {
+      "available": true,
+      "durationSeconds": 58253.67099999997
+     },
+     "role": "primary",
+     "sizeBytes": 930359270
+    },
+    {
+     "format": "epub",
+     "id": 340,
+     "mediaOverlay": {
+      "available": false,
+      "durationSeconds": null
+     },
+     "role": "content",
+     "sizeBytes": 2619197
+    },
+    {
+     "format": "m4b",
+     "id": 341,
+     "role": "content",
+     "sizeBytes": 925236258
+    },
+    {
+     "format": "jpg",
+     "id": 342,
+     "role": "cover",
+     "sizeBytes": 846497
+    }
+   ],
+   "genres": [
+    "Genre 7"
+   ],
+   "hasCover": true,
+   "id": 338,
+   "isbn13": "9780000000002",
+   "language": "en",
+   "libraryId": 2,
+   "narrators": [
+    "Narrator 12"
+   ],
+   "pageCount": 476,
+   "publishedDate": "2021-05-04",
+   "publishedYear": 2021,
+   "publisher": "Publisher 10",
+   "rating": null,
+   "readStatus": {
+    "finishedAt": null,
+    "source": "manual",
+    "startedAt": null,
+    "status": "want_to_read",
+    "updatedAt": "2026-09-25T11:50:27.525Z"
+   },
+   "readingProgress": null,
+   "seriesId": null,
+   "seriesIndex": null,
+   "seriesMemberships": [],
+   "seriesName": null,
+   "status": "present",
+   "subtitle": "Subtitle 2",
+   "title": "Book 196",
+   "updatedAt": "2026-11-11T12:10:17.746Z"
+  },
+  {
+   "addedAt": "2026-09-09T14:46:36.046Z",
+   "authors": [
+    "Author 30"
+   ],
+   "coverAspectRatio": "2/3",
+   "coverVersion": "ebook:2026-09-09T14:46:36.184Z:-",
+   "files": [
+    {
+     "format": "epub",
+     "id": 344,
+     "mediaOverlay": {
+      "available": false,
+      "durationSeconds": null
+     },
+     "role": "primary",
+     "sizeBytes": 262751
+    }
+   ],
+   "genres": [
+    "Genre 8",
+    "Genre 13"
+   ],
+   "hasCover": true,
+   "id": 343,
+   "isbn13": "9780000000002",
+   "language": "fr",
+   "libraryId": 2,
+   "narrators": [],
+   "pageCount": 208,
+   "publishedDate": "2026-03-25",
+   "publishedYear": 2026,
+   "publisher": "Publisher 11",
+   "rating": null,
+   "readStatus": {
+    "finishedAt": null,
+    "source": "manual",
+    "startedAt": null,
+    "status": "want_to_read",
+    "updatedAt": "2026-09-09T16:56:18.583Z"
+   },
+   "readingProgress": null,
+   "seriesId": null,
+   "seriesIndex": null,
+   "seriesMemberships": [],
+   "seriesName": null,
+   "status": "present",
+   "subtitle": null,
+   "title": "Book 197",
+   "updatedAt": "2026-11-08T12:37:12.519Z"
+  },
+  {
+   "addedAt": "2026-08-29T08:58:55.709Z",
+   "authors": [
+    "Author 31"
+   ],
+   "coverAspectRatio": "2/3",
+   "coverVersion": "ebook:2026-08-29T08:59:42.610Z:2026-11-11T11:27:38.739Z",
+   "files": [
+    {
+     "format": "epub",
+     "id": 347,
+     "mediaOverlay": {
+      "available": true,
+      "durationSeconds": 17861.380000000016
+     },
+     "role": "primary",
+     "sizeBytes": 356810386
+    },
+    {
+     "format": "epub",
+     "id": 348,
+     "mediaOverlay": {
+      "available": false,
+      "durationSeconds": null
+     },
+     "role": "content",
+     "sizeBytes": 1002818
+    },
+    {
+     "format": "mp3",
+     "id": 349,
+     "role": "content",
+     "sizeBytes": 5067972
+    },
+    {
+     "format": "mp3",
+     "id": 350,
+     "role": "content",
+     "sizeBytes": 26504387
+    },
+    {
+     "format": "mp3",
+     "id": 351,
+     "role": "content",
+     "sizeBytes": 7151871
+    },
+    {
+     "format": "mp3",
+     "id": 352,
+     "role": "content",
+     "sizeBytes": 20198596
+    },
+    {
+     "format": "mp3",
+     "id": 353,
+     "role": "content",
+     "sizeBytes": 17493528
+    },
+    {
+     "format": "mp3",
+     "id": 354,
+     "role": "content",
+     "sizeBytes": 12712627
+    },
+    {
+     "format": "mp3",
+     "id": 355,
+     "role": "content",
+     "sizeBytes": 8826710
+    },
+    {
+     "format": "mp3",
+     "id": 356,
+     "role": "content",
+     "sizeBytes": 10541417
+    },
+    {
+     "format": "mp3",
+     "id": 357,
+     "role": "content",
+     "sizeBytes": 20218637
+    },
+    {
+     "format": "mp3",
+     "id": 358,
+     "role": "content",
+     "sizeBytes": 4225774
+    },
+    {
+     "format": "mp3",
+     "id": 359,
+     "role": "content",
+     "sizeBytes": 10700542
+    },
+    {
+     "format": "mp3",
+     "id": 360,
+     "role": "content",
+     "sizeBytes": 3407128
+    },
+    {
+     "format": "mp3",
+     "id": 361,
+     "role": "content",
+     "sizeBytes": 15108370
+    },
+    {
+     "format": "mp3",
+     "id": 362,
+     "role": "content",
+     "sizeBytes": 9405370
+    },
+    {
+     "format": "mp3",
+     "id": 363,
+     "role": "content",
+     "sizeBytes": 8909216
+    },
+    {
+     "format": "mp3",
+     "id": 364,
+     "role": "content",
+     "sizeBytes": 6955542
+    },
+    {
+     "format": "mp3",
+     "id": 365,
+     "role": "content",
+     "sizeBytes": 3671725
+    },
+    {
+     "format": "mp3",
+     "id": 366,
+     "role": "content",
+     "sizeBytes": 9029491
+    },
+    {
+     "format": "mp3",
+     "id": 367,
+     "role": "content",
+     "sizeBytes": 13749359
+    },
+    {
+     "format": "mp3",
+     "id": 368,
+     "role": "content",
+     "sizeBytes": 6467266
+    },
+    {
+     "format": "mp3",
+     "id": 369,
+     "role": "content",
+     "sizeBytes": 4987538
+    },
+    {
+     "format": "mp3",
+     "id": 370,
+     "role": "content",
+     "sizeBytes": 13428439
+    },
+    {
+     "format": "mp3",
+     "id": 371,
+     "role": "content",
+     "sizeBytes": 6035898
+    },
+    {
+     "format": "mp3",
+     "id": 372,
+     "role": "content",
+     "sizeBytes": 9248979
+    },
+    {
+     "format": "mp3",
+     "id": 373,
+     "role": "content",
+     "sizeBytes": 2415355
+    },
+    {
+     "format": "mp3",
+     "id": 374,
+     "role": "content",
+     "sizeBytes": 13502353
+    },
+    {
+     "format": "mp3",
+     "id": 375,
+     "role": "content",
+     "sizeBytes": 15216986
+    },
+    {
+     "format": "mp3",
+     "id": 376,
+     "role": "content",
+     "sizeBytes": 1820615
+    },
+    {
+     "format": "mp3",
+     "id": 377,
+     "role": "content",
+     "sizeBytes": 9622052
+    },
+    {
+     "format": "mp3",
+     "id": 378,
+     "role": "content",
+     "sizeBytes": 5363265
+    },
+    {
+     "format": "mp3",
+     "id": 379,
+     "role": "content",
+     "sizeBytes": 9998492
+    },
+    {
+     "format": "mp3",
+     "id": 380,
+     "role": "content",
+     "sizeBytes": 5040611
+    },
+    {
+     "format": "mp3",
+     "id": 381,
+     "role": "content",
+     "sizeBytes": 14505911
+    },
+    {
+     "format": "mp3",
+     "id": 382,
+     "role": "content",
+     "sizeBytes": 8353322
+    },
+    {
+     "format": "mp3",
+     "id": 383,
+     "role": "content",
+     "sizeBytes": 4560383
+    },
+    {
+     "format": "mp3",
+     "id": 384,
+     "role": "content",
+     "sizeBytes": 5402323
+    },
+    {
+     "format": "mp3",
+     "id": 385,
+     "role": "content",
+     "sizeBytes": 2599000
+    }
+   ],
+   "genres": [
+    "Genre 7",
+    "Genre 14"
+   ],
+   "hasCover": true,
+   "id": 345,
+   "isbn13": "9780000000002",
+   "language": "en",
+   "libraryId": 2,
+   "narrators": [],
+   "pageCount": 216,
+   "publishedDate": "1979-10-12",
+   "publishedYear": 1979,
+   "publisher": "Publisher 12",
+   "rating": null,
+   "readStatus": {
+    "finishedAt": null,
+    "source": "manual",
+    "startedAt": null,
+    "status": "want_to_read",
+    "updatedAt": "2026-08-29T09:32:45.836Z"
+   },
+   "readingProgress": null,
+   "seriesId": 346,
+   "seriesIndex": "1",
+   "seriesMemberships": [],
+   "seriesName": "Series 13",
+   "status": "present",
+   "subtitle": "Subtitle 2",
+   "title": "Book 198",
+   "updatedAt": "2026-11-11T12:39:17.453Z"
+  }
+ ],
+ "total": 4
+}

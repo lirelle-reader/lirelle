@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- The audio bookmarks: the player's tile, its snackbars, the tab beside the chapters and the edit dialog -->
+    <string name="player_bookmark">Bookmark</string>
+    <string name="player_bookmark_added">Bookmark added</string>
+    <string name="player_bookmark_edit">Edit</string>
+    <string name="player_bookmark_exists">A bookmark is already there</string>
+    <string name="player_bookmark_failed">The bookmark could not be added</string>
+    <string name="player_bookmark_go">Go to the bookmark</string>
+    <string name="player_bookmark_delete">Delete</string>
+    <string name="player_bookmark_deleted">Bookmark deleted</string>
+    <string name="player_bookmark_undo">Undo</string>
+    <!-- What a long press on a bookmark offers, as a screen reader says it -->
+    <string name="player_bookmark_options">Edit or delete</string>
+    <string name="player_bookmarks_tab">Bookmarks · %1$d</string>
+    <string name="player_bookmarks_empty">Add a bookmark with the Bookmark button</string>
+    <string name="player_bookmark_dialog_title">Edit the bookmark</string>
+    <string name="player_bookmark_title">Title</string>
+    <string name="player_bookmark_title_needed">A title is needed</string>
+    <string name="player_bookmark_note">Note (optional)</string>
+    <string name="player_bookmark_note_hint">A thought, a quote, why this passage…</string>
+    <string name="player_bookmark_cancel">Cancel</string>
+    <string name="player_bookmark_save">Save</string>
+</resources>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- A book seen from its edge, opened at a right angle: the cover draws an L, the pages fan out
+     of its inner corner with unequal lengths. Drawn on the 108dp adaptive-icon grid. -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <!-- A launcher shows the 72dp in the middle of the grid, often under a round mask. The drawing
+         (x 32.5..84.5, y 23.5..80.5 with its strokes) is centred there and scaled to 0.7, which
+         keeps its furthest point 27dp from the centre, inside the 33dp every mask leaves. -->
+    <group
+        android:pivotX="58.5"
+        android:pivotY="52"
+        android:scaleX="0.7"
+        android:scaleY="0.7"
+        android:translateX="-4.5"
+        android:translateY="2">
+        <!-- The pages, under the cover. -->
+        <path
+            android:pathData="M39.5,73.5L64.2,65.5M39.5,73.5L73.5,48.8M39.5,73.5L52.4,55.7M39.5,73.5L51.2,37.4"
+            android:strokeColor="#F2B544"
+            android:strokeLineCap="round"
+            android:strokeWidth="4.6" />
+        <!-- The cover. -->
+        <path
+            android:pathData="M36,27V77H81"
+            android:strokeColor="#F6F2E9"
+            android:strokeLineCap="round"
+            android:strokeLineJoin="round"
+            android:strokeWidth="7" />
+    </group>
+</vector>

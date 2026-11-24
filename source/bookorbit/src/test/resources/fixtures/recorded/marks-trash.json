@@ -1,0 +1,32 @@
+{
+ "items": [
+  {
+   "author": "Author 1",
+   "bookId": 2,
+   "bookTitle": "Book 3",
+   "cfi": "epubcfi(/6/8!/4/2,/1:0,/1:24)",
+   "chapterIndex": null,
+   "chapterTitle": "Chapter 1",
+   "color": "#38BDF8",
+   "createdAt": "2026-11-14T13:17:00.562Z",
+   "deletedAt": "2026-11-14T13:17:01.738Z",
+   "highlightedAt": "2026-11-14T13:17:00.562Z",
+   "id": 3,
+   "jumpFileFormat": "epub",
+   "jumpFileId": 4,
+   "note": null,
+   "origin": "web",
+   "pageno": null,
+   "positionStatus": "exact",
+   "starredAt": null,
+   "style": "highlight",
+   "text": "Highlighted text 1"
+  }
+ ],
+ "page": 1,
+ "pageSize": 25,
+ "stats": {
+  "books": 1
+ },
+ "total": 1
+}

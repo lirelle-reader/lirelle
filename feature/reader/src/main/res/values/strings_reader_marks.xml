@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- The title of a bookmark on a page outside any chapter: %d is the percentage of the book. -->
+    <string name="reader_bookmark_at">Bookmark at %d %%</string>
+
+    <!-- The colour dots, as a screen reader says them. -->
+    <string name="reader_highlight_yellow">Yellow highlight</string>
+    <string name="reader_highlight_green">Green highlight</string>
+    <string name="reader_highlight_blue">Blue highlight</string>
+    <string name="reader_highlight_pink">Pink highlight</string>
+
+    <!-- The bar over a selection, and its menu. -->
+    <string name="reader_selection_note">Note</string>
+    <string name="reader_selection_translate">Translate</string>
+    <string name="reader_selection_define">Define</string>
+    <string name="reader_selection_search">Search</string>
+    <string name="reader_selection_more">More</string>
+    <!-- Said by a screen reader when the bar appears over a selection. -->
+    <string name="reader_selection_pane">Actions on the selection</string>
+    <string name="reader_selection_copy">Copy</string>
+    <string name="reader_selection_share">Share</string>
+    <string name="reader_selection_search_web">Search the web</string>
+
+    <!-- The panel of a highlight; its name, as a screen reader says it when it opens. -->
+    <string name="reader_highlight_pane">Highlight</string>
+    <string name="reader_highlight_note">Note</string>
+    <!-- How long the note is, near its limit: %1$s characters typed of %2$s. -->
+    <string name="reader_highlight_note_count">%1$s / %2$s</string>
+    <string name="reader_highlight_copy">Copy</string>
+    <string name="reader_highlight_delete">Delete</string>
+    <string name="reader_highlight_save">Save</string>
+    <string name="reader_note_discard_title">Discard this note?</string>
+    <string name="reader_note_discard">Discard</string>
+    <string name="reader_note_keep_editing">Keep editing</string>
+
+    <!-- What can still be undone. -->
+    <string name="reader_highlight_deleted">Highlight deleted</string>
+    <!-- One bookmark deleted; the plural below is for several. -->
+    <string name="reader_bookmark_deleted">Bookmark deleted</string>
+    <plurals name="reader_bookmarks_deleted">
+        <item quantity="one">%d bookmark deleted</item>
+        <item quantity="other">%d bookmarks deleted</item>
+    </plurals>
+    <string name="reader_undo">Undo</string>
+
+    <!-- The ribbon in the top-right corner of a page holding a bookmark, as a screen reader says it. -->
+    <string name="reader_page_bookmarked">Page bookmarked</string>
+
+    <!-- The panel opened from the top bar: its tabs. -->
+    <string name="reader_tab_contents">Contents</string>
+    <string name="reader_tab_bookmarks">Bookmarks</string>
+    <string name="reader_tab_notes">Notes</string>
+    <!-- In the details of a bookmark or a highlight made on KOReader or a Kobo: after a separator, lower case. -->
+    <string name="reader_mark_from_ereader">from an e-reader</string>
+    <!-- In the details of a highlight the server could not place in this file: after a separator, lower case. -->
+    <string name="reader_mark_approximate">approximate position</string>
+    <!-- In the details of a bookmark that has no place in this file: after a separator, lower case. -->
+    <string name="reader_mark_not_found">not found in this file</string>
+    <!-- The button on each bookmark of the panel, as a screen reader says it: %1$s is the bookmark's title. -->
+    <string name="reader_bookmark_delete">Delete bookmark: %1$s</string>
+    <!-- The empty tabs. The first without the corner tap, the second with it. -->
+    <string name="reader_bookmarks_empty">No bookmarks yet.</string>
+    <string name="reader_bookmarks_empty_corner">No bookmarks yet. Tap the top-right corner of a page to add one.</string>
+    <string name="reader_notes_empty">No highlights yet. Press and hold on the text to select it.</string>
+</resources>

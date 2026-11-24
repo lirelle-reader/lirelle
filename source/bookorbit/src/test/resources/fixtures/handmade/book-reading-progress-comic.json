@@ -1,0 +1,34 @@
+{
+ "items": [
+  {
+   "fileId": 30,
+   "narration": {
+    "percentage": null,
+    "seconds": null,
+    "updatedAt": null
+   },
+   "percentage": 0,
+   "text": {
+    "cfi": null,
+    "page": null,
+    "updatedAt": null
+   },
+   "updatedAt": null
+  },
+  {
+   "fileId": 31,
+   "narration": {
+    "percentage": null,
+    "seconds": null,
+    "updatedAt": null
+   },
+   "percentage": 25,
+   "text": {
+    "cfi": null,
+    "page": 12,
+    "updatedAt": "2026-11-17T09:12:44.501Z"
+   },
+   "updatedAt": "2026-11-17T09:12:44.501Z"
+  }
+ ]
+}

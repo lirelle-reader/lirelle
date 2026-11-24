@@ -1,0 +1,12 @@
+{
+ "items": [],
+ "page": 1,
+ "pageSize": 1,
+ "stats": {
+  "firstSessionAt": null,
+  "lastSessionAt": null,
+  "totalSeconds": 0,
+  "totalSessions": 0
+ },
+ "total": 0
+}

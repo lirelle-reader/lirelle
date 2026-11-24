@@ -1,0 +1,17 @@
+{
+ "birthYear": 1890,
+ "bookCount": 67,
+ "coverBookId": null,
+ "deathYear": 1976,
+ "description": "Description 1",
+ "genres": [
+  "Genre 11",
+  "Genre 12",
+  "Genre 1"
+ ],
+ "id": 273,
+ "imageUrl": "/api/v1/authors/273/thumbnail?t=1",
+ "lastAddedAt": "2017-08-20T10:05:17.785Z",
+ "name": "Author 7",
+ "sortName": "Sort name 1"
+}

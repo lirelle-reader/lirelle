@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="narration_controls">Commandes de la narration</string>
+    <string name="narration_previous_sentence">Phrase précédente</string>
+    <string name="narration_next_sentence">Phrase suivante</string>
+    <string name="narration_sections">Sections</string>
+    <plurals name="narration_sections_count">
+        <item quantity="one">%d section</item>
+        <item quantity="other">%d sections</item>
+    </plurals>
+    <string name="narration_section_line">Section %1$d sur %2$d · %3$d\u00A0%% du livre</string>
+    <string name="narration_section_bar">Position dans la section</string>
+    <string name="narration_back_to_sentence">Retour à la phrase</string>
+    <string name="narration_read_page">Lire cette page</string>
+    <string name="narration_skipped_titled">«\u00A0%1$s\u00A0» n’a pas de narration\u00A0: elle a été passée</string>
+    <string name="narration_sleep_end_of_section">Fin de la section</string>
+    <string name="narration_sleep_stops_section">Arrêt en fin de section</string>
+    <!-- A part of the times line, followed by the next part -->
+    <string name="narration_part_then">%1$s ·</string>
+    <string name="narration_skipped">Une section sans narration a été passée</string>
+    <string name="narration_skipped_read">Lire</string>
+    <string name="narration_finished">Narration terminée</string>
+    <string name="narration_finished_rest">La suite du livre n’est pas narrée</string>
+    <string name="narration_finish_book">Terminer le livre</string>
+</resources>

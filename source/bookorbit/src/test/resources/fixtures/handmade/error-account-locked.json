@@ -1,0 +1,1 @@
+{"statusCode":401,"message":"Account temporarily locked after too many failed sign-in attempts","path":"/api/v1/auth/login","timestamp":"2026-11-13T08:00:00.000Z","requestId":"req-1","errorCode":"account_locked","retryAfterSeconds":540}

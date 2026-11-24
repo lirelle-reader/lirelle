@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:epub="http://www.idpf.org/2007/ops" lang="en" xml:lang="en">
+<head>
+<meta charset="utf-8"/>
+<title>A Quiet Chapter</title>
+<script>
+document.title = 'SCRIPT RAN inline';
+try { window.top.document.title = 'SCRIPT RAN inline'; window.top.lirelleScriptRan = 'inline'; } catch (e) {}
+try { fetch('https://evil.example/inline'); } catch (e) {}
+</script>
+<script src="script.js"></script>
+</head>
+<body>
+<h1>A Quiet Chapter</h1>
+<p id="trap" onclick="document.title = 'SCRIPT RAN onclick'; try { window.top.document.title = 'SCRIPT RAN onclick'; window.top.lirelleScriptRan = 'onclick'; } catch (e) {} new Image().src = 'https://evil.example/onclick.png';">Touch this sentence and nothing at all should happen.</p>
+<p><img id="beacon" src="https://evil.example/pixel.png" alt="A picture from elsewhere"/></p>
+<p><a id="jslink" href="javascript:void(window.top.document.title='SCRIPT RAN link')">A link that is really a script.</a></p>
+<p id="noted">The notes try as well<a id="noteref" epub:type="noteref" href="notes.xhtml#trapnote">1</a>.</p>
+<p>Nobody trusted the barometer, least of all the man who owned it. Rain came in sideways from the point, smelling of kelp and diesel. A coil of wire, a tin of grease and a spare wick sat on the sill. The stairs of the tower numbered one hundred and twelve, not counting the ladder. Nobody trusted the barometer, least of all the man who owned it.</p>
+<p>The tide tables were printed in a town far inland, and it showed. Nobody trusted the barometer, least of all the man who owned it. The ferry was late again, which surprised no one and annoyed everyone. A coil of wire, a tin of grease and a spare wick sat on the sill. She had promised a reply before the equinox and meant to keep her word.</p>
+<p>A kettle whistled somewhere behind the net loft, thin and patient. The harbour master kept a ledger of every tide he had ever seen. A kettle whistled somewhere behind the net loft, thin and patient. The stairs of the tower numbered one hundred and twelve, not counting the ladder. She wrote the date at the top of the page and then stopped to think.</p>
+<p>Two fishermen argued gently about a net neither of them owned. The dog belonged to the whole street and answered to four names. The ferry was late again, which surprised no one and annoyed everyone. The clock in the square ran seven minutes fast and was loved for it. The tide tables were printed in a town far inland, and it showed.</p>
+<p>Old Anselm swore the fog had a colour, though he could never name it. By noon the market had sold out of everything except turnips. He measured the afternoon in pipes smoked rather than in hours. The tide tables were printed in a town far inland, and it showed. He measured the afternoon in pipes smoked rather than in hours.</p>
+</body>
+</html>

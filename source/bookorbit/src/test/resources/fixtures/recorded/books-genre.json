@@ -1,0 +1,159 @@
+{
+ "bookTotal": 291,
+ "items": [
+  {
+   "addedAt": "2026-09-30T13:39:13.914Z",
+   "authors": [
+    "Author 35"
+   ],
+   "coverAspectRatio": "2/3",
+   "coverVersion": "ebook:2026-09-30T13:39:26.313Z:-",
+   "files": [
+    {
+     "format": "epub",
+     "id": 401,
+     "mediaOverlay": {
+      "available": false,
+      "durationSeconds": null
+     },
+     "role": "primary",
+     "sizeBytes": 213696
+    }
+   ],
+   "genres": [
+    "Genre 9",
+    "Genre 15"
+   ],
+   "hasCover": true,
+   "id": 400,
+   "isbn13": null,
+   "language": "fr",
+   "libraryId": 2,
+   "narrators": [],
+   "pageCount": 223,
+   "publishedDate": "1678-03-08",
+   "publishedYear": 1678,
+   "publisher": "Publisher 15",
+   "rating": null,
+   "readStatus": null,
+   "readingProgress": null,
+   "seriesId": null,
+   "seriesIndex": null,
+   "seriesMemberships": [],
+   "seriesName": null,
+   "status": "present",
+   "subtitle": null,
+   "title": "Book 203",
+   "updatedAt": "2026-11-11T12:09:21.777Z"
+  },
+  {
+   "addedAt": "2026-09-27T08:43:24.161Z",
+   "authors": [
+    "Author 36"
+   ],
+   "coverAspectRatio": "2/3",
+   "coverVersion": "ebook:2026-09-27T08:43:36.497Z:-",
+   "files": [
+    {
+     "format": "epub",
+     "id": 404,
+     "mediaOverlay": {
+      "available": false,
+      "durationSeconds": null
+     },
+     "role": "primary",
+     "sizeBytes": 503279
+    }
+   ],
+   "genres": [
+    "Genre 9",
+    "Genre 23"
+   ],
+   "hasCover": true,
+   "id": 402,
+   "isbn13": null,
+   "language": "fr",
+   "libraryId": 2,
+   "narrators": [],
+   "pageCount": 470,
+   "publishedDate": null,
+   "publishedYear": 1842,
+   "publisher": "Publisher 16",
+   "rating": null,
+   "readStatus": null,
+   "readingProgress": null,
+   "seriesId": 403,
+   "seriesIndex": "1",
+   "seriesMemberships": [
+    {
+     "displayOrder": 0,
+     "expectedBookCount": 3,
+     "seriesId": 403,
+     "seriesIndex": "1",
+     "seriesName": "Series 17"
+    }
+   ],
+   "seriesName": "Series 17",
+   "status": "present",
+   "subtitle": "Subtitle 2",
+   "title": "Book 204",
+   "updatedAt": "2026-09-27T08:44:10.339Z"
+  },
+  {
+   "addedAt": "2026-09-27T08:26:10.240Z",
+   "authors": [
+    "Author 36"
+   ],
+   "coverAspectRatio": "2/3",
+   "coverVersion": "ebook:2026-09-27T08:26:22.479Z:-",
+   "files": [
+    {
+     "format": "epub",
+     "id": 407,
+     "mediaOverlay": {
+      "available": false,
+      "durationSeconds": null
+     },
+     "role": "primary",
+     "sizeBytes": 1523928
+    }
+   ],
+   "genres": [
+    "Genre 9",
+    "Genre 4"
+   ],
+   "hasCover": true,
+   "id": 405,
+   "isbn13": null,
+   "language": "fr",
+   "libraryId": 2,
+   "narrators": [],
+   "pageCount": 1340,
+   "publishedDate": null,
+   "publishedYear": 1852,
+   "publisher": "Publisher 17",
+   "rating": null,
+   "readStatus": null,
+   "readingProgress": null,
+   "seriesId": 406,
+   "seriesIndex": "4",
+   "seriesMemberships": [
+    {
+     "displayOrder": 0,
+     "expectedBookCount": 4,
+     "seriesId": 406,
+     "seriesIndex": "4",
+     "seriesName": "Series 18"
+    }
+   ],
+   "seriesName": "Series 18",
+   "status": "present",
+   "subtitle": "Subtitle 2",
+   "title": "Book 205",
+   "updatedAt": "2026-09-27T08:27:51.396Z"
+  }
+ ],
+ "page": 0,
+ "size": 3,
+ "total": 291
+}

@@ -1,0 +1,15 @@
+{
+ "full": {
+  "accept-ranges": "bytes",
+  "content-length": "606399910",
+  "content-type": "audio/mp4",
+  "status": 200
+ },
+ "range": {
+  "accept-ranges": "bytes",
+  "content-length": "1000",
+  "content-range": "bytes 1000-1999/606399910",
+  "content-type": "audio/mp4",
+  "status": 206
+ }
+}

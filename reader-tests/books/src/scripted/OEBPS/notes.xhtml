@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:epub="http://www.idpf.org/2007/ops" lang="en" xml:lang="en">
+<head>
+<meta charset="utf-8"/>
+<title>Notes That Tried</title>
+<script>
+document.title = 'SCRIPT RAN inline';
+try { window.top.document.title = 'SCRIPT RAN inline'; window.top.lirelleScriptRan = 'inline'; } catch (e) {}
+try { fetch('https://evil.example/inline'); } catch (e) {}
+</script>
+<script src="script.js"></script>
+</head>
+<body>
+<h1>Notes</h1>
+<aside epub:type="footnote" id="trapnote"><p id="notetrap" onclick="document.title = 'SCRIPT RAN note'; try { window.top.document.title = 'SCRIPT RAN note'; window.top.lirelleScriptRan = 'note'; } catch (e) {} new Image().src = 'https://evil.example/note-onclick.png';">1. Touch this note and nothing should happen.</p>
+<p><img id="notebeacon" src="https://evil.example/note.png" alt="Another picture from elsewhere"/></p></aside>
+</body>
+</html>

@@ -1,0 +1,18 @@
+{
+  "id": 31,
+  "libraryName": "Audiobooks",
+  "addedAt": "2026-10-01T09:00:00.000Z",
+  "title": "A Square Story",
+  "authors": [{"id": 5, "name": "Invented Writer"}],
+  "files": [
+    {"id": 311, "format": "epub", "role": "primary", "sizeBytes": 2000000},
+    {"id": 312, "format": "m4b", "role": "content", "sizeBytes": 300000000, "durationSeconds": 36000.0}
+  ],
+  "coverAspectRatio": "2/3",
+  "coverMedia": ["ebook", "audio"],
+  "coverVersion": "ebook:2026-10-01T09:05:00.000Z:2026-10-02T10:30:00.000Z",
+  "covers": {
+    "ebook": {"width": 1400, "height": 2032, "updatedAt": "2026-10-01T09:05:00.000Z", "source": "embedded"},
+    "audio": {"width": 2400, "height": 2400, "updatedAt": "2026-10-02T10:30:00.000Z", "source": "embedded"}
+  }
+}

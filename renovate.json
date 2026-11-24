@@ -1,0 +1,62 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": ["config:recommended", ":dependencyDashboard"],
+  "baseBranchPatterns": ["main"],
+  "platformAutomerge": true,
+  "prConcurrentLimit": 5,
+  "prHourlyLimit": 0,
+  "labels": ["dependencies", "renovate"],
+  "commitMessagePrefix": "chore(deps):",
+  "packageRules": [
+    {
+      "matchUpdateTypes": ["minor", "patch", "pin", "digest"],
+      "automerge": true
+    },
+    {
+      "matchUpdateTypes": ["major"],
+      "automerge": false
+    },
+    {
+      "matchPackageNames": ["org.jetbrains.kotlin**", "com.google.devtools.ksp**"],
+      "groupName": "kotlin",
+      "groupSlug": "kotlin",
+      "description": "Kotlin, its compiler plugins (compose, serialization) and KSP move together."
+    },
+    {
+      "matchPackageNames": ["androidx.compose**"],
+      "groupName": "compose",
+      "groupSlug": "compose"
+    },
+    {
+      "matchPackageNames": ["com.android.application", "com.android.library", "com.android.tools.build**"],
+      "groupName": "android gradle plugin",
+      "groupSlug": "agp"
+    },
+    {
+      "matchPackageNames": ["com.google.dagger**", "androidx.hilt**"],
+      "groupName": "hilt",
+      "groupSlug": "hilt"
+    },
+    {
+      "matchPackageNames": ["com.squareup.okhttp3**"],
+      "groupName": "okhttp",
+      "groupSlug": "okhttp"
+    },
+    {
+      "matchPackageNames": ["io.coil-kt.coil3**"],
+      "groupName": "coil",
+      "groupSlug": "coil"
+    },
+    {
+      "matchPackageNames": ["androidx.paging**"],
+      "groupName": "paging",
+      "groupSlug": "paging"
+    },
+    {
+      "matchPackageNames": ["@playwright/test", "playwright", "mcr.microsoft.com/playwright"],
+      "groupName": "playwright",
+      "groupSlug": "playwright",
+      "description": "The npm package of reader-tests and the image of the reader-page job must be the same version."
+    }
+  ]
+}

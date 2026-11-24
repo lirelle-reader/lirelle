@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Bars -->
+    <string name="reader_search_book">Rechercher dans le livre</string>
+    <string name="reader_bookmark_add">Marquer la page</string>
+    <string name="reader_bookmark_remove">Retirer le marque-page</string>
+    <string name="reader_panel">Sommaire, marque-pages et notes</string>
+    <string name="reader_settings">Réglages de lecture</string>
+    <string name="reader_previous_chapter">Chapitre précédent</string>
+    <string name="reader_next_chapter">Chapitre suivant</string>
+    <string name="reader_position_slider">Position dans le livre</string>
+
+    <!-- The page, for screen readers -->
+    <string name="reader_page">Page du livre</string>
+    <string name="reader_show_controls">Afficher les commandes (toucher le centre)</string>
+    <string name="reader_hide_controls">Masquer les commandes (toucher le centre)</string>
+    <string name="reader_next_page_right">Page suivante (toucher le bord droit)</string>
+    <string name="reader_next_page_left">Page suivante (toucher le bord gauche)</string>
+    <string name="reader_previous_page_left">Page précédente (toucher le bord gauche)</string>
+    <string name="reader_previous_page_right">Page précédente (toucher le bord droit)</string>
+
+    <!-- Header and footer -->
+    <plurals name="reader_pages_left">
+        <item quantity="one">%1$d page restante dans le chapitre</item>
+        <item quantity="many">%1$d pages restantes dans le chapitre</item>
+        <item quantity="other">%1$d pages restantes dans le chapitre</item>
+    </plurals>
+
+    <!-- Position found on the server, and jumps -->
+    <string name="reader_newer_position">Position plus récente : %1$d %%</string>
+    <!-- The second argument is a relative time as the system writes it: "2 hours ago". -->
+    <string name="reader_newer_position_at">Position plus récente : %1$d %%, %2$s</string>
+    <string name="reader_newer_position_go">Y aller</string>
+    <string name="reader_newer_position_ignore">Ignorer</string>
+    <string name="reader_go_back">Revenir</string>
+
+    <!-- A link to the web -->
+    <string name="reader_link_title">Ouvrir ce lien ?</string>
+    <string name="reader_link_text">Ce lien quitte le livre et s’ouvre dans votre navigateur.</string>
+    <string name="reader_link_open">Ouvrir</string>
+    <string name="reader_cancel">Annuler</string>
+    <string name="reader_no_browser">Aucune application ne peut ouvrir ce lien.</string>
+
+    <!-- Opening -->
+    <string name="reader_downloading">Téléchargement du livre…</string>
+    <string name="reader_download_size">%1$s sur %2$s</string>
+    <string name="reader_opening">Ouverture du livre…</string>
+    <string name="reader_failure_download_not_allowed">Ce compte n’a pas le droit de télécharger, nécessaire pour lire ce livre.</string>
+    <string name="reader_failure_not_an_epub">Ce fichier ne peut pas être ouvert : il est endommagé, ou ce n’est pas un EPUB.</string>
+    <string name="reader_failure_protected">Ce livre est protégé contre la copie (DRM) et ne peut pas être lu ici.</string>
+    <string name="reader_failure_engine">Le livre n’a pas pu être affiché.</string>
+    <string name="reader_failure_cannot_open">Ce livre ne peut pas être ouvert dans ce format.</string>
+    <string name="reader_failure_no_epub">Ce livre n’a pas de fichier EPUB à lire.</string>
+    <string name="reader_failure_old_web_view">La lecture demande une version plus récente de « Android System WebView ». Mettez-la à jour depuis votre magasin d’applications, puis rouvrez le livre.</string>
+    <!-- La narration d’un livre lu à voix haute. -->
+    <string name="reader_narration_start">Lire avec la narration</string>
+    <string name="reader_narration_playing">Narration en cours</string>
+    <string name="reader_narration_open_controls">Ouvrir les commandes de la narration</string>
+    <string name="reader_read_from_here">Lire à partir d’ici</string>
+    <string name="reader_narration_unavailable">Narration indisponible</string>
+    <string name="reader_narration_retry">Réessayer</string>
+    <string name="reader_narration_error">La lecture s’est arrêtée sur une erreur</string>
+</resources>

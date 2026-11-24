@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="player_notification_channel">Lecture</string>
+    <string name="player_button_back">Reculer de %1$d secondes</string>
+    <string name="player_button_forward">Avancer de %1$d secondes</string>
+    <string name="player_button_previous_chapter">Chapitre précédent</string>
+    <string name="player_button_next_chapter">Chapitre suivant</string>
+    <string name="player_button_listen_next">Écouter la suite</string>
+    <string name="player_notification_finished">%1$s — terminé</string>
+    <string name="player_notification_next_available">Le tome suivant est disponible</string>
+    <string name="player_notification_sleep_minutes">Arrêt dans %1$d min</string>
+    <string name="player_notification_sleep_chapter">Arrêt en fin de chapitre</string>
+    <string name="player_notification_with_sleep">%1$s · %2$s</string>
+    <string name="player_notification_continue">Touchez pour reprendre l’écoute</string>
+    <string name="player_part">Partie %1$d</string>
+    <!-- A narrated section of a read-along book without a title of its own: its number in the book -->
+    <string name="player_notification_section">Section %1$d</string>
+    <!-- Under the book's title at the end of a read-along book's narration -->
+    <string name="player_notification_narration_finished">Narration terminée</string>
+</resources>

@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="library_title">Bibliothèque</string>
+    <string name="library_tab_books">Livres</string>
+    <string name="library_tab_series">Séries</string>
+    <string name="library_tab_authors">Auteurs</string>
+    <string name="library_tab_shelves">Étagères</string>
+
+    <string name="sort_added">Date d\'ajout</string>
+    <string name="sort_title">Titre</string>
+    <string name="sort_author">Auteur</string>
+    <string name="sort_series">Série</string>
+    <string name="sort_published">Date de parution</string>
+    <string name="sort_name">Nom</string>
+    <string name="sort_book_count">Nombre de livres</string>
+    <string name="sort_unread_count">Livres non lus</string>
+    <string name="sort_recent">Ajouts récents</string>
+    <string name="sort_progress">Progression</string>
+    <string name="sort_ascending">%1$s, ordre croissant</string>
+    <string name="sort_descending">%1$s, ordre décroissant</string>
+
+    <string name="filter_format">Format</string>
+    <string name="format_epub">EPUB</string>
+    <string name="format_pdf">PDF</string>
+    <string name="format_comics">BD</string>
+    <string name="format_audio">Audio</string>
+    <string name="filter_status">Statut</string>
+    <string name="status_unread">Non lu</string>
+    <string name="status_want_to_read">Envie de lire</string>
+    <string name="status_reading">En cours</string>
+    <string name="status_read">Lu</string>
+    <string name="status_abandoned">Abandonné</string>
+    <string name="filter_read_along">Lecture synchronisée</string>
+    <string name="filter_progress">Avancement</string>
+    <string name="progress_all">Toutes</string>
+    <string name="progress_not_started">Non commencée</string>
+    <string name="progress_in_progress">En cours</string>
+    <string name="progress_complete">Terminée</string>
+
+    <string name="view_as_grid">Afficher en grille</string>
+    <string name="view_as_list">Afficher en liste</string>
+
+    <plurals name="books_count">
+        <item quantity="one">%d livre</item>
+        <item quantity="many">%d livres</item>
+        <item quantity="other">%d livres</item>
+    </plurals>
+    <plurals name="series_count">
+        <item quantity="one">%d série</item>
+        <item quantity="many">%d séries</item>
+        <item quantity="other">%d séries</item>
+    </plurals>
+    <plurals name="authors_count">
+        <item quantity="one">%d auteur</item>
+        <item quantity="many">%d auteurs</item>
+        <item quantity="other">%d auteurs</item>
+    </plurals>
+    <string name="series_progress">%1$d sur %2$d lus</string>
+
+    <string name="books_empty">Aucun livre dans cette bibliothèque pour l\'instant.</string>
+    <string name="books_empty_filtered">Aucun livre ne correspond à ces filtres.</string>
+    <string name="books_empty_scope">Aucun livre ici.</string>
+    <string name="books_clear_filters">Retirer les filtres</string>
+    <string name="series_empty">Aucune série dans cette bibliothèque.</string>
+    <string name="series_empty_filtered">Aucune série ne correspond à ce filtre.</string>
+    <string name="series_clear_filter">Retirer le filtre</string>
+    <string name="series_download_button">Télécharger la série</string>
+    <string name="series_download_not_allowed">Ce compte n\'a pas le droit de télécharger</string>
+    <!-- « 2 livres sur 7 » : le nombre avec son nom, puis le tout. -->
+    <string name="series_download_of">%1$s sur %2$s</string>
+    <plurals name="series_download_part">
+        <item quantity="one">%d livre</item>
+        <item quantity="many">%d livres</item>
+        <item quantity="other">%d livres</item>
+    </plurals>
+    <plurals name="series_download_whole">
+        <item quantity="one">%d</item>
+        <item quantity="many">%d</item>
+        <item quantity="other">%d</item>
+    </plurals>
+    <plurals name="series_download_on_device">
+        <item quantity="one">%1$s est sur l\'appareil · %2$s</item>
+        <item quantity="many">%1$s sont sur l\'appareil · %2$s</item>
+        <item quantity="other">%1$s sont sur l\'appareil · %2$s</item>
+    </plurals>
+    <plurals name="series_download_all_on_device">
+        <item quantity="one">%1$d livre est sur l\'appareil · %2$s</item>
+        <item quantity="many">Les %1$d livres sont sur l\'appareil · %2$s</item>
+        <item quantity="other">Les %1$d livres sont sur l\'appareil · %2$s</item>
+    </plurals>
+    <string name="series_download_subtitle_kept">%1$s · %2$s, dont %3$d déjà sur l\'appareil</string>
+    <string name="series_download_includes_text">%1$s · comprend le texte</string>
+    <string name="series_download_skip">Sauter les livres terminés</string>
+    <plurals name="series_download_skipped">
+        <item quantity="one">%d livre terminé ne sera pas téléchargé</item>
+        <item quantity="many">%d livres terminés ne seront pas téléchargés</item>
+        <item quantity="other">%d livres terminés ne seront pas téléchargés</item>
+    </plurals>
+    <plurals name="series_download_finished">
+        <item quantity="one">%d livre terminé</item>
+        <item quantity="many">%d livres terminés</item>
+        <item quantity="other">%d livres terminés</item>
+    </plurals>
+    <string name="series_download_free">%1$s libres sur l\'appareil</string>
+    <string name="series_download_metered">Réseau limité : le téléchargement attendra un réseau non limité</string>
+    <string name="series_download_missing">Pas assez de place : il manque %1$s</string>
+    <string name="series_download_cancel">Annuler</string>
+    <plurals name="series_download_confirm_size">
+        <item quantity="one">%1$d livre · %2$s</item>
+        <item quantity="many">%1$d livres · %2$s</item>
+        <item quantity="other">%1$d livres · %2$s</item>
+    </plurals>
+    <string name="series_download_nothing">Rien à télécharger</string>
+    <string name="authors_empty">Aucun auteur dans cette bibliothèque.</string>
+    <string name="shelves_empty">Aucune étagère pour l\'instant. Les collections et listes créées sur votre serveur apparaissent ici.</string>
+    <string name="shelf_empty">Cette étagère est vide.</string>
+    <string name="shelves_smart_lists">Listes intelligentes</string>
+    <string name="shelves_collections">Collections</string>
+</resources>

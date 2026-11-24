@@ -1,0 +1,32 @@
+{
+ "results": [
+  {
+   "fileId": 6,
+   "status": "saved",
+   "progress": {
+    "fileId": 6,
+    "percentage": 50,
+    "updatedAt": "2026-11-15T18:47:13.499Z",
+    "text": {
+     "cfi": "epubcfi(/6/56!/4/2/2/2/8/68/2[p014-s182]/1:0)",
+     "page": null,
+     "updatedAt": "2026-11-15T18:47:13.498Z"
+    },
+    "narration": {
+     "seconds": 19412.16,
+     "fragment": "OEBPS/Text/section111.xhtml#p014-s182",
+     "sectionIndex": 27,
+     "percentage": 50,
+     "updatedAt": "2026-11-15T18:47:13.498Z"
+    },
+    "kobo": {
+     "source": null,
+     "type": null,
+     "value": null,
+     "contentPercent": null
+    },
+    "koreader": null
+   }
+  }
+ ]
+}

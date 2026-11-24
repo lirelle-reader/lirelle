@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="downloads_title">Hors ligne</string>
+
+    <string name="downloads_storage_used">%1$s téléchargés</string>
+    <plurals name="downloads_book_count">
+        <item quantity="one">%1$d livre</item>
+        <item quantity="many">%1$d livres</item>
+        <item quantity="other">%1$d livres</item>
+    </plurals>
+    <string name="downloads_storage_free">%1$s libres sur l\'appareil</string>
+    <string name="downloads_storage_none">Aucun téléchargement</string>
+    <string name="downloads_storage_none_yet">Rien de téléchargé pour l\'instant</string>
+    <string name="downloads_storage_bar">Stockage de l\'appareil : les téléchargements occupent %1$s, %2$s libres sur %3$s</string>
+
+    <string name="downloads_wifi_title">En attente d\'un réseau non limité</string>
+    <plurals name="downloads_wifi_left">
+        <item quantity="one">%1$d livre, %2$s restants. Les téléchargements reprendront seuls sur un réseau non limité.</item>
+        <item quantity="many">%1$d livres, %2$s restants. Les téléchargements reprendront seuls sur un réseau non limité.</item>
+        <item quantity="other">%1$d livres, %2$s restants. Les téléchargements reprendront seuls sur un réseau non limité.</item>
+    </plurals>
+    <plurals name="downloads_wifi_waiting">
+        <item quantity="one">%1$d livre en attente. Les téléchargements reprendront seuls sur un réseau non limité.</item>
+        <item quantity="many">%1$d livres en attente. Les téléchargements reprendront seuls sur un réseau non limité.</item>
+        <item quantity="other">%1$d livres en attente. Les téléchargements reprendront seuls sur un réseau non limité.</item>
+    </plurals>
+    <string name="downloads_wifi_now">Télécharger maintenant</string>
+    <string name="downloads_wifi_always">Toujours autoriser les réseaux limités</string>
+    <string name="downloads_mobile_allowed">Réseaux limités autorisés</string>
+    <string name="downloads_waiting_network">En attente du réseau</string>
+
+    <string name="downloads_in_progress">En cours</string>
+    <string name="downloads_downloaded">Téléchargés</string>
+    <string name="downloads_progress_of">%1$s · %2$s sur %3$s</string>
+    <string name="downloads_progress_received">%1$s · %2$s</string>
+    <string name="downloads_progress_queued_size">%1$s · %2$s · en file</string>
+    <string name="downloads_progress_queued">%1$s · en file</string>
+    <string name="downloads_progress_status">%1$s · %2$s</string>
+    <string name="downloads_progress_wait_wifi">en attente d\'un réseau non limité</string>
+    <string name="downloads_progress_wait_network">en attente du réseau</string>
+    <string name="downloads_failure_no_space">Pas assez de place : il manque %1$s</string>
+    <string name="downloads_failure_not_epub">Le fichier reçu n\'est pas un livre lisible</string>
+    <string name="downloads_failure_damaged">À retélécharger</string>
+    <string name="downloads_failure_not_allowed">Ce compte n\'a pas le droit de télécharger</string>
+    <string name="downloads_retry">Réessayer</string>
+    <string name="downloads_cancel">Annuler le téléchargement de %1$s</string>
+    <string name="downloads_untitled">Livre</string>
+
+    <string name="downloads_updates">Mises à jour</string>
+    <string name="downloads_updates_summary">%1$s · %2$s</string>
+    <string name="downloads_update_all">Tout mettre à jour</string>
+    <string name="downloads_update_size">Mise à jour · %1$s</string>
+    <string name="downloads_update">Mettre à jour</string>
+    <string name="downloads_update_description">Mettre à jour %1$s</string>
+    <string name="downloads_progress_update">Mise à jour</string>
+    <string name="downloads_update_failed">Échec de la mise à jour : %1$s</string>
+    <string name="downloads_cancel_update">Annuler la mise à jour de %1$s</string>
+    <string name="downloads_gone">N\'est plus sur le serveur</string>
+    <string name="downloads_update_ready">Mise à jour prête : appliquée à la fermeture du livre</string>
+
+    <string name="downloads_row_menu">Options de %1$s</string>
+    <string name="downloads_row_menu_action">Afficher les options</string>
+    <string name="downloads_delete">Supprimer de l\'appareil</string>
+    <string name="downloads_deleted">Téléchargement supprimé</string>
+    <string name="downloads_undo">Annuler</string>
+    <string name="downloads_in_use">En cours de lecture</string>
+
+    <string name="downloads_sheet_subtitle">%1$s · %2$s téléchargés</string>
+    <string name="downloads_sheet_text_kept">Gardé avec la narration, qui en a besoin</string>
+    <string name="downloads_sheet_note">Votre progression, vos marque-pages et vos surlignages sont conservés. Le livre reste dans votre bibliothèque.</string>
+    <string name="downloads_sheet_cancel">Annuler</string>
+    <string name="downloads_sheet_confirm">Supprimer · %1$s</string>
+    <string name="downloads_sheet_confirm_nothing">Supprimer</string>
+
+    <string name="downloads_empty_title">Vos livres, sans réseau</string>
+    <string name="downloads_empty_message">Ouvrez la fiche d\'un livre et touchez « Télécharger » pour le garder sur cet appareil. Vous le retrouverez ici, en avion comme en ligne.</string>
+    <string name="downloads_browse">Parcourir la bibliothèque</string>
+</resources>

@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- The player screen -->
+    <string name="player_now_playing">Now playing</string>
+    <string name="player_minimise">Minimise the player</string>
+    <string name="player_more">More options</string>
+    <string name="player_menu_book">Book page</string>
+    <string name="player_menu_settings">Player settings</string>
+    <!-- The authors, then the narrators -->
+    <string name="player_credits_both">%1$s · read by %2$s</string>
+    <string name="player_credits_narrators">Read by %1$s</string>
+    <string name="player_names_two">%1$s and %2$s</string>
+    <plurals name="player_names_others">
+        <item quantity="one">%1$s and %2$d other</item>
+        <item quantity="other">%1$s and %2$d others</item>
+    </plurals>
+    <!-- Two parts of a line: "Chapter 12 of 48 · 37%" -->
+    <string name="player_joined">%1$s · %2$s</string>
+    <string name="player_book_chapter">Chapter %1$d of %2$d</string>
+    <!-- The same, of a book whose chapters have no titles of their own: they are its parts -->
+    <string name="player_book_part">Part %1$d of %2$d</string>
+    <string name="player_book_percent">%1$d%%</string>
+    <plurals name="player_book_left">
+        <item quantity="one">%1$s left</item>
+        <item quantity="other">%1$s left</item>
+    </plurals>
+    <string name="player_duration_minutes">%1$d min</string>
+    <!-- Hours and minutes: "9 h 12" -->
+    <string name="player_duration_hours">%1$d h %2$02d</string>
+    <!-- The time left in the chapter, after the time played -->
+    <string name="player_remaining">−%1$s</string>
+    <string name="player_chapter_bar">Position in the chapter</string>
+    <!-- What a screen reader says of the chapter bar: the time played, of the chapter's length -->
+    <string name="player_chapter_bar_state">%1$s of %2$s</string>
+    <string name="player_play">Play</string>
+    <string name="player_pause">Pause</string>
+    <string name="player_rate">Rate the book</string>
+    <string name="player_speed">Speed</string>
+    <string name="player_speed_value">%1$s×</string>
+    <string name="player_sleep">Sleep</string>
+    <string name="player_chapters">Chapters</string>
+    <!-- What the chapters are called in a book in parts: the tile, the list's heading, the tab beside the bookmarks -->
+    <string name="player_parts">Parts</string>
+    <string name="player_offline">No connection: playback will resume when the network is back</string>
+    <string name="player_unreachable">The server cannot be reached: press play to try again</string>
+    <string name="player_loading">Loading the book</string>
+    <string name="player_load_failed">This book could not be loaded</string>
+    <string name="player_nothing">Nothing is playing</string>
+    <string name="player_finished">Finished</string>
+    <string name="player_newer_position">Go to %1$s</string>
+    <!-- The place, then how long ago it was listened to: "Go to 1:23:04 (2 hours ago)" -->
+    <string name="player_newer_position_at">Go to %1$s (%2$s)</string>
+    <!-- A part of the book, and the time in it: "Part 100 · 2:00". -->
+    <string name="player_newer_position_in_chapter">%1$s · %2$s</string>
+    <string name="player_newer_position_go">Go there</string>
+    <string name="player_newer_position_ignore">Ignore</string>
+    <string name="player_load_retry">Try again</string>
+    <string name="player_dismiss">Dismiss</string>
+    <string name="player_go_back">Go back</string>
+</resources>

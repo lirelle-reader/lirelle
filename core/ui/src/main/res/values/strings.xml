@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="media_audio_only">Audiobook</string>
+    <string name="media_text_and_audio">Text and audio</string>
+    <string name="media_read_along">Synchronised reading</string>
+    <string name="media_comic">Comic</string>
+    <!-- Names of formats: the same in every language. -->
+    <string name="media_pdf">PDF</string>
+    <string name="media_djvu">DjVu</string>
+    <string name="book_progress_description">%1$d%% read</string>
+    <string name="book_read_description">Read</string>
+    <string name="book_volume_description">Volume %1$s</string>
+    <!-- Said by a screen reader after the rest of a book's description: lower case. -->
+    <string name="book_downloaded_description">downloaded</string>
+    <string name="book_downloading_description">downloading</string>
+    <string name="book_update_description">update available</string>
+    <string name="book_series_volume">%1$s #%2$s</string>
+    <string name="state_retry">Try again</string>
+    <string name="library_error_unreachable">Could not reach the server. Check your connection.</string>
+    <string name="library_error_not_found">This book is no longer available.</string>
+    <string name="library_error_server_failed">The server has a problem. Try again later.</string>
+    <string name="library_error_unexpected">Something went wrong on the server. Try again later.</string>
+    <string name="list_page_error">Could not load more.</string>
+    <string name="navigate_back">Back</string>
+    <string name="text_more">Read more</string>
+    <string name="text_less">Show less</string>
+    <string name="row_see_all">See all</string>
+    <string name="row_see_all_description">See all: %1$s</string>
+    <string name="progress_percent">%1$d%%</string>
+    <string name="book_open_page">Open the book page</string>
+    <string name="continue_read_label">Read %1$s</string>
+    <string name="continue_listen_label">Listen to %1$s</string>
+    <!-- Listening time left in short, on a button: hours and minutes, or minutes alone. -->
+    <string name="continue_time_left_hours">%1$dh %2$02dm</string>
+    <string name="continue_time_left_minutes">%1$d min</string>
+    <!-- Said by a screen reader: "9 hours 12 minutes left". -->
+    <string name="continue_time_left_description">%1$s left</string>
+    <string name="continue_hours_and_minutes">%1$s %2$s</string>
+    <plurals name="continue_hours_spoken">
+        <item quantity="one">%d hour</item>
+        <item quantity="other">%d hours</item>
+    </plurals>
+    <plurals name="continue_minutes_spoken">
+        <item quantity="one">%d minute</item>
+        <item quantity="other">%d minutes</item>
+    </plurals>
+    <!-- The day of something done today or the day before, in a line of details: lower case. -->
+    <string name="date_today">today</string>
+    <string name="date_yesterday">yesterday</string>
+    <string name="relative_just_now">Just now</string>
+    <!-- The grip of a sheet, and its action that closes the sheet, for a screen reader -->
+    <string name="sheet_grip">Drag handle</string>
+    <string name="sheet_close">Close</string>
+    <string name="no_network_title">No network</string>
+    <string name="no_network_message">This page needs the server. Your downloaded books are still available, and the page will reload on its own when the network is back.</string>
+    <string name="no_network_open_downloads">See my offline books</string>
+    <!-- A profile whose session has expired: wherever that is said, and the action that ends it. -->
+    <string name="sign_in_needed">Sign-in needed</string>
+    <string name="sign_in_again">Sign in again</string>
+    <!-- A screen that needs the server while the profile's session has expired. %1$s: "camille · BookOrbit". -->
+    <string name="sign_in_needed_message">The session of %1$s has expired.</string>
+    <!-- The same, for a profile whose server refused the key it signs in with. %1$s: "camille · Komga". -->
+    <string name="sign_in_needed_key_message">The sign-in of %1$s is no longer valid.</string>
+    <!-- The back arrow of a settings page, for a screen reader -->
+    <string name="settings_back">Back</string>
+    <!-- A profile: its username, then the kind of its server. -->
+    <string name="profile_label">%1$s · %2$s</string>
+    <string name="server_kind_bookorbit">BookOrbit</string>
+    <string name="server_kind_komga">Komga</string>
+</resources>

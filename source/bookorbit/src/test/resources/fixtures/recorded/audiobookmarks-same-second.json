@@ -1,0 +1,10 @@
+{
+ "status": 409,
+ "body": {
+  "statusCode": 409,
+  "message": "Audiobook bookmark already exists",
+  "path": "/api/v1/audiobooks/1485/bookmarks",
+  "timestamp": "2026-11-15T18:47:15.446Z",
+  "requestId": "req-8rm"
+ }
+}

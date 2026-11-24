@@ -1,0 +1,15 @@
+{
+  "uniqueId": "bundled:opendyslexic",
+  "name": "OpenDyslexic",
+  "description": "The reading font made for dyslexic readers.",
+  "website": "https://github.com/antijingoist/opendyslexic",
+  "developers": [
+    {
+      "name": "Abbie Gonzalez"
+    }
+  ],
+  "tag": "bundled",
+  "licenses": [
+    "OFL-1.1-opendyslexic"
+  ]
+}

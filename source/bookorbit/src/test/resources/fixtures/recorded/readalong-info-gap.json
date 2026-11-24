@@ -1,0 +1,422 @@
+{
+ "spine": [
+  {
+   "idref": "item084",
+   "href": "OEBPS/Text/section058.xhtml",
+   "mediaType": "application/xhtml+xml",
+   "linear": true
+  },
+  {
+   "idref": "item085",
+   "href": "OEBPS/Text/section059.xhtml",
+   "mediaType": "application/xhtml+xml",
+   "linear": true
+  },
+  {
+   "idref": "item086",
+   "href": "OEBPS/Text/section060.xhtml",
+   "mediaType": "application/xhtml+xml",
+   "linear": true
+  },
+  {
+   "idref": "item087",
+   "href": "OEBPS/Text/section061.xhtml",
+   "mediaType": "application/xhtml+xml",
+   "linear": true
+  },
+  {
+   "idref": "item088",
+   "href": "OEBPS/Text/section004.xhtml",
+   "mediaType": "application/xhtml+xml",
+   "linear": true
+  },
+  {
+   "idref": "item089",
+   "href": "OEBPS/Text/section062.xhtml",
+   "mediaType": "application/xhtml+xml",
+   "linear": true
+  },
+  {
+   "idref": "item090",
+   "href": "OEBPS/Text/section005.xhtml",
+   "mediaType": "application/xhtml+xml",
+   "linear": true
+  },
+  {
+   "idref": "item091",
+   "href": "OEBPS/Text/section063.xhtml",
+   "mediaType": "application/xhtml+xml",
+   "linear": true
+  },
+  {
+   "idref": "item092",
+   "href": "OEBPS/Text/section064.xhtml",
+   "mediaType": "application/xhtml+xml",
+   "linear": true
+  },
+  {
+   "idref": "item093",
+   "href": "OEBPS/Text/section065.xhtml",
+   "mediaType": "application/xhtml+xml",
+   "linear": true
+  },
+  {
+   "idref": "item094",
+   "href": "OEBPS/Text/section066.xhtml",
+   "mediaType": "application/xhtml+xml",
+   "linear": true
+  },
+  {
+   "idref": "item095",
+   "href": "OEBPS/Text/section067.xhtml",
+   "mediaType": "application/xhtml+xml",
+   "linear": true
+  },
+  {
+   "idref": "item096",
+   "href": "OEBPS/Text/section068.xhtml",
+   "mediaType": "application/xhtml+xml",
+   "linear": true
+  },
+  {
+   "idref": "item097",
+   "href": "OEBPS/Text/section069.xhtml",
+   "mediaType": "application/xhtml+xml",
+   "linear": true
+  },
+  {
+   "idref": "item098",
+   "href": "OEBPS/Text/section070.xhtml",
+   "mediaType": "application/xhtml+xml",
+   "linear": true
+  },
+  {
+   "idref": "item099",
+   "href": "OEBPS/Text/section071.xhtml",
+   "mediaType": "application/xhtml+xml",
+   "linear": true
+  },
+  {
+   "idref": "item100",
+   "href": "OEBPS/Text/section072.xhtml",
+   "mediaType": "application/xhtml+xml",
+   "linear": true
+  },
+  {
+   "idref": "item101",
+   "href": "OEBPS/Text/section073.xhtml",
+   "mediaType": "application/xhtml+xml",
+   "linear": true
+  },
+  {
+   "idref": "item102",
+   "href": "OEBPS/Text/section074.xhtml",
+   "mediaType": "application/xhtml+xml",
+   "linear": true
+  },
+  {
+   "idref": "item103",
+   "href": "OEBPS/Text/section075.xhtml",
+   "mediaType": "application/xhtml+xml",
+   "linear": true
+  },
+  {
+   "idref": "item104",
+   "href": "OEBPS/Text/section076.xhtml",
+   "mediaType": "application/xhtml+xml",
+   "linear": true
+  },
+  {
+   "idref": "item105",
+   "href": "OEBPS/Text/section077.xhtml",
+   "mediaType": "application/xhtml+xml",
+   "linear": true
+  },
+  {
+   "idref": "item106",
+   "href": "OEBPS/Text/section078.xhtml",
+   "mediaType": "application/xhtml+xml",
+   "linear": true
+  },
+  {
+   "idref": "item107",
+   "href": "OEBPS/Text/section079.xhtml",
+   "mediaType": "application/xhtml+xml",
+   "linear": true
+  },
+  {
+   "idref": "item108",
+   "href": "OEBPS/Text/section006.xhtml",
+   "mediaType": "application/xhtml+xml",
+   "linear": true
+  },
+  {
+   "idref": "item109",
+   "href": "OEBPS/Text/section080.xhtml",
+   "mediaType": "application/xhtml+xml",
+   "linear": true
+  },
+  {
+   "idref": "item110",
+   "href": "OEBPS/Text/section081.xhtml",
+   "mediaType": "application/xhtml+xml",
+   "linear": true
+  },
+  {
+   "idref": "item111",
+   "href": "OEBPS/Text/section082.xhtml",
+   "mediaType": "application/xhtml+xml",
+   "linear": true
+  },
+  {
+   "idref": "item112",
+   "href": "OEBPS/Text/section083.xhtml",
+   "mediaType": "application/xhtml+xml",
+   "linear": true
+  },
+  {
+   "idref": "item113",
+   "href": "OEBPS/Text/section084.xhtml",
+   "mediaType": "application/xhtml+xml",
+   "linear": true
+  },
+  {
+   "idref": "item114",
+   "href": "OEBPS/Text/section085.xhtml",
+   "mediaType": "application/xhtml+xml",
+   "linear": true
+  },
+  {
+   "idref": "item115",
+   "href": "OEBPS/Text/section086.xhtml",
+   "mediaType": "application/xhtml+xml",
+   "linear": false
+  },
+  {
+   "idref": "item116",
+   "href": "OEBPS/Text/section087.xhtml",
+   "mediaType": "application/xhtml+xml",
+   "linear": true
+  }
+ ],
+ "manifest": [
+  {
+   "id": "item084",
+   "href": "OEBPS/Text/section058.xhtml",
+   "mediaType": "application/xhtml+xml",
+   "size": 623
+  },
+  {
+   "id": "item085",
+   "href": "OEBPS/Text/section059.xhtml",
+   "mediaType": "application/xhtml+xml",
+   "size": 762
+  },
+  {
+   "id": "item086",
+   "href": "OEBPS/Text/section060.xhtml",
+   "mediaType": "application/xhtml+xml",
+   "size": 3087
+  },
+  {
+   "id": "item087",
+   "href": "OEBPS/Text/section061.xhtml",
+   "mediaType": "application/xhtml+xml",
+   "size": 1701
+  },
+  {
+   "id": "item088",
+   "href": "OEBPS/Text/section004.xhtml",
+   "mediaType": "application/xhtml+xml",
+   "size": 36109,
+   "mediaOverlay": "item117"
+  },
+  {
+   "id": "item089",
+   "href": "OEBPS/Text/section062.xhtml",
+   "mediaType": "application/xhtml+xml",
+   "size": 73306
+  },
+  {
+   "id": "item090",
+   "href": "OEBPS/Text/section005.xhtml",
+   "mediaType": "application/xhtml+xml",
+   "size": 68449,
+   "mediaOverlay": "item118"
+  },
+  {
+   "id": "item091",
+   "href": "OEBPS/Text/section063.xhtml",
+   "mediaType": "application/xhtml+xml",
+   "size": 70493,
+   "mediaOverlay": "item119"
+  },
+  {
+   "id": "item092",
+   "href": "OEBPS/Text/section064.xhtml",
+   "mediaType": "application/xhtml+xml",
+   "size": 64129,
+   "mediaOverlay": "item120"
+  },
+  {
+   "id": "item093",
+   "href": "OEBPS/Text/section065.xhtml",
+   "mediaType": "application/xhtml+xml",
+   "size": 72697,
+   "mediaOverlay": "item121"
+  },
+  {
+   "id": "item094",
+   "href": "OEBPS/Text/section066.xhtml",
+   "mediaType": "application/xhtml+xml",
+   "size": 62462,
+   "mediaOverlay": "item122"
+  },
+  {
+   "id": "item095",
+   "href": "OEBPS/Text/section067.xhtml",
+   "mediaType": "application/xhtml+xml",
+   "size": 75986,
+   "mediaOverlay": "item123"
+  },
+  {
+   "id": "item096",
+   "href": "OEBPS/Text/section068.xhtml",
+   "mediaType": "application/xhtml+xml",
+   "size": 74603,
+   "mediaOverlay": "item124"
+  },
+  {
+   "id": "item097",
+   "href": "OEBPS/Text/section069.xhtml",
+   "mediaType": "application/xhtml+xml",
+   "size": 132202,
+   "mediaOverlay": "item125"
+  },
+  {
+   "id": "item098",
+   "href": "OEBPS/Text/section070.xhtml",
+   "mediaType": "application/xhtml+xml",
+   "size": 63340,
+   "mediaOverlay": "item126"
+  },
+  {
+   "id": "item099",
+   "href": "OEBPS/Text/section071.xhtml",
+   "mediaType": "application/xhtml+xml",
+   "size": 85363,
+   "mediaOverlay": "item127"
+  },
+  {
+   "id": "item100",
+   "href": "OEBPS/Text/section072.xhtml",
+   "mediaType": "application/xhtml+xml",
+   "size": 96105,
+   "mediaOverlay": "item128"
+  },
+  {
+   "id": "item101",
+   "href": "OEBPS/Text/section073.xhtml",
+   "mediaType": "application/xhtml+xml",
+   "size": 45800,
+   "mediaOverlay": "item129"
+  },
+  {
+   "id": "item102",
+   "href": "OEBPS/Text/section074.xhtml",
+   "mediaType": "application/xhtml+xml",
+   "size": 69035,
+   "mediaOverlay": "item130"
+  },
+  {
+   "id": "item103",
+   "href": "OEBPS/Text/section075.xhtml",
+   "mediaType": "application/xhtml+xml",
+   "size": 20578,
+   "mediaOverlay": "item131"
+  },
+  {
+   "id": "item104",
+   "href": "OEBPS/Text/section076.xhtml",
+   "mediaType": "application/xhtml+xml",
+   "size": 26947,
+   "mediaOverlay": "item132"
+  },
+  {
+   "id": "item105",
+   "href": "OEBPS/Text/section077.xhtml",
+   "mediaType": "application/xhtml+xml",
+   "size": 50611,
+   "mediaOverlay": "item133"
+  },
+  {
+   "id": "item106",
+   "href": "OEBPS/Text/section078.xhtml",
+   "mediaType": "application/xhtml+xml",
+   "size": 74220,
+   "mediaOverlay": "item134"
+  },
+  {
+   "id": "item107",
+   "href": "OEBPS/Text/section079.xhtml",
+   "mediaType": "application/xhtml+xml",
+   "size": 65043,
+   "mediaOverlay": "item135"
+  },
+  {
+   "id": "item109",
+   "href": "OEBPS/Text/section080.xhtml",
+   "mediaType": "application/xhtml+xml",
+   "size": 1744
+  },
+  {
+   "id": "item110",
+   "href": "OEBPS/Text/section081.xhtml",
+   "mediaType": "application/xhtml+xml",
+   "size": 5747
+  },
+  {
+   "id": "item111",
+   "href": "OEBPS/Text/section082.xhtml",
+   "mediaType": "application/xhtml+xml",
+   "size": 8364
+  },
+  {
+   "id": "item112",
+   "href": "OEBPS/Text/section083.xhtml",
+   "mediaType": "application/xhtml+xml",
+   "size": 2325
+  },
+  {
+   "id": "item113",
+   "href": "OEBPS/Text/section084.xhtml",
+   "mediaType": "application/xhtml+xml",
+   "size": 2520
+  },
+  {
+   "id": "item115",
+   "href": "OEBPS/Text/section086.xhtml",
+   "mediaType": "application/xhtml+xml",
+   "size": 4711
+  },
+  {
+   "id": "item116",
+   "href": "OEBPS/Text/section087.xhtml",
+   "mediaType": "application/xhtml+xml",
+   "size": 3513
+  },
+  {
+   "id": "item114",
+   "href": "OEBPS/Text/section085.xhtml",
+   "mediaType": "application/xhtml+xml",
+   "size": 839
+  },
+  {
+   "id": "item108",
+   "href": "OEBPS/Text/section006.xhtml",
+   "mediaType": "application/xhtml+xml",
+   "size": 401,
+   "mediaOverlay": "item136"
+  }
+ ]
+}

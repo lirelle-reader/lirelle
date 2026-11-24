@@ -1,0 +1,1931 @@
+{
+ "items": [
+  {
+   "addedAt": "2017-08-20T10:05:17.403Z",
+   "authors": [
+    "Author 7"
+   ],
+   "coverAspectRatio": "2/3",
+   "coverVersion": "ebook:2026-08-28T19:25:40.037Z:-",
+   "files": [
+    {
+     "format": "epub",
+     "id": 215,
+     "mediaOverlay": {
+      "available": false,
+      "durationSeconds": null
+     },
+     "role": "primary",
+     "sizeBytes": 358450
+    },
+    {
+     "format": "jpg",
+     "id": 216,
+     "role": "cover",
+     "sizeBytes": 84538
+    }
+   ],
+   "genres": [
+    "Genre 3",
+    "Genre 9"
+   ],
+   "hasCover": true,
+   "id": 104,
+   "isbn13": "9780000000002",
+   "language": "fr",
+   "libraryId": 2,
+   "narrators": [],
+   "pageCount": 223,
+   "publishedDate": null,
+   "publishedYear": 1932,
+   "publisher": "Publisher 7",
+   "rating": null,
+   "readStatus": null,
+   "readingProgress": null,
+   "seriesId": 103,
+   "seriesIndex": "1",
+   "seriesMemberships": [
+    {
+     "displayOrder": 0,
+     "expectedBookCount": 44,
+     "seriesId": 103,
+     "seriesIndex": "1",
+     "seriesName": "Series 5"
+    }
+   ],
+   "seriesName": "Series 5",
+   "status": "present",
+   "subtitle": null,
+   "title": "Book 9",
+   "updatedAt": "2026-08-28T19:28:17.422Z"
+  },
+  {
+   "addedAt": "2017-08-20T10:05:17.135Z",
+   "authors": [
+    "Author 7"
+   ],
+   "coverAspectRatio": "2/3",
+   "coverVersion": "ebook:2026-08-28T19:25:45.250Z:-",
+   "files": [
+    {
+     "format": "epub",
+     "id": 217,
+     "mediaOverlay": {
+      "available": false,
+      "durationSeconds": null
+     },
+     "role": "primary",
+     "sizeBytes": 325147
+    },
+    {
+     "format": "jpg",
+     "id": 218,
+     "role": "cover",
+     "sizeBytes": 185234
+    }
+   ],
+   "genres": [
+    "Genre 3",
+    "Genre 9"
+   ],
+   "hasCover": true,
+   "id": 105,
+   "isbn13": "9780000000002",
+   "language": "fr",
+   "libraryId": 2,
+   "narrators": [],
+   "pageCount": 252,
+   "publishedDate": null,
+   "publishedYear": 1932,
+   "publisher": "Publisher 8",
+   "rating": null,
+   "readStatus": null,
+   "readingProgress": null,
+   "seriesId": 103,
+   "seriesIndex": "2",
+   "seriesMemberships": [
+    {
+     "displayOrder": 0,
+     "expectedBookCount": 44,
+     "seriesId": 103,
+     "seriesIndex": "2",
+     "seriesName": "Series 5"
+    }
+   ],
+   "seriesName": "Series 5",
+   "status": "present",
+   "subtitle": null,
+   "title": "Book 10",
+   "updatedAt": "2026-08-28T19:28:17.564Z"
+  },
+  {
+   "addedAt": "2017-08-20T10:05:16.776Z",
+   "authors": [
+    "Author 7"
+   ],
+   "coverAspectRatio": "2/3",
+   "coverVersion": "ebook:2026-08-28T19:25:43.555Z:-",
+   "files": [
+    {
+     "format": "epub",
+     "id": 145,
+     "mediaOverlay": {
+      "available": false,
+      "durationSeconds": null
+     },
+     "role": "primary",
+     "sizeBytes": 304818
+    },
+    {
+     "format": "jpg",
+     "id": 148,
+     "role": "cover",
+     "sizeBytes": 49573
+    }
+   ],
+   "genres": [
+    "Genre 3",
+    "Genre 10",
+    "Genre 9"
+   ],
+   "hasCover": true,
+   "id": 106,
+   "isbn13": null,
+   "language": "fr",
+   "libraryId": 2,
+   "narrators": [],
+   "pageCount": 221,
+   "publishedDate": null,
+   "publishedYear": 1968,
+   "publisher": "Publisher 8",
+   "rating": null,
+   "readStatus": null,
+   "readingProgress": null,
+   "seriesId": 103,
+   "seriesIndex": "3",
+   "seriesMemberships": [
+    {
+     "displayOrder": 0,
+     "expectedBookCount": 44,
+     "seriesId": 103,
+     "seriesIndex": "3",
+     "seriesName": "Series 5"
+    }
+   ],
+   "seriesName": "Series 5",
+   "status": "present",
+   "subtitle": null,
+   "title": "Book 11",
+   "updatedAt": "2026-08-28T19:28:17.767Z"
+  },
+  {
+   "addedAt": "2017-08-20T10:05:16.679Z",
+   "authors": [
+    "Author 7"
+   ],
+   "coverAspectRatio": "2/3",
+   "coverVersion": "ebook:2026-08-28T19:26:07.060Z:-",
+   "files": [
+    {
+     "format": "epub",
+     "id": 219,
+     "mediaOverlay": {
+      "available": false,
+      "durationSeconds": null
+     },
+     "role": "primary",
+     "sizeBytes": 341279
+    },
+    {
+     "format": "jpg",
+     "id": 220,
+     "role": "cover",
+     "sizeBytes": 244199
+    }
+   ],
+   "genres": [
+    "Genre 3",
+    "Genre 9"
+   ],
+   "hasCover": true,
+   "id": 107,
+   "isbn13": "9780000000002",
+   "language": "fr",
+   "libraryId": 2,
+   "narrators": [],
+   "pageCount": 188,
+   "publishedDate": null,
+   "publishedYear": 1933,
+   "publisher": "Publisher 8",
+   "rating": null,
+   "readStatus": null,
+   "readingProgress": null,
+   "seriesId": 103,
+   "seriesIndex": "5",
+   "seriesMemberships": [
+    {
+     "displayOrder": 0,
+     "expectedBookCount": 44,
+     "seriesId": 103,
+     "seriesIndex": "5",
+     "seriesName": "Series 5"
+    }
+   ],
+   "seriesName": "Series 5",
+   "status": "present",
+   "subtitle": null,
+   "title": "Book 12",
+   "updatedAt": "2026-08-29T08:09:21.343Z"
+  },
+  {
+   "addedAt": "2017-08-20T10:05:16.885Z",
+   "authors": [
+    "Author 7"
+   ],
+   "coverAspectRatio": "2/3",
+   "coverVersion": "ebook:2026-08-28T19:26:06.048Z:-",
+   "files": [
+    {
+     "format": "epub",
+     "id": 221,
+     "mediaOverlay": {
+      "available": false,
+      "durationSeconds": null
+     },
+     "role": "primary",
+     "sizeBytes": 475714
+    },
+    {
+     "format": "jpg",
+     "id": 222,
+     "role": "cover",
+     "sizeBytes": 280924
+    }
+   ],
+   "genres": [
+    "Genre 3",
+    "Genre 9"
+   ],
+   "hasCover": true,
+   "id": 108,
+   "isbn13": "9780000000002",
+   "language": "fr",
+   "libraryId": 2,
+   "narrators": [],
+   "pageCount": 221,
+   "publishedDate": null,
+   "publishedYear": 1932,
+   "publisher": "Publisher 7",
+   "rating": null,
+   "readStatus": null,
+   "readingProgress": null,
+   "seriesId": 103,
+   "seriesIndex": "6",
+   "seriesMemberships": [
+    {
+     "displayOrder": 0,
+     "expectedBookCount": 44,
+     "seriesId": 103,
+     "seriesIndex": "6",
+     "seriesName": "Series 5"
+    }
+   ],
+   "seriesName": "Series 5",
+   "status": "present",
+   "subtitle": null,
+   "title": "Book 13",
+   "updatedAt": "2026-08-28T19:28:17.496Z"
+  },
+  {
+   "addedAt": "2017-08-20T10:05:16.272Z",
+   "authors": [
+    "Author 7"
+   ],
+   "coverAspectRatio": "2/3",
+   "coverVersion": "ebook:2026-08-28T19:26:24.470Z:-",
+   "files": [
+    {
+     "format": "epub",
+     "id": 223,
+     "mediaOverlay": {
+      "available": false,
+      "durationSeconds": null
+     },
+     "role": "primary",
+     "sizeBytes": 340118
+    },
+    {
+     "format": "jpg",
+     "id": 224,
+     "role": "cover",
+     "sizeBytes": 45326
+    }
+   ],
+   "genres": [
+    "Genre 3",
+    "Genre 9"
+   ],
+   "hasCover": true,
+   "id": 109,
+   "isbn13": "9780000000002",
+   "language": "fr",
+   "libraryId": 2,
+   "narrators": [],
+   "pageCount": 142,
+   "publishedDate": null,
+   "publishedYear": 1999,
+   "publisher": "Publisher 7",
+   "rating": null,
+   "readStatus": null,
+   "readingProgress": null,
+   "seriesId": 103,
+   "seriesIndex": "7",
+   "seriesMemberships": [
+    {
+     "displayOrder": 0,
+     "expectedBookCount": 44,
+     "seriesId": 103,
+     "seriesIndex": "7",
+     "seriesName": "Series 5"
+    }
+   ],
+   "seriesName": "Series 5",
+   "status": "present",
+   "subtitle": null,
+   "title": "Book 14",
+   "updatedAt": "2026-08-29T08:09:20.806Z"
+  },
+  {
+   "addedAt": "2017-08-20T10:05:17.732Z",
+   "authors": [
+    "Author 7"
+   ],
+   "coverAspectRatio": "2/3",
+   "coverVersion": "ebook:2026-08-28T19:25:29.132Z:-",
+   "files": [
+    {
+     "format": "epub",
+     "id": 225,
+     "mediaOverlay": {
+      "available": false,
+      "durationSeconds": null
+     },
+     "role": "primary",
+     "sizeBytes": 252550
+    },
+    {
+     "format": "jpg",
+     "id": 226,
+     "role": "cover",
+     "sizeBytes": 46979
+    }
+   ],
+   "genres": [
+    "Genre 3",
+    "Genre 9"
+   ],
+   "hasCover": true,
+   "id": 110,
+   "isbn13": null,
+   "language": "fr",
+   "libraryId": 2,
+   "narrators": [],
+   "pageCount": 250,
+   "publishedDate": "1936-01-07",
+   "publishedYear": 1936,
+   "publisher": "Publisher 7",
+   "rating": null,
+   "readStatus": null,
+   "readingProgress": null,
+   "seriesId": 103,
+   "seriesIndex": "8",
+   "seriesMemberships": [
+    {
+     "displayOrder": 0,
+     "expectedBookCount": 44,
+     "seriesId": 103,
+     "seriesIndex": "8",
+     "seriesName": "Series 5"
+    }
+   ],
+   "seriesName": "Series 5",
+   "status": "present",
+   "subtitle": null,
+   "title": "Book 15",
+   "updatedAt": "2026-08-28T19:28:17.152Z"
+  },
+  {
+   "addedAt": "2017-08-20T10:05:17.188Z",
+   "authors": [
+    "Author 7"
+   ],
+   "coverAspectRatio": "2/3",
+   "coverVersion": "ebook:2026-08-28T19:26:30.441Z:-",
+   "files": [
+    {
+     "format": "epub",
+     "id": 227,
+     "mediaOverlay": {
+      "available": false,
+      "durationSeconds": null
+     },
+     "role": "primary",
+     "sizeBytes": 390150
+    },
+    {
+     "format": "jpg",
+     "id": 228,
+     "role": "cover",
+     "sizeBytes": 45243
+    }
+   ],
+   "genres": [
+    "Genre 3",
+    "Genre 9"
+   ],
+   "hasCover": true,
+   "id": 111,
+   "isbn13": "9780000000002",
+   "language": "fr",
+   "libraryId": 2,
+   "narrators": [],
+   "pageCount": 247,
+   "publishedDate": "1936-05-05",
+   "publishedYear": 1936,
+   "publisher": "Publisher 8",
+   "rating": null,
+   "readStatus": null,
+   "readingProgress": null,
+   "seriesId": 103,
+   "seriesIndex": "9",
+   "seriesMemberships": [
+    {
+     "displayOrder": 0,
+     "expectedBookCount": 44,
+     "seriesId": 103,
+     "seriesIndex": "9",
+     "seriesName": "Series 5"
+    }
+   ],
+   "seriesName": "Series 5",
+   "status": "present",
+   "subtitle": null,
+   "title": "Book 16",
+   "updatedAt": "2026-08-28T19:28:17.537Z"
+  },
+  {
+   "addedAt": "2017-08-20T10:05:17.162Z",
+   "authors": [
+    "Author 7"
+   ],
+   "coverAspectRatio": "2/3",
+   "coverVersion": "ebook:2026-08-28T19:25:44.954Z:-",
+   "files": [
+    {
+     "format": "epub",
+     "id": 229,
+     "mediaOverlay": {
+      "available": false,
+      "durationSeconds": null
+     },
+     "role": "primary",
+     "sizeBytes": 476749
+    },
+    {
+     "format": "jpg",
+     "id": 230,
+     "role": "cover",
+     "sizeBytes": 231412
+    }
+   ],
+   "genres": [
+    "Genre 3",
+    "Genre 9"
+   ],
+   "hasCover": true,
+   "id": 112,
+   "isbn13": "9780000000002",
+   "language": "fr",
+   "libraryId": 2,
+   "narrators": [],
+   "pageCount": 250,
+   "publishedDate": null,
+   "publishedYear": 1934,
+   "publisher": "Publisher 8",
+   "rating": null,
+   "readStatus": null,
+   "readingProgress": null,
+   "seriesId": 103,
+   "seriesIndex": "10",
+   "seriesMemberships": [
+    {
+     "displayOrder": 0,
+     "expectedBookCount": 44,
+     "seriesId": 103,
+     "seriesIndex": "10",
+     "seriesName": "Series 5"
+    }
+   ],
+   "seriesName": "Series 5",
+   "status": "present",
+   "subtitle": null,
+   "title": "Book 17",
+   "updatedAt": "2026-08-28T19:28:17.607Z"
+  },
+  {
+   "addedAt": "2017-08-20T10:05:17.649Z",
+   "authors": [
+    "Author 7"
+   ],
+   "coverAspectRatio": "2/3",
+   "coverVersion": "ebook:2026-08-28T19:26:18.110Z:-",
+   "files": [
+    {
+     "format": "epub",
+     "id": 231,
+     "mediaOverlay": {
+      "available": false,
+      "durationSeconds": null
+     },
+     "role": "primary",
+     "sizeBytes": 476019
+    },
+    {
+     "format": "jpg",
+     "id": 232,
+     "role": "cover",
+     "sizeBytes": 77708
+    }
+   ],
+   "genres": [
+    "Genre 3",
+    "Genre 9"
+   ],
+   "hasCover": true,
+   "id": 113,
+   "isbn13": "9780000000002",
+   "language": "fr",
+   "libraryId": 2,
+   "narrators": [],
+   "pageCount": 218,
+   "publishedDate": null,
+   "publishedYear": 1949,
+   "publisher": "Publisher 8",
+   "rating": null,
+   "readStatus": null,
+   "readingProgress": null,
+   "seriesId": 103,
+   "seriesIndex": "11",
+   "seriesMemberships": [
+    {
+     "displayOrder": 0,
+     "expectedBookCount": 44,
+     "seriesId": 103,
+     "seriesIndex": "11",
+     "seriesName": "Series 5"
+    }
+   ],
+   "seriesName": "Series 5",
+   "status": "present",
+   "subtitle": "Subtitle 2",
+   "title": "Book 18",
+   "updatedAt": "2026-08-28T19:28:17.279Z"
+  },
+  {
+   "addedAt": "2017-08-20T10:05:15.920Z",
+   "authors": [
+    "Author 7"
+   ],
+   "coverAspectRatio": "2/3",
+   "coverVersion": "ebook:2026-08-28T19:25:25.826Z:-",
+   "files": [
+    {
+     "format": "epub",
+     "id": 233,
+     "mediaOverlay": {
+      "available": false,
+      "durationSeconds": null
+     },
+     "role": "primary",
+     "sizeBytes": 326895
+    },
+    {
+     "format": "jpg",
+     "id": 234,
+     "role": "cover",
+     "sizeBytes": 171461
+    }
+   ],
+   "genres": [
+    "Genre 3",
+    "Genre 9"
+   ],
+   "hasCover": true,
+   "id": 114,
+   "isbn13": "9780000000002",
+   "language": "fr",
+   "libraryId": 2,
+   "narrators": [],
+   "pageCount": 220,
+   "publishedDate": null,
+   "publishedYear": 1938,
+   "publisher": "Publisher 8",
+   "rating": null,
+   "readStatus": null,
+   "readingProgress": null,
+   "seriesId": 103,
+   "seriesIndex": "13",
+   "seriesMemberships": [
+    {
+     "displayOrder": 0,
+     "expectedBookCount": 44,
+     "seriesId": 103,
+     "seriesIndex": "13",
+     "seriesName": "Series 5"
+    }
+   ],
+   "seriesName": "Series 5",
+   "status": "present",
+   "subtitle": null,
+   "title": "Book 19",
+   "updatedAt": "2026-08-28T19:28:17.070Z"
+  },
+  {
+   "addedAt": "2017-08-20T10:05:16.596Z",
+   "authors": [
+    "Author 7"
+   ],
+   "coverAspectRatio": "2/3",
+   "coverVersion": "ebook:2026-08-28T19:26:16.963Z:-",
+   "files": [
+    {
+     "format": "epub",
+     "id": 235,
+     "mediaOverlay": {
+      "available": false,
+      "durationSeconds": null
+     },
+     "role": "primary",
+     "sizeBytes": 423910
+    },
+    {
+     "format": "jpg",
+     "id": 236,
+     "role": "cover",
+     "sizeBytes": 191559
+    }
+   ],
+   "genres": [
+    "Genre 3",
+    "Genre 9"
+   ],
+   "hasCover": true,
+   "id": 115,
+   "isbn13": "9780000000002",
+   "language": "fr",
+   "libraryId": 2,
+   "narrators": [],
+   "pageCount": 284,
+   "publishedDate": null,
+   "publishedYear": 1939,
+   "publisher": "Publisher 8",
+   "rating": null,
+   "readStatus": null,
+   "readingProgress": null,
+   "seriesId": 103,
+   "seriesIndex": "14",
+   "seriesMemberships": [
+    {
+     "displayOrder": 0,
+     "expectedBookCount": 44,
+     "seriesId": 103,
+     "seriesIndex": "14",
+     "seriesName": "Series 5"
+    }
+   ],
+   "seriesName": "Series 5",
+   "status": "present",
+   "subtitle": null,
+   "title": "Book 20",
+   "updatedAt": "2026-08-28T19:28:17.875Z"
+  },
+  {
+   "addedAt": "2017-08-20T10:05:17.785Z",
+   "authors": [
+    "Author 7"
+   ],
+   "coverAspectRatio": "2/3",
+   "coverVersion": "ebook:2026-08-28T19:26:18.476Z:-",
+   "files": [
+    {
+     "format": "epub",
+     "id": 239,
+     "mediaOverlay": {
+      "available": false,
+      "durationSeconds": null
+     },
+     "role": "primary",
+     "sizeBytes": 454660
+    },
+    {
+     "format": "jpg",
+     "id": 240,
+     "role": "cover",
+     "sizeBytes": 162632
+    }
+   ],
+   "genres": [
+    "Genre 3",
+    "Genre 9"
+   ],
+   "hasCover": true,
+   "id": 116,
+   "isbn13": "9780000000002",
+   "language": "fr",
+   "libraryId": 2,
+   "narrators": [],
+   "pageCount": 218,
+   "publishedDate": null,
+   "publishedYear": 1939,
+   "publisher": "Publisher 7",
+   "rating": null,
+   "readStatus": null,
+   "readingProgress": null,
+   "seriesId": 103,
+   "seriesIndex": "15",
+   "seriesMemberships": [
+    {
+     "displayOrder": 0,
+     "expectedBookCount": 44,
+     "seriesId": 103,
+     "seriesIndex": "15",
+     "seriesName": "Series 5"
+    },
+    {
+     "displayOrder": 1,
+     "expectedBookCount": 5,
+     "seriesId": 237,
+     "seriesIndex": "3",
+     "seriesName": "Series 10"
+    },
+    {
+     "displayOrder": 2,
+     "expectedBookCount": 4,
+     "seriesId": 238,
+     "seriesIndex": "2",
+     "seriesName": "Series 11"
+    }
+   ],
+   "seriesName": "Series 5",
+   "status": "present",
+   "subtitle": null,
+   "title": "Book 21",
+   "updatedAt": "2026-08-28T19:28:17.181Z"
+  },
+  {
+   "addedAt": "2017-08-20T10:05:16.999Z",
+   "authors": [
+    "Author 7"
+   ],
+   "coverAspectRatio": "2/3",
+   "coverVersion": "ebook:2026-08-28T19:26:32.077Z:-",
+   "files": [
+    {
+     "format": "epub",
+     "id": 241,
+     "mediaOverlay": {
+      "available": false,
+      "durationSeconds": null
+     },
+     "role": "primary",
+     "sizeBytes": 303733
+    },
+    {
+     "format": "jpg",
+     "id": 242,
+     "role": "cover",
+     "sizeBytes": 164311
+    }
+   ],
+   "genres": [
+    "Genre 3",
+    "Genre 10",
+    "Genre 9"
+   ],
+   "hasCover": true,
+   "id": 117,
+   "isbn13": "9780000000002",
+   "language": "fr",
+   "libraryId": 2,
+   "narrators": [],
+   "pageCount": 223,
+   "publishedDate": null,
+   "publishedYear": 1976,
+   "publisher": "Publisher 8",
+   "rating": null,
+   "readStatus": null,
+   "readingProgress": null,
+   "seriesId": 103,
+   "seriesIndex": "16",
+   "seriesMemberships": [
+    {
+     "displayOrder": 0,
+     "expectedBookCount": 44,
+     "seriesId": 103,
+     "seriesIndex": "16",
+     "seriesName": "Series 5"
+    }
+   ],
+   "seriesName": "Series 5",
+   "status": "present",
+   "subtitle": null,
+   "title": "Book 22",
+   "updatedAt": "2026-11-11T12:16:50.054Z"
+  },
+  {
+   "addedAt": "2017-08-20T10:05:16.125Z",
+   "authors": [
+    "Author 7"
+   ],
+   "coverAspectRatio": "2/3",
+   "coverVersion": "ebook:2026-08-28T19:25:29.580Z:-",
+   "files": [
+    {
+     "format": "epub",
+     "id": 243,
+     "mediaOverlay": {
+      "available": false,
+      "durationSeconds": null
+     },
+     "role": "primary",
+     "sizeBytes": 332634
+    },
+    {
+     "format": "jpg",
+     "id": 244,
+     "role": "cover",
+     "sizeBytes": 158319
+    }
+   ],
+   "genres": [
+    "Genre 3",
+    "Genre 9"
+   ],
+   "hasCover": true,
+   "id": 118,
+   "isbn13": "9780000000002",
+   "language": "fr",
+   "libraryId": 2,
+   "narrators": [],
+   "pageCount": 283,
+   "publishedDate": null,
+   "publishedYear": 1950,
+   "publisher": "Publisher 8",
+   "rating": null,
+   "readStatus": null,
+   "readingProgress": null,
+   "seriesId": 103,
+   "seriesIndex": "17",
+   "seriesMemberships": [
+    {
+     "displayOrder": 0,
+     "expectedBookCount": 44,
+     "seriesId": 103,
+     "seriesIndex": "17",
+     "seriesName": "Series 5"
+    }
+   ],
+   "seriesName": "Series 5",
+   "status": "present",
+   "subtitle": null,
+   "title": "Book 23",
+   "updatedAt": "2026-08-29T08:09:22.043Z"
+  },
+  {
+   "addedAt": "2017-08-20T10:05:16.540Z",
+   "authors": [
+    "Author 7"
+   ],
+   "coverAspectRatio": "2/3",
+   "coverVersion": "ebook:2026-08-28T19:25:29.895Z:-",
+   "files": [
+    {
+     "format": "epub",
+     "id": 156,
+     "mediaOverlay": {
+      "available": false,
+      "durationSeconds": null
+     },
+     "role": "primary",
+     "sizeBytes": 375710
+    },
+    {
+     "format": "jpg",
+     "id": 153,
+     "role": "cover",
+     "sizeBytes": 192766
+    }
+   ],
+   "genres": [
+    "Genre 3",
+    "Genre 9"
+   ],
+   "hasCover": true,
+   "id": 119,
+   "isbn13": "9780000000002",
+   "language": "fr",
+   "libraryId": 2,
+   "narrators": [],
+   "pageCount": 320,
+   "publishedDate": null,
+   "publishedYear": 1948,
+   "publisher": "Publisher 8",
+   "rating": null,
+   "readStatus": null,
+   "readingProgress": null,
+   "seriesId": 103,
+   "seriesIndex": "18",
+   "seriesMemberships": [
+    {
+     "displayOrder": 0,
+     "expectedBookCount": 44,
+     "seriesId": 103,
+     "seriesIndex": "18",
+     "seriesName": "Series 5"
+    },
+    {
+     "displayOrder": 1,
+     "expectedBookCount": 4,
+     "seriesId": 238,
+     "seriesIndex": "3",
+     "seriesName": "Series 11"
+    }
+   ],
+   "seriesName": "Series 5",
+   "status": "present",
+   "subtitle": null,
+   "title": "Book 24",
+   "updatedAt": "2026-11-11T12:16:51.108Z"
+  },
+  {
+   "addedAt": "2017-08-20T10:05:16.217Z",
+   "authors": [
+    "Author 7"
+   ],
+   "coverAspectRatio": "2/3",
+   "coverVersion": "ebook:2026-08-28T19:26:39.185Z:-",
+   "files": [
+    {
+     "format": "epub",
+     "id": 245,
+     "mediaOverlay": {
+      "available": false,
+      "durationSeconds": null
+     },
+     "role": "primary",
+     "sizeBytes": 417952
+    },
+    {
+     "format": "jpg",
+     "id": 246,
+     "role": "cover",
+     "sizeBytes": 301085
+    }
+   ],
+   "genres": [
+    "Genre 3",
+    "Genre 9"
+   ],
+   "hasCover": true,
+   "id": 120,
+   "isbn13": "9780000000002",
+   "language": "fr",
+   "libraryId": 2,
+   "narrators": [],
+   "pageCount": 230,
+   "publishedDate": null,
+   "publishedYear": 1952,
+   "publisher": "Publisher 8",
+   "rating": null,
+   "readStatus": null,
+   "readingProgress": null,
+   "seriesId": 103,
+   "seriesIndex": "19",
+   "seriesMemberships": [
+    {
+     "displayOrder": 0,
+     "expectedBookCount": 44,
+     "seriesId": 103,
+     "seriesIndex": "19",
+     "seriesName": "Series 5"
+    }
+   ],
+   "seriesName": "Series 5",
+   "status": "present",
+   "subtitle": null,
+   "title": "Book 25",
+   "updatedAt": "2026-09-02T15:46:53.215Z"
+  },
+  {
+   "addedAt": "2017-08-20T10:05:16.971Z",
+   "authors": [
+    "Author 7"
+   ],
+   "coverAspectRatio": "2/3",
+   "coverVersion": "ebook:2026-08-28T19:25:40.817Z:-",
+   "files": [
+    {
+     "format": "epub",
+     "id": 247,
+     "mediaOverlay": {
+      "available": false,
+      "durationSeconds": null
+     },
+     "role": "primary",
+     "sizeBytes": 362778
+    },
+    {
+     "format": "jpg",
+     "id": 248,
+     "role": "cover",
+     "sizeBytes": 181814
+    }
+   ],
+   "genres": [
+    "Genre 3",
+    "Genre 9"
+   ],
+   "hasCover": true,
+   "id": 121,
+   "isbn13": "9780000000002",
+   "language": "fr",
+   "libraryId": 2,
+   "narrators": [],
+   "pageCount": 245,
+   "publishedDate": null,
+   "publishedYear": 1946,
+   "publisher": "Publisher 8",
+   "rating": null,
+   "readStatus": null,
+   "readingProgress": null,
+   "seriesId": 103,
+   "seriesIndex": "20",
+   "seriesMemberships": [
+    {
+     "displayOrder": 0,
+     "expectedBookCount": 44,
+     "seriesId": 103,
+     "seriesIndex": "20",
+     "seriesName": "Series 5"
+    }
+   ],
+   "seriesName": "Series 5",
+   "status": "present",
+   "subtitle": null,
+   "title": "Book 26",
+   "updatedAt": "2026-08-28T19:28:17.482Z"
+  },
+  {
+   "addedAt": "2017-08-20T10:05:16.037Z",
+   "authors": [
+    "Author 7"
+   ],
+   "coverAspectRatio": "2/3",
+   "coverVersion": "ebook:2026-08-28T19:25:54.349Z:-",
+   "files": [
+    {
+     "format": "epub",
+     "id": 249,
+     "mediaOverlay": {
+      "available": false,
+      "durationSeconds": null
+     },
+     "role": "primary",
+     "sizeBytes": 1044793
+    },
+    {
+     "format": "jpg",
+     "id": 250,
+     "role": "cover",
+     "sizeBytes": 49986
+    }
+   ],
+   "genres": [
+    "Genre 3",
+    "Genre 9"
+   ],
+   "hasCover": true,
+   "id": 122,
+   "isbn13": "9780000000002",
+   "language": "fr",
+   "libraryId": 2,
+   "narrators": [],
+   "pageCount": 190,
+   "publishedDate": null,
+   "publishedYear": 1948,
+   "publisher": "Publisher 8",
+   "rating": null,
+   "readStatus": null,
+   "readingProgress": null,
+   "seriesId": 103,
+   "seriesIndex": "22",
+   "seriesMemberships": [
+    {
+     "displayOrder": 0,
+     "expectedBookCount": 44,
+     "seriesId": 103,
+     "seriesIndex": "22",
+     "seriesName": "Series 5"
+    }
+   ],
+   "seriesName": "Series 5",
+   "status": "present",
+   "subtitle": null,
+   "title": "Book 27",
+   "updatedAt": "2026-08-28T19:28:22.817Z"
+  },
+  {
+   "addedAt": "2017-08-20T10:05:16.651Z",
+   "authors": [
+    "Author 7"
+   ],
+   "coverAspectRatio": "2/3",
+   "coverVersion": "ebook:2026-08-28T19:25:46.437Z:-",
+   "files": [
+    {
+     "format": "epub",
+     "id": 143,
+     "mediaOverlay": {
+      "available": false,
+      "durationSeconds": null
+     },
+     "role": "primary",
+     "sizeBytes": 481633
+    },
+    {
+     "format": "jpg",
+     "id": 146,
+     "role": "cover",
+     "sizeBytes": 68104
+    }
+   ],
+   "genres": [
+    "Genre 3",
+    "Genre 9"
+   ],
+   "hasCover": true,
+   "id": 123,
+   "isbn13": "9780000000002",
+   "language": "fr",
+   "libraryId": 2,
+   "narrators": [],
+   "pageCount": 219,
+   "publishedDate": null,
+   "publishedYear": 1948,
+   "publisher": "Publisher 7",
+   "rating": null,
+   "readStatus": null,
+   "readingProgress": null,
+   "seriesId": 103,
+   "seriesIndex": "23",
+   "seriesMemberships": [
+    {
+     "displayOrder": 0,
+     "expectedBookCount": 44,
+     "seriesId": 103,
+     "seriesIndex": "23",
+     "seriesName": "Series 5"
+    }
+   ],
+   "seriesName": "Series 5",
+   "status": "present",
+   "subtitle": null,
+   "title": "Book 28",
+   "updatedAt": "2026-08-28T19:28:17.753Z"
+  },
+  {
+   "addedAt": "2017-08-20T10:05:17.706Z",
+   "authors": [
+    "Author 7"
+   ],
+   "coverAspectRatio": "2/3",
+   "coverVersion": "ebook:2026-08-28T19:25:36.153Z:-",
+   "files": [
+    {
+     "format": "epub",
+     "id": 251,
+     "mediaOverlay": {
+      "available": false,
+      "durationSeconds": null
+     },
+     "role": "primary",
+     "sizeBytes": 357352
+    },
+    {
+     "format": "jpg",
+     "id": 252,
+     "role": "cover",
+     "sizeBytes": 172448
+    }
+   ],
+   "genres": [
+    "Genre 3",
+    "Genre 9"
+   ],
+   "hasCover": true,
+   "id": 124,
+   "isbn13": "9780000000002",
+   "language": "fr",
+   "libraryId": 2,
+   "narrators": [],
+   "pageCount": 218,
+   "publishedDate": null,
+   "publishedYear": 1947,
+   "publisher": "Publisher 7",
+   "rating": null,
+   "readStatus": null,
+   "readingProgress": null,
+   "seriesId": 103,
+   "seriesIndex": "24",
+   "seriesMemberships": [
+    {
+     "displayOrder": 0,
+     "expectedBookCount": 44,
+     "seriesId": 103,
+     "seriesIndex": "24",
+     "seriesName": "Series 5"
+    }
+   ],
+   "seriesName": "Series 5",
+   "status": "present",
+   "subtitle": null,
+   "title": "Book 29",
+   "updatedAt": "2026-08-28T19:28:17.166Z"
+  },
+  {
+   "addedAt": "2017-08-20T10:05:17.107Z",
+   "authors": [
+    "Author 7"
+   ],
+   "coverAspectRatio": "2/3",
+   "coverVersion": "ebook:2026-08-28T19:25:58.614Z:-",
+   "files": [
+    {
+     "format": "epub",
+     "id": 253,
+     "mediaOverlay": {
+      "available": false,
+      "durationSeconds": null
+     },
+     "role": "primary",
+     "sizeBytes": 563645
+    },
+    {
+     "format": "jpg",
+     "id": 254,
+     "role": "cover",
+     "sizeBytes": 165762
+    }
+   ],
+   "genres": [
+    "Genre 3",
+    "Genre 9"
+   ],
+   "hasCover": true,
+   "id": 125,
+   "isbn13": "9780000000002",
+   "language": "fr",
+   "libraryId": 2,
+   "narrators": [],
+   "pageCount": 309,
+   "publishedDate": null,
+   "publishedYear": 1951,
+   "publisher": "Publisher 8",
+   "rating": null,
+   "readStatus": null,
+   "readingProgress": null,
+   "seriesId": 103,
+   "seriesIndex": "28",
+   "seriesMemberships": [
+    {
+     "displayOrder": 0,
+     "expectedBookCount": 44,
+     "seriesId": 103,
+     "seriesIndex": "28",
+     "seriesName": "Series 5"
+    }
+   ],
+   "seriesName": "Series 5",
+   "status": "present",
+   "subtitle": null,
+   "title": "Book 30",
+   "updatedAt": "2026-08-28T19:28:18.120Z"
+  },
+  {
+   "addedAt": "2017-08-20T10:05:16.510Z",
+   "authors": [
+    "Author 7"
+   ],
+   "coverAspectRatio": "2/3",
+   "coverVersion": "ebook:2026-08-28T19:26:22.180Z:-",
+   "files": [
+    {
+     "format": "epub",
+     "id": 255,
+     "mediaOverlay": {
+      "available": false,
+      "durationSeconds": null
+     },
+     "role": "primary",
+     "sizeBytes": 415631
+    },
+    {
+     "format": "jpg",
+     "id": 256,
+     "role": "cover",
+     "sizeBytes": 314353
+    }
+   ],
+   "genres": [
+    "Genre 3",
+    "Genre 9"
+   ],
+   "hasCover": true,
+   "id": 126,
+   "isbn13": "9780000000002",
+   "language": "fr",
+   "libraryId": 2,
+   "narrators": [],
+   "pageCount": 254,
+   "publishedDate": null,
+   "publishedYear": 1953,
+   "publisher": "Publisher 8",
+   "rating": null,
+   "readStatus": null,
+   "readingProgress": null,
+   "seriesId": 103,
+   "seriesIndex": "32",
+   "seriesMemberships": [
+    {
+     "displayOrder": 0,
+     "expectedBookCount": 44,
+     "seriesId": 103,
+     "seriesIndex": "32",
+     "seriesName": "Series 5"
+    }
+   ],
+   "seriesName": "Series 5",
+   "status": "present",
+   "subtitle": null,
+   "title": "Book 31",
+   "updatedAt": "2026-08-29T08:09:21.692Z"
+  },
+  {
+   "addedAt": "2017-08-20T10:05:16.803Z",
+   "authors": [
+    "Author 7"
+   ],
+   "coverAspectRatio": "2/3",
+   "coverVersion": "ebook:2026-08-28T19:25:31.748Z:-",
+   "files": [
+    {
+     "format": "epub",
+     "id": 139,
+     "mediaOverlay": {
+      "available": false,
+      "durationSeconds": null
+     },
+     "role": "primary",
+     "sizeBytes": 356734
+    },
+    {
+     "format": "jpg",
+     "id": 138,
+     "role": "cover",
+     "sizeBytes": 211556
+    }
+   ],
+   "genres": [
+    "Genre 3",
+    "Genre 9"
+   ],
+   "hasCover": true,
+   "id": 127,
+   "isbn13": "9780000000002",
+   "language": "fr",
+   "libraryId": 2,
+   "narrators": [],
+   "pageCount": 256,
+   "publishedDate": null,
+   "publishedYear": 1954,
+   "publisher": "Publisher 8",
+   "rating": null,
+   "readStatus": null,
+   "readingProgress": null,
+   "seriesId": 103,
+   "seriesIndex": "33",
+   "seriesMemberships": [
+    {
+     "displayOrder": 0,
+     "expectedBookCount": 44,
+     "seriesId": 103,
+     "seriesIndex": "33",
+     "seriesName": "Series 5"
+    }
+   ],
+   "seriesName": "Series 5",
+   "status": "present",
+   "subtitle": null,
+   "title": "Book 32",
+   "updatedAt": "2026-11-11T12:16:50.767Z"
+  },
+  {
+   "addedAt": "2017-08-20T10:05:16.360Z",
+   "authors": [
+    "Author 7"
+   ],
+   "coverAspectRatio": "2/3",
+   "coverVersion": "ebook:2026-08-28T19:26:05.706Z:-",
+   "files": [
+    {
+     "format": "epub",
+     "id": 257,
+     "mediaOverlay": {
+      "available": false,
+      "durationSeconds": null
+     },
+     "role": "primary",
+     "sizeBytes": 227958
+    },
+    {
+     "format": "jpg",
+     "id": 258,
+     "role": "cover",
+     "sizeBytes": 50590
+    }
+   ],
+   "genres": [
+    "Genre 3",
+    "Genre 9"
+   ],
+   "hasCover": true,
+   "id": 128,
+   "isbn13": "9780000000002",
+   "language": "fr",
+   "libraryId": 2,
+   "narrators": [],
+   "pageCount": 256,
+   "publishedDate": null,
+   "publishedYear": 1956,
+   "publisher": "Publisher 8",
+   "rating": null,
+   "readStatus": null,
+   "readingProgress": null,
+   "seriesId": 103,
+   "seriesIndex": "34",
+   "seriesMemberships": [
+    {
+     "displayOrder": 0,
+     "expectedBookCount": 44,
+     "seriesId": 103,
+     "seriesIndex": "34",
+     "seriesName": "Series 5"
+    }
+   ],
+   "seriesName": "Series 5",
+   "status": "present",
+   "subtitle": null,
+   "title": "Book 33",
+   "updatedAt": "2026-08-28T19:28:22.712Z"
+  },
+  {
+   "addedAt": "2017-08-20T10:05:16.332Z",
+   "authors": [
+    "Author 7"
+   ],
+   "coverAspectRatio": "2/3",
+   "coverVersion": "ebook:2026-08-28T19:25:28.377Z:-",
+   "files": [
+    {
+     "format": "epub",
+     "id": 259,
+     "mediaOverlay": {
+      "available": false,
+      "durationSeconds": null
+     },
+     "role": "primary",
+     "sizeBytes": 284992
+    },
+    {
+     "format": "jpg",
+     "id": 260,
+     "role": "cover",
+     "sizeBytes": 51481
+    }
+   ],
+   "genres": [
+    "Genre 3",
+    "Genre 9"
+   ],
+   "hasCover": true,
+   "id": 129,
+   "isbn13": "9780000000002",
+   "language": "fr",
+   "libraryId": 2,
+   "narrators": [],
+   "pageCount": 250,
+   "publishedDate": null,
+   "publishedYear": 1957,
+   "publisher": "Publisher 8",
+   "rating": null,
+   "readStatus": null,
+   "readingProgress": null,
+   "seriesId": 103,
+   "seriesIndex": "35",
+   "seriesMemberships": [
+    {
+     "displayOrder": 0,
+     "expectedBookCount": 44,
+     "seriesId": 103,
+     "seriesIndex": "35",
+     "seriesName": "Series 5"
+    }
+   ],
+   "seriesName": "Series 5",
+   "status": "present",
+   "subtitle": null,
+   "title": "Book 34",
+   "updatedAt": "2026-08-28T19:28:22.663Z"
+  },
+  {
+   "addedAt": "2017-08-20T10:05:17.215Z",
+   "authors": [
+    "Author 7"
+   ],
+   "coverAspectRatio": "2/3",
+   "coverVersion": "ebook:2026-08-28T19:25:29.442Z:-",
+   "files": [
+    {
+     "format": "epub",
+     "id": 261,
+     "mediaOverlay": {
+      "available": false,
+      "durationSeconds": null
+     },
+     "role": "primary",
+     "sizeBytes": 311907
+    },
+    {
+     "format": "jpg",
+     "id": 262,
+     "role": "cover",
+     "sizeBytes": 209891
+    }
+   ],
+   "genres": [
+    "Genre 3",
+    "Genre 9"
+   ],
+   "hasCover": true,
+   "id": 130,
+   "isbn13": "9780000000002",
+   "language": "fr",
+   "libraryId": 2,
+   "narrators": [],
+   "pageCount": 255,
+   "publishedDate": null,
+   "publishedYear": 1960,
+   "publisher": "Publisher 8",
+   "rating": null,
+   "readStatus": null,
+   "readingProgress": null,
+   "seriesId": 103,
+   "seriesIndex": "36",
+   "seriesMemberships": [
+    {
+     "displayOrder": 0,
+     "expectedBookCount": 44,
+     "seriesId": 103,
+     "seriesIndex": "36",
+     "seriesName": "Series 5"
+    }
+   ],
+   "seriesName": "Series 5",
+   "status": "present",
+   "subtitle": null,
+   "title": "Book 35",
+   "updatedAt": "2026-08-28T19:28:17.467Z"
+  },
+  {
+   "addedAt": "2017-08-20T10:05:16.749Z",
+   "authors": [
+    "Author 7"
+   ],
+   "coverAspectRatio": "2/3",
+   "coverVersion": "ebook:2026-08-28T19:25:44.213Z:-",
+   "files": [
+    {
+     "format": "epub",
+     "id": 263,
+     "mediaOverlay": {
+      "available": false,
+      "durationSeconds": null
+     },
+     "role": "primary",
+     "sizeBytes": 463425
+    },
+    {
+     "format": "jpg",
+     "id": 264,
+     "role": "cover",
+     "sizeBytes": 316291
+    }
+   ],
+   "genres": [
+    "Genre 3",
+    "Genre 9"
+   ],
+   "hasCover": true,
+   "id": 131,
+   "isbn13": "9780000000002",
+   "language": "fr",
+   "libraryId": 2,
+   "narrators": [],
+   "pageCount": 188,
+   "publishedDate": null,
+   "publishedYear": 1964,
+   "publisher": "Publisher 8",
+   "rating": null,
+   "readStatus": null,
+   "readingProgress": null,
+   "seriesId": 103,
+   "seriesIndex": "39",
+   "seriesMemberships": [
+    {
+     "displayOrder": 0,
+     "expectedBookCount": 44,
+     "seriesId": 103,
+     "seriesIndex": "39",
+     "seriesName": "Series 5"
+    }
+   ],
+   "seriesName": "Series 5",
+   "status": "present",
+   "subtitle": null,
+   "title": "Book 36",
+   "updatedAt": "2026-08-28T19:28:17.668Z"
+  },
+  {
+   "addedAt": "2017-08-20T10:05:17.295Z",
+   "authors": [
+    "Author 7"
+   ],
+   "coverAspectRatio": "2/3",
+   "coverVersion": "ebook:2026-08-28T19:26:11.145Z:-",
+   "files": [
+    {
+     "format": "epub",
+     "id": 265,
+     "mediaOverlay": {
+      "available": false,
+      "durationSeconds": null
+     },
+     "role": "primary",
+     "sizeBytes": 711662
+    },
+    {
+     "format": "jpg",
+     "id": 266,
+     "role": "cover",
+     "sizeBytes": 685656
+    }
+   ],
+   "genres": [
+    "Genre 3",
+    "Genre 9"
+   ],
+   "hasCover": true,
+   "id": 132,
+   "isbn13": "9780000000002",
+   "language": "fr",
+   "libraryId": 2,
+   "narrators": [],
+   "pageCount": 316,
+   "publishedDate": null,
+   "publishedYear": 1968,
+   "publisher": "Publisher 8",
+   "rating": null,
+   "readStatus": null,
+   "readingProgress": null,
+   "seriesId": 103,
+   "seriesIndex": "40",
+   "seriesMemberships": [
+    {
+     "displayOrder": 0,
+     "expectedBookCount": 44,
+     "seriesId": 103,
+     "seriesIndex": "40",
+     "seriesName": "Series 5"
+    }
+   ],
+   "seriesName": "Series 5",
+   "status": "present",
+   "subtitle": null,
+   "title": "Book 37",
+   "updatedAt": "2026-08-28T19:28:17.380Z"
+  },
+  {
+   "addedAt": "2017-08-20T10:05:17.459Z",
+   "authors": [
+    "Author 7"
+   ],
+   "coverAspectRatio": "2/3",
+   "coverVersion": "ebook:2026-08-28T19:25:26.698Z:-",
+   "files": [
+    {
+     "format": "epub",
+     "id": 267,
+     "mediaOverlay": {
+      "available": false,
+      "durationSeconds": null
+     },
+     "role": "primary",
+     "sizeBytes": 295828
+    },
+    {
+     "format": "jpg",
+     "id": 268,
+     "role": "cover",
+     "sizeBytes": 171933
+    }
+   ],
+   "genres": [
+    "Genre 3",
+    "Genre 9"
+   ],
+   "hasCover": true,
+   "id": 133,
+   "isbn13": "9780000000002",
+   "language": "fr",
+   "libraryId": 2,
+   "narrators": [],
+   "pageCount": 230,
+   "publishedDate": null,
+   "publishedYear": 1971,
+   "publisher": "Publisher 8",
+   "rating": null,
+   "readStatus": null,
+   "readingProgress": null,
+   "seriesId": 103,
+   "seriesIndex": "41",
+   "seriesMemberships": [
+    {
+     "displayOrder": 0,
+     "expectedBookCount": 44,
+     "seriesId": 103,
+     "seriesIndex": "41",
+     "seriesName": "Series 5"
+    }
+   ],
+   "seriesName": "Series 5",
+   "status": "present",
+   "subtitle": null,
+   "title": "Book 38",
+   "updatedAt": "2026-08-28T19:28:17.323Z"
+  },
+  {
+   "addedAt": "2017-08-20T10:05:17.240Z",
+   "authors": [
+    "Author 7"
+   ],
+   "coverAspectRatio": "2/3",
+   "coverVersion": "ebook:2026-08-28T19:26:16.843Z:-",
+   "files": [
+    {
+     "format": "epub",
+     "id": 269,
+     "mediaOverlay": {
+      "available": false,
+      "durationSeconds": null
+     },
+     "role": "primary",
+     "sizeBytes": 352479
+    },
+    {
+     "format": "jpg",
+     "id": 270,
+     "role": "cover",
+     "sizeBytes": 172880
+    }
+   ],
+   "genres": [
+    "Genre 3",
+    "Genre 10",
+    "Genre 9"
+   ],
+   "hasCover": true,
+   "id": 134,
+   "isbn13": "9780000000002",
+   "language": "fr",
+   "libraryId": 2,
+   "narrators": [],
+   "pageCount": 251,
+   "publishedDate": null,
+   "publishedYear": 1979,
+   "publisher": "Publisher 8",
+   "rating": null,
+   "readStatus": null,
+   "readingProgress": null,
+   "seriesId": 103,
+   "seriesIndex": "43",
+   "seriesMemberships": [
+    {
+     "displayOrder": 0,
+     "expectedBookCount": 44,
+     "seriesId": 103,
+     "seriesIndex": "43",
+     "seriesName": "Series 5"
+    }
+   ],
+   "seriesName": "Series 5",
+   "status": "present",
+   "subtitle": null,
+   "title": "Book 39",
+   "updatedAt": "2026-08-28T19:28:17.523Z"
+  },
+  {
+   "addedAt": "2017-08-20T10:05:16.302Z",
+   "authors": [
+    "Author 7"
+   ],
+   "coverAspectRatio": "2/3",
+   "coverVersion": "ebook:2026-08-28T19:25:37.981Z:-",
+   "files": [
+    {
+     "format": "epub",
+     "id": 271,
+     "mediaOverlay": {
+      "available": false,
+      "durationSeconds": null
+     },
+     "role": "primary",
+     "sizeBytes": 382029
+    },
+    {
+     "format": "jpg",
+     "id": 272,
+     "role": "cover",
+     "sizeBytes": 185765
+    }
+   ],
+   "genres": [
+    "Genre 3",
+    "Genre 9"
+   ],
+   "hasCover": true,
+   "id": 135,
+   "isbn13": "9780000000002",
+   "language": "fr",
+   "libraryId": 2,
+   "narrators": [],
+   "pageCount": 265,
+   "publishedDate": null,
+   "publishedYear": 1976,
+   "publisher": "Publisher 8",
+   "rating": null,
+   "readStatus": null,
+   "readingProgress": null,
+   "seriesId": 103,
+   "seriesIndex": "44",
+   "seriesMemberships": [
+    {
+     "displayOrder": 0,
+     "expectedBookCount": 44,
+     "seriesId": 103,
+     "seriesIndex": "44",
+     "seriesName": "Series 5"
+    }
+   ],
+   "seriesName": "Series 5",
+   "status": "present",
+   "subtitle": null,
+   "title": "Book 40",
+   "updatedAt": "2026-08-28T19:28:17.265Z"
+  }
+ ],
+ "page": 0,
+ "seriesInfo": {
+  "authors": [
+   "Author 7"
+  ],
+  "bookCount": 32,
+  "expectedBookCount": 44,
+  "id": 103,
+  "name": "Series 5",
+  "ownedVolumeCount": 32,
+  "readCount": 0,
+  "readVolumeCount": 0
+ },
+ "size": 100,
+ "total": 32
+}

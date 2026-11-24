@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- The list of licences and the app's own licence are read by their resource ids at run time: resource shrinking
+     must not drop them. -->
+<resources xmlns:tools="http://schemas.android.com/tools"
+    tools:keep="@raw/aboutlibraries,@raw/gpl_3_0_or_later" />

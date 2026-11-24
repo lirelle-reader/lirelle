@@ -1,0 +1,20 @@
+# Brainstorming companion sessions and local worktrees
+.superpowers/
+.worktrees/
+.claude/worktrees/
+
+# The private repository (design documents, maintainer's scripts), cloned here
+private/
+
+# Gradle and Android
+.gradle/
+build/
+local.properties
+*.jks
+.kotlin/
+.android-sdk/
+
+# IDE
+.idea/
+*.iml
+__pycache__/

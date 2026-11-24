@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Bars -->
+    <string name="reader_search_book">Search in the book</string>
+    <!-- The page holds no bookmark: the button adds one. -->
+    <string name="reader_bookmark_add">Add bookmark</string>
+    <!-- The page holds one or more bookmarks: the button removes them. -->
+    <string name="reader_bookmark_remove">Remove bookmark</string>
+    <!-- The button opening the panel with three tabs. -->
+    <string name="reader_panel">Contents, bookmarks and notes</string>
+    <string name="reader_settings">Reading settings</string>
+    <string name="reader_previous_chapter">Previous chapter</string>
+    <string name="reader_next_chapter">Next chapter</string>
+    <string name="reader_position_slider">Position in the book</string>
+
+    <!-- The page, for screen readers -->
+    <string name="reader_page">Book page</string>
+    <string name="reader_show_controls">Show the controls (tap the centre)</string>
+    <string name="reader_hide_controls">Hide the controls (tap the centre)</string>
+    <string name="reader_next_page_right">Next page (tap the right edge)</string>
+    <string name="reader_next_page_left">Next page (tap the left edge)</string>
+    <string name="reader_previous_page_left">Previous page (tap the left edge)</string>
+    <string name="reader_previous_page_right">Previous page (tap the right edge)</string>
+
+    <!-- Header and footer -->
+    <plurals name="reader_pages_left">
+        <item quantity="one">%1$d page left in the chapter</item>
+        <item quantity="other">%1$d pages left in the chapter</item>
+    </plurals>
+
+    <!-- Position found on the server, and jumps -->
+    <string name="reader_newer_position">Newer position: %1$d%%</string>
+    <!-- The second argument is a relative time as the system writes it: "2 hours ago". -->
+    <string name="reader_newer_position_at">Newer position: %1$d%%, %2$s</string>
+    <string name="reader_newer_position_go">Go there</string>
+    <string name="reader_newer_position_ignore">Ignore</string>
+    <string name="reader_go_back">Go back</string>
+
+    <!-- A link to the web -->
+    <string name="reader_link_title">Open this link?</string>
+    <string name="reader_link_text">This link leaves the book and opens in your browser.</string>
+    <string name="reader_link_open">Open</string>
+    <string name="reader_cancel">Cancel</string>
+    <string name="reader_no_browser">No app can open this link.</string>
+
+    <!-- Opening -->
+    <string name="reader_downloading">Downloading the book…</string>
+    <string name="reader_download_size">%1$s of %2$s</string>
+    <string name="reader_opening">Opening the book…</string>
+    <string name="reader_failure_download_not_allowed">Downloads are not allowed for this account, and reading this book needs them.</string>
+    <string name="reader_failure_not_an_epub">This file cannot be opened: it is damaged, or it is not an EPUB.</string>
+    <string name="reader_failure_protected">This book is protected against copying (DRM) and cannot be read here.</string>
+    <string name="reader_failure_engine">The book could not be displayed.</string>
+    <string name="reader_failure_cannot_open">This book cannot be opened in this format.</string>
+    <string name="reader_failure_no_epub">This book has no EPUB file to read.</string>
+    <string name="reader_failure_old_web_view">Reading needs a newer version of “Android System WebView”. Update it from your app store, then open the book again.</string>
+    <!-- The narration of a read-along book. -->
+    <string name="reader_narration_start">Read with narration</string>
+    <string name="reader_narration_playing">Narration playing</string>
+    <string name="reader_narration_open_controls">Open the narration controls</string>
+    <string name="reader_read_from_here">Read from here</string>
+    <string name="reader_narration_unavailable">Narration unavailable</string>
+    <string name="reader_narration_retry">Try again</string>
+    <string name="reader_narration_error">Playback stopped on an error</string>
+</resources>

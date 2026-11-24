@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- The panel at the end of an audiobook -->
+    <string name="player_end_finished">Book finished</string>
+    <!-- The time listened to the book: "14 h 38 of listening" -->
+    <string name="player_end_listened">%1$s of listening</string>
+    <string name="player_end_rating">Your rating (optional)</string>
+    <plurals name="player_end_stars">
+        <item quantity="one">%d star</item>
+        <item quantity="other">%d stars</item>
+    </plurals>
+    <string name="player_end_rating_failed">The rating could not be sent.</string>
+    <string name="player_end_retry">Try again</string>
+    <string name="player_end_next_volume">Next volume</string>
+    <string name="player_end_close">Close</string>
+    <string name="player_end_sending">Sending the rating</string>
+    <!-- The row for what the device keeps of the finished book -->
+    <string name="player_end_device">On this device</string>
+    <string name="player_end_device_delete">Delete</string>
+    <string name="player_end_device_deleted">Deleted from this device</string>
+    <string name="player_end_device_undo">Undo</string>
+</resources>

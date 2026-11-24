@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- The narration of a read-along book, in the reader: its bar, panel, sheets, strip and notices -->
+    <string name="narration_controls">Narration controls</string>
+    <string name="narration_previous_sentence">Previous sentence</string>
+    <string name="narration_next_sentence">Next sentence</string>
+    <string name="narration_sections">Sections</string>
+    <plurals name="narration_sections_count">
+        <item quantity="one">%d section</item>
+        <item quantity="other">%d sections</item>
+    </plurals>
+    <!-- The section's place among the narrated ones, then how far into the book: "Section 12 of 48 · 37% of the book" -->
+    <string name="narration_section_line">Section %1$d of %2$d · %3$d%% of the book</string>
+    <string name="narration_section_bar">Position in the section</string>
+    <string name="narration_back_to_sentence">Back to the sentence</string>
+    <string name="narration_read_page">Read this page</string>
+    <string name="narration_skipped_titled">“%1$s” has no narration: it was skipped</string>
+    <string name="narration_sleep_end_of_section">End of section</string>
+    <string name="narration_sleep_stops_section">Stops at the end of the section</string>
+    <!-- A part of the times line ("12:04 · −23:51 · 1.25×"), followed by the next part on the same line or the next -->
+    <string name="narration_part_then">%1$s ·</string>
+    <string name="narration_skipped">A section without narration was skipped</string>
+    <string name="narration_skipped_read">Read</string>
+    <string name="narration_finished">Narration finished</string>
+    <string name="narration_finished_rest">The rest of the book has no narration</string>
+    <string name="narration_finish_book">Finish the book</string>
+</resources>

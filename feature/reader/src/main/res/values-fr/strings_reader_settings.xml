@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="reader_settings_title">Réglages de lecture</string>
+    <string name="reader_settings_done">OK</string>
+    <string name="reader_settings_back">Retour aux réglages de lecture</string>
+    <string name="reader_settings_value">%1$s : %2$s</string>
+
+    <string name="reader_settings_theme">Thème</string>
+    <string name="reader_theme_system">Auto</string>
+    <string name="reader_theme_light">Clair</string>
+    <string name="reader_theme_sepia">Sépia</string>
+    <string name="reader_theme_dark">Sombre</string>
+    <string name="reader_theme_black">Noir</string>
+
+    <string name="reader_settings_font">Police</string>
+    <string name="reader_font_book">Mise en page du livre</string>
+    <string name="reader_font_serif">Avec empattements</string>
+    <string name="reader_font_sans">Sans empattements</string>
+    <string name="reader_font_dyslexic">Dyslexie</string>
+
+    <string name="reader_settings_size">Taille</string>
+    <string name="reader_settings_size_smaller">Texte plus petit</string>
+    <string name="reader_settings_size_larger">Texte plus grand</string>
+    <string name="reader_settings_line_spacing">Interligne</string>
+    <string name="reader_settings_line_spacing_tighter">Lignes plus serrées</string>
+    <string name="reader_settings_line_spacing_looser">Lignes plus espacées</string>
+    <string name="reader_settings_margins">Marges</string>
+    <string name="reader_settings_margins_narrower">Marges plus étroites</string>
+    <string name="reader_settings_margins_wider">Marges plus larges</string>
+    <string name="reader_margins_narrow">Étroites</string>
+    <string name="reader_margins_medium">Moyennes</string>
+    <string name="reader_margins_wide">Larges</string>
+    <string name="reader_settings_alignment">Alignement</string>
+    <string name="reader_settings_alignment_previous">Alignement précédent</string>
+    <string name="reader_settings_alignment_next">Alignement suivant</string>
+    <string name="reader_align_book">Mise en page du livre</string>
+    <string name="reader_align_justify">Justifié</string>
+    <string name="reader_align_start">À gauche</string>
+    <string name="reader_settings_hyphenation">Césure</string>
+
+    <string name="reader_settings_brightness">Luminosité</string>
+    <string name="reader_settings_brightness_system">Suivre le système</string>
+
+    <string name="reader_settings_running_lines">En-tête et pied de page</string>
+    <string name="reader_settings_more">Plus d\'options</string>
+    <string name="reader_more_summary_volume_keys">Touches de volume</string>
+    <string name="reader_more_summary_edge_left">Luminosité sur le bord gauche</string>
+    <string name="reader_more_summary_edge_right">Luminosité sur le bord droit</string>
+
+    <string name="reader_running_header_left">En-tête, à gauche</string>
+    <string name="reader_running_header_right">En-tête, à droite</string>
+    <string name="reader_running_footer_left">Pied de page, à gauche</string>
+    <string name="reader_running_footer_right">Pied de page, à droite</string>
+    <string name="reader_running_preview">Aperçu</string>
+    <string name="reader_running_preview_header">En-tête : %1$s</string>
+    <string name="reader_running_preview_footer">Pied de page : %1$s</string>
+    <string name="reader_running_preview_empty">rien</string>
+    <string name="reader_slot_nothing">Rien</string>
+    <string name="reader_slot_book_title">Titre du livre</string>
+    <string name="reader_slot_chapter_title">Titre du chapitre</string>
+    <string name="reader_slot_book_percent">Pourcentage du livre</string>
+    <string name="reader_slot_chapter_percent">Pourcentage du chapitre</string>
+    <string name="reader_slot_pages_left">Pages restantes dans le chapitre</string>
+    <string name="reader_slot_time">Heure</string>
+    <string name="reader_slot_battery">Batterie</string>
+    <string name="reader_sample_book_title">Vingt mille lieues sous les mers</string>
+    <string name="reader_sample_chapter_title">Chapitre 3</string>
+    <string name="reader_sample_percent">%1$d %%</string>
+    <string name="reader_sample_pages_left">12 pages restantes</string>
+
+    <string name="reader_more_layout">Disposition</string>
+    <string name="reader_flow_paginated">Paginé</string>
+    <string name="reader_flow_scrolled">Défilement continu</string>
+    <string name="reader_more_volume_keys">Touches de volume</string>
+    <string name="reader_more_volume_keys_hint">Tourner les pages avec les touches de volume</string>
+    <string name="reader_more_brightness_gesture">Geste de luminosité</string>
+    <string name="reader_more_brightness_gesture_hint">Glisser un doigt le long de ce bord de la page pour régler la luminosité</string>
+    <string name="reader_edge_left">Bord gauche</string>
+    <string name="reader_edge_right">Bord droit</string>
+    <string name="reader_edge_off">Désactivé</string>
+    <string name="reader_more_footnote_panel">Notes de bas de page dans un panneau</string>
+    <string name="reader_more_corner_bookmark">Toucher le coin pour marquer la page</string>
+    <string name="reader_note_go_to">Aller à la note</string>
+    <string name="reader_note_title">Note</string>
+
+    <string name="reader_reading_settings_title">Lecture</string>
+    <string name="reader_settings_text">Texte</string>
+    <string name="reader_settings_layout_and_gestures">Disposition et gestes</string>
+    <string name="reader_preview_approximate">Aperçu approché : le rendu exact dépend du livre.</string>
+    <string name="reader_preview_state">%1$s, taille %2$s</string>
+</resources>

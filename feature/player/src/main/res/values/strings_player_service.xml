@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- The media notification, the lock screen and the other system controls -->
+    <string name="player_notification_channel">Playback</string>
+    <string name="player_button_back">Back %1$d seconds</string>
+    <string name="player_button_forward">Forward %1$d seconds</string>
+    <string name="player_button_previous_chapter">Previous chapter</string>
+    <string name="player_button_next_chapter">Next chapter</string>
+    <string name="player_button_listen_next">Listen to the next one</string>
+    <string name="player_notification_finished">%1$s — finished</string>
+    <string name="player_notification_next_available">The next volume is available</string>
+    <string name="player_notification_sleep_minutes">Stops in %1$d min</string>
+    <string name="player_notification_sleep_chapter">Stops at the end of the chapter</string>
+    <!-- The chapter's title, then the sleep timer's time left -->
+    <string name="player_notification_with_sleep">%1$s · %2$s</string>
+    <string name="player_notification_continue">Tap to continue listening</string>
+    <!-- A part of a book in parts: its chapters have no titles of their own -->
+    <string name="player_part">Part %1$d</string>
+    <!-- A narrated section of a read-along book without a title of its own: its number in the book -->
+    <string name="player_notification_section">Section %1$d</string>
+    <!-- Under the book's title at the end of a read-along book's narration -->
+    <string name="player_notification_narration_finished">Narration finished</string>
+</resources>

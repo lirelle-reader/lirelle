@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="player_end_finished">Livre terminé</string>
+    <string name="player_end_listened">%1$s d’écoute</string>
+    <string name="player_end_rating">Votre note (facultative)</string>
+    <plurals name="player_end_stars">
+        <item quantity="one">%d étoile</item>
+        <item quantity="many">%d étoiles</item>
+        <item quantity="other">%d étoiles</item>
+    </plurals>
+    <string name="player_end_rating_failed">La note n’a pas pu être envoyée.</string>
+    <string name="player_end_retry">Réessayer</string>
+    <string name="player_end_next_volume">Tome suivant</string>
+    <string name="player_end_close">Fermer</string>
+    <string name="player_end_sending">Envoi de la note</string>
+    <!-- The row for what the device keeps of the finished book -->
+    <string name="player_end_device">Sur cet appareil</string>
+    <string name="player_end_device_delete">Supprimer</string>
+    <string name="player_end_device_deleted">Supprimé de cet appareil</string>
+    <string name="player_end_device_undo">Annuler</string>
+</resources>

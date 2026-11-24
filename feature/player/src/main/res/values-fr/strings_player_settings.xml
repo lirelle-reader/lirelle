@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="player_settings_title">Lecteur audio</string>
+    <string name="player_settings_back">Retour</string>
+    <string name="player_settings_skip_back">Saut en arrière</string>
+    <string name="player_settings_skip_forward">Saut en avant</string>
+    <string name="player_settings_seconds_short">%1$d s</string>
+    <plurals name="player_settings_seconds">
+        <item quantity="one">%d seconde</item>
+        <item quantity="many">%d secondes</item>
+        <item quantity="other">%d secondes</item>
+    </plurals>
+    <string name="player_settings_playback">Lecture</string>
+    <string name="player_settings_rewind">Reculer à la reprise</string>
+    <string name="player_settings_rewind_hint">Après une pause, la lecture recule de 2 à 10 secondes, d’autant plus que la pause a été longue</string>
+    <string name="player_settings_fade">Fondu avant l’arrêt</string>
+    <string name="player_settings_fade_hint">Le son baisse doucement pendant la dernière minute de la minuterie</string>
+    <string name="player_settings_shake">Secouer pour prolonger</string>
+    <string name="player_settings_shake_hint">Secouer le téléphone pendant la dernière minute de la minuterie la relance</string>
+</resources>

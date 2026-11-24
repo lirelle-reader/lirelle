@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="player_mini_open">Ouvrir le lecteur</string>
+    <string name="player_mini_rate">Noter</string>
+    <string name="player_mini_rate_book">Noter le livre</string>
+    <string name="player_stop_listening">Arrêter l’écoute</string>
+    <string name="player_stopped">Écoute arrêtée</string>
+    <string name="player_stopped_undo">Annuler</string>
+    <string name="player_mini_narration">Narration · %1$s</string>
+    <string name="player_mini_narration_finished">Narration terminée</string>
+    <string name="player_mini_open_reader">Ouvrir la lecture</string>
+</resources>

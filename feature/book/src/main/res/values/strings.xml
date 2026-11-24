@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="book_series_line">%1$s #%2$s</string>
+
+    <string name="action_listen">Listen</string>
+    <string name="action_download">Download</string>
+    <string name="action_read">Read</string>
+    <string name="status_start">Start</string>
+    <string name="status_resume">Resume</string>
+    <string name="status_resume_percent">Resume\u00A0· %1$d%%</string>
+    <string name="status_read_again">Read again\u00A0· finished</string>
+    <string name="status_listen_again">Listen again\u00A0· finished</string>
+    <string name="status_offline">Offline</string>
+    <string name="status_unavailable">Unavailable</string>
+    <string name="status_start_spoken">start</string>
+    <string name="status_resume_spoken">resume</string>
+    <string name="status_resume_percent_spoken">resume at %1$d%%</string>
+    <string name="status_read_again_spoken">read again, finished</string>
+    <string name="status_listen_again_spoken">listen again, finished</string>
+    <string name="status_offline_spoken">offline</string>
+    <string name="status_unavailable_spoken">unavailable</string>
+    <string name="action_ring_narration">synchronised narration available</string>
+
+    <string name="fact_rating">%1$s / 5</string>
+    <string name="fact_rating_description">Rated %1$s out of 5</string>
+    <plurals name="fact_pages">
+        <item quantity="one">%d page</item>
+        <item quantity="other">%d pages</item>
+    </plurals>
+
+    <string name="section_reading">My reading</string>
+    <string name="reading_progress">Progress</string>
+    <string name="reading_progress_value">%1$d%%</string>
+    <string name="reading_page">Page %1$d</string>
+    <string name="reading_status">Status</string>
+    <string name="reading_last_read">Last read</string>
+    <string name="reading_time">Time read</string>
+    <string name="reading_sessions">Sessions</string>
+    <string name="reading_started">Started</string>
+    <string name="read_state_unread">Unread</string>
+    <string name="read_state_want_to_read">Want to read</string>
+    <string name="read_state_reading">Reading</string>
+    <string name="read_state_read">Read</string>
+    <string name="read_state_abandoned">Abandoned</string>
+
+    <string name="section_about">About</string>
+    <string name="genre_open_description">Books of the genre %1$s</string>
+
+    <string name="section_files">Files</string>
+    <string name="file_read_along">%1$s with narration</string>
+    <string name="file_audio">Audio (%1$s)</string>
+    <string name="file_primary">Primary file</string>
+    <string name="file_narration">%1$s of narration</string>
+    <plurals name="file_count">
+        <item quantity="one">%d file</item>
+        <item quantity="other">%d files</item>
+    </plurals>
+    <plurals name="file_chapters">
+        <item quantity="one">%d chapter</item>
+        <item quantity="other">%d chapters</item>
+    </plurals>
+
+    <string name="section_details">Details</string>
+    <string name="detail_publisher">Publisher</string>
+    <string name="detail_narrators">Narrated by</string>
+    <string name="detail_isbn">ISBN</string>
+    <string name="detail_library">Library</string>
+    <string name="detail_added">Added</string>
+    <string name="detail_collections">Collections</string>
+
+    <string name="section_in_series">In the series</string>
+    <string name="action_open_series">Open the series</string>
+    <string name="section_same_author">By the same author</string>
+    <string name="section_similar">Similar books</string>
+
+    <string name="duration_hours_minutes">%1$d h %2$02d min</string>
+    <string name="duration_minutes">%1$d min</string>
+
+    <string name="download_tile_percent">%1$d%%</string>
+    <string name="download_tile_waiting">Waiting</string>
+    <string name="download_tile_failed">Failed</string>
+    <string name="download_tile_downloaded">Downloaded</string>
+    <string name="download_tile_downloading_description">Downloading, %1$d%%</string>
+    <string name="download_format_text">Text</string>
+    <string name="download_format_audiobook">Audiobook</string>
+    <string name="download_format_narration">Narration</string>
+    <string name="download_line_progress">%1$s · %2$s of %3$s</string>
+    <!-- The format being fetched and its pages: "CBZ · 12 pages of 48". -->
+    <string name="download_line_pages">%1$s · %2$s</string>
+    <string name="download_line_wifi">Waiting for an unmetered network</string>
+    <!-- A download made of pages that waits says the pages it reached: "… · 12 pages of 48". -->
+    <string name="download_line_wifi_pages">Waiting for an unmetered network · %1$s</string>
+    <string name="download_line_network_pages">Waiting for the network · %1$s</string>
+    <string name="download_line_wifi_left">Waiting for an unmetered network · %1$s left</string>
+    <string name="download_line_network">Waiting for the network</string>
+    <string name="download_line_network_left">Waiting for the network · %1$s left</string>
+    <string name="download_line_queued">In the queue</string>
+    <string name="download_line_not_allowed">Downloads are not allowed for this account</string>
+    <string name="download_action_cancel">Cancel</string>
+    <string name="download_action_anyway">Download anyway</string>
+    <string name="download_action_retry">Retry</string>
+    <string name="download_failure_no_space">Not enough space: %1$s missing</string>
+    <string name="download_failure_not_epub">The file received is not a readable book</string>
+    <string name="download_failure_damaged">A downloaded file is missing: to download again</string>
+    <string name="download_update_available">Update available · %1$s</string>
+    <string name="download_update_progress">Update · %1$s of %2$s</string>
+    <string name="download_update_wifi_left">Update waiting for an unmetered network · %1$s left</string>
+    <string name="download_update_network_left">Update waiting for the network · %1$s left</string>
+    <!-- The update of a book made of pages says its pages: "Update · 12 pages of 48". -->
+    <string name="download_update_pages">Update · %1$s</string>
+    <string name="download_update_wifi_pages">Update waiting for an unmetered network · %1$s</string>
+    <string name="download_update_network_pages">Update waiting for the network · %1$s</string>
+    <string name="download_update_queued">Update in the queue</string>
+    <string name="download_update_failed">Update failed: %1$s</string>
+    <string name="download_update_ready">Update ready: applied when the book is closed</string>
+    <string name="download_action_update">Update</string>
+    <string name="download_sheet_update_available">Update available</string>
+    <string name="download_in_use">In use</string>
+
+    <string name="download_sheet_title">Download</string>
+    <string name="download_sheet_subtitle">%1$s · choose what you keep on the device</string>
+    <string name="download_sheet_text">For reading</string>
+    <string name="download_sheet_text_in_narration">For reading · included in the narration</string>
+    <string name="download_sheet_text_locked">Kept with the narration, which needs it</string>
+    <string name="download_sheet_audiobook">For listening</string>
+    <plurals name="download_sheet_audiobook_chapters">
+        <item quantity="one">For listening · %1$d chapter</item>
+        <item quantity="other">For listening · %1$d chapters</item>
+    </plurals>
+    <string name="download_sheet_narration">For reading and listening at the same time</string>
+    <string name="download_sheet_fetching">Downloading</string>
+    <string name="download_sheet_fetching_percent">Downloading · %1$d%%</string>
+    <string name="download_sheet_size_estimated">≈ %1$s</string>
+    <string name="download_sheet_free">%1$s free on the device</string>
+    <string name="download_sheet_metered">Metered network: the download will wait for an unmetered network</string>
+    <string name="download_sheet_download">Download</string>
+    <string name="download_sheet_download_size">Download · %1$s</string>
+    <string name="download_sheet_delete">Delete</string>
+    <string name="download_sheet_delete_size">Delete · %1$s</string>
+    <string name="download_sheet_apply">Apply</string>
+    <string name="download_delete_title">Delete from the device</string>
+    <string name="download_delete_note">Your progress, bookmarks and highlights are kept. The book stays in your library.</string>
+
+    <string name="book_offline_chip">No network</string>
+    <string name="book_offline_missing_text">The text is not downloaded: it will be available when the network is back.</string>
+    <!-- The text of a book read by pages, named by its file's format: "The CBZ is not downloaded: …". -->
+    <string name="book_offline_missing_file">The %1$s is not downloaded: it will be available when the network is back.</string>
+    <string name="book_offline_missing_audiobook">The audiobook is not downloaded: it will be available when the network is back.</string>
+    <string name="book_offline_missing_narration">The narration is not downloaded: it will be available when the network is back.</string>
+    <string name="book_gone_chip">No longer on the server</string>
+    <string name="book_gone_missing_text">The text is not downloaded.</string>
+    <string name="book_gone_missing_file">The %1$s is not downloaded.</string>
+    <string name="book_gone_missing_audiobook">The audiobook is not downloaded.</string>
+    <string name="book_gone_missing_narration">The narration is not downloaded.</string>
+    <string name="reading_device_note">This device\'s position</string>
+    <string name="reading_offline_note">This device\'s position · will be sent when the network is back</string>
+</resources>

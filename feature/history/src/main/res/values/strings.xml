@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="history_title">Reading history</string>
+    <string name="history_back">Back</string>
+    <string name="history_period_all">All time</string>
+    <string name="history_outcome_completed">Completed</string>
+    <string name="history_outcome_skimmed">Skimmed</string>
+    <string name="history_outcome_abandoned">Abandoned</string>
+    <string name="history_total_reads">Reads</string>
+    <string name="history_total_books">Books</string>
+    <string name="history_total_pages">Pages</string>
+    <string name="history_total_time">Time</string>
+    <string name="history_total_days">Days read</string>
+    <string name="history_total_rating">Avg rating</string>
+    <string name="history_goal">Goal %1$d / %2$d</string>
+    <string name="history_record_longest_book">Longest book</string>
+    <string name="history_record_most_reread">Most reread</string>
+    <string name="history_record_longest_read">Longest read</string>
+    <string name="history_record_fastest">Fastest</string>
+    <string name="history_month_undated">Undated</string>
+    <string name="history_duration_hours">%d h</string>
+    <string name="history_duration_minutes">%d min</string>
+    <string name="history_rating_description">Rated %d out of 5</string>
+    <string name="history_load_more_retry">Tap to load more</string>
+    <string name="history_empty">No completed reads yet</string>
+    <string name="history_empty_filtered">Nothing under this filter</string>
+    <plurals name="history_read_number">
+        <item quantity="one">Read #%d</item>
+        <item quantity="other">Read #%d</item>
+    </plurals>
+    <plurals name="history_reads_count">
+        <item quantity="one">%d read</item>
+        <item quantity="other">%d reads</item>
+    </plurals>
+    <plurals name="history_pages_count">
+        <item quantity="one">%d page</item>
+        <item quantity="other">%d pages</item>
+    </plurals>
+    <plurals name="history_session_count">
+        <item quantity="one">%d session</item>
+        <item quantity="other">%d sessions</item>
+    </plurals>
+    <plurals name="history_highlight_count">
+        <item quantity="one">%d highlight</item>
+        <item quantity="other">%d highlights</item>
+    </plurals>
+    <plurals name="history_journal_count">
+        <item quantity="one">%d note</item>
+        <item quantity="other">%d notes</item>
+    </plurals>
+    <plurals name="history_record_pages">
+        <item quantity="one">%d page</item>
+        <item quantity="other">%d pages</item>
+    </plurals>
+    <plurals name="history_record_days">
+        <item quantity="one">%d day</item>
+        <item quantity="other">%d days</item>
+    </plurals>
+    <string name="history_record_rate">%d pages/day</string>
+    <plurals name="history_record_times">
+        <item quantity="one">%d×</item>
+        <item quantity="other">%d×</item>
+    </plurals>
+    <string name="read_detail_title">Reading</string>
+    <string name="read_detail_dates">Period</string>
+    <string name="read_detail_dates_range">%1$s – %2$s</string>
+    <string name="read_detail_time">Reading time</string>
+    <string name="read_detail_read_number">Read number</string>
+    <string name="read_detail_sessions">Sessions</string>
+    <string name="read_detail_rate_hint">Tap a star to rate</string>
+    <string name="read_detail_rate_star">Rate %d out of 5</string>
+    <string name="read_detail_rate_error">The rating could not be saved</string>
+    <string name="read_detail_highlights">Highlights</string>
+    <string name="read_detail_journal">Journal</string>
+    <string name="read_detail_open_book">Open book page</string>
+    <string name="read_detail_untitled">Unknown book</string>
+    <string name="read_detail_removed">Removed from server</string>
+    <string name="history_removed_short">Removed</string>
+</resources>

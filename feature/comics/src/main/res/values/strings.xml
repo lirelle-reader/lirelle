@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- What a screen reader says of the image of a page; the number counts from 1. -->
+    <string name="comics_page">Page %1$d</string>
+    <string name="comics_page_failed">Page %1$d could not be loaded</string>
+    <string name="comics_page_retry">Try again</string>
+    <!-- Actions a screen reader offers on a page, to turn it without a gesture. -->
+    <string name="comics_next_page">Next page</string>
+    <string name="comics_previous_page">Previous page</string>
+    <string name="comics_no_comic">This book has no comic to read.</string>
+    <string name="comics_protected">This PDF is protected by a password and cannot be opened.</string>
+    <string name="comics_damaged">This file is damaged and cannot be opened.</string>
+    <!-- While a document is fetched whole before it opens: what a screen reader says of the progress mark, and
+         under it what was received of the whole, as sizes ("3.2 MB of 9.4 MB"). -->
+    <string name="comics_downloading">Downloading the book…</string>
+    <string name="comics_download_size">%1$s of %2$s</string>
+    <!-- The bottom bar: the page shown, or the two pages shown, and the number of pages of the album. -->
+    <string name="comics_bar_page">Page %1$d of %2$d</string>
+    <string name="comics_bar_pages">Pages %1$d-%2$d of %3$d</string>
+    <!-- The slider over the pages, for a screen reader: its name, then its value. -->
+    <string name="comics_slider">Page</string>
+    <string name="comics_slider_value">%1$d of %2$d</string>
+    <string name="comics_slider_value_two">%1$d-%2$d of %3$d</string>
+    <string name="comics_newer_page">Page %1$d read on another device</string>
+    <string name="comics_newer_page_go">Go there</string>
+    <string name="comics_newer_page_ignore">Ignore</string>
+    <string name="comics_settings">Reading settings</string>
+    <string name="comics_settings_fit">Fit</string>
+    <string name="comics_fit_page">Whole page</string>
+    <string name="comics_fit_width">Screen width</string>
+    <string name="comics_settings_two_pages">Two pages side by side</string>
+    <string name="comics_two_pages_automatic">Automatic</string>
+    <string name="comics_two_pages_always">Always</string>
+    <string name="comics_two_pages_never">Never</string>
+    <string name="comics_two_pages_note">Automatic: on a tablet in landscape. The cover and double spreads stay alone.</string>
+    <string name="comics_settings_background">Background</string>
+    <string name="comics_background_black">Black</string>
+    <string name="comics_background_grey">Grey</string>
+    <string name="comics_background_white">White</string>
+    <string name="comics_settings_direction">Reading direction</string>
+    <string name="comics_direction_left_to_right">Left to right</string>
+    <string name="comics_direction_right_to_left">Right to left</string>
+    <!-- What the reading direction is remembered for: the series, by its name, or the album alone. -->
+    <string name="comics_direction_for_series">For every album of the series “%1$s”</string>
+    <string name="comics_direction_for_album">For this album</string>
+    <!-- The Comics page of the app's settings: its title, and under the settings the note that says where the
+         reading direction, which is not on that page, is set. -->
+    <string name="comics_settings_page_title">Comics</string>
+    <string name="comics_direction_where">It is set for each series, or for a single album, from the comics reader.</string>
+    <!-- The sheet at the end of an album. -->
+    <string name="comics_end_finished">You finished this album</string>
+    <string name="comics_end_rating">Your rating (optional)</string>
+    <!-- What a screen reader says of each star of the rating. -->
+    <plurals name="comics_end_stars">
+        <item quantity="one">%1$d star</item>
+        <item quantity="other">%1$d stars</item>
+    </plurals>
+    <string name="comics_end_rating_failed">The rating could not be sent.</string>
+    <string name="comics_end_retry">Try again</string>
+    <!-- What a screen reader says of the progress mark shown while the rating is sent. -->
+    <string name="comics_end_sending">Sending the rating</string>
+    <string name="comics_end_next_volume">Next volume</string>
+    <string name="comics_end_read_next">Read the next one</string>
+    <string name="comics_end_close">Close the album</string>
+    <!-- The same sheet, at the end of a book read by pages that is not a comic: a PDF, a DjVu. -->
+    <string name="comics_end_finished_book">You finished this book</string>
+    <string name="comics_end_close_book">Close the book</string>
+    <!-- The row of the same sheet for a PDF the device keeps: what it keeps of it, and deleting it from there. -->
+    <string name="comics_end_device">On this device</string>
+    <string name="comics_end_device_delete">Delete</string>
+    <string name="comics_end_device_deleted">Deleted from this device</string>
+    <string name="comics_end_device_undo">Undo</string>
+    <!-- Reading panel by panel. What a screen reader says of its button in the top bar, which tells its state. -->
+    <string name="comics_panels_on">Panel by panel, on</string>
+    <string name="comics_panels_off">Panel by panel, off</string>
+    <!-- Told once on the device, the first time reading panel by panel is turned on. -->
+    <string name="comics_panels_notice_title">Reading panel by panel</string>
+    <string name="comics_panels_notice_found">Panels are found automatically, page by page.</string>
+    <string name="comics_panels_notice_limits">Some pages, and some albums, do not lend themselves to it: the page, or a part of it, is then shown whole.</string>
+    <string name="comics_panels_notice_ok">Got it</string>
+    <!-- Said once for an album of which few pages could be cut, where a newer page is offered; its two answers. -->
+    <string name="comics_panels_album">Few pages of this album can be cut into panels. They are shown whole.</string>
+    <string name="comics_panels_album_off">Turn panel by panel off</string>
+    <string name="comics_panels_album_ok">OK</string>
+    <!-- The group of reading panel by panel, in the reader's settings and on the Comics page of the settings: its
+         switch, what the switch does, and a note on the mode. -->
+    <string name="comics_settings_panels">Panel by panel</string>
+    <string name="comics_panels_whole_first">Whole page first</string>
+    <string name="comics_panels_whole_first_note">Each page is shown whole before its first panel.</string>
+    <string name="comics_panels_note">Panels are found automatically. A page that does not lend itself to it is shown whole.</string>
+    <!-- Debug builds only: draws over each page the zones it is cut into. Never shown in the published app. -->
+    <string name="comics_debug_zones" translatable="false">Zones (debug)</string>
+</resources>

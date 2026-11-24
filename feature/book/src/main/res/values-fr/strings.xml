@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="book_series_line">%1$s nº %2$s</string>
+
+    <string name="action_listen">Écouter</string>
+    <string name="action_download">Télécharger</string>
+    <string name="action_read">Lire</string>
+    <string name="status_start">Commencer</string>
+    <string name="status_resume">Reprendre</string>
+    <string name="status_resume_percent">Reprendre\u00A0· %1$d\u00A0%%</string>
+    <string name="status_read_again">Relire\u00A0· terminé</string>
+    <string name="status_listen_again">Réécouter\u00A0· terminé</string>
+    <string name="status_offline">Hors ligne</string>
+    <string name="status_unavailable">Indisponible</string>
+    <string name="status_start_spoken">commencer</string>
+    <string name="status_resume_spoken">reprendre</string>
+    <string name="status_resume_percent_spoken">reprendre à %1$d\u00A0%%</string>
+    <string name="status_read_again_spoken">relire, terminé</string>
+    <string name="status_listen_again_spoken">réécouter, terminé</string>
+    <string name="status_offline_spoken">hors ligne</string>
+    <string name="status_unavailable_spoken">indisponible</string>
+    <string name="action_ring_narration">narration synchronisée disponible</string>
+
+    <string name="fact_rating">%1$s / 5</string>
+    <string name="fact_rating_description">Noté %1$s sur 5</string>
+    <plurals name="fact_pages">
+        <item quantity="one">%d page</item>
+        <item quantity="many">%d pages</item>
+        <item quantity="other">%d pages</item>
+    </plurals>
+
+    <string name="section_reading">Ma lecture</string>
+    <string name="reading_progress">Progression</string>
+    <string name="reading_progress_value">%1$d %%</string>
+    <string name="reading_page">Page %1$d</string>
+    <string name="reading_status">Statut</string>
+    <string name="reading_last_read">Dernière lecture</string>
+    <string name="reading_time">Temps de lecture</string>
+    <string name="reading_sessions">Sessions</string>
+    <string name="reading_started">Commencé le</string>
+    <string name="read_state_unread">Non lu</string>
+    <string name="read_state_want_to_read">Envie de lire</string>
+    <string name="read_state_reading">En cours</string>
+    <string name="read_state_read">Lu</string>
+    <string name="read_state_abandoned">Abandonné</string>
+
+    <string name="section_about">À propos</string>
+    <string name="genre_open_description">Livres du genre %1$s</string>
+
+    <string name="section_files">Fichiers</string>
+    <string name="file_read_along">%1$s avec narration</string>
+    <string name="file_audio">Audio (%1$s)</string>
+    <string name="file_primary">Fichier principal</string>
+    <string name="file_narration">%1$s de narration</string>
+    <plurals name="file_count">
+        <item quantity="one">%d fichier</item>
+        <item quantity="many">%d fichiers</item>
+        <item quantity="other">%d fichiers</item>
+    </plurals>
+    <plurals name="file_chapters">
+        <item quantity="one">%d chapitre</item>
+        <item quantity="many">%d chapitres</item>
+        <item quantity="other">%d chapitres</item>
+    </plurals>
+
+    <string name="section_details">Détails</string>
+    <string name="detail_publisher">Éditeur</string>
+    <string name="detail_narrators">Lu par</string>
+    <string name="detail_isbn">ISBN</string>
+    <string name="detail_library">Bibliothèque</string>
+    <string name="detail_added">Ajouté le</string>
+    <string name="detail_collections">Collections</string>
+
+    <string name="section_in_series">Dans la série</string>
+    <string name="action_open_series">Ouvrir la série</string>
+    <string name="section_same_author">Du même auteur</string>
+    <string name="section_similar">Livres similaires</string>
+
+    <string name="duration_hours_minutes">%1$d h %2$02d min</string>
+    <string name="duration_minutes">%1$d min</string>
+
+    <string name="download_tile_percent">%1$d\u00A0%%</string>
+    <string name="download_tile_waiting">En attente</string>
+    <string name="download_tile_failed">Échec</string>
+    <string name="download_tile_downloaded">Téléchargé</string>
+    <string name="download_tile_downloading_description">Téléchargement en cours, %1$d\u00A0%%</string>
+    <string name="download_format_text">Texte</string>
+    <string name="download_format_audiobook">Livre audio</string>
+    <string name="download_format_narration">Narration</string>
+    <string name="download_line_progress">%1$s · %2$s sur %3$s</string>
+    <string name="download_line_pages">%1$s · %2$s</string>
+    <string name="download_line_wifi">En attente d\'un réseau non limité</string>
+    <string name="download_line_wifi_pages">En attente d\'un réseau non limité · %1$s</string>
+    <string name="download_line_network_pages">En attente du réseau · %1$s</string>
+    <string name="download_line_wifi_left">En attente d\'un réseau non limité · %1$s restants</string>
+    <string name="download_line_network">En attente du réseau</string>
+    <string name="download_line_network_left">En attente du réseau · %1$s restants</string>
+    <string name="download_line_queued">En file d\'attente</string>
+    <string name="download_line_not_allowed">Ce compte n\'a pas le droit de télécharger</string>
+    <string name="download_action_cancel">Annuler</string>
+    <string name="download_action_anyway">Télécharger quand même</string>
+    <string name="download_action_retry">Réessayer</string>
+    <string name="download_failure_no_space">Pas assez de place : il manque %1$s</string>
+    <string name="download_failure_not_epub">Le fichier reçu n\'est pas un livre lisible</string>
+    <string name="download_failure_damaged">Un fichier téléchargé manque : à retélécharger</string>
+    <string name="download_update_available">Mise à jour disponible · %1$s</string>
+    <string name="download_update_progress">Mise à jour · %1$s sur %2$s</string>
+    <string name="download_update_wifi_left">Mise à jour en attente d\'un réseau non limité · %1$s restants</string>
+    <string name="download_update_network_left">Mise à jour en attente du réseau · %1$s restants</string>
+    <string name="download_update_pages">Mise à jour · %1$s</string>
+    <string name="download_update_wifi_pages">Mise à jour en attente d\'un réseau non limité · %1$s</string>
+    <string name="download_update_network_pages">Mise à jour en attente du réseau · %1$s</string>
+    <string name="download_update_queued">Mise à jour en file d\'attente</string>
+    <string name="download_update_failed">Mise à jour en échec : %1$s</string>
+    <string name="download_update_ready">Mise à jour prête : appliquée à la fermeture du livre</string>
+    <string name="download_action_update">Mettre à jour</string>
+    <string name="download_sheet_update_available">Mise à jour disponible</string>
+    <string name="download_in_use">En cours de lecture</string>
+
+    <string name="download_sheet_title">Télécharger</string>
+    <string name="download_sheet_subtitle">%1$s · choisissez ce que vous gardez sur l\'appareil</string>
+    <string name="download_sheet_text">Pour lire</string>
+    <string name="download_sheet_text_in_narration">Pour lire · compris dans la narration</string>
+    <string name="download_sheet_text_locked">Gardé avec la narration, qui en a besoin</string>
+    <string name="download_sheet_audiobook">Pour écouter</string>
+    <plurals name="download_sheet_audiobook_chapters">
+        <item quantity="one">Pour écouter · %1$d chapitre</item>
+        <item quantity="many">Pour écouter · %1$d chapitres</item>
+        <item quantity="other">Pour écouter · %1$d chapitres</item>
+    </plurals>
+    <string name="download_sheet_narration">Pour lire et écouter en même temps</string>
+    <string name="download_sheet_fetching">Téléchargement en cours</string>
+    <string name="download_sheet_fetching_percent">Téléchargement en cours · %1$d\u00A0%%</string>
+    <string name="download_sheet_size_estimated">≈ %1$s</string>
+    <string name="download_sheet_free">%1$s libres sur l\'appareil</string>
+    <string name="download_sheet_metered">Réseau limité : le téléchargement attendra un réseau non limité</string>
+    <string name="download_sheet_download">Télécharger</string>
+    <string name="download_sheet_download_size">Télécharger · %1$s</string>
+    <string name="download_sheet_delete">Supprimer</string>
+    <string name="download_sheet_delete_size">Supprimer · %1$s</string>
+    <string name="download_sheet_apply">Appliquer</string>
+    <string name="download_delete_title">Supprimer de l\'appareil</string>
+    <string name="download_delete_note">Votre progression, vos marque-pages et vos surlignages sont conservés. Le livre reste dans votre bibliothèque.</string>
+
+    <string name="book_offline_chip">Pas de réseau</string>
+    <string name="book_offline_missing_text">Le texte n\'est pas téléchargé : il sera disponible au retour du réseau.</string>
+    <string name="book_offline_missing_file">Le %1$s n\'est pas téléchargé : il sera disponible au retour du réseau.</string>
+    <string name="book_offline_missing_audiobook">Le livre audio n\'est pas téléchargé : il sera disponible au retour du réseau.</string>
+    <string name="book_offline_missing_narration">La narration n\'est pas téléchargée : elle sera disponible au retour du réseau.</string>
+    <string name="book_gone_chip">N\'est plus sur le serveur</string>
+    <string name="book_gone_missing_text">Le texte n\'est pas téléchargé.</string>
+    <string name="book_gone_missing_file">Le %1$s n\'est pas téléchargé.</string>
+    <string name="book_gone_missing_audiobook">Le livre audio n\'est pas téléchargé.</string>
+    <string name="book_gone_missing_narration">La narration n\'est pas téléchargée.</string>
+    <string name="reading_device_note">Position de cet appareil</string>
+    <string name="reading_offline_note">Position de cet appareil · sera envoyée au retour du réseau</string>
+</resources>

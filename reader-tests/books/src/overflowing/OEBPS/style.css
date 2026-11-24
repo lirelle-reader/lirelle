@@ -1,0 +1,16 @@
+body { margin: 0; }
+p { margin: 0 0 0.6em 0; }
+p.MsoNormal { margin: 0 0 0.6em 0; }
+p.centred { text-align: center; margin-right: -48px; }
+p.pulled { margin-left: -30px; }
+p.indented { margin-left: 48px; }
+p.hanging { padding-left: 2em; text-indent: -2em; }
+p.outdented { text-indent: -3em; }
+div.box { padding: 0 40px; }
+div.box p { margin-left: -20px; margin-right: -20px; }
+div.wide { width: 900px; padding: 4px; border: 1px solid #888888; }
+div.floor { min-width: 700px; }
+p.single { white-space: nowrap; }
+table { border-collapse: collapse; }
+td, th { border: 1px solid #888888; padding: 2px 4px; }
+div.cover { text-align: center; }

@@ -1,0 +1,1 @@
+{"passwordLoginEnabled":true,"allowRegistration":false,"oidcProviders":[{"slug":"authentik","displayName":"Authentik","enabled":true,"iconUrl":null,"clientId":"client-id-1","scopes":"openid profile email"},{"slug":"old","displayName":"Old IdP","enabled":false,"iconUrl":null,"clientId":"client-id-2","scopes":"openid"}]}

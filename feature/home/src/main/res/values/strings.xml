@@ -1,0 +1,11 @@
+<resources>
+    <string name="home_title">Home</string>
+    <string name="home_row_continue">Continue</string>
+    <string name="home_row_want_to_read">Want to read</string>
+    <string name="home_row_up_next">Up next</string>
+    <string name="home_row_recently_added">Recently added</string>
+    <string name="home_empty">Your library has no books yet.</string>
+    <string name="home_sign_in_notice_body">The session of %1$s has expired. Your downloaded books stay readable; what you read will be sent once you sign in again.</string>
+    <!-- The same, for a profile whose server refused the key it signs in with. %1$s: "camille · Komga". -->
+    <string name="home_sign_in_notice_key_body">The sign-in of %1$s is no longer valid. Your downloaded books stay readable; what you read will be sent once you sign in again.</string>
+</resources>

@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="reader_settings_title">Reading settings</string>
+    <string name="reader_settings_done">Done</string>
+    <string name="reader_settings_back">Back to the reading settings</string>
+    <string name="reader_settings_value">%1$s: %2$s</string>
+
+    <string name="reader_settings_theme">Theme</string>
+    <string name="reader_theme_system">Auto</string>
+    <string name="reader_theme_light">Light</string>
+    <string name="reader_theme_sepia">Sepia</string>
+    <string name="reader_theme_dark">Dark</string>
+    <string name="reader_theme_black">Black</string>
+
+    <string name="reader_settings_font">Font</string>
+    <string name="reader_font_book">Book\'s layout</string>
+    <string name="reader_font_serif">Serif</string>
+    <string name="reader_font_sans">Sans-serif</string>
+    <string name="reader_font_dyslexic">Dyslexia</string>
+
+    <string name="reader_settings_size">Size</string>
+    <string name="reader_settings_size_smaller">Smaller text</string>
+    <string name="reader_settings_size_larger">Larger text</string>
+    <string name="reader_settings_line_spacing">Line spacing</string>
+    <string name="reader_settings_line_spacing_tighter">Tighter lines</string>
+    <string name="reader_settings_line_spacing_looser">Looser lines</string>
+    <string name="reader_settings_margins">Margins</string>
+    <string name="reader_settings_margins_narrower">Narrower margins</string>
+    <string name="reader_settings_margins_wider">Wider margins</string>
+    <string name="reader_margins_narrow">Narrow</string>
+    <string name="reader_margins_medium">Medium</string>
+    <string name="reader_margins_wide">Wide</string>
+    <string name="reader_settings_alignment">Alignment</string>
+    <string name="reader_settings_alignment_previous">Previous alignment</string>
+    <string name="reader_settings_alignment_next">Next alignment</string>
+    <string name="reader_align_book">Book\'s layout</string>
+    <string name="reader_align_justify">Justified</string>
+    <string name="reader_align_start">Left</string>
+    <string name="reader_settings_hyphenation">Hyphenation</string>
+
+    <string name="reader_settings_brightness">Brightness</string>
+    <string name="reader_settings_brightness_system">Follow the system</string>
+
+    <string name="reader_settings_running_lines">Header and footer</string>
+    <string name="reader_settings_more">More options</string>
+    <string name="reader_more_summary_volume_keys">Volume keys</string>
+    <string name="reader_more_summary_edge_left">Brightness on the left edge</string>
+    <string name="reader_more_summary_edge_right">Brightness on the right edge</string>
+
+    <string name="reader_running_header_left">Header, left</string>
+    <string name="reader_running_header_right">Header, right</string>
+    <string name="reader_running_footer_left">Footer, left</string>
+    <string name="reader_running_footer_right">Footer, right</string>
+    <string name="reader_running_preview">Preview</string>
+    <string name="reader_running_preview_header">Header: %1$s</string>
+    <string name="reader_running_preview_footer">Footer: %1$s</string>
+    <string name="reader_running_preview_empty">nothing</string>
+    <string name="reader_slot_nothing">Nothing</string>
+    <string name="reader_slot_book_title">Book title</string>
+    <string name="reader_slot_chapter_title">Chapter title</string>
+    <string name="reader_slot_book_percent">Percentage of the book</string>
+    <string name="reader_slot_chapter_percent">Percentage of the chapter</string>
+    <string name="reader_slot_pages_left">Pages left in the chapter</string>
+    <string name="reader_slot_time">Time</string>
+    <string name="reader_slot_battery">Battery</string>
+    <string name="reader_sample_book_title">The Time Machine</string>
+    <string name="reader_sample_chapter_title">Chapter 3</string>
+    <string name="reader_sample_percent">%1$d%%</string>
+    <string name="reader_sample_pages_left">12 pages left</string>
+
+    <string name="reader_more_layout">Layout</string>
+    <string name="reader_flow_paginated">Paginated</string>
+    <string name="reader_flow_scrolled">Continuous scroll</string>
+    <string name="reader_more_volume_keys">Volume keys</string>
+    <string name="reader_more_volume_keys_hint">Turn the pages with the volume keys</string>
+    <string name="reader_more_brightness_gesture">Brightness gesture</string>
+    <string name="reader_more_brightness_gesture_hint">Slide a finger along this edge of the page to change the brightness</string>
+    <string name="reader_edge_left">Left edge</string>
+    <string name="reader_edge_right">Right edge</string>
+    <string name="reader_edge_off">Off</string>
+    <string name="reader_more_footnote_panel">Footnotes in a panel</string>
+    <string name="reader_more_corner_bookmark">Tap the corner to bookmark</string>
+    <string name="reader_note_go_to">Go to the note</string>
+    <string name="reader_note_title">Note</string>
+
+    <string name="reader_reading_settings_title">Reading</string>
+    <string name="reader_settings_text">Text</string>
+    <string name="reader_settings_layout_and_gestures">Layout and gestures</string>
+    <string name="reader_preview_approximate">Approximate preview: the exact look depends on the book.</string>
+    <string name="reader_preview_state">%1$s, size %2$s</string>
+    <string name="reader_preview_text" translatable="false">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</string>
+</resources>
