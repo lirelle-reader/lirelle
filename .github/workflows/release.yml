@@ -40,9 +40,7 @@ jobs:
     environment: release
     permissions:
       contents: write
-    env:
-      ANDROID_HOME: /home/runner/android-sdk
-      ANDROID_SDK_ROOT: /home/runner/android-sdk
+    timeout-minutes: 45
     steps:
       - uses: actions/checkout@v7
         with:
@@ -51,18 +49,7 @@ jobs:
       - name: Whole history
         # The versionCode counts main's commits: a shallow clone would make a wrong one.
         run: test "$(git rev-parse --is-shallow-repository)" = false
-      - uses: actions/setup-java@v6
-        with:
-          distribution: temurin
-          java-version: 25
-      - uses: actions/cache@v6
-        with:
-          path: /home/runner/android-sdk
-          key: android-sdk-${{ hashFiles('ci/install-android-sdk.sh', 'gradle/libs.versions.toml') }}
-          restore-keys: android-sdk-
-      - name: Android SDK
-        run: ci/install-android-sdk.sh
-      - uses: gradle/actions/setup-gradle@v6
+      - uses: ./.github/actions/android-build
       - name: Signed APK
         env:
           LIRELLE_KEYSTORE_B64: ${{ secrets.LIRELLE_KEYSTORE_B64 }}
