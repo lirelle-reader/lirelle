@@ -1,0 +1,85 @@
+# On every push to main: the checks, then release-please (its release PR, or the release when that PR is merged),
+# then the signed APK: on the release, or as a development pre-release.
+name: Release
+
+on:
+  push:
+    branches: [main]
+
+# One at a time, never cancelled: a build must not be dropped because another merge followed.
+concurrency:
+  group: release
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  checks:
+    uses: ./.github/workflows/check.yml
+
+  release-please:
+    needs: checks
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    outputs:
+      release_created: ${{ steps.release.outputs.release_created }}
+      tag_name: ${{ steps.release.outputs.tag_name }}
+    steps:
+      - id: release
+        uses: googleapis/release-please-action@v5
+        with:
+          config-file: release-please-config.json
+          manifest-file: .release-please-manifest.json
+
+  publish:
+    needs: release-please
+    runs-on: ubuntu-latest
+    environment: release
+    permissions:
+      contents: write
+    env:
+      ANDROID_HOME: /home/runner/android-sdk
+      ANDROID_SDK_ROOT: /home/runner/android-sdk
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+          fetch-tags: true
+      - name: Whole history
+        # The versionCode counts main's commits: a shallow clone would make a wrong one.
+        run: test "$(git rev-parse --is-shallow-repository)" = false
+      - uses: actions/setup-java@v6
+        with:
+          distribution: temurin
+          java-version: 25
+      - uses: actions/cache@v6
+        with:
+          path: /home/runner/android-sdk
+          key: android-sdk-${{ hashFiles('ci/install-android-sdk.sh', 'gradle/libs.versions.toml') }}
+          restore-keys: android-sdk-
+      - name: Android SDK
+        run: ci/install-android-sdk.sh
+      - uses: gradle/actions/setup-gradle@v6
+      - name: Signed APK
+        env:
+          LIRELLE_KEYSTORE_B64: ${{ secrets.LIRELLE_KEYSTORE_B64 }}
+          LIRELLE_KEYSTORE_PASSWORD: ${{ secrets.LIRELLE_KEYSTORE_PASSWORD }}
+          LIRELLE_KEY_ALIAS: ${{ secrets.LIRELLE_KEY_ALIAS }}
+          LIRELLE_KEY_PASSWORD: ${{ secrets.LIRELLE_KEY_PASSWORD }}
+        run: |
+          echo "$LIRELLE_KEYSTORE_B64" | base64 -d > "$RUNNER_TEMP/release.jks"
+          export LIRELLE_KEYSTORE_FILE="$RUNNER_TEMP/release.jks"
+          # Never from the build cache: a cached output of a library once gave a release an older module.
+          ./gradlew :app:assembleRelease --no-build-cache
+      - name: Publish
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_CREATED: ${{ needs.release-please.outputs.release_created }}
+          TAG_NAME: ${{ needs.release-please.outputs.tag_name }}
+        run: ci/publish-github.sh
+      - name: Keystore removed
+        if: always()
+        run: rm -f "$RUNNER_TEMP/release.jks"
