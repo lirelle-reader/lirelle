@@ -26,6 +26,6 @@ Lirelle n'a ni publicité, ni statistiques d'usage, ni pistage : il ne parle qu'
 <b>Logiciel libre</b>
 Lirelle est un logiciel libre, sous licence GNU GPL version 3 ou ultérieure : https://github.com/lirelle-reader/lirelle
 
-Lirelle demande Android 16 ou plus récent, et un serveur BookOrbit ou Komga.
+Lirelle demande Android 14 ou plus récent, et un serveur BookOrbit ou Komga.
 
 Les captures d'écran montrent Pepper&Carrot — dessin : David Revoy, www.peppercarrot.com (CC BY 4.0) — et des livres du domaine public de Standard Ebooks et LibriVox.
