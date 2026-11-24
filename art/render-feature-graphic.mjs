@@ -1,5 +1,5 @@
 // Renders art/feature-graphic.html to the store listings' featureGraphic.png, with the Chromium of reader-tests'
-// Playwright: cd reader-tests && npm ci && node ../art/render-feature-graphic.mjs
+// Playwright: cd reader-tests && npm ci && npx playwright install chromium && node ../art/render-feature-graphic.mjs
 import { createRequire } from 'node:module'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
