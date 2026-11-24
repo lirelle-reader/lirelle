@@ -44,7 +44,7 @@ change is reviewed and tested on real devices by a human before it ships. Contri
 
 ## Requirements and install
 
-- Android 14 or later.
+- Android 14 or later. Books need Android System WebView 120 or later, which the Play Store keeps up to date.
 - A BookOrbit or Komga server (tested with Komga 1.30).
 
 Lirelle is not published yet. Its releases will be on GitHub, IzzyOnDroid, Google Play and F-Droid. Meanwhile, every
