@@ -1,0 +1,15 @@
+# CodeRabbit, the review bot: its review is advice, never a required check.
+# yaml-language-server: $schema=https://coderabbit.ai/integrations/schema.v2.json
+language: en-US
+reviews:
+  profile: chill
+  poem: false
+  high_level_summary: true
+  auto_review:
+    enabled: true
+    drafts: false
+  path_filters:
+    - "!CHANGELOG.md"
+    - "!reader-tests/books/src/**"
+    - "!reader-tests/books/out/**"
+    - "!**/package-lock.json"

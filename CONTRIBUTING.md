@@ -36,6 +36,10 @@ uvx reuse lint
 
 A pull request is reviewed once all of them pass.
 
+A pull request may also get a first review from [CodeRabbit](https://coderabbit.ai), a review bot. While the repository
+has fewer than 10 stars, its review is asked for with a comment `@coderabbitai review`. Its remarks are advice: the
+maintainer decides what is merged.
+
 ## Code rules
 
 - Every text the app shows comes from string resources, never from a literal in the code
