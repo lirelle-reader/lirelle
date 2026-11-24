@@ -30,8 +30,8 @@ import retrofit2.await
 private const val BlockBytes = 64 * 1024
 
 /**
- * The formats of the pictures the device draws as they are (Android 16 and later: the app's least). Any other — a
- * JPEG XL, a TIFF, one unknown — is asked of Komga as a JPEG.
+ * The formats of the pictures the device draws as they are on Android 14, the app's least (AVIF since 12, HEIF since
+ * 9). Any other — a JPEG XL, a TIFF, one unknown — is asked of Komga as a JPEG.
  */
 private val DrawnFormats = setOf(
     "image/jpeg",

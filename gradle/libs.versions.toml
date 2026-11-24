@@ -1,6 +1,6 @@
 [versions]
 jdk = "25"
-minSdk = "36"
+minSdk = "34"
 compileSdk = "37"
 compileSdkMinor = "1"
 targetSdk = "37"

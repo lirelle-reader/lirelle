@@ -34,7 +34,7 @@ Lirelle is a client: it signs in to a server you or a friend runs, and reads, sh
 - It does not mix several servers in one library: each profile shows its own.
 - With Komga, it reads comics only: Komga's EPUBs and PDFs are not opened yet.
 - Not yet: a webtoon mode for comics (continuous vertical scroll) and Android Auto.
-- It runs on Android 16 or later only.
+- It runs on Android 14 or later only.
 
 ## Built with AI
 
@@ -44,7 +44,7 @@ change is reviewed and tested on real devices by a human before it ships. Contri
 
 ## Requirements and install
 
-- Android 16 or later.
+- Android 14 or later.
 - A BookOrbit or Komga server (tested with Komga 1.30).
 
 Lirelle is not published yet. Its releases will be on GitHub, IzzyOnDroid, Google Play and F-Droid. Meanwhile, every
