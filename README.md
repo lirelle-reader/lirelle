@@ -13,10 +13,10 @@ Books, comics and audiobooks from your own [BookOrbit](https://github.com/bookor
 Lirelle is a client: it signs in to a server you or a friend runs, and reads, shows and plays what that server holds.
 
 <p align="center">
-  <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/1.png" width="200" alt="The home screen">
-  <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/4.png" width="200" alt="A page of Alice's Adventures in Wonderland, with an illustration by John Tenniel">
-  <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/5.png" width="200" alt="Read-along: the sentence being read is highlighted">
-  <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/7.png" width="200" alt="A page of Pepper&amp;Carrot">
+  <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/1.jpg" width="200" alt="The home screen">
+  <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/4.jpg" width="200" alt="A page of Alice's Adventures in Wonderland, with an illustration by John Tenniel">
+  <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/5.jpg" width="200" alt="Read-along: the sentence being read is highlighted">
+  <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/7.jpg" width="200" alt="A page of Pepper&amp;Carrot">
 </p>
 <p align="center"><sub>Pepper&amp;Carrot art: David Revoy, <a href="https://www.peppercarrot.com">www.peppercarrot.com</a> (CC BY 4.0).
 Books and audiobooks from Standard Ebooks and LibriVox, in the public domain. See <a href="fastlane/CREDITS.md">the credits</a>.</sub></p>
