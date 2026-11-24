@@ -46,7 +46,9 @@ change is reviewed and tested on real devices by a human before it ships. Contri
 - Android 16 or later.
 - A BookOrbit or Komga server (tested with Komga 1.30).
 
-Lirelle is not published yet. Its releases will be on GitHub, IzzyOnDroid, Google Play and F-Droid.
+Lirelle is not published yet. Its releases will be on GitHub, IzzyOnDroid, Google Play and F-Droid. Meanwhile, every
+change to `main` is built as a development pre-release on the
+[releases page](https://github.com/lirelle-reader/lirelle/releases): signed, but not a stable release.
 
 ## Building
 

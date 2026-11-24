@@ -46,6 +46,8 @@ A pull request is reviewed once all of them pass.
 - A change of behaviour comes with its tests.
 - Commit messages follow [Conventional Commits](https://www.conventionalcommits.org/) (`feat:`, `fix:`, `docs:`…), in
   English.
+- A pull request's title follows the same rules: it becomes the commit's subject when the pull request is squashed into
+  `main`, and the release notes are made from those subjects.
 - Code and comments follow the style of the code around them; `detekt` holds the rules it can check.
 
 ## Localisation
