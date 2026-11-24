@@ -2,11 +2,19 @@
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": ["config:recommended", ":dependencyDashboard"],
   "baseBranchPatterns": ["main"],
-  "platformAutomerge": true,
+  "platformAutomerge": false,
   "prConcurrentLimit": 5,
   "prHourlyLimit": 0,
   "labels": ["dependencies", "renovate"],
   "commitMessagePrefix": "chore(deps):",
+  "customManagers": [
+    {
+      "customType": "regex",
+      "description": "Versions in workflows marked with a renovate comment (gitleaks).",
+      "managerFilePatterns": ["/^\\.github/workflows/[^/]+\\.ya?ml$/"],
+      "matchStrings": ["# renovate: datasource=(?<datasource>\\S+) depName=(?<depName>\\S+)\\s+\\w+: (?<currentValue>\\S+)"]
+    }
+  ],
   "packageRules": [
     {
       "matchUpdateTypes": ["minor", "patch", "pin", "digest"],
