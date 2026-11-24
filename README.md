@@ -18,6 +18,8 @@ Lirelle is a client: it signs in to a server you or a friend runs, and reads, sh
   your choice, brightness and page-turn gestures, volume keys.
 - **Comics and manga** (CBZ, CBR, CB7) **and page-based documents** (PDF, DjVu): fit to the page or the width, two
   pages side by side, left-to-right or right-to-left reading set per series.
+- **Comics panel by panel**: the panels are found on the device, with no server work and no editing by hand, and are
+  shown one after the other; a page that does not cut well is shown whole.
 - **Audiobooks**, with read-along for the books that carry it, audio bookmarks, playback speed and a sleep timer.
 - **Offline**: download books, comics and audiobooks to read and listen without a network; your progress is sent to
   the server when the network is back.
@@ -31,8 +33,7 @@ Lirelle is a client: it signs in to a server you or a friend runs, and reads, sh
 - It does not manage the library (metadata, imports): that is the server's job.
 - It does not mix several servers in one library: each profile shows its own.
 - With Komga, it reads comics only: Komga's EPUBs and PDFs are not opened yet.
-- Not yet: a webtoon mode for comics (continuous vertical scroll), reading comics panel by panel (in progress), and
-  Android Auto.
+- Not yet: a webtoon mode for comics (continuous vertical scroll) and Android Auto.
 - It runs on Android 16 or later only.
 
 ## Built with AI
