@@ -1,0 +1,26 @@
+# What every job that runs Gradle needs: the JDK, the Android SDK (cached), and Gradle with its caches.
+name: Android build setup
+description: JDK, Android SDK and Gradle for the jobs that run Gradle.
+
+runs:
+  using: composite
+  steps:
+    - uses: actions/setup-java@v6
+      with:
+        distribution: temurin
+        java-version: 25
+    - name: SDK location
+      shell: bash
+      # Our own SDK, cached, rather than the runner's: the same packages as everywhere else.
+      run: |
+        echo "ANDROID_HOME=$HOME/android-sdk" >> "$GITHUB_ENV"
+        echo "ANDROID_SDK_ROOT=$HOME/android-sdk" >> "$GITHUB_ENV"
+    - uses: actions/cache@v6
+      with:
+        path: ~/android-sdk
+        key: android-sdk-${{ hashFiles('ci/install-android-sdk.sh', 'gradle/libs.versions.toml') }}
+        restore-keys: android-sdk-
+    - name: Android SDK
+      shell: bash
+      run: ci/install-android-sdk.sh
+    - uses: gradle/actions/setup-gradle@v6

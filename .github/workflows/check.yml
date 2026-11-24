@@ -1,0 +1,104 @@
+# The checks of every pull request, and of every push to main through release.yml.
+name: Checks
+
+on:
+  pull_request:
+  workflow_call:
+
+# A newer push to a pull request cancels the run of the older one; on main nothing is cancelled.
+concurrency:
+  group: checks-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+permissions:
+  contents: read
+
+env:
+  # renovate: datasource=github-releases depName=gitleaks/gitleaks
+  GITLEAKS_VERSION: v8.30.1
+
+jobs:
+  # Checks that need no build, then detekt.
+  static:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+      - name: Hard-coded text
+        run: scripts/check-hardcoded-text.sh
+      - name: Secrets
+        run: |
+          curl -fsSL "https://github.com/gitleaks/gitleaks/releases/download/${GITLEAKS_VERSION}/gitleaks_${GITLEAKS_VERSION#v}_linux_x64.tar.gz" \
+            | tar -xz -C "$RUNNER_TEMP" gitleaks
+          "$RUNNER_TEMP/gitleaks" git . --no-banner --redact
+      - name: Licences (REUSE)
+        uses: fsfe/reuse-action@v6
+      - uses: ./.github/actions/android-build
+      - name: detekt
+        run: ./gradlew detekt
+
+  # Lint and the unit tests each on a machine of their own, in parallel: in one job, lint's analysis of every module
+  # alone took minutes before the first test ran.
+  lint:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+      - uses: ./.github/actions/android-build
+      - name: Lint
+        run: ./gradlew lintDebug
+      - name: Reports
+        if: failure()
+        uses: actions/upload-artifact@v7
+        with:
+          name: lint-reports
+          path: "**/build/reports/lint-results-*"
+          retention-days: 7
+
+  unit-tests:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+      - uses: ./.github/actions/android-build
+      - name: Unit tests
+        run: ./gradlew testDebugUnitTest
+      - name: Reports
+        if: failure()
+        uses: actions/upload-artifact@v7
+        with:
+          name: unit-test-reports
+          path: |
+            **/build/reports/tests/
+            **/build/test-results/
+          retention-days: 7
+
+  # The reader's page (feature/reader/src/main/assets/reader) in a headless browser. The image and the npm package in
+  # reader-tests/ must be the same version (Renovate's group "playwright").
+  reader-page:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    container: mcr.microsoft.com/playwright:v1.65.1-noble
+    defaults:
+      run:
+        working-directory: reader-tests
+    steps:
+      - uses: actions/checkout@v7
+      - run: npm ci
+      - name: Page tests
+        run: npx playwright test
+        env:
+          HOME: /root
+      - name: Results
+        if: failure()
+        uses: actions/upload-artifact@v7
+        with:
+          name: reader-page-results
+          path: reader-tests/test-results/
+          retention-days: 7
