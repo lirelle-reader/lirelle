@@ -326,6 +326,22 @@ class DefaultLibraryRepositoryTest {
         assertThat(series.value.series.readCount).isEqualTo(1)
     }
 
+    @Test
+    fun `the counts are read from the lists of series and of authors too`() = runBlocking {
+        server.enqueueJson(
+            """{"items":[{"id":4,"name":"S","bookCount":16,"readCount":2,"ownedVolumeCount":15,
+                "readVolumeCount":1}],"total":1}""",
+        )
+        server.enqueueJson("""{"items":[{"id":53,"name":"A","bookCount":23,"workCount":7}],"total":1}""")
+
+        val series = (repository.series() as ApiResult.Success).value.single()
+        val author = repository.authors(AuthorSort.Name, SortDirection.Ascending).items.asSnapshot().single()
+
+        assertThat(series.bookCount).isEqualTo(15)
+        assertThat(series.readCount).isEqualTo(1)
+        assertThat(author.bookCount).isEqualTo(7)
+    }
+
     // --- shelves
 
     @Test

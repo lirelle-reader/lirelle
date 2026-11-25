@@ -253,6 +253,22 @@ class MappersTest {
     }
 
     @Test
+    fun `a series with one volume count only counts its books, never one of each`() {
+        val listed = mapper.series(
+            SeriesSummaryDto(id = 9, name = "S", bookCount = 6, readCount = 6, ownedVolumeCount = 5),
+        )
+        val opened = mapper.series(
+            SeriesInfoDto(id = 9, name = "S", bookCount = 6, readCount = 2, readVolumeCount = 1),
+            coverUrls = emptyList(),
+        )
+
+        assertThat(listed.bookCount).isEqualTo(6)
+        assertThat(listed.readCount).isEqualTo(6)
+        assertThat(opened.bookCount).isEqualTo(6)
+        assertThat(opened.readCount).isEqualTo(2)
+    }
+
+    @Test
     fun `a smart list keeps an unknown count`() {
         val shelf = mapper.smartList(SmartScopeDto(3, "To read", bookCount = null))
 

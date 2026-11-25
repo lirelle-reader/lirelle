@@ -82,9 +82,8 @@ internal class LibraryMapper(private val serverUrl: String) {
         id = seriesIdOf(dto.id),
         name = dto.name,
         authors = dto.authors,
-        // By volume, as the server's own pages: an edition of a volume is not one more book to read.
-        bookCount = dto.ownedVolumeCount ?: dto.bookCount,
-        readCount = dto.readVolumeCount ?: dto.readCount,
+        bookCount = seriesCounts(dto.ownedVolumeCount, dto.readVolumeCount, dto.bookCount, dto.readCount).first,
+        readCount = seriesCounts(dto.ownedVolumeCount, dto.readVolumeCount, dto.bookCount, dto.readCount).second,
         coverUrls = dto.coverBookIds.take(SeriesTileCovers).map { imageUrl(it, Thumbnail, version = null) },
         lastAddedAt = instant(dto.lastAddedAt),
     )
@@ -93,9 +92,8 @@ internal class LibraryMapper(private val serverUrl: String) {
         id = seriesIdOf(dto.id),
         name = dto.name,
         authors = dto.authors,
-        // By volume, as the server's own pages: an edition of a volume is not one more book to read.
-        bookCount = dto.ownedVolumeCount ?: dto.bookCount,
-        readCount = dto.readVolumeCount ?: dto.readCount,
+        bookCount = seriesCounts(dto.ownedVolumeCount, dto.readVolumeCount, dto.bookCount, dto.readCount).first,
+        readCount = seriesCounts(dto.ownedVolumeCount, dto.readVolumeCount, dto.bookCount, dto.readCount).second,
         coverUrls = coverUrls,
         lastAddedAt = null,
     )
@@ -176,6 +174,13 @@ private fun readStateOf(dto: ReadStatusDto?): ReadState? = when (dto?.status) {
     "abandoned" -> ReadState.Abandoned
     else -> null
 }
+
+/**
+ * How many a series holds and how many of them are read: by volume, as the server's own pages, where it counts
+ * both (an edition of a volume is not one more book to read), by book otherwise. Never one of each.
+ */
+private fun seriesCounts(ownedVolumes: Int?, readVolumes: Int?, books: Int, read: Int): Pair<Int, Int> =
+    if (ownedVolumes != null && readVolumes != null) ownedVolumes to readVolumes else books to read
 
 private fun percent(value: Double): Int = value.roundToInt().coerceIn(0, FullPercent)
 
