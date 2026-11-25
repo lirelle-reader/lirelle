@@ -156,7 +156,7 @@ class PlayerCommandsTest {
         assertThat(commands.kindOf(session, controller("com.android.systemui"))).isEqualTo(ControllerKind.Own)
         assertThat(commands.kindOf(session, controller("com.google.android.projection.gearhead")))
             .isEqualTo(ControllerKind.Car)
-        assertThat(commands.kindOf(session, controller("com.android.car.media"))).isEqualTo(ControllerKind.Car)
+        assertThat(commands.kindOf(session, controller("com.android.car.media"))).isEqualTo(ControllerKind.Other)
         assertThat(commands.kindOf(session, controller("com.example.watch"))).isEqualTo(ControllerKind.Other)
     }
 

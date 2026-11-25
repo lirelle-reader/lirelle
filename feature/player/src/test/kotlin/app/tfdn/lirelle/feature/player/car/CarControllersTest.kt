@@ -39,13 +39,13 @@ class CarControllersTest {
     }
 
     @Test
-    fun `Android Auto and a car's own system are cars, other apps are not`() {
+    fun `Android Auto is a car, a car's own system and other apps are not`() {
         val session = MediaSession.Builder(context, FakeEngine()).setId("car-controllers-test").build()
         try {
             val cars = CarControllers.Media3
             assertThat(cars.isCar(session, controller("com.google.android.projection.gearhead"))).isTrue()
-            assertThat(cars.isCar(session, controller("com.android.car.media"))).isTrue()
-            assertThat(cars.isCar(session, controller("com.android.car.carlauncher"))).isTrue()
+            assertThat(cars.isCar(session, controller("com.android.car.media"))).isFalse()
+            assertThat(cars.isCar(session, controller("com.android.car.carlauncher"))).isFalse()
             assertThat(cars.isCar(session, controller("com.example.watch"))).isFalse()
             assertThat(cars.isCar(session, controller("com.android.systemui"))).isFalse()
             assertThat(cars.isCar(session, controller(context.packageName))).isFalse()

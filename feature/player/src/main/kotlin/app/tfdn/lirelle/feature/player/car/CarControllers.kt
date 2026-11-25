@@ -18,12 +18,11 @@ fun interface CarControllers {
 
     companion object {
         /**
-         * Media3's own check: Android Auto on the phone, or the media app of a car that runs Android. It goes
-         * by the controller's package name, which is no proof of who asks: the car is given nothing a stranger
+         * Media3's own check of Android Auto on the phone. A car that runs Android by itself is not one: the app
+         * is not made for it. It goes by the controller's package name, which the system vouches for but which
+         * is no proof of who asks where Android Auto is not installed: the car is given nothing a stranger
          * should not have.
          */
-        val Media3 = CarControllers { session, controller ->
-            session.isAutoCompanionController(controller) || session.isAutomotiveController(controller)
-        }
+        val Media3 = CarControllers { session, controller -> session.isAutoCompanionController(controller) }
     }
 }
