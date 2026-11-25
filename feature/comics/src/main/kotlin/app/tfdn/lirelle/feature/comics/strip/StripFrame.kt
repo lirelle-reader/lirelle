@@ -83,7 +83,9 @@ internal class StripPictures {
     /**
      * The strip of an album of [pageCount] pages, of which the reader has [pages], in a [window] as wide as the
      * strip and as high as the screen, in pixels. A page whose picture was never seen takes the shape of the
-     * nearest one that was ([provisionalShape]).
+     * nearest one that was ([provisionalShape]), no higher than the window: its loading mark, or what went wrong
+     * and the button to try again, are in the middle of its room, and next to a page many screens high they
+     * would be as far down.
      */
     fun frame(pages: Map<Int, PageState>, pageCount: Int, window: IntSize): StripFrame {
         pages.forEach { (index, page) ->
@@ -94,9 +96,10 @@ internal class StripPictures {
         val shapes = sizes.mapValues { (_, size) -> size.width.toFloat() / size.height }
         val drawnWhole = whole
         val rooms = List(pageCount) { index ->
-            val shape = shapes[index]
-                ?: provisionalShape(shapes, index, window.width.toFloat(), window.height.toFloat())
-            val height = (window.width / shape).roundToInt().coerceAtLeast(1)
+            val seen = shapes[index]
+            val shape = seen ?: provisionalShape(shapes, index, window.width.toFloat(), window.height.toFloat())
+            val highest = if (seen == null && window.height > 0) window.height else Int.MAX_VALUE
+            val height = (window.width / shape).roundToInt().coerceIn(1, highest)
             val size = sizes[index]?.takeIf { index !in drawnWhole }
             val slices = size?.let { stripSlices(it.width, it.height, window.width) }.orEmpty()
             when {

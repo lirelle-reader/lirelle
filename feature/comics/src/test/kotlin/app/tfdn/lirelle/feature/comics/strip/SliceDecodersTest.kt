@@ -5,7 +5,9 @@ import android.graphics.Color
 import com.google.common.truth.Truth.assertThat
 import java.io.File
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
+import kotlinx.coroutines.test.runCurrent
 import kotlinx.coroutines.test.runTest
 import org.junit.Rule
 import org.junit.Test
@@ -84,6 +86,22 @@ class SliceDecodersTest {
         // Closed for good: a slice asked by a strip that is gone opens no picture, which nothing would close.
         assertThat(decoders.decode(page, StripSlice(5900, 6000), sample = 1)).isNull()
         assertThat(decoders.decode(tallPage("other.png"), StripSlice(0, 100), sample = 1)).isNull()
+        assertThat(decoders.openCount).isEqualTo(0)
+    }
+
+    @Test
+    fun `closing does not wait for the pictures, which are closed where they are decoded`() = runTest {
+        val decoders = SliceDecoders(StandardTestDispatcher(testScheduler))
+        val page = tallPage()
+        assertThat(decoders.decode(page, StripSlice(0, 100), sample = 1)).isNotNull()
+
+        decoders.close()
+
+        // Not closed by the caller, which may be the main thread, a region of one still being decoded.
+        assertThat(decoders.openCount).isEqualTo(1)
+        // Closed for good at once, all the same.
+        assertThat(decoders.decode(page, StripSlice(0, 100), sample = 1)).isNull()
+        runCurrent()
         assertThat(decoders.openCount).isEqualTo(0)
     }
 

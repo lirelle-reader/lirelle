@@ -32,6 +32,24 @@ class StripFrameTest {
     }
 
     @Test
+    fun `a page never seen is no higher than the window, next to a tall one`() {
+        // Its loading mark, or what went wrong, is in the middle of its room: on screen, not thousands of rows down.
+        val frame = pictures.frame(mapOf(1 to page(800, 15_000)), pageCount = 3, window)
+
+        assertThat(frame.rooms.map { it.height }).containsExactly(800, 7500, 800).inOrder()
+        assertThat(frame.rooms[0].items).isEqualTo(1)
+    }
+
+    @Test
+    fun `a tall page seen keeps its height once the reader no longer tells it`() {
+        pictures.frame(mapOf(1 to page(800, 15_000)), pageCount = 3, window)
+
+        val frame = pictures.frame(emptyMap(), pageCount = 3, window)
+
+        assertThat(frame.rooms.map { it.height }).containsExactly(800, 7500, 800).inOrder()
+    }
+
+    @Test
     fun `a page the reader no longer tells keeps its height`() {
         pictures.frame(mapOf(0 to page(400, 700), 1 to page(400, 500)), pageCount = 2, window)
 

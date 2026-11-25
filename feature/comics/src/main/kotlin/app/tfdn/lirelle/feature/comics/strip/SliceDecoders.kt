@@ -7,9 +7,11 @@ import android.graphics.Rect
 import java.io.File
 import java.io.IOException
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ensureActive
 import kotlinx.coroutines.isActive
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 /** How many pictures are kept open at once: the pages on screen and their neighbours. */
@@ -21,9 +23,10 @@ private const val OpenAtOnce = 4
  * file and the time that file was written: a page the downloads keep has the same file after an update of its
  * album.
  *
- * Slices are asked from several threads. The pictures open are found under one lock, held only for that; each
- * picture is read and closed under its own, so that it is never closed under a region being decoded. The two are
- * never held together.
+ * Slices are asked from several threads. The pictures open are found under one lock, and one that is not open
+ * is opened under it, which reads the head of its file: the slices of a page asked together open its picture
+ * once. Each picture is read and closed under a lock of its own, so that it is never closed under a region being
+ * decoded, which may be long. The two are never held together.
  *
  * Once [close]d it decodes nothing more: a slice still on its way then gives null and opens no picture, so that
  * none is left open behind the strip.
@@ -33,7 +36,8 @@ internal class SliceDecoders(private val dispatcher: CoroutineDispatcher = Dispa
 
     private val open = LinkedHashMap<Key, BitmapRegionDecoder>(OpenAtOnce, 1f, true)
 
-    /** Whether the strip is gone; read and written under the lock of [open]. */
+    /** Whether the strip is gone. Written without a lock, which [close] never waits for. */
+    @Volatile
     private var closed = false
 
     /** How many pictures are open. */
@@ -65,14 +69,18 @@ internal class SliceDecoders(private val dispatcher: CoroutineDispatcher = Dispa
 
     /**
      * Closes every picture, for good: the strip is gone. A slice asked after it, or being asked, has no picture.
-     * It waits for the regions being decoded to end, one picture after the other.
+     *
+     * It does not wait: it is called from the main thread, and a picture is closed only once the region being
+     * decoded from it is, or once the one being opened is. The pictures are closed where they are decoded, in a
+     * scope of their own, which the strip that is gone does not end; it holds nothing once they are.
      */
     fun close() {
-        val left = synchronized(open) {
-            closed = true
-            open.values.toList().also { open.clear() }
+        closed = true
+        CoroutineScope(dispatcher).launch {
+            // A picture opened while this was called is in the map by now: none is opened after.
+            val left = synchronized(open) { open.values.toList().also { open.clear() } }
+            left.forEach { it.close() }
         }
-        left.forEach { it.close() }
     }
 
     /**
