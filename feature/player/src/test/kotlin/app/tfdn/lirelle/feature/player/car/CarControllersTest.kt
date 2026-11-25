@@ -6,15 +6,25 @@ import android.os.Bundle
 import androidx.media3.session.MediaSession
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import app.tfdn.lirelle.core.testing.AndroidAutoCertificates
+import app.tfdn.lirelle.core.testing.AndroidAutoPackage
+import app.tfdn.lirelle.core.testing.InstalledAndroidAuto
+import app.tfdn.lirelle.core.testing.SignedPackages
 import app.tfdn.lirelle.feature.player.R
 import app.tfdn.lirelle.feature.player.service.FakeEngine
 import com.google.common.truth.Truth.assertThat
+import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.robolectric.annotation.Config
 import org.xmlpull.v1.XmlPullParser
 
 @RunWith(AndroidJUnit4::class)
+@Config(shadows = [SignedPackages::class])
 class CarControllersTest {
+
+    @get:Rule
+    val androidAuto = InstalledAndroidAuto()
 
     private val context = ApplicationProvider.getApplicationContext<Context>()
 
@@ -38,19 +48,36 @@ class CarControllersTest {
         assertThat(uses).containsExactly("media")
     }
 
-    @Test
-    fun `Android Auto is a car, a car's own system and other apps are not`() {
+    private fun withSession(test: (MediaSession) -> Unit) {
         val session = MediaSession.Builder(context, FakeEngine()).setId("car-controllers-test").build()
         try {
-            val cars = CarControllers.Media3
-            assertThat(cars.isCar(session, controller("com.google.android.projection.gearhead"))).isTrue()
-            assertThat(cars.isCar(session, controller("com.android.car.media"))).isFalse()
-            assertThat(cars.isCar(session, controller("com.android.car.carlauncher"))).isFalse()
-            assertThat(cars.isCar(session, controller("com.example.watch"))).isFalse()
-            assertThat(cars.isCar(session, controller("com.android.systemui"))).isFalse()
-            assertThat(cars.isCar(session, controller(context.packageName))).isFalse()
+            test(session)
         } finally {
             session.release()
         }
     }
+
+    @Test
+    fun `Android Auto is a car, a car's own system and other apps are not`() = withSession { session ->
+        val cars = CarControllers.androidAuto(context.packageManager)
+        listOf(AndroidAutoCertificates.Current, AndroidAutoCertificates.Older).forEach { certificate ->
+            SignedPackages.sign(AndroidAutoPackage, certificate)
+
+            assertThat(cars.isCar(session, controller(AndroidAutoPackage))).isTrue()
+        }
+        listOf("com.android.car.media", "com.android.car.carlauncher", "com.example.watch", "com.android.systemui")
+            .forEach { assertThat(cars.isCar(session, controller(it))).isFalse() }
+        assertThat(cars.isCar(session, controller(context.packageName))).isFalse()
+    }
+
+    @Test
+    fun `an app that took Android Auto's name is not a car, nor is its name where it is not installed`() =
+        withSession { session ->
+            val cars = CarControllers.androidAuto(context.packageManager)
+
+            SignedPackages.sign(AndroidAutoPackage, AndroidAutoCertificates.Stranger)
+            assertThat(cars.isCar(session, controller(AndroidAutoPackage))).isFalse()
+            SignedPackages.forget()
+            assertThat(cars.isCar(session, controller(AndroidAutoPackage))).isFalse()
+        }
 }

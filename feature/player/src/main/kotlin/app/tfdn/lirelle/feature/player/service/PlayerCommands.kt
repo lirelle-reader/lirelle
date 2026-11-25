@@ -47,7 +47,7 @@ class PlayerCommands(
     private val ownPackage: String,
     private val handle: (PlayerCommand) -> Unit,
     private val buttons: () -> List<CommandButton>,
-    private val cars: CarControllers = CarControllers.Media3,
+    private val cars: CarControllers,
     browser: CarBrowser? = null,
     private val asks: CarAsks? = null,
     private val resume: () -> ListenableFuture<MediaSession.MediaItemsWithStartPosition> = ::nothingToResume,

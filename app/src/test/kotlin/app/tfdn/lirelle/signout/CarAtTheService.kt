@@ -8,11 +8,15 @@ import androidx.media3.session.LibraryResult
 import androidx.media3.session.MediaLibraryService.MediaLibrarySession
 import androidx.media3.session.MediaSession
 import app.tfdn.lirelle.awaited
+import app.tfdn.lirelle.core.testing.AndroidAutoPackage
 import app.tfdn.lirelle.feature.player.service.PlaybackService
 import com.google.common.util.concurrent.ListenableFuture
 
-/** Android Auto on the phone, which draws what the car shows: the package the session takes for a car. */
-internal const val CarHost = "com.google.android.projection.gearhead"
+/**
+ * Android Auto on the phone, which draws what the car shows: the package the session takes for a car, once
+ * Google signed it (the test installs it so, with `InstalledAndroidAuto`).
+ */
+internal const val CarHost = AndroidAutoPackage
 
 /** More than a car is listed here. */
 private const val PageSize = 100

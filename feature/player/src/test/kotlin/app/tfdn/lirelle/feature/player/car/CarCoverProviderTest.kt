@@ -8,7 +8,11 @@ import android.os.ParcelFileDescriptor
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import app.tfdn.lirelle.core.ids.BookId
+import app.tfdn.lirelle.core.testing.AndroidAutoCertificates
+import app.tfdn.lirelle.core.testing.AndroidAutoPackage
 import app.tfdn.lirelle.core.testing.FakeLibraryRepository
+import app.tfdn.lirelle.core.testing.InstalledAndroidAuto
+import app.tfdn.lirelle.core.testing.SignedPackages
 import app.tfdn.lirelle.feature.player.service.FakeKeptBookData
 import com.google.common.truth.Truth.assertThat
 import java.io.File
@@ -19,15 +23,20 @@ import org.junit.Test
 import org.junit.rules.TemporaryFolder
 import org.junit.runner.RunWith
 import org.robolectric.Shadows.shadowOf
+import org.robolectric.annotation.Config
 
-private const val Gearhead = "com.google.android.projection.gearhead"
+private const val Gearhead = AndroidAutoPackage
 
 /** Who is served a cover, and of which profile. */
 @RunWith(AndroidJUnit4::class)
+@Config(shadows = [SignedPackages::class])
 class CarCoverProviderTest {
 
     @get:Rule
     val folder = TemporaryFolder()
+
+    @get:Rule
+    val androidAuto = InstalledAndroidAuto()
 
     private val context = ApplicationProvider.getApplicationContext<Context>()
     private val authority = CarCovers.authority(context.packageName)
@@ -91,6 +100,28 @@ class CarCoverProviderTest {
             assertThrows(FileNotFoundException::class.java) { provider.coverFile(uri(), caller) }
         }
         shadowOf(provider).setCallingPackage("com.example.gallery")
+        assertThrows(FileNotFoundException::class.java) { provider.openFile(uri(), "r") }
+        assertThat(asked).isEqualTo(0)
+    }
+
+    @Test
+    fun `the car's host is served with the older of Google's certificates too`() {
+        keep("1")
+        SignedPackages.sign(Gearhead, AndroidAutoCertificates.Older)
+
+        assertThat(provider().coverFile(uri(), Gearhead).readText()).isEqualTo("cover-1")
+    }
+
+    @Test
+    fun `an app that took the name of the car's host is refused, as is the name where no host is installed`() {
+        keep("1")
+        val provider = provider()
+        shadowOf(provider).setCallingPackage(Gearhead)
+
+        SignedPackages.sign(Gearhead, AndroidAutoCertificates.Stranger)
+        assertThrows(FileNotFoundException::class.java) { provider.coverFile(uri(), Gearhead) }
+        assertThrows(FileNotFoundException::class.java) { provider.openFile(uri(), "r") }
+        SignedPackages.forget()
         assertThrows(FileNotFoundException::class.java) { provider.openFile(uri(), "r") }
         assertThat(asked).isEqualTo(0)
     }

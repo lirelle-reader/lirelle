@@ -9,17 +9,23 @@ import androidx.media3.session.MediaSession
 import androidx.media3.session.SessionError
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import app.tfdn.lirelle.core.ids.BookId
+import app.tfdn.lirelle.core.testing.AndroidAutoCertificates
+import app.tfdn.lirelle.core.testing.AndroidAutoPackage
+import app.tfdn.lirelle.core.testing.InstalledAndroidAuto
+import app.tfdn.lirelle.core.testing.SignedPackages
 import app.tfdn.lirelle.feature.player.service.FakeEngine
 import app.tfdn.lirelle.feature.player.service.PlayerCommands
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import org.junit.After
+import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.Robolectric
+import org.robolectric.annotation.Config
 
-private const val Gearhead = "com.google.android.projection.gearhead"
+private const val Gearhead = AndroidAutoPackage
 
 /** A library service whose session answers with the player's commands, over a scripted library. */
 @androidx.annotation.OptIn(UnstableApi::class)
@@ -33,7 +39,8 @@ class BrowsedService : MediaLibraryService() {
         val items = CarItems(resources, "app.tfdn.lirelle.covers", "profile-1")
         val browser =
             CarBrowser(shelves, items, NoticeAsLine(CarTexts(resources)), CoroutineScope(Dispatchers.Unconfined))
-        commands = PlayerCommands("app.tfdn.lirelle", handle = {}, buttons = { emptyList() }, browser = browser)
+        val cars = CarControllers.androidAuto(packageManager)
+        commands = PlayerCommands("app.tfdn.lirelle", handle = {}, buttons = { emptyList() }, cars, browser)
         session = MediaLibrarySession.Builder(this, FakeEngine(), commands).setId("browsed-test").build()
     }
 
@@ -48,7 +55,11 @@ class BrowsedService : MediaLibraryService() {
 /** Who may browse: the session's library callbacks answer a car from its browser, and refuse anyone else. */
 @androidx.annotation.OptIn(UnstableApi::class)
 @RunWith(AndroidJUnit4::class)
+@Config(shadows = [SignedPackages::class])
 class CarLibraryCallbackTest {
+
+    @get:Rule
+    val androidAuto = InstalledAndroidAuto()
 
     private val controller = Robolectric.buildService(BrowsedService::class.java).create()
     private val service = controller.get()
@@ -100,27 +111,41 @@ class CarLibraryCallbackTest {
         assertThat(service.shelves.searches).containsExactly("road", "road")
     }
 
+    /** The answers to everything a browser asks, asked by [other]. */
+    private fun codesFor(other: MediaSession.ControllerInfo): Set<Int> = setOf(
+        commands.onGetLibraryRoot(session, other, null).get().resultCode,
+        commands.onGetChildren(session, other, "root", 0, 100, null).get().resultCode,
+        commands.onGetItem(session, other, "tab/home").get().resultCode,
+        commands.onSearch(session, other, "road", null).get().resultCode,
+        commands.onGetSearchResult(session, other, "road", 0, 100, null).get().resultCode,
+        commands.onSubscribe(session, other, "tab/home", null).get().resultCode,
+    )
+
     @Test
     fun `anyone but a car browses nothing, and the library is asked nothing`() {
         listOf(from("com.example.watch"), from("com.android.systemui"), from("app.tfdn.lirelle")).forEach { other ->
-            val codes = listOf(
-                commands.onGetLibraryRoot(session, other, null).get().resultCode,
-                commands.onGetChildren(session, other, "root", 0, 100, null).get().resultCode,
-                commands.onGetItem(session, other, "tab/home").get().resultCode,
-                commands.onSearch(session, other, "road", null).get().resultCode,
-                commands.onGetSearchResult(session, other, "road", 0, 100, null).get().resultCode,
-                commands.onSubscribe(session, other, "tab/home", null).get().resultCode,
-            )
-
-            assertThat(codes.toSet()).containsExactly(SessionError.ERROR_PERMISSION_DENIED)
+            assertThat(codesFor(other)).containsExactly(SessionError.ERROR_PERMISSION_DENIED)
         }
         assertThat(service.shelves.asked).isEmpty()
         assertThat(service.shelves.searches).isEmpty()
     }
 
     @Test
+    fun `an app that took Android Auto's name browses nothing - Google did not sign it`() {
+        SignedPackages.sign(Gearhead, AndroidAutoCertificates.Stranger)
+        assertThat(codesFor(car)).containsExactly(SessionError.ERROR_PERMISSION_DENIED)
+        // The name alone, where Android Auto is not installed.
+        SignedPackages.forget()
+        assertThat(codesFor(car)).containsExactly(SessionError.ERROR_PERMISSION_DENIED)
+
+        assertThat(service.shelves.asked).isEmpty()
+        assertThat(service.shelves.searches).isEmpty()
+    }
+
+    @Test
     fun `without a browser, as before a car could browse, nothing is browsed`() {
-        val plain = PlayerCommands("app.tfdn.lirelle", handle = {}, buttons = { emptyList() })
+        val cars = CarControllers.androidAuto(service.packageManager)
+        val plain = PlayerCommands("app.tfdn.lirelle", handle = {}, buttons = { emptyList() }, cars)
 
         assertThat(plain.onGetLibraryRoot(session, car, null).get().resultCode)
             .isEqualTo(SessionError.ERROR_NOT_SUPPORTED)

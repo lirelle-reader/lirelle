@@ -12,6 +12,9 @@ import androidx.test.core.app.ApplicationProvider
 import app.tfdn.lirelle.awaited
 import app.tfdn.lirelle.core.ids.BookId
 import app.tfdn.lirelle.core.session.SignOutReason
+import app.tfdn.lirelle.core.testing.AndroidAutoCertificates
+import app.tfdn.lirelle.core.testing.InstalledAndroidAuto
+import app.tfdn.lirelle.core.testing.SignedPackages
 import app.tfdn.lirelle.feature.player.car.CarCoverProvider
 import app.tfdn.lirelle.feature.player.car.CarCovers
 import app.tfdn.lirelle.feature.player.service.PlaybackService
@@ -41,6 +44,7 @@ import org.robolectric.Robolectric
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.Shadows.shadowOf
 import org.robolectric.android.controller.ServiceController
+import org.robolectric.annotation.Config
 
 private const val Ann = 1L
 private const val Bob = 2L
@@ -85,10 +89,14 @@ private fun LibraryResult<out List<MediaItem>>.ids(): List<String>? = value?.map
  * makes it, asked by the car's host.
  */
 @RunWith(RobolectricTestRunner::class)
+@Config(shadows = [SignedPackages::class])
 class PlaybackServiceProfileCarTest {
 
     @get:Rule
     val keystore = FakeAndroidKeystore()
+
+    @get:Rule
+    val androidAuto = InstalledAndroidAuto()
 
     private val context: Context = ApplicationProvider.getApplicationContext()
     private val device = TestDevice(context)
@@ -168,6 +176,24 @@ class PlaybackServiceProfileCarTest {
         assertThat(served(coverUri("another-profile", AnnBook)).exceptionOrNull())
             .isInstanceOf(FileNotFoundException::class.java)
     }
+
+    @Test
+    fun `an app that took Android Auto's name is shown nothing of the open profile, and served no cover`(): Unit =
+        runBlocking {
+            val ann = device.signsInOn(anns, Ann)
+            SignedPackages.sign(CarHost, AndroidAutoCertificates.Stranger)
+            val stranger = CarAtTheService(service())
+            val heard = anns.heard
+
+            val codes =
+                listOf(stranger.root(), stranger.children(Tabs), stranger.children(Audiobooks), stranger.search("road"))
+                    .map { it.resultCode }
+
+            assertThat(codes.toSet()).containsExactly(SessionError.ERROR_PERMISSION_DENIED)
+            assertThat(served(coverUri(ann.id, AnnBook)).exceptionOrNull())
+                .isInstanceOf(FileNotFoundException::class.java)
+            assertThat(anns.heard).isEqualTo(heard)
+        }
 
     @Test
     fun `the profile changed - the car is shown the new one's, and nothing of the first is served`(): Unit =

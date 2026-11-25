@@ -17,8 +17,12 @@ import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import app.tfdn.lirelle.core.audio.timer.SleepChoice
 import app.tfdn.lirelle.core.ids.BookId
+import app.tfdn.lirelle.core.testing.AndroidAutoPackage
+import app.tfdn.lirelle.core.testing.InstalledAndroidAuto
+import app.tfdn.lirelle.core.testing.SignedPackages
 import app.tfdn.lirelle.feature.player.car.CarAnswer
 import app.tfdn.lirelle.feature.player.car.CarAsks
+import app.tfdn.lirelle.feature.player.car.CarControllers
 import app.tfdn.lirelle.feature.player.car.CarNode
 import app.tfdn.lirelle.feature.player.car.CarPlace
 import app.tfdn.lirelle.feature.player.car.CarSection
@@ -29,15 +33,22 @@ import com.google.common.truth.Truth.assertThat
 import com.google.common.util.concurrent.Futures
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.robolectric.annotation.Config
 
 @RunWith(AndroidJUnit4::class)
+@Config(shadows = [SignedPackages::class])
 class PlayerCommandsTest {
 
+    @get:Rule
+    val androidAuto = InstalledAndroidAuto()
+
     private val handled = mutableListOf<PlayerCommand>()
-    private val commands =
-        PlayerCommands(ownPackage = "app.tfdn.lirelle", handle = { handled += it }, buttons = { emptyList() })
+    private val cars =
+        CarControllers.androidAuto(ApplicationProvider.getApplicationContext<Context>().packageManager)
+    private val commands = PlayerCommands("app.tfdn.lirelle", { handled += it }, { emptyList() }, cars)
 
     @Test
     fun `a custom command from a controller is handled as its player command`() {
@@ -153,7 +164,7 @@ class PlayerCommandsTest {
         assertThat(commands.kindOf(session, notification)).isEqualTo(ControllerKind.Own)
         assertThat(commands.kindOf(session, controller("app.tfdn.lirelle"))).isEqualTo(ControllerKind.Own)
         assertThat(commands.kindOf(session, controller("com.android.systemui"))).isEqualTo(ControllerKind.Own)
-        assertThat(commands.kindOf(session, controller("com.google.android.projection.gearhead")))
+        assertThat(commands.kindOf(session, controller(AndroidAutoPackage)))
             .isEqualTo(ControllerKind.Car)
         assertThat(commands.kindOf(session, controller("com.android.car.media"))).isEqualTo(ControllerKind.Other)
         assertThat(commands.kindOf(session, controller("com.example.watch"))).isEqualTo(ControllerKind.Other)
@@ -222,9 +233,9 @@ class PlayerCommandsTest {
                 .setSessionCommand(PlayerCommand.NextSpeed.sessionCommand)
                 .setDisplayName("Speed")
                 .build()
-            val commands = PlayerCommands(ownPackage = "app.tfdn.lirelle", handle = {}, buttons = { listOf(speed) })
+            val commands = PlayerCommands("app.tfdn.lirelle", handle = {}, buttons = { listOf(speed) }, cars)
 
-            val car = commands.onConnect(session, controller("com.google.android.projection.gearhead"))
+            val car = commands.onConnect(session, controller(AndroidAutoPackage))
             val watch = commands.onConnect(session, controller("com.example.watch"))
             val own = commands.onConnect(session, controller("app.tfdn.lirelle"))
 
@@ -244,9 +255,9 @@ class PlayerCommandsTest {
             val shelves = FakeCarShelves()
             val context = ApplicationProvider.getApplicationContext<Context>()
             val asks = CarAsks(shelves, CarTexts(context.resources), CoroutineScope(Dispatchers.Unconfined))
-            val commands = PlayerCommands("app.tfdn.lirelle", handle = {}, buttons = { emptyList() }, asks = asks)
+            val commands = PlayerCommands("app.tfdn.lirelle", {}, { emptyList() }, cars, asks = asks)
             val tapped = listOf(MediaItem.Builder().setMediaId("book/7").build())
-            val car = controller("com.google.android.projection.gearhead")
+            val car = controller(AndroidAutoPackage)
             val watch = controller("com.example.watch")
 
             val set = commands.onSetMediaItems(session, car, tapped, C.INDEX_UNSET, C.TIME_UNSET).get()
@@ -273,13 +284,13 @@ class PlayerCommandsTest {
             val context = ApplicationProvider.getApplicationContext<Context>()
             val asks = CarAsks(shelves, CarTexts(context.resources), CoroutineScope(Dispatchers.Unconfined))
             var resumed = 0
-            val commands = PlayerCommands("app.tfdn.lirelle", {}, { emptyList() }, asks = asks) {
+            val commands = PlayerCommands("app.tfdn.lirelle", {}, { emptyList() }, cars, asks = asks) {
                 resumed++
                 Futures.immediateFailedFuture(UnsupportedOperationException("No book to resume"))
             }
 
             val car = commands
-                .onPlaybackResumption(session, controller("com.google.android.projection.gearhead"), true).get()
+                .onPlaybackResumption(session, controller(AndroidAutoPackage), true).get()
 
             // No last book: the first book to continue.
             assertThat(car.mediaItems.map { it.mediaId }).containsExactly("start/2")

@@ -2,6 +2,7 @@
 
 package app.tfdn.lirelle.feature.player.service
 
+import android.content.Context
 import android.content.Intent
 import androidx.annotation.OptIn
 import androidx.media3.common.PlaybackParameters
@@ -38,6 +39,7 @@ import app.tfdn.lirelle.core.session.profile.OpenEntry
 import app.tfdn.lirelle.core.session.profile.openEntryOrNull
 import app.tfdn.lirelle.feature.player.car.CarAsks
 import app.tfdn.lirelle.feature.player.car.CarBrowser
+import app.tfdn.lirelle.feature.player.car.CarControllers
 import app.tfdn.lirelle.feature.player.car.CarCovers
 import app.tfdn.lirelle.feature.player.car.CarIds
 import app.tfdn.lirelle.feature.player.car.CarItems
@@ -240,7 +242,7 @@ class PlaybackService : MediaLibraryService() {
             cover.said(it.manifest.bookId, it.artworkUrl)
         }
         val commands =
-            PlayerCommands(packageName, ::handle, { publisher.buttons() }, browser = browser, asks = asks) {
+            PlayerCommands(packageName, ::handle, { publisher.buttons() }, androidAuto(), browser, asks) {
                 // Its profile closed: there is no book of it to resume.
                 resumption(parts.lastBooks.takeUnless { left }, main)
             }
@@ -471,3 +473,6 @@ class PlaybackService : MediaLibraryService() {
  * whoever closes the profile lets end before the profile's stores go.
  */
 internal suspend fun CoroutineScope.joinLaunched() = coroutineContext.job.children.toList().joinAll()
+
+/** The one car there is: Android Auto as Google signed it, asked of the system at each request. */
+private fun Context.androidAuto() = CarControllers.androidAuto(packageManager)

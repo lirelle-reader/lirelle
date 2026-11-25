@@ -2,6 +2,7 @@
 
 package app.tfdn.lirelle.feature.player.car
 
+import android.content.pm.PackageManager
 import androidx.annotation.OptIn
 import androidx.media3.common.util.UnstableApi
 import androidx.media3.session.MediaSession
@@ -18,11 +19,13 @@ fun interface CarControllers {
 
     companion object {
         /**
-         * Media3's own check of Android Auto on the phone. A car that runs Android by itself is not one: the app
-         * is not made for it. It goes by the controller's package name, which the system vouches for but which
-         * is no proof of who asks where Android Auto is not installed: the car is given nothing a stranger
-         * should not have.
+         * Android Auto on the phone: what Media3 takes for it, which goes by the controller's package name, and
+         * that Google signed the package of that name ([isAndroidAuto]), asked of [packages]. The name alone is
+         * no proof of who asks where Android Auto is not installed. A car that runs Android by itself is not
+         * one: the app is not made for it.
          */
-        val Media3 = CarControllers { session, controller -> session.isAutoCompanionController(controller) }
+        fun androidAuto(packages: PackageManager) = CarControllers { session, controller ->
+            session.isAutoCompanionController(controller) && packages.isAndroidAuto(controller.packageName)
+        }
     }
 }

@@ -16,13 +16,6 @@ import java.io.FileNotFoundException
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withTimeoutOrNull
 
-/**
- * The apps that are served covers besides the app itself: Android Auto on the phone, which draws what the car
- * shows. The system vouches for the name of the package that asks, and a cover is nothing secret; anyone else
- * is refused all the same, so that the provider is of no use to another app.
- */
-private val CarHosts = setOf("com.google.android.projection.gearhead")
-
 /** How long a cover may take to come from the server: past it the car shows its placeholder. */
 private const val FetchTimeoutMillis = 15_000L
 
@@ -32,8 +25,9 @@ class ProfileCovers(val profileId: String, val files: CarCoverFiles)
 /**
  * Serves the car the covers of the open profile, at the addresses of [CarCovers]: the car loads pictures by
  * itself and cannot sign in to the server. Exported without a permission, which the car's host could not be
- * granted: it answers the car's host and the app only ([CarHosts]), with the covers of the profile open at that
- * moment and of no other, and only to be read.
+ * granted: it answers the app and the car's host only, which is Android Auto as Google signed it
+ * ([isAndroidAuto]): the system vouches for the name of the package that asks, and for who signed it. It serves
+ * the covers of the profile open at that moment and of no other, and only to be read.
  *
  * The system makes it, at any time, even with nobody signed in: the open profile is asked at each request
  * ([open]) and never kept.
@@ -63,7 +57,9 @@ class CarCoverProvider internal constructor(
      */
     internal fun coverFile(uri: Uri, caller: String?): File {
         val context = requireNotNull(context)
-        if (caller != context.packageName && caller !in CarHosts) notFound("Not for $caller")
+        if (caller != context.packageName && !context.packageManager.isAndroidAuto(caller)) {
+            notFound("Not for $caller")
+        }
         val segments = uri.pathSegments
         if (segments.size != 2) notFound("Not a cover: $uri")
         val (profileId, bookId) = segments
