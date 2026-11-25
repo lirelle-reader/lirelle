@@ -6,7 +6,9 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import app.tfdn.lirelle.core.ids.LibraryId
+import app.tfdn.lirelle.core.library.di.LibraryProfileModule
 import app.tfdn.lirelle.core.library.model.ServerLibrary
+import app.tfdn.lirelle.core.session.profile.ProfileFolders
 import com.google.common.truth.Truth.assertThat
 import java.io.File
 import java.io.IOException
@@ -174,5 +176,24 @@ class LibraryChoiceTest {
 
         choice.libraries(listOf(novels))
         choice.choose(novels)
+    }
+
+    @Test
+    fun `the choice is kept in the profile's folder, and is gone with it`() = runBlocking<Unit> {
+        val folders = ProfileFolders(File(folder.root, "files/p1"), File(folder.root, "cache/p1"))
+        val life = CoroutineScope(SupervisorJob()).also { scopes += it }
+        val choice = LibraryProfileModule.libraryChoice(folders, life)
+        choice.libraries(listOf(novels, comics))
+        choice.choose(comics)
+        val kept = folders.dataStore(LibraryFiles.Choice)
+        assertThat(kept.isFile).isTrue()
+        assertThat(kept.startsWith(folders.files)).isTrue()
+
+        // The profile is removed: closed, then its folder deleted.
+        closeAll()
+        assertThat(folders.files.deleteRecursively()).isTrue()
+
+        val again = LibraryProfileModule.libraryChoice(folders, CoroutineScope(SupervisorJob()).also { scopes += it })
+        assertThat(again.state.first()).isEqualTo(LibraryChoiceState())
     }
 }

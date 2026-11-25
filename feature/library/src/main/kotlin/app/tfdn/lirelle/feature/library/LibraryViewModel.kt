@@ -40,8 +40,8 @@ class LibraryViewModel @Inject constructor(
     }
 
     /**
-     * The Library is in front, for the first time or again: its server's libraries are read and kept. A read
-     * still under way is enough.
+     * The Library is in front, for the first time or again, or one of its lists is pulled to be read again: its
+     * server's libraries are read and kept. A read still under way is enough.
      */
     fun refresh() {
         if (reading?.isActive == true) return

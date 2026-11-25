@@ -17,6 +17,7 @@ import app.tfdn.lirelle.core.network.ApiError
  *
  * @param errorOf turns a failed load into the error to show.
  * @param emptyText shown when the list loaded and is empty.
+ * @param onRefresh what else a pull to refresh does, once the books were asked again.
  * @param header items placed before the books. They are kept, with what they remember, in
  *   every state: a failed first load is shown under them, so the sort or the filters that led
  *   to it can still be changed.
@@ -31,9 +32,10 @@ fun PagedBookCollection(
     modifier: Modifier = Modifier,
     emptyActionLabel: String? = null,
     onEmptyAction: () -> Unit = {},
+    onRefresh: () -> Unit = {},
     header: (LazyListScope.() -> Unit)? = null,
 ) {
-    PagedListScaffold(items = books, errorOf = errorOf, modifier = modifier) { phase ->
+    PagedListScaffold(items = books, errorOf = errorOf, modifier = modifier, onRefresh = onRefresh) { phase ->
         // In a lazy list the height is unbounded, so a message is as tall as its content.
         val message = Modifier
             .fillMaxWidth()

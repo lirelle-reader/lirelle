@@ -2,6 +2,7 @@
 <resources>
     <string name="library_title">Bibliothèque</string>
     <string name="library_all">Toutes les bibliothèques</string>
+    <string name="library_selector_description_all">Toutes les bibliothèques sont affichées. Changer de bibliothèque</string>
     <string name="library_selector_description">Bibliothèque affichée\u00A0: %1$s. Changer de bibliothèque</string>
     <string name="library_tab_books">Livres</string>
     <string name="library_tab_series">Séries</string>

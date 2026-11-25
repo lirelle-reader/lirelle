@@ -205,4 +205,62 @@ class SeriesListViewModelTest {
             assertThat(viewModel.names()).containsExactly("Beta")
             assertThat(viewModel.state.value.refreshing).isFalse()
         }
+
+    @Test
+    fun `a retry answered after another library was chosen does not show the library left`() =
+        runTest(mainRule.dispatcher) {
+            repository.seriesResult = ApiResult.Failure(ApiError.ServerUnreachable)
+            val viewModel = viewModel()
+            val retry = CompletableDeferred<Unit>()
+            repository.gate = retry
+            repository.seriesResult = ApiResult.Success(listOf(small))
+            viewModel.load()
+            repository.gate = null
+            repository.seriesResult = ApiResult.Success(listOf(large))
+
+            choice.choose(manga)
+            assertThat(viewModel.names()).containsExactly("Alpha")
+            retry.complete(Unit)
+
+            assertThat(viewModel.names()).containsExactly("Alpha")
+        }
+
+    @Test
+    fun `a retry asked twice shows the answer of the last one`() = runTest(mainRule.dispatcher) {
+        repository.seriesResult = ApiResult.Failure(ApiError.ServerUnreachable)
+        val viewModel = viewModel()
+        val first = CompletableDeferred<Unit>()
+        repository.gate = first
+        repository.seriesResult = ApiResult.Success(listOf(small))
+        viewModel.load()
+        repository.gate = null
+        repository.seriesResult = ApiResult.Success(listOf(large))
+
+        viewModel.load()
+        first.complete(Unit)
+
+        assertThat(viewModel.names()).containsExactly("Alpha")
+    }
+
+    @Test
+    fun `another library chosen during a refresh leaves no refresh shown over its load`() =
+        runTest(mainRule.dispatcher) {
+            val viewModel = viewModel()
+            val refresh = CompletableDeferred<Unit>()
+            repository.gate = refresh
+            viewModel.refresh()
+            assertThat(viewModel.state.value.refreshing).isTrue()
+            val load = CompletableDeferred<Unit>()
+            repository.gate = load
+
+            choice.choose(manga)
+
+            assertThat(viewModel.state.value.refreshing).isFalse()
+            assertThat(viewModel.state.value.series).isEqualTo(Loadable.Loading)
+            refresh.complete(Unit)
+            assertThat(viewModel.state.value.series).isEqualTo(Loadable.Loading)
+            load.complete(Unit)
+            assertThat(viewModel.names()).hasSize(3)
+            assertThat(viewModel.state.value.refreshing).isFalse()
+        }
 }

@@ -125,7 +125,7 @@ class LibrarySelectorTest {
 
         selector
             .assertTextEquals(title)
-            .assertContentDescriptionEquals(described(all))
+            .assertContentDescriptionEquals(context.getString(R.string.library_selector_description_all))
             .assert(SemanticsMatcher.expectValue(SemanticsProperties.Role, Role.Button))
             .assert(SemanticsMatcher.keyIsDefined(SemanticsProperties.Heading))
             .assert(hasClickAction())

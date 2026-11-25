@@ -16,6 +16,7 @@ import app.tfdn.lirelle.core.ui.Loadable
 import app.tfdn.lirelle.core.ui.toLoadable
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -26,6 +27,7 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 /** [series] is already sorted and filtered. */
@@ -76,36 +78,34 @@ class SeriesListViewModel @Inject constructor(
         SeriesListUiState(arranged, sort, direction, filter, refreshing)
     }.stateIn(viewModelScope, SharingStarted.Eagerly, SeriesListUiState())
 
+    /** One more for each retry. */
+    private val retries = MutableStateFlow(0)
+    private var refresh: Job? = null
+
     init {
-        // The first load, and one more for each other library chosen, or the same one under a new name. A load
-        // still under way for the library left is dropped.
-        viewModelScope.launch { library.collectLatest(::read) }
+        // The first load, and one more for each retry and each other library chosen, or the same one under a
+        // new name. What was under way is dropped, a refresh too: its answer would be about the list left, and
+        // it is not shown over the load.
+        viewModelScope.launch {
+            combine(library, retries) { library, _ -> library }.collectLatest { library ->
+                refresh?.cancel()
+                refreshing.value = false
+                loaded.value = Loadable.Loading
+                loaded.value = repository.series(library = library).toLoadable()
+            }
+        }
     }
 
     /** A retry: the list is replaced by the loading state. */
-    fun load() {
-        viewModelScope.launch { read(library.first()) }
-    }
+    fun load() = retries.update { it + 1 }
 
-    /** The series of [library] from their start: the list of another library does not stay on screen. */
-    private suspend fun read(library: ServerLibrary?) {
-        loaded.value = Loadable.Loading
-        loaded.value = repository.series(library = library).toLoadable()
-    }
-
-    /**
-     * Pull to refresh: the list stays; a failed refresh leaves it as it was. An answer that comes after another
-     * library was chosen is dropped: it is about the library left.
-     */
+    /** Pull to refresh: the list stays; a failed refresh leaves it as it was. */
     fun refresh() {
-        viewModelScope.launch {
+        refresh?.cancel()
+        refresh = viewModelScope.launch {
             refreshing.value = true
-            val asked = library.first()
-            val result = repository.series(library = asked)
-            val current = asked == library.first()
-            if (current && (result is ApiResult.Success || loaded.value !is Loadable.Ready)) {
-                loaded.value = result.toLoadable()
-            }
+            val result = repository.series(library = library.first())
+            if (result is ApiResult.Success || loaded.value !is Loadable.Ready) loaded.value = result.toLoadable()
             refreshing.value = false
         }
     }

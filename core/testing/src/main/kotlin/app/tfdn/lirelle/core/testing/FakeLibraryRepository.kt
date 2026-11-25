@@ -30,6 +30,7 @@ import app.tfdn.lirelle.core.library.model.SortDirection
 import app.tfdn.lirelle.core.network.ApiError
 import app.tfdn.lirelle.core.network.ApiResult
 import kotlinx.coroutines.CompletableDeferred
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.flowOf
 
@@ -67,6 +68,12 @@ class FakeLibraryRepository : LibraryRepository {
     /** The load states the paged lists report; fully loaded unless a test sets them. */
     var loadStates: LoadStates = Loaded
 
+    /** The pages of a list of books, for a test that holds or fails a load; null leaves [books], loaded. */
+    var bookPages: (BookListRequest) -> Flow<PagingData<BookSummary>>? = { null }
+
+    /** The pages of the authors of a library, as [bookPages]; null leaves [authorsList], loaded. */
+    var authorPages: (ServerLibrary?) -> Flow<PagingData<Author>>? = { null }
+
     val bookRequests = mutableListOf<Pair<BookListSource, BookListRequest>>()
     val authorRequests = mutableListOf<Pair<AuthorSort, SortDirection>>()
 
@@ -82,7 +89,8 @@ class FakeLibraryRepository : LibraryRepository {
 
     override fun books(source: BookListSource, request: BookListRequest): PagedList<BookSummary> {
         bookRequests += source to request
-        return PagedList(flowOf(PagingData.from(books, loadStates)), MutableStateFlow(books.size))
+        val pages = bookPages(request) ?: flowOf(PagingData.from(books, loadStates))
+        return PagedList(pages, MutableStateFlow(books.size))
     }
 
     override fun authors(
@@ -94,7 +102,8 @@ class FakeLibraryRepository : LibraryRepository {
         authorRequests += sort to direction
         authorTexts += text
         authorLibraries += library
-        return PagedList(flowOf(PagingData.from(authorsList, loadStates)), MutableStateFlow(authorsList.size))
+        val pages = authorPages(library) ?: flowOf(PagingData.from(authorsList, loadStates))
+        return PagedList(pages, MutableStateFlow(authorsList.size))
     }
 
     private suspend fun <T> answer(call: String, result: T): T {

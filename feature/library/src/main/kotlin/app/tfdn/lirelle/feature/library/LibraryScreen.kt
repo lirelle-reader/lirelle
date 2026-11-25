@@ -71,9 +71,11 @@ fun LibraryRoute(
                 scope = BookListScope.library(),
                 onOpenBook = onOpenBook,
                 emptyText = stringResource(R.string.books_empty),
+                onRefresh = viewModel::refresh,
             )
-            LibraryTab.Series -> SeriesTab(onOpenSeries = onOpenSeries)
-            LibraryTab.Authors -> AuthorsTab(onOpenAuthor = onOpenAuthor)
+            // A list pulled to be read again: the libraries are too, for one added or renamed since.
+            LibraryTab.Series -> SeriesTab(onOpenSeries = onOpenSeries, onRefresh = viewModel::refresh)
+            LibraryTab.Authors -> AuthorsTab(onOpenAuthor = onOpenAuthor, onRefresh = viewModel::refresh)
             LibraryTab.Shelves -> ShelvesTab(onOpenShelf = onOpenShelf)
         }
     }

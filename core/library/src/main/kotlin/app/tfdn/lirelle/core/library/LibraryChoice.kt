@@ -12,7 +12,6 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.map
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.SerializationException
 import kotlinx.serialization.json.Json
 
 private val ChoiceKey = stringPreferencesKey("library_choice")
@@ -80,9 +79,8 @@ class DataStoreLibraryChoice(private val dataStore: DataStore<Preferences>) : Li
 
     private fun decode(stored: String?): LibraryChoiceState = try {
         stored?.let { json.decodeFromString<StoredChoice>(it).state() } ?: LibraryChoiceState()
-    } catch (_: SerializationException) {
-        LibraryChoiceState()
     } catch (_: IllegalArgumentException) {
+        // What cannot be parsed, a SerializationException, is one too.
         LibraryChoiceState()
     }
 }

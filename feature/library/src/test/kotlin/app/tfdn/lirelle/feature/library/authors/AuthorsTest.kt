@@ -273,4 +273,19 @@ class AuthorsTest {
 
             assertThat(repository.authorRequests).hasSize(asked + 1)
         }
+
+    @Test
+    fun `a sort goes on in the same pages of authors, another library has pages of its own`() =
+        runTest(mainRule.dispatcher) {
+            val viewModel = viewModel()
+            val first = viewModel.pages.value!!
+
+            viewModel.onSort(AuthorSort.BookCount)
+            assertThat(viewModel.pages.value).isSameInstanceAs(first)
+
+            choice.choose(manga)
+            assertThat(viewModel.pages.value).isNotSameInstanceAs(first)
+            assertThat(viewModel.pages.value!!.library).isEqualTo(manga)
+            assertThat(viewModel.pages.value!!.items.asSnapshot()).hasSize(2)
+        }
 }

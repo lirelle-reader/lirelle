@@ -74,6 +74,7 @@ internal fun SeriesProgressFilter?.labelRes(): Int = when (this) {
 fun SeriesTab(
     onOpenSeries: (SeriesId) -> Unit,
     modifier: Modifier = Modifier,
+    onRefresh: () -> Unit = {},
     viewModel: SeriesListViewModel = hiltViewModel(),
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
@@ -83,7 +84,10 @@ fun SeriesTab(
         onSort = viewModel::onSort,
         onFilter = viewModel::onFilter,
         onRetry = viewModel::load,
-        onRefresh = viewModel::refresh,
+        onRefresh = {
+            viewModel.refresh()
+            onRefresh()
+        },
         modifier = modifier,
     )
 }

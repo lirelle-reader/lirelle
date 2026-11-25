@@ -76,10 +76,9 @@ internal fun LibraryTitle(
     Box(modifier) {
         LibraryTitleButton(
             label = libraries.chosen?.name ?: title,
-            description = stringResource(
-                R.string.library_selector_description,
-                libraries.chosen?.name ?: stringResource(R.string.library_all),
-            ),
+            description = libraries.chosen
+                ?.let { stringResource(R.string.library_selector_description, it.name) }
+                ?: stringResource(R.string.library_selector_description_all),
             roomBelow = roomBelow,
             onClick = { open = true },
         )

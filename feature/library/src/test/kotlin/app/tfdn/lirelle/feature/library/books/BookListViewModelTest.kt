@@ -394,4 +394,32 @@ class BookListViewModelTest {
         BookListScope.shelf(BookListSource.Collection(ShelfId("7"))),
         BookListScope.shelf(BookListSource.SmartList(ShelfId("3"))),
     )
+
+    @Test
+    fun `a sort or a filter goes on in the same pages, another library has pages of its own`() =
+        runTest(mainRule.dispatcher) {
+            val viewModel = viewModel()
+            val first = viewModel.pages.value!!
+            assertThat(first.library).isNull()
+
+            viewModel.onSort(BookSort.Title)
+            viewModel.onToggleFormat(FormatFilter.Epub)
+            assertThat(viewModel.pages.value).isSameInstanceAs(first)
+
+            choice.choose(manga)
+            assertThat(viewModel.pages.value).isNotSameInstanceAs(first)
+            assertThat(viewModel.pages.value!!.library).isEqualTo(manga)
+            assertThat(viewModel.pages.value!!.items.asSnapshot()).hasSize(2)
+            assertThat(repository.bookRequests.last().second.library).isEqualTo(manga)
+        }
+
+    @Test
+    fun `a list that does not follow the library keeps its pages whatever is chosen`() = runTest(mainRule.dispatcher) {
+        val viewModel = viewModel(BookListScope.genre("Fantasy"))
+        val first = viewModel.pages.value!!
+
+        choice.choose(manga)
+
+        assertThat(viewModel.pages.value).isSameInstanceAs(first)
+    }
 }

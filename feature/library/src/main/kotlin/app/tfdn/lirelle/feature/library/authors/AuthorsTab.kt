@@ -19,6 +19,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.key
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -30,6 +31,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.paging.PagingData
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import app.tfdn.lirelle.core.designsystem.LocalWindowWidthClass
@@ -37,6 +39,7 @@ import app.tfdn.lirelle.core.designsystem.WindowWidthClass
 import app.tfdn.lirelle.core.ids.AuthorId
 import app.tfdn.lirelle.core.library.model.Author
 import app.tfdn.lirelle.core.library.model.AuthorSort
+import app.tfdn.lirelle.core.network.ApiError
 import app.tfdn.lirelle.core.ui.AuthorPortrait
 import app.tfdn.lirelle.core.ui.EmptyMessage
 import app.tfdn.lirelle.core.ui.FailedState
@@ -44,6 +47,7 @@ import app.tfdn.lirelle.core.ui.PagedListScaffold
 import app.tfdn.lirelle.core.ui.PagedPhase
 import app.tfdn.lirelle.feature.library.R
 import app.tfdn.lirelle.feature.library.books.SortChip
+import kotlinx.coroutines.flow.emptyFlow
 
 // The same minimum width as a book in the grid: three across on a phone.
 private val AuthorMinWidth = 104.dp
@@ -62,14 +66,42 @@ internal fun AuthorSort.labelRes(): Int = when (this) {
 fun AuthorsTab(
     onOpenAuthor: (AuthorId) -> Unit,
     modifier: Modifier = Modifier,
+    onRefresh: () -> Unit = {},
     viewModel: AuthorsViewModel = hiltViewModel(),
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
-    val authors = viewModel.authors.collectAsLazyPagingItems()
-    PagedListScaffold(items = authors, errorOf = viewModel::errorOf, modifier = modifier) { phase ->
+    val pages by viewModel.pages.collectAsStateWithLifecycle()
+    // Another library is another list: from its top, with nothing of the library left while it loads or fails.
+    key(pages?.library) {
+        AuthorsList(
+            authors = (pages?.items ?: NoAuthorsYet).collectAsLazyPagingItems(),
+            state = state,
+            errorOf = viewModel::errorOf,
+            onSort = viewModel::onSort,
+            onOpenAuthor = onOpenAuthor,
+            onRefresh = onRefresh,
+            modifier = modifier,
+        )
+    }
+}
+
+/** What is shown until the choice of a library is read: a list that loads. */
+private val NoAuthorsYet = emptyFlow<PagingData<Author>>()
+
+@Composable
+private fun AuthorsList(
+    authors: LazyPagingItems<Author>,
+    state: AuthorsUiState,
+    errorOf: (Throwable) -> ApiError,
+    onSort: (AuthorSort) -> Unit,
+    onOpenAuthor: (AuthorId) -> Unit,
+    onRefresh: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    PagedListScaffold(items = authors, errorOf = errorOf, modifier = modifier, onRefresh = onRefresh) { phase ->
         // One grid for every phase: the bar stays the same composition, and above a failed load.
         AuthorsGrid {
-            item(key = "bar", span = { GridItemSpan(maxLineSpan) }) { AuthorsBar(state, viewModel::onSort) }
+            item(key = "bar", span = { GridItemSpan(maxLineSpan) }) { AuthorsBar(state, onSort) }
             when (phase) {
                 PagedPhase.Loading -> items(PlaceholderAuthors) { AuthorPlaceholder() }
                 is PagedPhase.Failed -> item(key = "error", span = { GridItemSpan(maxLineSpan) }) {
