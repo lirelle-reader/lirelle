@@ -110,6 +110,17 @@ class CarBrowserTest {
     }
 
     @Test
+    fun `why a place or a search lists nothing is said once - the pages after the first are empty`() {
+        shelves.places[CarPlace.Tab.Audiobooks] = CarAnswer.Notice(CarNotice.SignInNeeded)
+        shelves.searched = CarAnswer.Notice(CarNotice.Unreachable)
+
+        assertThat(browser.children(link, "tab/audiobooks", 0, 25).now().value).hasSize(1)
+        assertThat(browser.children(link, "tab/audiobooks", 1, 25).now().value).isEmpty()
+        assertThat(browser.searchResult(link, "road", 0, 25).now().value).hasSize(1)
+        assertThat(browser.searchResult(link, "road", 2, 25).now().value).isEmpty()
+    }
+
+    @Test
     fun `an id that names no place is refused, and the library is asked nothing`() {
         listOf("elsewhere", "book/1", "resume/1", "").forEach {
             assertThat(browser.children(link, it, 0, 100).now().resultCode).isEqualTo(SessionError.ERROR_BAD_VALUE)

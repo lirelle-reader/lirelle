@@ -78,7 +78,7 @@ class CarBrowser(
         pageSize: Int,
     ): ListenableFuture<LibraryResult<ImmutableList<MediaItem>>> = answering {
         val place = CarIds.placeOf(parentId) ?: return@answering LibraryResult.ofError(SessionError.ERROR_BAD_VALUE)
-        answered(library.children(place, page, pageSize), car)
+        answered(library.children(place, page, pageSize), car, page)
     }
 
     /** The root, a tab, or a book or a series a car was listed. */
@@ -114,7 +114,7 @@ class CarBrowser(
         pageSize: Int,
     ): ListenableFuture<LibraryResult<ImmutableList<MediaItem>>> = answering {
         val kept = searches[car.controller]?.takeIf { it.query == query }?.answer ?: library.search(query)
-        answered(if (kept is CarAnswer.Nodes) CarAnswer.Nodes(kept.nodes.pageOf(page, pageSize)) else kept, car)
+        answered(if (kept is CarAnswer.Nodes) CarAnswer.Nodes(kept.nodes.pageOf(page, pageSize)) else kept, car, page)
     }
 
     /** The book a car was listed under [mediaId]; null when none was. */
@@ -125,14 +125,19 @@ class CarBrowser(
         searches -= controller
     }
 
-    /** A list as the car is handed it; why there is none, as [notices] say it. */
-    private fun answered(answer: CarAnswer, car: CarLink): LibraryResult<ImmutableList<MediaItem>> = when (answer) {
-        is CarAnswer.Notice -> notices.answer(answer.notice, car)
-        is CarAnswer.Nodes -> {
-            remember(answer)
-            LibraryResult.ofItemList(answer.nodes.map(items::of), null)
+    /**
+     * A list as the car is handed it; why there is none, as [notices] say it — once, as the first [page]: a car
+     * that asks on is at the end of the list.
+     */
+    private fun answered(answer: CarAnswer, car: CarLink, page: Int): LibraryResult<ImmutableList<MediaItem>> =
+        when (answer) {
+            is CarAnswer.Notice ->
+                if (page > 0) LibraryResult.ofItemList(emptyList(), null) else notices.answer(answer.notice, car)
+            is CarAnswer.Nodes -> {
+                remember(answer)
+                LibraryResult.ofItemList(answer.nodes.map(items::of), null)
+            }
         }
-    }
 
     private fun remember(answer: CarAnswer) {
         if (answer is CarAnswer.Nodes) answer.nodes.forEach { listed[CarIds.of(it)] = it }
