@@ -43,7 +43,7 @@ import app.tfdn.lirelle.feature.player.car.CarIds
 import app.tfdn.lirelle.feature.player.car.CarItems
 import app.tfdn.lirelle.feature.player.car.CarLibrary
 import app.tfdn.lirelle.feature.player.car.CarStart
-import app.tfdn.lirelle.feature.player.car.NoticeAsError
+import app.tfdn.lirelle.feature.player.car.NoticeAsLine
 import app.tfdn.lirelle.feature.player.car.PlayingCover
 import app.tfdn.lirelle.feature.player.car.refreshCars
 import app.tfdn.lirelle.feature.player.di.MediaClient
@@ -231,7 +231,7 @@ class PlaybackService : MediaLibraryService() {
         )
         // Once its profile closed, a car that still asks is listed nothing of it, and starts nothing.
         val carItems = CarItems(resources, CarCovers.authority(packageName), open.profileId)
-        val browser = CarBrowser(parts.car.library, carItems, NoticeAsError(texts.car), main) { left }
+        val browser = CarBrowser(parts.car.library, carItems, NoticeAsLine(texts.car), main) { left }
         val asks = CarAsks(parts.car.library, texts.car, main, browser::listedBook, { left }) { parts.lastBooks.get() }
         val carStart = CarBookStart(book, main, { parts.car.start.takeUnless { left }?.requestFor(it) }, asks::failed)
         // The cover's address is said as one the car can open; the app's own picture comes from where it did.
