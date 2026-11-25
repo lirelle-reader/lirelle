@@ -33,6 +33,21 @@ interface ComicNavigation {
     fun sharpenPage(index: Int, longSidePx: Int)
 }
 
+/** What the strip of an album read vertically tells the reader as it scrolls. Pages are indexes from 0. */
+interface StripNavigation {
+    /**
+     * The strip shows the pages from [first] to [last]; [first], at the top of the screen, is the page read. At
+     * the very bottom of the strip the page read is the last one, however little of the screen it takes.
+     */
+    fun stripShows(first: Int, last: Int)
+
+    /** The strip came to rest: where the reader is is written, and the pages around are fetched ahead. */
+    fun stripRested()
+
+    /** The user went on past the bottom of the last page: the panel at the end opens. */
+    fun stripPastEnd()
+}
+
 /** The choices of the settings sheet. */
 interface ComicSettingsActions {
     fun setFit(fit: Fit)
@@ -110,6 +125,7 @@ interface ComicEndActions : DeviceCopyActions {
 /** What the user does in the comics reader. */
 interface ComicReaderActions :
     ComicNavigation,
+    StripNavigation,
     ComicSettingsActions,
     NewerPageActions,
     ComicEndActions,

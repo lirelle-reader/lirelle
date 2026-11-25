@@ -5,10 +5,14 @@ import kotlinx.coroutines.CoroutineStart
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
+/** How many pages before and after those of the strip are followed: they are in view after a short scroll. */
+private const val StripMargin = 2
+
 /**
  * Follows what the device has of the pages near the reader: those of the spread shown, which are asked
  * for at once, and those of the spreads before and after it, which a swipe brings in. A page that turns
- * out wider than it is high is told to the spreads, which pair again around it.
+ * out wider than it is high is told to the spreads, which pair again around it. Read vertically, the pages
+ * near are those the strip shows and a few around them.
  */
 internal class PageWatch(private val core: ComicCore) {
     private val watched = mutableMapOf<Int, Job>()
@@ -25,9 +29,7 @@ internal class PageWatch(private val core: ComicCore) {
             shown = now
             now.forEach(pages::show)
         }
-        val near = (state.spreadIndex - 1..state.spreadIndex + 1)
-            .flatMap { state.spreads.getOrNull(it)?.pages.orEmpty() }
-            .toSet()
+        val near = if (state.vertical) nearStrip(state) else nearSpreads(state)
         (watched.keys - near).forEach { watched.remove(it)?.cancel() }
         core.update { it.copy(pages = it.pages.filterKeys(near::contains)) }
         // Each is in the map before it runs: a page that arrives at once, wide, has the spreads worked out again.
@@ -36,6 +38,15 @@ internal class PageWatch(private val core: ComicCore) {
                 .also { watched[index] = it }
         }
         added.forEach { it.start() }
+    }
+
+    private fun nearSpreads(state: ComicReaderUiState): Set<Int> =
+        (state.spreadIndex - 1..state.spreadIndex + 1).flatMap { state.spreads.getOrNull(it)?.pages.orEmpty() }.toSet()
+
+    /** The pages the strip shows, or the one read while it told none, and those just before and after. */
+    private fun nearStrip(state: ComicReaderUiState): Set<Int> {
+        val shown = core.strip.takeIf { !it.isEmpty() && core.page in it } ?: core.page..core.page
+        return (shown.first - StripMargin..shown.last + StripMargin).filter { it in 0 until state.pageCount }.toSet()
     }
 
     private fun arrived(index: Int, state: PageState) {

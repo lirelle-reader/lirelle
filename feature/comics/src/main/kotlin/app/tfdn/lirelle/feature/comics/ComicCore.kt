@@ -63,6 +63,9 @@ internal class ComicCore(val bookId: BookId, val scope: CoroutineScope) {
      */
     var page = 0
 
+    /** The pages the strip of an album read vertically shows; empty when it told none. */
+    var strip: IntRange = IntRange.EMPTY
+
     /** The pages whose image is wider than it is high, as far as they were seen. */
     val wide = mutableSetOf<Int>()
 
@@ -85,10 +88,14 @@ internal class ComicCore(val bookId: BookId, val scope: CoroutineScope) {
 
     fun update(transform: (ComicReaderUiState) -> ComicReaderUiState) = state.update(transform)
 
-    /** Works the spreads out again, from the window, the setting and the wide pages, around [page]. */
+    /**
+     * Works the spreads out again, from the window, the setting and the wide pages, around [page]. Read
+     * vertically, each page is a spread of its own.
+     */
     fun layout() {
         if (!ready) return
-        val twoPages = showsTwoPages(current.settings.twoPages, widthDp, heightDp)
+        val twoPages = !current.vertical && showsTwoPages(current.settings.twoPages, widthDp, heightDp)
+        if (!current.vertical) strip = IntRange.EMPTY
         val spreads = spreads(current.pageCount, wide, twoPages)
         update { it.copy(twoPages = twoPages, spreads = spreads, spreadIndex = spreadIndexOf(spreads, page)) }
         onLayout()

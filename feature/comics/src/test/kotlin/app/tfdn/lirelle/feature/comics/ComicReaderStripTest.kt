@@ -1,0 +1,212 @@
+package app.tfdn.lirelle.feature.comics
+
+import app.tfdn.lirelle.core.comics.PageState
+import app.tfdn.lirelle.core.comics.layout.Spread
+import app.tfdn.lirelle.core.comics.settings.ComicSettings
+import app.tfdn.lirelle.core.comics.settings.Direction
+import app.tfdn.lirelle.core.comics.settings.DirectionScope
+import app.tfdn.lirelle.core.comics.settings.TwoPages
+import app.tfdn.lirelle.core.ids.SeriesId
+import app.tfdn.lirelle.core.testing.InMemoryComicSettingsStore
+import app.tfdn.lirelle.core.testing.MainDispatcherRule
+import com.google.common.truth.Truth.assertThat
+import kotlin.time.Duration.Companion.milliseconds
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.TestScope
+import kotlinx.coroutines.test.advanceTimeBy
+import kotlinx.coroutines.test.runTest
+import org.junit.Rule
+import org.junit.Test
+
+private val Series = DirectionScope.Series(SeriesId("4"))
+
+private val vertical = mapOf<DirectionScope, Direction>(Series to Direction.Vertical)
+
+/** A reader whose album is of a series read vertically. */
+private fun TestScope.verticalHarness() =
+    ComicHarness(this, settings = InMemoryComicSettingsStore(directions = vertical, noticeSeen = true))
+
+/**
+ * An album read vertically: what the strip of its pages tells the reader as it scrolls, and what the reader tells
+ * the pages and the session of it.
+ */
+@OptIn(ExperimentalCoroutinesApi::class)
+class ComicReaderStripTest {
+
+    @get:Rule
+    val main = MainDispatcherRule()
+
+    @Test
+    fun `read vertically, each page is a spread of its own, whatever the window`() = runTest {
+        val two = InMemoryComicSettingsStore(ComicSettings(twoPages = TwoPages.Always), directions = vertical)
+        val reader = ComicHarness(this, settings = two).reader()
+
+        reader.windowSize(widthDp = 1280, heightDp = 800)
+
+        val state = reader.state.value
+        assertThat(state.vertical).isTrue()
+        assertThat(state.twoPages).isFalse()
+        assertThat(state.spreads).hasSize(Pages)
+    }
+
+    @Test
+    fun `the page at the top is the page read, and it is asked for at once`() = runTest {
+        val harness = verticalHarness()
+        val reader = harness.reader()
+
+        reader.stripShows(first = 5, last = 7)
+
+        assertThat(reader.state.value.spread).isEqualTo(Spread(5))
+        assertThat(reader.state.value.label).isEqualTo(PageLabel(first = 6, last = null, count = Pages))
+        assertThat(harness.pages.calls).contains("show 5")
+    }
+
+    @Test
+    fun `the pages on screen and two around them are watched`() = runTest {
+        val harness = verticalHarness()
+        val reader = harness.reader()
+
+        reader.stripShows(first = 5, last = 7)
+        harness.pages.ready(3)
+        harness.pages.ready(9)
+        harness.pages.ready(10)
+
+        val state = reader.state.value
+        assertThat(state.pages.keys).containsExactly(3, 4, 5, 6, 7, 8, 9)
+        assertThat(state.pageState(3)).isInstanceOf(PageState.Ready::class.java)
+        assertThat(state.pageState(9)).isInstanceOf(PageState.Ready::class.java)
+        assertThat(state.pageState(10)).isEqualTo(PageState.Loading)
+    }
+
+    @Test
+    fun `scrolling writes nothing, the strip at rest writes the page at the top`() = runTest {
+        val harness = verticalHarness()
+        val reader = harness.reader()
+
+        reader.stripShows(first = 5, last = 7)
+        reader.stripShows(first = 6, last = 8)
+        assertThat(harness.store.positions).isEmpty()
+
+        reader.stripRested()
+        val kept = checkNotNull(harness.store.positions[AlbumFile])
+        assertThat(kept.page).isEqualTo(7)
+        assertThat(kept.percent).isWithin(1e-9).of(7 * 100.0 / Pages)
+
+        val written = harness.outbox.log.toList()
+        reader.stripRested()
+        assertThat(harness.outbox.log).isEqualTo(written)
+    }
+
+    @Test
+    fun `the pages around are fetched once the strip stayed at rest`() = runTest {
+        val harness = verticalHarness()
+        val reader = harness.reader()
+        advanceTimeBy(400.milliseconds)
+
+        reader.stripShows(first = 6, last = 8)
+        advanceTimeBy(400.milliseconds)
+        assertThat(harness.pages.calls).doesNotContain("settle 6")
+
+        reader.stripRested()
+        advanceTimeBy(301.milliseconds)
+        assertThat(harness.pages.calls).contains("settle 6")
+    }
+
+    @Test
+    fun `the slider lands the strip on a page`() = runTest {
+        val harness = verticalHarness()
+        val reader = harness.reader()
+        assertThat(reader.state.value.landing).isEqualTo(Landing())
+
+        reader.goTo(30)
+
+        assertThat(reader.state.value.spread).isEqualTo(Spread(30))
+        assertThat(reader.state.value.landing).isEqualTo(Landing(page = 30, serial = 1))
+        assertThat(harness.pages.calls).contains("jump 30")
+
+        reader.goTo(12)
+        assertThat(reader.state.value.landing).isEqualTo(Landing(page = 12, serial = 2))
+    }
+
+    @Test
+    fun `past the bottom of the last page is the end of the album`() = runTest {
+        val harness = verticalHarness()
+        val reader = harness.reader()
+        reader.stripShows(first = Pages - 1, last = Pages - 1)
+        assertThat(reader.state.value.endPanel).isNull()
+
+        reader.stripPastEnd()
+
+        assertThat(reader.state.value.endPanel).isNotNull()
+        val kept = checkNotNull(harness.store.positions[AlbumFile])
+        assertThat(kept.page).isEqualTo(Pages)
+        assertThat(kept.percent).isEqualTo(100.0)
+    }
+
+    @Test
+    fun `leaving while the strip moves writes the page at the top`() = runTest {
+        val harness = verticalHarness()
+        val reader = harness.reader()
+
+        reader.stripShows(first = 9, last = 11)
+        reader.leave()
+
+        assertThat(harness.store.positions[AlbumFile]?.page).isEqualTo(10)
+        assertThat(harness.outbox.positions.single().page).isEqualTo(10)
+    }
+
+    @Test
+    fun `the reader sent behind while the strip moves writes the page at the top`() = runTest {
+        val harness = verticalHarness()
+        val reader = harness.reader()
+
+        reader.stripShows(first = 9, last = 11)
+        reader.onBackground()
+
+        assertThat(harness.store.positions[AlbumFile]?.page).isEqualTo(10)
+    }
+
+    @Test
+    fun `panel by panel is not offered while reading vertically`() = runTest {
+        val kept = InMemoryComicSettingsStore(directions = vertical, panels = setOf(Series), noticeSeen = true)
+        val harness = ComicHarness(this, settings = kept)
+        val reader = harness.reader()
+        assertThat(harness.panels.cuts).isTrue()
+        assertThat(reader.state.value.settings.panels).isTrue()
+
+        assertThat(reader.state.value.panels.offered).isFalse()
+        assertThat(reader.state.value.panels.on).isFalse()
+
+        reader.setDirection(Direction.LeftToRight)
+        assertThat(reader.state.value.panels.offered).isTrue()
+        assertThat(reader.state.value.panels.on).isTrue()
+    }
+
+    @Test
+    fun `back to pages turned, the reader is on the page that was at the top`() = runTest {
+        val harness = verticalHarness()
+        val reader = harness.reader()
+
+        reader.stripShows(first = 20, last = 22)
+        reader.setDirection(Direction.LeftToRight)
+
+        assertThat(reader.state.value.vertical).isFalse()
+        assertThat(reader.state.value.spread?.first).isEqualTo(20)
+    }
+
+    @Test
+    fun `paged, what a strip tells is ignored`() = runTest {
+        val harness = ComicHarness(this)
+        val reader = harness.reader()
+        val before = harness.pages.calls.toList()
+
+        reader.stripShows(first = 5, last = 7)
+        reader.stripRested()
+        reader.stripPastEnd()
+
+        assertThat(reader.state.value.spread).isEqualTo(Spread(0))
+        assertThat(reader.state.value.endPanel).isNull()
+        assertThat(harness.pages.calls).isEqualTo(before)
+        assertThat(harness.store.positions).isEmpty()
+    }
+}

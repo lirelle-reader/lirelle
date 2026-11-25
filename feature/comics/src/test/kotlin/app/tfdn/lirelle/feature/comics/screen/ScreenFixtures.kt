@@ -108,6 +108,18 @@ internal class RecordingActions(private val navigation: RecordingNavigation = Re
         calls += "zones $shown"
     }
 
+    override fun stripShows(first: Int, last: Int) {
+        calls += "stripShows $first $last"
+    }
+
+    override fun stripRested() {
+        calls += "stripRested"
+    }
+
+    override fun stripPastEnd() {
+        calls += "stripPastEnd"
+    }
+
     override fun acceptNewer() {
         calls += "acceptNewer"
     }

@@ -91,11 +91,15 @@ internal class PanelMode(
         telling.count()
     }
 
-    /** The mode is what the settings say of it, for an album whose pages can be cut. Only what changed. */
+    /**
+     * The mode is what the settings say of it, for an album whose pages can be cut and are turned: a strip read
+     * vertically has no panel to go to. Only what changed.
+     */
     private fun follow(panels: PagePanels) {
         val state = core.current
-        val on = panels.cuts && state.settings.panels
-        val reading = state.panels.copy(offered = panels.cuts, on = on, wholePageFirst = state.settings.wholePageFirst)
+        val offered = panels.cuts && !state.vertical
+        val on = offered && state.settings.panels
+        val reading = state.panels.copy(offered = offered, on = on, wholePageFirst = state.settings.wholePageFirst)
         if (reading != state.panels) core.update { it.copy(panels = reading) }
     }
 

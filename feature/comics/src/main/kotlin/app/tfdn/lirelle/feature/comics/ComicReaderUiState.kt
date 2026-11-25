@@ -8,6 +8,7 @@ import app.tfdn.lirelle.core.comics.layout.percentOf
 import app.tfdn.lirelle.core.comics.layout.spreadIndexOf
 import app.tfdn.lirelle.core.comics.panels.PageZones
 import app.tfdn.lirelle.core.comics.settings.ComicSettings
+import app.tfdn.lirelle.core.comics.settings.Direction
 import app.tfdn.lirelle.core.comics.settings.DirectionScope
 import app.tfdn.lirelle.core.downloads.model.DeviceCopy
 import app.tfdn.lirelle.core.ids.BookId
@@ -78,8 +79,8 @@ data class ComicEndPanel(
 /**
  * Reading panel by panel, as the page view and the bars need it.
  *
- * @property offered whether the album can be read so: false for an album whose pages are never cut (a PDF), and
- *   until the album is open.
+ * @property offered whether the album can be read so: false for an album whose pages are never cut (a PDF), for
+ *   one read vertically, and until the album is open.
  * @property on whether the series is read so; never for an album that is not [offered] it.
  * @property wholePageFirst whether each page is shown whole before its first panel.
  * @property zones what is known of the pages of the spread shown and of the spreads before and after it, by page,
@@ -97,6 +98,12 @@ data class PanelReading(
     val notice: Boolean = false,
     val albumBanner: Boolean = false,
 )
+
+/**
+ * Where the reader went straight to, by the slider or to a position of the server: the strip of an album read
+ * vertically scrolls there. [serial] counts the times: the same page asked twice is two landings.
+ */
+data class Landing(val page: Int = 0, val serial: Int = 0)
 
 /**
  * What the comics reader shows. Pages are indexes from 0, but in [label] and [newerPage].
@@ -119,6 +126,7 @@ data class PanelReading(
  * @property zonesShown whether the zones of the pages are drawn over them: asked in a build that can be debugged,
  *   and never kept. What is drawn is in [panels].
  * @property panels reading panel by panel: whether the series is read so, and what is known of the pages near.
+ * @property landing the page the reader last went straight to, for the strip of an album read vertically.
  */
 data class ComicReaderUiState(
     val phase: ComicPhase = ComicPhase.Loading,
@@ -140,7 +148,11 @@ data class ComicReaderUiState(
     val endPanel: ComicEndPanel? = null,
     val zonesShown: Boolean = false,
     val panels: PanelReading = PanelReading(),
+    val landing: Landing = Landing(),
 ) {
+    /** Whether the pages follow one another down the screen, which scrolls, instead of being turned. */
+    val vertical: Boolean get() = settings.direction == Direction.Vertical
+
     /** The spread shown; null until the album is open. */
     val spread: Spread? get() = spreads.getOrNull(spreadIndex)
 

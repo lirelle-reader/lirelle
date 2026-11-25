@@ -64,9 +64,10 @@ internal class ComicReader(
     val settings = SettingsPart(core, services.settings, bars)
     val end = EndOfAlbum(core, services.end)
     val turning = Turning(core, services.timings, bars, end)
+    val scrolling = Scrolling(core, turning, bars, end)
     val opening = ComicOpening(core, services, lasting, fromStart, OpenedParts(settings, turning, bars))
     private val network = NetworkReturn(core, online, opening)
-    val host = ComicHost(core, turning, network)
+    val host = ComicHost(core, turning, scrolling, network)
     val panelMode = PanelMode(core, settings, bars, services.settings)
 
     init {
@@ -82,6 +83,8 @@ internal class ComicReader(
 
     /** What was read is written; the album's pages stay, for a reader that is not gone yet. */
     fun leave() {
+        // A strip left while it moves told no rest: the page at its top is written first.
+        scrolling.stripRested()
         core.session?.close()
         core.events.trySend(ComicReaderEvent.Leave)
     }
@@ -107,6 +110,7 @@ class ComicReaderViewModel private constructor(private val reader: ComicReader) 
     ViewModel(reader.scope),
     ComicReaderActions,
     ComicNavigation by reader.turning,
+    StripNavigation by reader.scrolling,
     ComicSettingsActions by reader.settings,
     NewerPageActions by reader.host,
     ComicEndActions by reader.end,

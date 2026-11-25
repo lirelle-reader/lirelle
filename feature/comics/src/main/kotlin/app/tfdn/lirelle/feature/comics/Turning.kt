@@ -55,7 +55,12 @@ internal class Turning(
     private var settling: Job? = null
 
     /** Whether the end of the album is the position written: the user turned to its last spread, or past it. */
-    private var endWritten = false
+    var endWritten = false
+        private set
+
+    /** The page last told to the session: a strip at rest on it tells nothing more. */
+    var told = -1
+        private set
 
     override fun next() {
         if (!core.ready) return
@@ -101,13 +106,15 @@ internal class Turning(
 
     /**
      * Goes straight to the spread that shows [pageIndex], at its beginning: what the pages were fetching
-     * for elsewhere is dropped. Without [moved] the user did not turn there: it is not written.
+     * for elsewhere is dropped. Without [moved] the user did not turn there: it is not written. The strip of an
+     * album read vertically is told where to scroll ([ComicReaderUiState.landing]).
      */
     fun land(pageIndex: Int, moved: Boolean) {
         show(spreadIndexOf(core.current.spreads, pageIndex), forward = true, moved = moved)
         // A jump fetches around the page by itself.
         settling?.cancel()
         core.pages?.jump(core.page)
+        core.update { it.copy(landing = Landing(core.page, it.landing.serial + 1)) }
     }
 
     /**
@@ -120,6 +127,7 @@ internal class Turning(
         // The pages shown count as read: the last spread is the whole album, with one page or two.
         val fraction = (spread.pages.last() + 1).toDouble() / state.pageCount
         endWritten = moved && spread.pages.last() == state.pageCount - 1
+        told = spread.first
         end.onPosition(fraction)
         core.scope.launch { core.session?.relocated(pageNumberOf(spread.first), fraction, moved) }
         settling?.cancel()
