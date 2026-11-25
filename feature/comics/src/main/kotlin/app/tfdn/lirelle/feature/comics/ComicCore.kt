@@ -88,6 +88,9 @@ internal class ComicCore(val bookId: BookId, val scope: CoroutineScope) {
     /** Told each time the spreads, or the one shown, may have changed. */
     var onLayout: () -> Unit = {}
 
+    /** Told once the pages jumped to [page]: the fetches of the pages far from it were dropped. */
+    var onJumped: () -> Unit = {}
+
     val current: ComicReaderUiState get() = state.value
 
     val ready: Boolean get() = current.phase == ComicPhase.Ready

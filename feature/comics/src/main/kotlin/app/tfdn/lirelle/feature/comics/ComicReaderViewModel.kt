@@ -77,6 +77,7 @@ internal class ComicReader(
             watch.refresh()
             panelMode.refresh()
         }
+        core.onJumped = watch::jumped
         network.watch()
         opening.start()
     }

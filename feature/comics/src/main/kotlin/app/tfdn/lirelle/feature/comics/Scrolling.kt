@@ -6,9 +6,9 @@ import app.tfdn.lirelle.feature.comics.end.EndOfAlbum
 /**
  * Following the strip of an album read vertically, which has no page turned: the page at the top of the strip is
  * the spread shown, told to the pages as it scrolls, which fetch it, and to the session only once the strip came
- * to rest ([Turning.arrived]). At the very bottom of the strip the last page is the one read, once the user
- * scrolled there. Past the bottom of the last page is the end of the album. An album whose pages are turned has
- * no strip: what one tells is ignored.
+ * to rest ([Turning.arrived]); the pages around it are fetched ahead once it stayed there ([Settling]). At the very
+ * bottom of the strip the last page is the one read, once the user scrolled there. Past the bottom of the last
+ * page is the end of the album. An album whose pages are turned has no strip: what one tells is ignored.
  */
 internal class Scrolling(
     private val core: ComicCore,
@@ -36,7 +36,9 @@ internal class Scrolling(
     }
 
     override fun stripRested() {
-        if (following && core.page != turning.told) turning.arrived(moved = true)
+        if (!following) return
+        // The page told already is not written twice.
+        if (core.page != turning.told) turning.arrived(moved = true) else turning.settling.back(core.page)
     }
 
     override fun stripPastEnd() {
@@ -55,6 +57,8 @@ internal class Scrolling(
     /** [page] is the page read: the spread shown is its own, and the pages are told what the strip shows. */
     private fun read(page: Int) {
         if (page != core.page) {
+            // The strip left the page it rested on: the pages around that one are not worth fetching ahead.
+            turning.settling.cancel()
             core.page = page
             core.update { it.copy(spreadIndex = spreadIndexOf(it.spreads, page), forward = true) }
         }

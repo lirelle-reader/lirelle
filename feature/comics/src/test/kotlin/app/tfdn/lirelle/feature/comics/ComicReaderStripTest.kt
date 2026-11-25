@@ -300,6 +300,64 @@ class ComicReaderStripTest {
     }
 
     @Test
+    fun `after a landing the other pages on screen are asked for again`() = runTest {
+        val harness = verticalHarness()
+        val reader = harness.reader()
+        // Short pages, seven on screen: the last ones are further than the pages fetched around the first.
+        reader.stripShows(first = 5, last = 11)
+        harness.pages.calls.clear()
+
+        reader.goTo(5)
+
+        // The jump drops the fetches of the pages far from the one landed on: each is asked for again, after it.
+        assertThat(harness.pages.calls).containsExactly(
+            "jump 5", "show 6", "show 7", "show 8", "show 9", "show 10", "show 11", "show 12", "show 13",
+        ).inOrder()
+    }
+
+    @Test
+    fun `a strip that moves on before the pages around were fetched gives them up`() = runTest {
+        val harness = verticalHarness()
+        val reader = harness.reader()
+        advanceTimeBy(400.milliseconds)
+
+        reader.stripShows(first = 4, last = 5)
+        reader.stripRested()
+        advanceTimeBy(100.milliseconds)
+        reader.stripShows(first = 6, last = 7)
+        advanceTimeBy(400.milliseconds)
+        assertThat(harness.pages.calls).doesNotContain("settle 4")
+
+        reader.stripRested()
+        advanceTimeBy(301.milliseconds)
+        assertThat(harness.pages.calls).contains("settle 6")
+    }
+
+    @Test
+    fun `back at rest on the page last written, the pages around are fetched and nothing is written again`() = runTest {
+        val harness = verticalHarness()
+        val reader = harness.reader()
+        advanceTimeBy(400.milliseconds)
+
+        reader.stripShows(first = 4, last = 5)
+        reader.stripRested()
+        advanceTimeBy(100.milliseconds)
+        reader.stripShows(first = 5, last = 6)
+        reader.stripShows(first = 4, last = 5)
+        val written = harness.outbox.log.toList()
+
+        reader.stripRested()
+        advanceTimeBy(301.milliseconds)
+        assertThat(harness.pages.calls.count { it == "settle 4" }).isEqualTo(1)
+        assertThat(harness.outbox.log).isEqualTo(written)
+
+        // At rest there again: the pages around it were asked for.
+        reader.stripRested()
+        advanceTimeBy(301.milliseconds)
+        assertThat(harness.pages.calls.count { it == "settle 4" }).isEqualTo(1)
+    }
+
+    @Test
     fun `at the bottom of the strip the last page is read, and the pages above it stay on screen`() = runTest {
         val harness = verticalHarness()
         val reader = harness.reader()

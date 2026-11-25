@@ -67,6 +67,17 @@ internal class PageWatch(private val core: ComicCore) {
         added.forEach { it.start() }
     }
 
+    /**
+     * The pages jumped to the page read, and fetch it: the reader landed there. Of the pages of the strip asked
+     * for, those far from it had their fetch dropped, and a page asked for is not asked again while it stays on
+     * screen: the others are all asked again, as after a strip flung far. Pages that are turned are asked for
+     * with their spread, all of them around the page jumped to.
+     */
+    fun jumped() {
+        val pages = core.pages ?: return
+        if (core.current.vertical) shown.filter { it != core.page }.forEach(pages::show)
+    }
+
     /** The pages of the strip asked for, in their order: those on screen, then those that follow them. */
     private fun asked(state: ComicReaderUiState): List<Int> {
         val strip = onStrip()
