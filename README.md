@@ -31,8 +31,8 @@ Books and audiobooks from Standard Ebooks and LibriVox, in the public domain. Se
   readers, or the book's own), text size, line spacing, margins, alignment and hyphenation, a header and a footer of
   your choice, brightness and page-turn gestures, volume keys.
 - **Comics and manga** (CBZ, CBR, CB7) **and page-based documents** (PDF, DjVu): fit to the page or the width, two
-  pages side by side, and reading left to right, right to left or vertically (a continuous scroll, for webtoons),
-  set per series.
+  pages side by side, left-to-right or right-to-left reading set per series; comics can also be read vertically (a
+  continuous scroll, for webtoons).
 - **Comics panel by panel**: the panels are found on the device, with no server work and no editing by hand, and are
   shown one after the other; a page that does not cut well is shown whole.
 - **Audiobooks**, with read-along for the books that carry it, audio bookmarks, playback speed and a sleep timer.
