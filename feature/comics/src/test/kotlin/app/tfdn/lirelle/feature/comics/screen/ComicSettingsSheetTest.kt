@@ -22,6 +22,7 @@ import app.tfdn.lirelle.core.comics.settings.DirectionScope
 import app.tfdn.lirelle.core.comics.settings.Fit
 import app.tfdn.lirelle.core.comics.settings.TwoPages
 import app.tfdn.lirelle.core.ids.BookId
+import app.tfdn.lirelle.core.library.model.PagedKind
 import app.tfdn.lirelle.feature.comics.ComicSettingsButtonTag
 import app.tfdn.lirelle.feature.comics.PanelReading
 import app.tfdn.lirelle.feature.comics.page.drawn
@@ -111,6 +112,68 @@ class ComicSettingsSheetTest {
         compose.waitForIdle()
 
         compose.onNodeWithText("For this album").assertExists()
+    }
+
+    @Test
+    fun `a comic is offered three directions, the vertical one among them`() {
+        compose.setContent { screen.Content() }
+        open()
+
+        val places = listOf("Left to right", "Right to left", "Vertical").map {
+            compose.onNodeWithText(it).performScrollTo().assertHeightIsAtLeast(48.dp).drawn()
+        }
+        assertThat(places.map { it.top }.distinct()).hasSize(1)
+        assertThat(places.map { it.left }).isInStrictOrder()
+
+        compose.onNodeWithText("Vertical").performClick()
+
+        assertThat(screen.actions.calls).containsExactly("direction Vertical")
+    }
+
+    @Test
+    fun `an album read vertically has neither the fit nor the two pages, and is told what vertical is`() {
+        val note = "Vertical: the pages follow one another without a break, for webtoons."
+        screen.state = openAlbum(settings = ComicSettings(direction = Direction.Vertical))
+        compose.setContent { screen.Content() }
+        open()
+
+        listOf("Fit", "Two pages side by side").forEach {
+            compose.onNode(hasText(it) and heading).assertDoesNotExist()
+        }
+        listOf("Whole page", "Screen width", "Automatic", "Always", "Never").forEach {
+            compose.onNodeWithText(it).assertDoesNotExist()
+        }
+        compose.onNode(hasText("Background") and heading).assertExists()
+        compose.onNodeWithText("Vertical").assertIsSelected().assertHeightIsAtLeast(48.dp)
+        // Under the choices, over what the direction is remembered for.
+        val told = compose.onNodeWithText(note).performScrollTo().drawn()
+        assertThat(told.top).isAtLeast(compose.onNodeWithText("Vertical").drawn().bottom)
+        val scope = compose.onNodeWithText("For every album of the series “Blacksad”").performScrollTo().drawn()
+        assertThat(scope.top).isAtLeast(told.bottom)
+
+        screen.state = openAlbum()
+        compose.waitForIdle()
+
+        compose.onNodeWithText(note).assertDoesNotExist()
+        listOf("Fit", "Two pages side by side").forEach {
+            compose.onNode(hasText(it) and heading).assertExists()
+        }
+    }
+
+    @Test
+    fun `a document is offered the two directions its pages are turned in, not the vertical one`() {
+        screen.state = openAlbum().copy(kind = PagedKind.Pdf)
+        compose.setContent { screen.Content() }
+        open()
+
+        listOf(PagedKind.Pdf, PagedKind.Djvu).forEach { kind ->
+            screen.state = openAlbum().copy(kind = kind)
+            compose.waitForIdle()
+
+            compose.onNodeWithText("Left to right").assertExists()
+            compose.onNodeWithText("Right to left").assertExists()
+            compose.onNodeWithText("Vertical").assertDoesNotExist()
+        }
     }
 
     @Test

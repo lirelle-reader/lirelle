@@ -143,12 +143,13 @@ private fun seriesRefOf(dto: BookDto): SeriesRef? {
 }
 
 /**
- * The way a series' pages turn: a manga's right to left. Vertical and webtoon series turn left to right until the
- * reader scrolls. None set, or a way the app does not know, says nothing.
+ * The way a series' pages turn: a manga's right to left. Vertical and webtoon series are both read down the
+ * screen. None set, or a way the app does not know, says nothing.
  */
 private fun pageDirectionOf(readingDirection: String?): PageDirection? = when (readingDirection?.trim()) {
     "RIGHT_TO_LEFT" -> PageDirection.RightToLeft
-    "LEFT_TO_RIGHT", "VERTICAL", "WEBTOON" -> PageDirection.LeftToRight
+    "LEFT_TO_RIGHT" -> PageDirection.LeftToRight
+    "VERTICAL", "WEBTOON" -> PageDirection.Vertical
     else -> null
 }
 

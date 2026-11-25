@@ -218,6 +218,29 @@ class ComicReaderBarsAndSettingsTest {
     }
 
     @Test
+    fun `an album whose server reads its series vertically opens so`() = runTest {
+        val store = InMemoryComicSettingsStore()
+        val webtoon = sampleComicDetail().copy(pageDirection = PageDirection.Vertical)
+
+        val state = ComicHarness(this, detail = webtoon, settings = store).reader().state.value
+
+        assertThat(state.settings.direction).isEqualTo(Direction.Vertical)
+        assertThat(store.directions).isEmpty()
+    }
+
+    @Test
+    fun `the direction the user chose for the series wins over the server's vertical`() = runTest {
+        val store = InMemoryComicSettingsStore(
+            directions = mapOf(DirectionScope.Series(SeriesId("4")) to Direction.RightToLeft),
+        )
+        val webtoon = sampleComicDetail().copy(pageDirection = PageDirection.Vertical)
+
+        val state = ComicHarness(this, detail = webtoon, settings = store).reader().state.value
+
+        assertThat(state.settings.direction).isEqualTo(Direction.RightToLeft)
+    }
+
+    @Test
     fun `an album whose server says no direction, or left to right, opens left to right`() = runTest {
         val said = sampleComicDetail().copy(pageDirection = PageDirection.LeftToRight)
 

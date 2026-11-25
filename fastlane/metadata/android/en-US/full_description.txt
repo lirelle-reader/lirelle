@@ -12,6 +12,7 @@ Lirelle reads, shows and plays the books, comics and audiobooks of your own serv
 <b>Comics and manga</b>
 • CBZ, CBR, CB7, PDF and DjVu
 • Fit to the page or the width, two pages side by side, left-to-right or right-to-left per series
+• Webtoons: a vertical reading direction, where the pages scroll one after the other without a break
 • Panel by panel: the panels are found on the device and shown one after the other
 
 <b>Everywhere</b>

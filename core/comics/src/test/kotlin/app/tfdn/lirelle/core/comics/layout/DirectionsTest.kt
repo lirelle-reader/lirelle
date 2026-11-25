@@ -41,6 +41,21 @@ class DirectionsTest {
     }
 
     @Test
+    fun `an album read vertically counts as read from the left where pages are turned`() {
+        assertThat(Direction.Vertical.sideways()).isEqualTo(Direction.LeftToRight)
+        assertThat(Direction.LeftToRight.sideways()).isEqualTo(Direction.LeftToRight)
+        assertThat(Direction.RightToLeft.sideways()).isEqualTo(Direction.RightToLeft)
+    }
+
+    @Test
+    fun `a vertical direction draws, goes forward and opens a page as left to right does`() {
+        assertThat(Spread(3, 4).drawn(Direction.Vertical)).containsExactly(3, 4).inOrder()
+        assertThat(Direction.Vertical.forwardEdge()).isEqualTo(Edge.Right)
+        assertThat(Direction.Vertical.openingCorner(forward = true)).isEqualTo(Corner.TopLeft)
+        assertThat(Direction.Vertical.openingCorner(forward = false)).isEqualTo(Corner.BottomRight)
+    }
+
+    @Test
     fun `a corner says its sides`() {
         assertThat(Corner.entries.filter { it.top }).containsExactly(Corner.TopLeft, Corner.TopRight)
         assertThat(Corner.entries.filter { it.left }).containsExactly(Corner.TopLeft, Corner.BottomLeft)

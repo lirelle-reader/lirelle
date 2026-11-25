@@ -8,6 +8,7 @@ import kotlinx.coroutines.launch
 internal class ComicHost(
     private val core: ComicCore,
     private val turning: Turning,
+    private val scrolling: Scrolling,
     private val network: NetworkReturn,
 ) :
     ComicHostEvents,
@@ -30,6 +31,8 @@ internal class ComicHost(
     }
 
     override fun onBackground() {
+        // A strip sent behind while it moves told no rest: the page at its top is written first.
+        scrolling.stripRested()
         network.background()
         core.session?.paused()
     }

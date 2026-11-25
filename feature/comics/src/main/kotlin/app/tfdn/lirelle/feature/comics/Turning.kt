@@ -3,6 +3,7 @@ package app.tfdn.lirelle.feature.comics
 import app.tfdn.lirelle.core.comics.layout.pageNumberOf
 import app.tfdn.lirelle.core.comics.layout.spreadIndexOf
 import app.tfdn.lirelle.feature.comics.end.EndOfAlbum
+import kotlinx.coroutines.CoroutineStart
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -42,6 +43,48 @@ internal class Bars(private val core: ComicCore, private val timings: ComicTimin
 }
 
 /**
+ * Fetching ahead around the page the reader stays on: asked once the reader stayed there a moment, given up when
+ * it moves on before that.
+ */
+internal class Settling(private val core: ComicCore, private val timings: ComicTimings) {
+    private var waiting: Job? = null
+
+    /** The page whose surroundings are asked for, or about to be; null when there is none, or it was given up. */
+    private var page: Int? = null
+
+    /** The reader is on [page]: the pages around it are fetched ahead once it stayed there. */
+    fun on(page: Int) {
+        cancel()
+        this.page = page
+        waiting = core.scope.launch {
+            delay(timings.settle)
+            core.fetchedAround = page
+            core.pages?.settle(page)
+        }
+    }
+
+    /**
+     * The strip rests on [page], which was told already. Left and come back to, the pages around it are still to
+     * be fetched; they are asked once for as long as the strip stays on it.
+     */
+    fun back(page: Int) {
+        if (this.page != page) on(page)
+    }
+
+    /** The reader left the page before it stayed there. */
+    fun cancel() {
+        waiting?.cancel()
+        page = null
+    }
+
+    /** The pages jumped to [page], which fetches around it by itself. */
+    fun jumped(page: Int) {
+        cancel()
+        this.page = page
+    }
+}
+
+/**
  * Moving from spread to spread: each spread reached is told to the pages, which fetch it, and to the
  * session, which keeps the position. Past the last one is the end of the album. A turn of the page hides the
  * bars; the slider, which is in them, does not.
@@ -52,10 +95,16 @@ internal class Turning(
     private val bars: Bars,
     private val end: EndOfAlbum,
 ) : ComicNavigation {
-    private var settling: Job? = null
+    /** The pages around the spread shown, fetched once the reader stayed on it. */
+    val settling = Settling(core, timings)
 
     /** Whether the end of the album is the position written: the user turned to its last spread, or past it. */
-    private var endWritten = false
+    var endWritten = false
+        private set
+
+    /** The page last told to the session: a strip at rest on it tells nothing more. */
+    var told = -1
+        private set
 
     override fun next() {
         if (!core.ready) return
@@ -82,7 +131,9 @@ internal class Turning(
     override fun goTo(pageIndex: Int) {
         if (!core.ready) return
         core.update { it.copy(previewPage = null) }
-        if (spreadIndexOf(core.current.spreads, pageIndex) != core.current.spreadIndex) land(pageIndex, moved = true)
+        // A strip may be anywhere in the page read: the slider released on that page still takes it to its top.
+        val elsewhere = spreadIndexOf(core.current.spreads, pageIndex) != core.current.spreadIndex
+        if (elsewhere || core.current.vertical) land(pageIndex, moved = true)
     }
 
     override fun previewPage(pageIndex: Int?) {
@@ -101,13 +152,18 @@ internal class Turning(
 
     /**
      * Goes straight to the spread that shows [pageIndex], at its beginning: what the pages were fetching
-     * for elsewhere is dropped. Without [moved] the user did not turn there: it is not written.
+     * for elsewhere is dropped ([ComicCore.onJumped]). Without [moved] the user did not turn there: it is not
+     * written. The strip of an album read vertically is told where to scroll ([ComicReaderUiState.landing]).
      */
     fun land(pageIndex: Int, moved: Boolean) {
-        show(spreadIndexOf(core.current.spreads, pageIndex), forward = true, moved = moved)
-        // A jump fetches around the page by itself.
-        settling?.cancel()
+        val index = spreadIndexOf(core.current.spreads, pageIndex)
+        // Noted before the spread is shown: the pages of a strip are not jumped to twice.
+        core.current.spreads.getOrNull(index)?.let { core.fetchedAround = it.first }
+        show(index, forward = true, moved = moved)
+        settling.jumped(core.page)
         core.pages?.jump(core.page)
+        core.onJumped()
+        core.update { it.copy(landing = Landing(core.page, it.landing.serial + 1)) }
     }
 
     /**
@@ -120,13 +176,14 @@ internal class Turning(
         // The pages shown count as read: the last spread is the whole album, with one page or two.
         val fraction = (spread.pages.last() + 1).toDouble() / state.pageCount
         endWritten = moved && spread.pages.last() == state.pageCount - 1
+        told = spread.first
         end.onPosition(fraction)
-        core.scope.launch { core.session?.relocated(pageNumberOf(spread.first), fraction, moved) }
-        settling?.cancel()
-        settling = core.scope.launch {
-            delay(timings.settle)
-            core.pages?.settle(spread.first)
+        // Begun at once, even in a scope that is over (the reader cleared while its strip moved): the session notes
+        // the place before it waits, and writes it when it is closed.
+        core.scope.launch(start = CoroutineStart.UNDISPATCHED) {
+            core.session?.relocated(pageNumberOf(spread.first), fraction, moved)
         }
+        settling.on(spread.first)
     }
 
     private fun show(index: Int, forward: Boolean, moved: Boolean = true) {

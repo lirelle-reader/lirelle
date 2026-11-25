@@ -4,7 +4,12 @@ import app.tfdn.lirelle.core.comics.ComicKey
 import app.tfdn.lirelle.core.comics.DocumentFailure
 import app.tfdn.lirelle.core.comics.OpeningProgress
 import app.tfdn.lirelle.core.comics.PageCountResult
+import app.tfdn.lirelle.core.comics.settings.Direction
+import app.tfdn.lirelle.core.comics.settings.DirectionScope
+import app.tfdn.lirelle.core.ids.SeriesId
+import app.tfdn.lirelle.core.library.model.PageDirection
 import app.tfdn.lirelle.core.library.model.PagedKind
+import app.tfdn.lirelle.core.testing.InMemoryComicSettingsStore
 import app.tfdn.lirelle.core.testing.MainDispatcherRule
 import app.tfdn.lirelle.core.testing.samplePagedDetail
 import com.google.common.truth.Truth.assertThat
@@ -53,6 +58,31 @@ class ComicReaderPagedKindsTest {
         assertThat(state.kind).isEqualTo(PagedKind.Djvu)
         assertThat(harness.opener.opened)
             .containsExactly(ComicKey(file.id, file.contentVersion, PagedKind.Djvu, AlbumBook))
+    }
+
+    @Test
+    fun `a PDF whose series is read vertically opens left to right, and stays so`() = runTest {
+        val store = InMemoryComicSettingsStore(
+            directions = mapOf(DirectionScope.Series(SeriesId("4")) to Direction.Vertical),
+        )
+        val reader = ComicHarness(this, detail = pdf, settings = store).reader()
+
+        assertThat(reader.state.value.settings.direction).isEqualTo(Direction.LeftToRight)
+
+        // The series's direction changes, in another album of it: the PDF's pages are still turned.
+        store.setDirection(DirectionScope.Series(SeriesId("4")), Direction.RightToLeft)
+        store.setDirection(DirectionScope.Series(SeriesId("4")), Direction.Vertical)
+
+        assertThat(reader.state.value.settings.direction).isEqualTo(Direction.LeftToRight)
+    }
+
+    @Test
+    fun `a DjVu whose server reads its series vertically opens left to right`() = runTest {
+        val djvu = samplePagedDetail("djvu").copy(pageDirection = PageDirection.Vertical)
+
+        val state = ComicHarness(this, detail = djvu).reader().state.value
+
+        assertThat(state.settings.direction).isEqualTo(Direction.LeftToRight)
     }
 
     @Test

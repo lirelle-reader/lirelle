@@ -144,5 +144,6 @@ internal class ComicOpening(
 private fun directionOf(direction: PageDirection?): Direction? = when (direction) {
     PageDirection.LeftToRight -> Direction.LeftToRight
     PageDirection.RightToLeft -> Direction.RightToLeft
+    PageDirection.Vertical -> Direction.Vertical
     null -> null
 }

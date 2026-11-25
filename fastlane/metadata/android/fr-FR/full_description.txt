@@ -12,6 +12,7 @@ Lirelle lit, affiche et fait écouter les livres, BD et livres audio de votre pr
 <b>BD et mangas</b>
 • CBZ, CBR, CB7, PDF et DjVu
 • Ajusté à la page ou à la largeur, deux pages côte à côte, sens de lecture de gauche à droite ou de droite à gauche par série
+• Webtoons : un sens de lecture vertical, où les pages défilent à la suite, sans coupure
 • Case par case : les cases sont trouvées sur l'appareil et montrées l'une après l'autre
 
 <b>Partout</b>

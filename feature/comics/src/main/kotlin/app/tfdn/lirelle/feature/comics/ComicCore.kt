@@ -63,6 +63,15 @@ internal class ComicCore(val bookId: BookId, val scope: CoroutineScope) {
      */
     var page = 0
 
+    /** The pages the strip of an album read vertically shows; empty when it told none. */
+    var strip: IntRange = IntRange.EMPTY
+
+    /**
+     * The page the pages were last fetched around: the one last jumped to or settled on; null before any was. A
+     * strip that scrolled far from it has left the pages fetched ahead behind.
+     */
+    var fetchedAround: Int? = null
+
     /** The pages whose image is wider than it is high, as far as they were seen. */
     val wide = mutableSetOf<Int>()
 
@@ -79,16 +88,23 @@ internal class ComicCore(val bookId: BookId, val scope: CoroutineScope) {
     /** Told each time the spreads, or the one shown, may have changed. */
     var onLayout: () -> Unit = {}
 
+    /** Told once the pages jumped to [page]: the fetches of the pages far from it were dropped. */
+    var onJumped: () -> Unit = {}
+
     val current: ComicReaderUiState get() = state.value
 
     val ready: Boolean get() = current.phase == ComicPhase.Ready
 
     fun update(transform: (ComicReaderUiState) -> ComicReaderUiState) = state.update(transform)
 
-    /** Works the spreads out again, from the window, the setting and the wide pages, around [page]. */
+    /**
+     * Works the spreads out again, from the window, the setting and the wide pages, around [page]. Read
+     * vertically, each page is a spread of its own.
+     */
     fun layout() {
         if (!ready) return
-        val twoPages = showsTwoPages(current.settings.twoPages, widthDp, heightDp)
+        val twoPages = !current.vertical && showsTwoPages(current.settings.twoPages, widthDp, heightDp)
+        if (!current.vertical) strip = IntRange.EMPTY
         val spreads = spreads(current.pageCount, wide, twoPages)
         update { it.copy(twoPages = twoPages, spreads = spreads, spreadIndex = spreadIndexOf(spreads, page)) }
         onLayout()

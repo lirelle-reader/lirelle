@@ -153,7 +153,7 @@ private fun walked(stop: Rect, walk: Walk, viewport: Size, direction: Direction)
     return when {
         starts.size == 1 -> listOf(stop)
         !walk.wide -> starts.map { Rect(stop.left, stop.top + it, stop.right, stop.top + it + length) }
-        direction == Direction.LeftToRight ->
+        direction != Direction.RightToLeft ->
             starts.map { Rect(stop.left + it, stop.top, stop.left + it + length, stop.bottom) }
         else -> starts.map { Rect(stop.right - it - length, stop.top, stop.right - it, stop.bottom) }
     }

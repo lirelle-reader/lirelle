@@ -40,6 +40,9 @@
     <string name="comics_settings_direction">Reading direction</string>
     <string name="comics_direction_left_to_right">Left to right</string>
     <string name="comics_direction_right_to_left">Right to left</string>
+    <string name="comics_direction_vertical">Vertical</string>
+    <!-- Under the directions of an album read vertically: what that direction is. -->
+    <string name="comics_direction_vertical_note">Vertical: the pages follow one another without a break, for webtoons.</string>
     <!-- What the reading direction is remembered for: the series, by its name, or the album alone. -->
     <string name="comics_direction_for_series">For every album of the series “%1$s”</string>
     <string name="comics_direction_for_album">For this album</string>

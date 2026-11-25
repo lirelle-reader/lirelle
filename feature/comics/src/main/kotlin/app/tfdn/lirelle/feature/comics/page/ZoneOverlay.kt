@@ -96,7 +96,7 @@ private fun DrawScope.zone(zone: Zone, number: Int, marks: ZoneMarks) {
     }
     drawRect(colour, rect.topLeft, rect.size, style = Stroke(FrameWidth.toPx()))
     label(number.toString(), marks.measurer) { box ->
-        val fromLeft = marks.direction == Direction.LeftToRight
+        val fromLeft = marks.direction != Direction.RightToLeft
         Offset(if (fromLeft) rect.left else rect.right - box.width, rect.top)
     }
 }

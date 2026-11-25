@@ -1,6 +1,7 @@
 package app.tfdn.lirelle.feature.comics
 
 import android.util.Log
+import app.tfdn.lirelle.core.comics.layout.sideways
 import app.tfdn.lirelle.core.comics.panels.PagePanels
 import app.tfdn.lirelle.core.comics.panels.PageZones
 import app.tfdn.lirelle.core.comics.settings.ComicSettingsStore
@@ -90,21 +91,26 @@ internal class PanelMode(
         telling.count()
     }
 
-    /** The mode is what the settings say of it, for an album whose pages can be cut. Only what changed. */
+    /**
+     * The mode is what the settings say of it, for an album whose pages can be cut and are turned: a strip read
+     * vertically has no panel to go to. Only what changed.
+     */
     private fun follow(panels: PagePanels) {
         val state = core.current
-        val on = panels.cuts && state.settings.panels
-        val reading = state.panels.copy(offered = panels.cuts, on = on, wholePageFirst = state.settings.wholePageFirst)
+        val offered = panels.cuts && !state.vertical
+        val on = offered && state.settings.panels
+        val reading = state.panels.copy(offered = offered, on = on, wholePageFirst = state.settings.wholePageFirst)
         if (reading != state.panels) core.update { it.copy(panels = reading) }
     }
 
     /**
      * How the album is read, then where the reader is, then whether its pages are cut: zones are those of a
-     * direction, and the page shown is the first cut. Only what changed.
+     * direction, and the page shown is the first cut. Only what changed. The panels know only pages turned: they
+     * are never told a vertical direction.
      */
     private fun tell(panels: PagePanels) {
         val state = core.current
-        val direction = state.settings.direction
+        val direction = state.settings.direction.sideways()
         val shown = (state.spread ?: return).first to state.pageCount
         if (direction != this.direction) {
             this.direction = direction
