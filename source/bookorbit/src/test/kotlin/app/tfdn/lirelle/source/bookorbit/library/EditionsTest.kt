@@ -69,6 +69,13 @@ class EditionsTest {
     }
 
     @Test
+    fun `a linked book that is gone is left out, the others are listed`() {
+        val list = editions(book(edition(1), edition(2, status = "missing"), edition(3)))
+
+        assertThat(list.map { it.bookId.value }).containsExactly("1", "3").inOrder()
+    }
+
+    @Test
     fun `the open book is among its editions, marked`() {
         val list = editions(book(edition(1), edition(2)))
 
@@ -232,6 +239,16 @@ class EditionsTest {
         assertThat(list.map { it.progress }.toSet()).containsExactly(EditionProgress.Unknown)
         assertThat(list[1].title).isEqualTo("T1")
         assertThat(list[1].media).isEqualTo(EditionMedia.Text)
+    }
+
+    @Test
+    fun `without editions on the server, the open book comes first when it is the main one`() {
+        val older = book(self = null, edition(3), edition(5), lead = true).copy(id = 9)
+
+        val list = editions(older, groups = false)
+
+        assertThat(list.map { it.bookId.value }).containsExactly("9", "3", "5").inOrder()
+        assertThat(list.first().isOpen).isTrue()
     }
 
     @Test
