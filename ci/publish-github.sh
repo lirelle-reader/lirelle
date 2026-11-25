@@ -11,8 +11,14 @@ FILE="$RUNNER_TEMP/lirelle-$NAME.apk"
 cp "$APK" "$FILE"
 
 if [[ ${RELEASE_CREATED:-} == true ]]; then
-  gh release upload "${TAG_NAME:?}" "$FILE"
+  # Replaced if a retried run attached it already: the build is reproducible, the file is the same.
+  gh release upload "${TAG_NAME:?}" "$FILE" --clobber
   echo "Attached lirelle-$NAME.apk to $TAG_NAME"
+  exit 0
+fi
+
+if gh release view "dev-$NAME" > /dev/null 2>&1; then
+  echo "dev-$NAME exists already (a retried run): left as it is"
   exit 0
 fi
 

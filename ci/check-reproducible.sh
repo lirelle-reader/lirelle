@@ -4,13 +4,27 @@
 # check F-Droid makes before it publishes our signed APK).
 #
 # usage: ci/check-reproducible.sh <tag>      a release (v*) or a development pre-release (dev-*)
-# needs: docker, gh, uv (for apksigcopier); diffoscope, if present, shows what differs. KEEP=1 keeps the work folder.
+# needs: docker, gh, uv (for apksigcopier), and apksigner from the Android SDK's build tools ($ANDROID_HOME, else
+# ~/Android/Sdk); diffoscope, if present, shows what differs. KEEP=1 keeps the work folder.
 set -euo pipefail
 
 tag=${1:?usage: ci/check-reproducible.sh <tag>}
 repo=lirelle-reader/lirelle
 image=registry.gitlab.com/fdroid/fdroidserver:buildserver
 root=$(cd "$(dirname "$0")/.." && pwd)
+# Before anything is downloaded or built: apksigcopier calls apksigner, from the SDK's newest build tools.
+sdk=${ANDROID_HOME:-$HOME/Android/Sdk}
+tools=$(printf '%s\n' "$sdk"/build-tools/* | sort -V | tail -1)
+if [[ ! -x $tools/apksigner ]]; then
+    echo "apksigner not found under $sdk/build-tools: set ANDROID_HOME to an Android SDK with build tools" >&2
+    exit 1
+fi
+PATH="$tools:$PATH"
+# The versionCode counts main's commits: a shallow clone would build another one and fail for no reason.
+if [[ $(git -C "$root" rev-parse --is-shallow-repository) == true ]]; then
+    echo "$root is a shallow clone: git fetch --unshallow first" >&2
+    exit 1
+fi
 work=$(mktemp -d)
 if [[ -n ${KEEP:-} ]]; then
     echo "(the work stays in $work)"
@@ -40,9 +54,6 @@ docker run --rm -v "$work/src:/build" -v "$work/gradle:/gradle" -w /build -e GRA
 unsigned=$work/src/app/build/outputs/apk/release/app-release-unsigned.apk
 
 echo "== comparison"
-# apksigcopier calls apksigner, from the SDK's newest build tools.
-sdk=${ANDROID_HOME:-$HOME/Android/Sdk}
-PATH="$(printf '%s\n' "$sdk"/build-tools/* | sort -V | tail -1):$PATH"
 if uvx apksigcopier compare "$signed" --unsigned "$unsigned"; then
     echo "REPRODUCIBLE: $tag builds the same as its signed APK"
 else

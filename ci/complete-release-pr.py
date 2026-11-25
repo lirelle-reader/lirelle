@@ -69,7 +69,8 @@ def notes(version):
             lines.append(f'• {text[0].upper()}{text[1:]}')
     kept = []
     for line in lines:
-        if len('\n'.join(kept + [line])) > LIMIT:
+        # The final newline counts too.
+        if len('\n'.join(kept + [line])) + 1 > LIMIT:
             break
         kept.append(line)
     # A section's name left with none of its lines under it goes.
