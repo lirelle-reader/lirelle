@@ -130,6 +130,31 @@ internal data class CoverDto(
     val source: String? = null,
 )
 
+/** The reader's own progress in an edition, of the medium used most recently; absent when not started. */
+@Serializable
+internal data class EditionProgressDto(val percentage: Double = 0.0, val finished: Boolean = false)
+
+/**
+ * Another book shown as the same work (`LinkedBookSummary` in the server's types). The fields after [isLead] come
+ * with the server's feature `book-editions` (3.10.0); before it they are absent.
+ */
+@Serializable
+internal data class LinkedBookDto(
+    val bookId: Long,
+    val libraryName: String = "",
+    val title: String? = null,
+    val formats: List<String> = emptyList(),
+    val status: String = "present",
+    val isLead: Boolean = false,
+    val editionName: String? = null,
+    val publisher: String? = null,
+    val publishedYear: Int? = null,
+    val narrators: List<String> = emptyList(),
+    val coverUpdatedAt: String? = null,
+    val progress: EditionProgressDto? = null,
+    val lastReadAt: String? = null,
+)
+
 @Serializable
 internal data class BookDetailDto(
     val id: Long,
@@ -158,6 +183,11 @@ internal data class BookDetailDto(
     val readStatus: ReadStatusDto? = null,
     val audioMetadata: AudioMetadataDto? = null,
     val collections: List<NamedDto> = emptyList(),
+    val linkedBooks: List<LinkedBookDto> = emptyList(),
+    /** The open book drawn like its [linkedBooks]; null when it is not linked, absent before 3.10.0. */
+    val linkSelf: LinkedBookDto? = null,
+    val linkIsLead: Boolean = false,
+    val editionName: String? = null,
 )
 
 /** [text] is the place of the file, as in its own position: only its page is read here. */

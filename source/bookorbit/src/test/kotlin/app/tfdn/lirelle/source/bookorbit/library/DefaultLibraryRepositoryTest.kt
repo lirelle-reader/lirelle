@@ -10,6 +10,7 @@ import app.tfdn.lirelle.core.library.model.AuthorSort
 import app.tfdn.lirelle.core.library.model.BookFilters
 import app.tfdn.lirelle.core.library.model.BookListRequest
 import app.tfdn.lirelle.core.library.model.BookListSource
+import app.tfdn.lirelle.core.library.model.EditionProgress
 import app.tfdn.lirelle.core.library.model.Genre
 import app.tfdn.lirelle.core.library.model.HomeRowExtent
 import app.tfdn.lirelle.core.library.model.HomeRowKind
@@ -44,6 +45,7 @@ import org.junit.After
 import org.junit.Before
 import org.junit.Test
 
+@Suppress("LargeClass") // One test per repository operation.
 class DefaultLibraryRepositoryTest {
 
     private val server = MockWebServer()
@@ -367,6 +369,32 @@ class DefaultLibraryRepositoryTest {
 
         assertThat(book.files).isNotEmpty()
         assertThat(server.takeRequest().target()).isEqualTo("/api/v1/books/12")
+    }
+
+    @Test
+    fun `a book with other editions lists them, named and ordered as its server does`() = runBlocking {
+        server.enqueueJson(
+            """{"id":1481,"addedAt":"2026-01-01T00:00:00.000Z","title":"22/11/63","editionName":"Version en français",
+                "linkIsLead":false,
+                "linkSelf":{"bookId":1481,"libraryName":"EBooks","title":"22/11/63","formats":["epub","m4b"],
+                  "status":"present","isLead":false,"editionName":"Version en français",
+                  "progress":{"percentage":42.5,"finished":false},"lastReadAt":"2026-11-20T10:00:00.000Z"},
+                "linkedBooks":[{"bookId":1477,"libraryName":"EBooks","title":"11/22/63","formats":["epub"],
+                  "status":"present","isLead":true,"editionName":"Version en anglais","progress":null,
+                  "lastReadAt":null,"coverUpdatedAt":"2026-10-07T13:08:54.938Z"}]}""",
+        )
+        server.enqueueJson(appInfo("book-links", "book-editions"))
+
+        val book = (repository.book(BookId("1481")) as ApiResult.Success).value
+
+        assertThat(book.editionName).isEqualTo("Version en français")
+        assertThat(book.editions.map { it.label })
+            .containsExactly("Version en anglais", "Version en français").inOrder()
+        assertThat(book.editions.map { it.isOpen }).containsExactly(false, true).inOrder()
+        assertThat(book.editions.last().progress).isEqualTo(EditionProgress.InProgress(43))
+        assertThat(book.editions.first().coverUrl).startsWith("${server.serverUrl}/api/v1/books/1477/thumbnail")
+        assertThat(server.takeRequest().target()).isEqualTo("/api/v1/books/1481")
+        assertThat(server.takeRequest().target()).isEqualTo("/api/v1/app-info")
     }
 
     @Test
