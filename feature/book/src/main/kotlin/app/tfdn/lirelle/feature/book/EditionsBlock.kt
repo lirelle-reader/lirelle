@@ -97,8 +97,12 @@ internal fun EditionsBlock(book: BookDetail, onOpenBook: (BookId) -> Unit, colum
  *
  * In this module a text under a `Role.Button` node must stay on one line (the text-fit rule of `LaidOutText`),
  * and these texts wrap as they need. So what takes the tap and is read is not around the texts: it is a sibling
- * layer under them, as large as the line, which says the line in one sentence; the texts themselves are hidden
- * from accessibility, so that they are not read a second time.
+ * layer, as large as the line, which says the line in one sentence; the texts themselves are hidden from
+ * accessibility, so that they are not read a second time.
+ *
+ * The layer is over the texts, not under them: a finger exploring the screen with TalkBack finds the topmost
+ * sibling only, and under the texts it would find a hidden text, and say nothing. The ripple is drawn over
+ * the line for the same reason.
  *
  * @param openTitle the title of the book whose page this is.
  */
@@ -120,19 +124,6 @@ private fun EditionLine(edition: BookEdition, openTitle: String, onOpenBook: (Bo
             .background(ground),
         contentAlignment = Alignment.CenterStart,
     ) {
-        Box(
-            modifier = Modifier
-                .matchParentSize()
-                .testTag(editionTag(edition.bookId))
-                .then(
-                    if (edition.isOpen) {
-                        Modifier
-                    } else {
-                        Modifier.clickable(onClickLabel = openLabel, role = Role.Button) { onOpenBook(edition.bookId) }
-                    },
-                )
-                .semantics { contentDescription = spoken },
-        )
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -159,6 +150,20 @@ private fun EditionLine(edition: BookEdition, openTitle: String, onOpenBook: (Bo
             }
             if (!edition.isOpen) Icon(Icons.AutoMirrored.Rounded.KeyboardArrowRight, contentDescription = null)
         }
+        // The last of the siblings, so over the texts: the one a finger exploring the screen finds.
+        Box(
+            modifier = Modifier
+                .matchParentSize()
+                .testTag(editionTag(edition.bookId))
+                .then(
+                    if (edition.isOpen) {
+                        Modifier
+                    } else {
+                        Modifier.clickable(onClickLabel = openLabel, role = Role.Button) { onOpenBook(edition.bookId) }
+                    },
+                )
+                .semantics { contentDescription = spoken },
+        )
     }
 }
 

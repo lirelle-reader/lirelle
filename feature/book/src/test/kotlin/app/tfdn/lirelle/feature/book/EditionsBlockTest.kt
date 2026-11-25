@@ -104,10 +104,10 @@ class EditionsBlockTest {
 
         assertThat(shown(english, "Version en anglais")).isEqualTo(1)
         assertThat(shown(english, "A Game of Thrones")).isEqualTo(1)
-        assertThat(shown(english, "Book and audio · finished")).isEqualTo(1)
+        assertThat(shown(english, "Book and audio\u00A0· finished")).isEqualTo(1)
         assertThat(shown(first, "Version en français, tome 1/2")).isEqualTo(1)
         assertThat(shown(first, "Le trône de fer")).isEqualTo(1)
-        assertThat(shown(first, "Book and audio · 42% read")).isEqualTo(1)
+        assertThat(shown(first, "Book and audio\u00A0· 42% read")).isEqualTo(1)
         assertThat(shown(english, "This edition")).isEqualTo(0)
     }
 
@@ -116,7 +116,7 @@ class EditionsBlockTest {
         show()
 
         assertThat(shown(open, "Version en français, tome 2/2")).isEqualTo(1)
-        assertThat(shown(open, "Book · not started")).isEqualTo(1)
+        assertThat(shown(open, "Book\u00A0· not started")).isEqualTo(1)
         assertThat(shown(open, "This edition")).isEqualTo(1)
         // The title of the open book is at the top of its page: no line says it again.
         compose.onAllNodesWithText("Le donjon rouge", useUnmergedTree = true).assertCountEquals(0)
@@ -143,6 +143,30 @@ class EditionsBlockTest {
     }
 
     @Test
+    fun `the element of a line is over its texts, where a finger exploring the screen finds it`() {
+        show()
+
+        // A finger finds the topmost of the siblings under it, and nothing when that one is hidden: the
+        // element that says the line comes after the texts and the bar of its line, so it is laid over them.
+        listOf(
+            english to listOf("Version en anglais", "A Game of Thrones", "Book and audio\u00A0· finished"),
+            first to listOf("Version en français, tome 1/2", "Le trône de fer", "Book and audio\u00A0· 42% read"),
+            open to listOf("Version en français, tome 2/2", "Book\u00A0· not started", "This edition"),
+        ).forEach { (edition, texts) ->
+            val tag = editionTag(edition.bookId)
+            val element = compose.onNodeWithTag(tag, useUnmergedTree = true).fetchSemanticsNode()
+            val siblings = checkNotNull(element.parent).children
+            val said = siblings.mapNotNull { it.config.getOrNull(SemanticsProperties.Text) }
+                .map { words -> words.joinToString { it.text } }
+            assertThat(said).containsExactlyElementsIn(texts).inOrder()
+            assertThat(siblings.last().id).isEqualTo(element.id)
+        }
+        val bar = compose.onNodeWithTag(EditionBarTag, useUnmergedTree = true).fetchSemanticsNode()
+        assertThat(checkNotNull(bar.parent).children.last().config.getOrNull(SemanticsProperties.TestTag))
+            .isEqualTo(editionTag(first.bookId))
+    }
+
+    @Test
     fun `only an edition being read draws how far the reader is`() {
         show()
 
@@ -152,7 +176,7 @@ class EditionsBlockTest {
         compose.onAllNodesWithTag(EditionBarTag, useUnmergedTree = true).assertCountEquals(1)
         // Under the texts of its line, and no wider than them.
         val bar = compose.onNodeWithTag(EditionBarTag, useUnmergedTree = true).getUnclippedBoundsInRoot()
-        val details = compose.onAllNodesWithText("Book and audio · 42% read", useUnmergedTree = true)[0]
+        val details = compose.onAllNodesWithText("Book and audio\u00A0· 42% read", useUnmergedTree = true)[0]
             .getUnclippedBoundsInRoot()
         assertThat(bar.top).isAtLeast(details.bottom)
         assertThat(bar.left).isEqualTo(details.left)
@@ -165,7 +189,7 @@ class EditionsBlockTest {
         show(listOf(english, reading))
 
         assertThat(bars(reading)).isEqualTo(1)
-        assertThat(shown(reading, "Book · 7% read")).isEqualTo(1)
+        assertThat(shown(reading, "Book\u00A0· 7% read")).isEqualTo(1)
     }
 
     @Test
@@ -174,9 +198,9 @@ class EditionsBlockTest {
         val comic = first.copy(media = EditionMedia.Comic, progress = EditionProgress.NotStarted)
         show(listOf(audio, comic, open))
 
-        assertThat(shown(audio, "Audio · finished")).isEqualTo(1)
-        assertThat(shown(comic, "Comic · not started")).isEqualTo(1)
-        assertThat(spoken(comic)).isEqualTo("Version en français, tome 1/2, Le trône de fer, Comic · not started")
+        assertThat(shown(audio, "Audio\u00A0· finished")).isEqualTo(1)
+        assertThat(shown(comic, "Comic\u00A0· not started")).isEqualTo(1)
+        assertThat(spoken(comic)).isEqualTo("Version en français, tome 1/2, Le trône de fer, Comic\u00A0· not started")
     }
 
     @Test
@@ -187,9 +211,9 @@ class EditionsBlockTest {
         show(listOf(audio, first, comic))
 
         // A space that does not break before the sign: "42" never ends a line that "%" begins.
-        assertThat(shown(first, "Livre et audio · lu à 42\u00A0%")).isEqualTo(1)
-        assertThat(shown(audio, "Audio · terminé")).isEqualTo(1)
-        assertThat(shown(comic, "BD · pas commencé")).isEqualTo(1)
+        assertThat(shown(first, "Livre et audio\u00A0· lu à 42\u00A0%")).isEqualTo(1)
+        assertThat(shown(audio, "Audio\u00A0· terminé")).isEqualTo(1)
+        assertThat(shown(comic, "BD\u00A0· pas commencé")).isEqualTo(1)
         assertThat(shown(comic, "Cette édition")).isEqualTo(1)
         assertThat(line(first).fetchSemanticsNode().config.getOrNull(SemanticsActions.OnClick)?.label)
             .isEqualTo("Ouvrir cette édition")
@@ -206,7 +230,7 @@ class EditionsBlockTest {
         // Its title names the open edition too, once.
         assertThat(shown(here, "Le donjon rouge")).isEqualTo(1)
         assertThat(shown(here, "Book")).isEqualTo(1)
-        compose.onAllNodesWithText(" · ", substring = true, useUnmergedTree = true).assertCountEquals(0)
+        compose.onAllNodesWithText("·", substring = true, useUnmergedTree = true).assertCountEquals(0)
         assertThat(spoken(unnamed)).isEqualTo("A Game of Thrones, Book")
     }
 
@@ -241,9 +265,10 @@ class EditionsBlockTest {
     fun `a line is announced as one element`() {
         show()
 
-        assertThat(spoken(english)).isEqualTo("Version en anglais, A Game of Thrones, Book and audio · finished")
-        assertThat(spoken(first)).isEqualTo("Version en français, tome 1/2, Le trône de fer, Book and audio · 42% read")
-        assertThat(spoken(open)).isEqualTo("Version en français, tome 2/2, Book · not started, This edition")
+        assertThat(spoken(english)).isEqualTo("Version en anglais, A Game of Thrones, Book and audio\u00A0· finished")
+        assertThat(spoken(first))
+            .isEqualTo("Version en français, tome 1/2, Le trône de fer, Book and audio\u00A0· 42% read")
+        assertThat(spoken(open)).isEqualTo("Version en français, tome 2/2, Book\u00A0· not started, This edition")
         // Nothing of the block is read a second time: its heading, and one element per line.
         val read = compose.onAllNodesWithText("", substring = true, useUnmergedTree = true).fetchSemanticsNodes()
             .filterNot { SemanticsProperties.HideFromAccessibility in it.config }
