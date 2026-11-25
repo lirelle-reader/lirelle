@@ -23,7 +23,7 @@ private const val Marker = "epubcfi(/6/4!/4/2[s2]/1:0)"
 
 /** Where a book stands, as the test says. */
 class FakeCarPlaces : CarPlaces {
-    var listened = AudiobookStanding(at = null, finished = false)
+    var listened = AudiobookStanding(finished = false)
     var narrated = NarrationStanding(heardAt = null, marker = null)
 
     override suspend fun audiobook(bookId: BookId) = listened
@@ -60,7 +60,7 @@ class CarStartTest {
 
     @Test
     fun `a finished audiobook starts over, as on the phone`() = runTest {
-        places.listened = AudiobookStanding(at("10:00"), finished = true)
+        places.listened = AudiobookStanding(finished = true)
 
         assertThat(request(audioOnly)).isEqualTo(LoadRequest.Audiobook(Book, fromStart = true))
     }
@@ -76,28 +76,29 @@ class CarStartTest {
     }
 
     @Test
-    fun `with both, the one whose position moved last plays`() = runTest {
-        places.listened = AudiobookStanding(at("10:00"), finished = false)
+    fun `with both, the audiobook plays even when the narration was heard`() = runTest {
         places.narrated = NarrationStanding(heardAt = at("11:00"), marker = null)
-        assertThat(request()).isEqualTo(LoadRequest.Narration(Book, ReadAloud, NarrationStart.Resume))
 
-        places.listened = AudiobookStanding(at("12:00"), finished = false)
         assertThat(request()).isEqualTo(LoadRequest.Audiobook(Book, fromStart = false))
-
-        // Only one of them was ever listened to.
-        places.listened = AudiobookStanding(null, finished = false)
-        assertThat(request()).isEqualTo(LoadRequest.Narration(Book, ReadAloud, NarrationStart.Resume))
     }
 
     @Test
-    fun `the book's page marker counts for the narration - a book read in text since the audiobook is narrated`() =
-        runTest {
-            places.listened = AudiobookStanding(at("10:00"), finished = false)
-            places.narrated = NarrationStanding(heardAt = null, marker = PageMarker(Marker, at("11:00")))
+    fun `with both, the audiobook plays even when the text was read`() = runTest {
+        places.narrated = NarrationStanding(heardAt = null, marker = PageMarker(Marker, at("11:00")))
+        assertThat(request()).isEqualTo(LoadRequest.Audiobook(Book, fromStart = false))
 
-            assertThat(request())
-                .isEqualTo(LoadRequest.Narration(Book, ReadAloud, NarrationStart.AtMarker(Marker)))
-        }
+        // Read further since the narration was heard: the marker starts no narration either.
+        places.narrated = NarrationStanding(heardAt = at("10:00"), marker = PageMarker(Marker, at("11:00")))
+        assertThat(request()).isEqualTo(LoadRequest.Audiobook(Book, fromStart = false))
+    }
+
+    @Test
+    fun `with both, a finished audiobook starts over, whatever the narration`() = runTest {
+        places.listened = AudiobookStanding(finished = true)
+        places.narrated = NarrationStanding(heardAt = at("11:00"), marker = PageMarker(Marker, at("12:00")))
+
+        assertThat(request()).isEqualTo(LoadRequest.Audiobook(Book, fromStart = true))
+    }
 
     @Test
     fun `a narration starts at the page marker when the book was read further since it was heard`() = runTest {

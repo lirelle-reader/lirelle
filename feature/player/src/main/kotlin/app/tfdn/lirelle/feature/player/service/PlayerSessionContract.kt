@@ -183,8 +183,8 @@ object PlayerSessionContract {
 
     /**
      * The item the player is set to for a book the car starts: a placeholder, as [resumeItem] is, that the
-     * session's player turns into loading the book in the medium listened to last. [title] when the car was
-     * listed the book.
+     * session's player turns into loading the book: its audiobook, its narration when it has no audiobook.
+     * [title] when the car was listed the book.
      */
     fun startItem(bookId: BookId, title: String?): MediaItem = MediaItem.Builder()
         .setMediaId("$StartPrefix${bookId.value}")

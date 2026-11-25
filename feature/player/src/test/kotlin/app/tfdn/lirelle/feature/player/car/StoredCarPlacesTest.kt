@@ -55,20 +55,12 @@ class StoredCarPlacesTest {
     }
 
     @Test
-    fun `an audiobook never listened to has no date, and is not finished`() = runTest {
-        assertThat(places.audiobook(Book)).isEqualTo(AudiobookStanding(at = null, finished = false))
-    }
+    fun `an audiobook never listened to, or only begun, is not finished`() = runTest {
+        assertThat(places.audiobook(Book)).isEqualTo(AudiobookStanding(finished = false))
 
-    @Test
-    fun `an audiobook's date is the newest of the device's and the server's`() = runTest {
         listenedOnDevice("10:00")
-        assertThat(places.audiobook(Book).at).isEqualTo(at("10:00"))
-
         listenedOnServer("11:00")
-        assertThat(places.audiobook(Book).at).isEqualTo(at("11:00"))
-
-        listenedOnDevice("12:00")
-        assertThat(places.audiobook(Book).at).isEqualTo(at("12:00"))
+        assertThat(places.audiobook(Book).finished).isFalse()
     }
 
     @Test
