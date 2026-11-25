@@ -144,4 +144,11 @@ class AuthDtosTest {
         assertThat(printed[3]).doesNotContain("1".repeat(64))
         assertThat(printed[0]).contains("reader")
     }
+
+    @Test
+    fun `app info lists the server's features, none when it sends none`() {
+        assertThat(ApiJson.decodeFromString<AppInfoDto>(Fixtures.read("app-info.json")).features)
+            .containsExactly("server-connection-identity")
+        assertThat(ApiJson.decodeFromString<AppInfoDto>("""{"version":"v3.4.0"}""").features).isEmpty()
+    }
 }

@@ -20,6 +20,7 @@ import app.tfdn.lirelle.source.bookorbit.library.dto.MediaOverlayDto
 import app.tfdn.lirelle.source.bookorbit.library.dto.ReadStatusDto
 import app.tfdn.lirelle.source.bookorbit.library.dto.ReadingProgressListDto
 import app.tfdn.lirelle.source.bookorbit.library.dto.RelatedBookDto
+import app.tfdn.lirelle.source.bookorbit.library.dto.SeriesInfoDto
 import app.tfdn.lirelle.source.bookorbit.library.dto.SeriesPageDto
 import app.tfdn.lirelle.source.bookorbit.library.dto.SeriesSummaryDto
 import app.tfdn.lirelle.source.bookorbit.library.dto.SessionStatsDto
@@ -206,6 +207,65 @@ class MappersTest {
         assertThat(withPortrait.portraitUrl).isEqualTo("https://books.example.com/api/v1/authors/5/thumbnail?t=17")
 
         assertThat(mapper.author(AuthorSummaryDto(6, "Other")).portraitUrl).isNull()
+    }
+
+    @Test
+    fun `an author counts works where the server counts them, books otherwise`() {
+        assertThat(mapper.author(AuthorSummaryDto(53, "Name", bookCount = 23, workCount = 7)).bookCount).isEqualTo(7)
+        assertThat(mapper.author(AuthorSummaryDto(53, "Name", bookCount = 23)).bookCount).isEqualTo(23)
+    }
+
+    @Test
+    fun `a series counts its volumes, an edition of a volume not counted twice`() {
+        val listed = mapper.series(
+            SeriesSummaryDto(
+                id = 9,
+                name = "S",
+                bookCount = 6,
+                readCount = 4,
+                ownedVolumeCount = 5,
+                readVolumeCount = 3,
+            ),
+        )
+        val opened = mapper.series(
+            SeriesInfoDto(id = 9, name = "S", bookCount = 6, readCount = 4, ownedVolumeCount = 5, readVolumeCount = 3),
+            coverUrls = emptyList(),
+        )
+
+        assertThat(listed.bookCount).isEqualTo(5)
+        assertThat(listed.readCount).isEqualTo(3)
+        assertThat(opened.bookCount).isEqualTo(5)
+        assertThat(opened.readCount).isEqualTo(3)
+    }
+
+    @Test
+    fun `a series whose server counts no volumes counts its books`() {
+        val listed = mapper.series(SeriesSummaryDto(id = 9, name = "S", bookCount = 6, readCount = 4))
+        val opened = mapper.series(
+            SeriesInfoDto(id = 9, name = "S", bookCount = 6, readCount = 4),
+            coverUrls = emptyList(),
+        )
+
+        assertThat(listed.bookCount).isEqualTo(6)
+        assertThat(listed.readCount).isEqualTo(4)
+        assertThat(opened.bookCount).isEqualTo(6)
+        assertThat(opened.readCount).isEqualTo(4)
+    }
+
+    @Test
+    fun `a series with one volume count only counts its books, never one of each`() {
+        val listed = mapper.series(
+            SeriesSummaryDto(id = 9, name = "S", bookCount = 6, readCount = 6, ownedVolumeCount = 5),
+        )
+        val opened = mapper.series(
+            SeriesInfoDto(id = 9, name = "S", bookCount = 6, readCount = 2, readVolumeCount = 1),
+            coverUrls = emptyList(),
+        )
+
+        assertThat(listed.bookCount).isEqualTo(6)
+        assertThat(listed.readCount).isEqualTo(6)
+        assertThat(opened.bookCount).isEqualTo(6)
+        assertThat(opened.readCount).isEqualTo(2)
     }
 
     @Test

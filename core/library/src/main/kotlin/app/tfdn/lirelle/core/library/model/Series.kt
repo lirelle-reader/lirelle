@@ -8,8 +8,9 @@ data class Series(
     val id: SeriesId,
     val name: String,
     val authors: List<String>,
+    /** What the series holds, as its server counts it: books, or volumes where it tells them from their editions. */
     val bookCount: Int,
-    /** Books whose status is exactly "read", as the server counts them. */
+    /** Those of [bookCount] that are read, counted the same way. */
     val readCount: Int,
     /** Up to three absolute cover URLs for the stacked tile. */
     val coverUrls: List<String>,

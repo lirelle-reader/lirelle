@@ -40,6 +40,7 @@ import app.tfdn.lirelle.source.bookorbit.library.dto.SeriesInfoDto
 import app.tfdn.lirelle.source.bookorbit.network.ApiProvider
 import app.tfdn.lirelle.source.bookorbit.network.CallKind
 import app.tfdn.lirelle.source.bookorbit.network.ErrorMapper
+import app.tfdn.lirelle.source.bookorbit.network.ServerFeatures
 import app.tfdn.lirelle.source.bookorbit.network.bookIdOf
 import app.tfdn.lirelle.source.bookorbit.network.bookOrbit
 import java.io.IOException
@@ -59,6 +60,7 @@ import retrofit2.HttpException
 internal class DefaultLibraryRepository(
     private val api: ApiProvider<LibraryApi>,
     private val errors: ErrorMapper,
+    private val features: ServerFeatures,
     private val serverUrl: () -> String?,
     private val audio: AudioRepository,
 ) : LibraryRepository {
@@ -139,8 +141,11 @@ internal class DefaultLibraryRepository(
 
     override suspend fun authorBooks(authorId: AuthorId): ApiResult<List<BookSummary>> = call { remote ->
         val number = authorId.bookOrbit()
-        wholeList { page -> remote.api.authorBooks(number, page, BatchSize).let { PageResult(it.items, it.total) } }
-            .map(remote.mapper::summary)
+        // One card per work, where the server groups editions. The series page is never folded: see #29.
+        val folded = if (features.has(ServerFeatures.BookEditions)) true else null
+        wholeList { page ->
+            remote.api.authorBooks(number, page, BatchSize, folded).let { PageResult(it.items, it.total) }
+        }.map(remote.mapper::summary)
     }
 
     /**

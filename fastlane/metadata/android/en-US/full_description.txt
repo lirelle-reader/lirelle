@@ -26,6 +26,6 @@ Lirelle has no ads, no analytics and no tracking: it only talks to the servers y
 <b>Free software</b>
 Lirelle is free software under the GNU GPL, version 3 or later: https://github.com/lirelle-reader/lirelle
 
-Lirelle needs Android 14 or later, and a BookOrbit or Komga server.
+Lirelle needs Android 14 or later, and a BookOrbit server (3.8.0 or later) or a Komga server.
 
 Screenshots show Pepper&Carrot — art: David Revoy, www.peppercarrot.com (CC BY 4.0) — and public-domain books from Standard Ebooks and LibriVox.

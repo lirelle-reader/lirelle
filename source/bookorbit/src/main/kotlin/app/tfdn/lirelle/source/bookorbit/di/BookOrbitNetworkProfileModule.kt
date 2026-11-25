@@ -18,6 +18,7 @@ import app.tfdn.lirelle.source.bookorbit.network.DefaultAccountRepository
 import app.tfdn.lirelle.source.bookorbit.network.DownloadPatience
 import app.tfdn.lirelle.source.bookorbit.network.ErrorMapper
 import app.tfdn.lirelle.source.bookorbit.network.PublicApi
+import app.tfdn.lirelle.source.bookorbit.network.ServerFeatures
 import app.tfdn.lirelle.source.bookorbit.network.TokenRefresher
 import dagger.Module
 import dagger.Provides
@@ -72,6 +73,15 @@ internal object BookOrbitNetworkProfileModule {
         api: ApiProvider<AccountApi>,
         @SourceOf(ServerKind.BookOrbit) json: Json,
     ): AccountRepository = DefaultAccountRepository(session, api, ErrorMapper(json))
+
+    /** One for the profile: what its server announces is read once and shared by whoever asks. */
+    @Provides
+    @ProfileScoped
+    fun serverFeatures(
+        session: ProfileSession,
+        api: ApiProvider<AccountApi>,
+        @SourceOf(ServerKind.BookOrbit) json: Json,
+    ): ServerFeatures = ServerFeatures(api, ErrorMapper(json)) { session.session.value.serverUrl }
 
     /** The account's picture is a path on the server. */
     @Provides

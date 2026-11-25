@@ -26,9 +26,11 @@ import app.tfdn.lirelle.source.bookorbit.library.testing.enqueueJson
 import app.tfdn.lirelle.source.bookorbit.library.testing.enqueueRecorded
 import app.tfdn.lirelle.source.bookorbit.library.testing.serverUrl
 import app.tfdn.lirelle.source.bookorbit.library.testing.target
+import app.tfdn.lirelle.source.bookorbit.network.AccountApi
 import app.tfdn.lirelle.source.bookorbit.network.ApiJson
 import app.tfdn.lirelle.source.bookorbit.network.ApiProvider
 import app.tfdn.lirelle.source.bookorbit.network.ErrorMapper
+import app.tfdn.lirelle.source.bookorbit.network.ServerFeatures
 import com.google.common.truth.Truth.assertThat
 import java.io.IOException
 import java.time.Instant
@@ -54,6 +56,11 @@ class DefaultLibraryRepositoryTest {
         repository = DefaultLibraryRepository(
             api = ApiProvider(OkHttpClient(), ApiJson, LibraryApi::class.java),
             errors = ErrorMapper(ApiJson),
+            features = ServerFeatures(
+                api = ApiProvider(OkHttpClient(), ApiJson, AccountApi::class.java),
+                errors = ErrorMapper(ApiJson),
+                serverUrl = { if (signedIn) server.serverUrl else null },
+            ),
             serverUrl = { if (signedIn) server.serverUrl else null },
             audio = DefaultAudioRepository(
                 api = ApiProvider(OkHttpClient(), ApiJson, AudioApi::class.java),
@@ -74,6 +81,9 @@ class DefaultLibraryRepositoryTest {
 
     private fun cards(ids: IntRange, total: Int) =
         """{"items":[${ids.joinToString(",") { """{"id":$it,"title":"B$it"}""" }}],"total":$total}"""
+
+    private fun appInfo(vararg features: String) =
+        """{"version":"v3.10.0","features":[${features.joinToString(",") { "\"$it\"" }}]}"""
 
     // --- books
 
@@ -235,6 +245,7 @@ class DefaultLibraryRepositoryTest {
     @Test
     fun `author and author books`() = runBlocking {
         server.enqueueRecorded("author")
+        server.enqueueJson(appInfo("book-links"))
         server.enqueueRecorded("author-books")
 
         val author = repository.author(AuthorId("3")) as ApiResult.Success
@@ -242,6 +253,93 @@ class DefaultLibraryRepositoryTest {
 
         assertThat(author.value.author.name).isNotEmpty()
         assertThat(books.value).isNotEmpty()
+    }
+
+    @Test
+    fun `the books of an author are folded by work on a server that groups editions`() = runBlocking {
+        server.enqueueJson(appInfo("book-links", "book-editions"))
+        server.enqueueJson(cards(1..2, 2))
+
+        val books = repository.authorBooks(AuthorId("3")) as ApiResult.Success
+
+        assertThat(books.value).hasSize(2)
+        assertThat(server.takeRequest().target()).isEqualTo("/api/v1/app-info")
+        assertThat(server.takeRequest().target())
+            .isEqualTo("/api/v1/authors/3/books?sort=publishedYear&order=desc&page=0&size=100&collapseLinked=true")
+    }
+
+    @Test
+    fun `a server that does not group editions is sent no parameter it would refuse`() = runBlocking {
+        // 3.8 and 3.9 answer 400 to a query parameter they do not know.
+        server.enqueueJson(appInfo("book-links"))
+        server.enqueueJson(cards(1..2, 2))
+
+        repository.authorBooks(AuthorId("3")) as ApiResult.Success
+
+        server.takeRequest()
+        assertThat(server.takeRequest().target())
+            .isEqualTo("/api/v1/authors/3/books?sort=publishedYear&order=desc&page=0&size=100")
+    }
+
+    @Test
+    fun `the books of an author are asked unfolded when the server's features cannot be read`() = runBlocking {
+        server.enqueueJson("""{"statusCode":500,"message":"Internal server error"}""", code = 500)
+        server.enqueueJson(cards(1..2, 2))
+
+        val books = repository.authorBooks(AuthorId("3")) as ApiResult.Success
+
+        assertThat(books.value).hasSize(2)
+        server.takeRequest()
+        assertThat(server.takeRequest().target())
+            .isEqualTo("/api/v1/authors/3/books?sort=publishedYear&order=desc&page=0&size=100")
+    }
+
+    @Test
+    fun `every batch of a folded author asks folded, and the features once`() = runBlocking {
+        server.enqueueJson(appInfo("book-editions"))
+        server.enqueueJson(cards(1..100, 101))
+        server.enqueueJson(cards(101..101, 101))
+
+        val books = repository.authorBooks(AuthorId("3")) as ApiResult.Success
+
+        assertThat(books.value).hasSize(101)
+        assertThat(server.requestCount).isEqualTo(3)
+        server.takeRequest()
+        server.takeRequest()
+        assertThat(server.takeRequest().target())
+            .isEqualTo("/api/v1/authors/3/books?sort=publishedYear&order=desc&page=1&size=100&collapseLinked=true")
+    }
+
+    @Test
+    fun `the counts by work and by volume are read from the server's answers`() = runBlocking {
+        server.enqueueJson("""{"id":53,"name":"A","bookCount":23,"workCount":7}""")
+        server.enqueueJson(
+            """{"items":[{"id":1,"title":"B1"}],"total":1,"seriesInfo":{"id":4,"name":"S","bookCount":16,
+                "readCount":2,"ownedVolumeCount":15,"readVolumeCount":1}}""",
+        )
+
+        val author = repository.author(AuthorId("53")) as ApiResult.Success
+        val series = repository.seriesBooks(SeriesId("4")) as ApiResult.Success
+
+        assertThat(author.value.author.bookCount).isEqualTo(7)
+        assertThat(series.value.series.bookCount).isEqualTo(15)
+        assertThat(series.value.series.readCount).isEqualTo(1)
+    }
+
+    @Test
+    fun `the counts are read from the lists of series and of authors too`() = runBlocking {
+        server.enqueueJson(
+            """{"items":[{"id":4,"name":"S","bookCount":16,"readCount":2,"ownedVolumeCount":15,
+                "readVolumeCount":1}],"total":1}""",
+        )
+        server.enqueueJson("""{"items":[{"id":53,"name":"A","bookCount":23,"workCount":7}],"total":1}""")
+
+        val series = (repository.series() as ApiResult.Success).value.single()
+        val author = repository.authors(AuthorSort.Name, SortDirection.Ascending).items.asSnapshot().single()
+
+        assertThat(series.bookCount).isEqualTo(15)
+        assertThat(series.readCount).isEqualTo(1)
+        assertThat(author.bookCount).isEqualTo(7)
     }
 
     // --- shelves

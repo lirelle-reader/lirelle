@@ -49,6 +49,10 @@ internal data class BookCardDto(
 @Serializable
 internal data class BooksPageDto(val items: List<BookCardDto> = emptyList(), val total: Int = 0)
 
+/**
+ * @property ownedVolumeCount the series' logical volumes: books that share a whole-numbered position count once.
+ * @property readVolumeCount those of them that are read.
+ */
 @Serializable
 internal data class SeriesSummaryDto(
     val id: Long,
@@ -58,11 +62,14 @@ internal data class SeriesSummaryDto(
     val authors: List<String> = emptyList(),
     val coverBookIds: List<Long> = emptyList(),
     val lastAddedAt: String? = null,
+    val ownedVolumeCount: Int? = null,
+    val readVolumeCount: Int? = null,
 )
 
 @Serializable
 internal data class SeriesPageDto(val items: List<SeriesSummaryDto> = emptyList(), val total: Int = 0)
 
+/** The volume counts are those of [SeriesSummaryDto]. */
 @Serializable
 internal data class SeriesInfoDto(
     val id: Long,
@@ -70,6 +77,8 @@ internal data class SeriesInfoDto(
     val bookCount: Int = 0,
     val readCount: Int = 0,
     val authors: List<String> = emptyList(),
+    val ownedVolumeCount: Int? = null,
+    val readVolumeCount: Int? = null,
 )
 
 @Serializable
@@ -79,6 +88,7 @@ internal data class SeriesBooksPageDto(
     val seriesInfo: SeriesInfoDto,
 )
 
+/** @property workCount the author's books counted once per work; sent by servers that group editions (3.10.0). */
 @Serializable
 internal data class AuthorSummaryDto(
     val id: Long,
@@ -86,6 +96,7 @@ internal data class AuthorSummaryDto(
     val bookCount: Int = 0,
     val imageUrl: String? = null,
     val description: String? = null,
+    val workCount: Int? = null,
 )
 
 @Serializable
