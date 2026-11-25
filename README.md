@@ -39,7 +39,7 @@ Books and audiobooks from Standard Ebooks and LibriVox, in the public domain. Se
   the server when the network is back.
 - **Reading history**, and the progress made on your other devices.
 - **Editions**: the page of a book lists the other editions of its work (another language, the audiobook, another
-  printing) with your progress in each, on BookOrbit 3.10.0 or later.
+  printing), with their names and your progress in each from BookOrbit 3.10.0.
 - **English and French**, and layouts made for tablets as well as phones.
 
 ## What it does not do
