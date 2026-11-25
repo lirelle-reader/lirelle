@@ -54,12 +54,6 @@ import kotlinx.coroutines.delay
 internal const val SpeedSheetTag = "player-speed-sheet"
 internal const val SpeedSliderTag = "player-speed-slider"
 
-/** The speeds a tap away. */
-private val Shortcuts = listOf(1f, 1.25f, 1.5f, 2f)
-
-/** Two speeds this close are the same: a float's error, not a step. */
-private const val SameSpeed = 0.001f
-
 private val StepButtonSize = 52.dp
 
 /** How long a speed asked is shown without the session saying it. */
@@ -146,7 +140,7 @@ private fun SpeedContent(state: PlayerUiState, onSpeed: (Float) -> Unit, modifie
             }
         }
         FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
-            Shortcuts.forEach { shortcut ->
+            SpeedShortcuts.forEach { shortcut ->
                 Shortcut(shortcut, selected = abs(shortcut - speed) < SameSpeed, onClick = { choose(shortcut) })
             }
         }

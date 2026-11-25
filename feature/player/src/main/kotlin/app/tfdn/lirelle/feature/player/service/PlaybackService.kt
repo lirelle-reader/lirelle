@@ -4,6 +4,7 @@ package app.tfdn.lirelle.feature.player.service
 
 import android.content.Intent
 import androidx.annotation.OptIn
+import androidx.media3.common.PlaybackParameters
 import androidx.media3.common.Player
 import androidx.media3.common.util.UnstableApi
 import androidx.media3.exoplayer.ExoPlayer
@@ -35,6 +36,7 @@ import app.tfdn.lirelle.core.network.di.AuthenticatedClient
 import app.tfdn.lirelle.core.session.profile.CurrentProfile
 import app.tfdn.lirelle.core.session.profile.OpenEntry
 import app.tfdn.lirelle.core.session.profile.openEntryOrNull
+import app.tfdn.lirelle.feature.player.car.sendToCars
 import app.tfdn.lirelle.feature.player.di.MediaClient
 import app.tfdn.lirelle.feature.player.di.PlayerProfileEntry
 import dagger.hilt.android.AndroidEntryPoint
@@ -208,7 +210,7 @@ class PlaybackService : MediaLibraryService() {
         )
         val chapters = ChapterPlayer(engine, navigator, book)
         val commands =
-            PlayerCommands(packageName, ::handle, { publisher.buttons() }) {
+            PlayerCommands(packageName, ::handle, { car -> publisher.buttons(car) }) {
                 // Its profile closed: there is no book of it to resume.
                 resumption(parts.lastBooks.takeUnless { left }, main)
             }
@@ -218,9 +220,10 @@ class PlaybackService : MediaLibraryService() {
             .build()
         session = SessionHold(this, mediaSession)
         // Through the hold: once its profile closed the session is released, and nothing is said to it.
-        publisher = SessionPublisher(texts, chapters, navigator, { session.held?.setSessionExtras(it) }) {
-            session.held?.setMediaButtonPreferences(it)
-        }
+        publisher = SessionPublisher(
+            texts, chapters, navigator, { session.held?.setSessionExtras(it) },
+            { session.held?.setMediaButtonPreferences(it) },
+        ) { session.held?.sendToCars(it) }
         // A book played from its download waits for no network.
         watcher = NetworkWatcher(engine, parts.network.online, main) { !book.playsDownload }.also { it.start() }
         focus = FocusGuard(engine, main).also { it.start() }
@@ -235,6 +238,11 @@ class PlaybackService : MediaLibraryService() {
         engine.addListener(object : Player.Listener {
             override fun onIsPlayingChanged(isPlaying: Boolean) {
                 if (isPlaying) PlayerNotification.dismissContinue(this@PlaybackService)
+            }
+
+            // The car's speed button names the speed.
+            override fun onPlaybackParametersChanged(playbackParameters: PlaybackParameters) {
+                publisher.speed = playbackParameters.speed
             }
         })
         setMediaNotificationProvider(PlayerNotification.provider(this))

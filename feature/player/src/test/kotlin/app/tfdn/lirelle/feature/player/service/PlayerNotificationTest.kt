@@ -153,6 +153,68 @@ class PlayerNotificationTest {
     }
 
     @Test
+    fun `the car gets the same four buttons and the speed, last`() {
+        val buttons = PlayerNotification.buttons(texts, PlayerSettings(), finished = null, speed = 1.25f)
+
+        assertThat(buttons.map { it.action() }).containsExactly(
+            PlayerSessionContract.ACTION_PREVIOUS_CHAPTER,
+            PlayerSessionContract.ACTION_BACK,
+            PlayerSessionContract.ACTION_FORWARD,
+            PlayerSessionContract.ACTION_NEXT_CHAPTER,
+            PlayerSessionContract.ACTION_NEXT_SPEED,
+        ).inOrder()
+        assertThat(buttons.dropLast(1)).isEqualTo(PlayerNotification.buttons(texts, PlayerSettings(), null))
+        assertThat(buttons.last().slots.get(0)).isEqualTo(CommandButton.SLOT_OVERFLOW)
+    }
+
+    @Test
+    fun `the speed button says the speed, without a needless zero`() {
+        fun name(speed: Float) =
+            PlayerNotification.buttons(texts, PlayerSettings(), null, speed = speed).last().displayName.toString()
+
+        assertThat(name(1f)).isEqualTo("Speed: 1×")
+        assertThat(name(1.25f)).isEqualTo("Speed: 1.25×")
+        assertThat(name(2f)).isEqualTo("Speed: 2×")
+    }
+
+    @Test
+    @Config(qualifiers = "fr")
+    fun `the speed button in French`() {
+        val frenchTexts = PlayerTexts(ApplicationProvider.getApplicationContext<android.content.Context>().resources)
+        fun name(speed: Float) = PlayerNotification.buttons(frenchTexts, PlayerSettings(), null, speed = speed)
+            .last().displayName.toString()
+
+        // A non-breaking space before the colon.
+        assertThat(name(1f)).isEqualTo("Vitesse\u00A0: 1×")
+        assertThat(name(1.25f)).isEqualTo("Vitesse\u00A0: 1,25×")
+        assertThat(name(2f)).isEqualTo("Vitesse\u00A0: 2×")
+    }
+
+    @Test
+    fun `the speed's icon is the nearest one drawn, else the plain one`() {
+        fun icon(speed: Float) = PlayerNotification.buttons(texts, PlayerSettings(), null, speed = speed).last().icon
+
+        assertThat(icon(1f)).isEqualTo(CommandButton.ICON_PLAYBACK_SPEED_1_0)
+        assertThat(icon(1.25f)).isEqualTo(CommandButton.ICON_PLAYBACK_SPEED_1_2)
+        assertThat(icon(1.5f)).isEqualTo(CommandButton.ICON_PLAYBACK_SPEED_1_5)
+        assertThat(icon(2f)).isEqualTo(CommandButton.ICON_PLAYBACK_SPEED_2_0)
+        assertThat(icon(0.75f)).isEqualTo(CommandButton.ICON_PLAYBACK_SPEED_0_8)
+        assertThat(icon(1.1f)).isEqualTo(CommandButton.ICON_PLAYBACK_SPEED)
+        assertThat(icon(3f)).isEqualTo(CommandButton.ICON_PLAYBACK_SPEED)
+    }
+
+    @Test
+    fun `at the end the car is offered the next one as everyone, and nothing at a narration's end`() {
+        val next = FinishedBook(NextVolume(BookId("43"), "Next", "2"))
+
+        assertThat(PlayerNotification.buttons(texts, PlayerSettings(), next, speed = 1.5f))
+            .isEqualTo(PlayerNotification.buttons(texts, PlayerSettings(), next))
+        assertThat(PlayerNotification.buttons(texts, PlayerSettings(), FinishedBook(null), speed = 1.5f)).isEmpty()
+        assertThat(PlayerNotification.buttons(texts, PlayerSettings(), null, narrationFinished = true, speed = 1.5f))
+            .isEmpty()
+    }
+
+    @Test
     fun `when playback may not start from the background, a notification asks for a tap`() {
         val context = ApplicationProvider.getApplicationContext<android.content.Context>()
 

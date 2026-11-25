@@ -313,6 +313,26 @@ class BookSessionTest {
     }
 
     @Test
+    fun `the next speed is set and kept for the book, as a speed chosen is`() = runTest {
+        val session = loaded()
+
+        session.handle(PlayerCommand.NextSpeed)
+        settle()
+        assertThat(engine.speed).isEqualTo(1.25f)
+        assertThat(settings.speeds[BookId("42")]).isEqualTo(1.25f)
+
+        session.handle(PlayerCommand.SetSpeed(1.8f))
+        session.handle(PlayerCommand.NextSpeed)
+        settle()
+        assertThat(engine.speed).isEqualTo(2f)
+
+        session.handle(PlayerCommand.NextSpeed)
+        settle()
+        assertThat(engine.speed).isEqualTo(1f)
+        assertThat(settings.speeds[BookId("42")]).isEqualTo(1f)
+    }
+
+    @Test
     fun `a finished book finds its next volume, which listen-to-next plays`() = runTest {
         audio.nextVolumeResult = ApiResult.Success(NextVolume(BookId("43"), "The Next Road", "2"))
         val session = loaded()

@@ -15,6 +15,7 @@ import app.tfdn.lirelle.core.ids.BookId
 import app.tfdn.lirelle.core.ids.SeriesId
 import app.tfdn.lirelle.core.library.MonotonicClock
 import app.tfdn.lirelle.core.library.model.NextVolume
+import app.tfdn.lirelle.feature.player.nextSpeedShortcut
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
@@ -196,6 +197,7 @@ class BookSession(
         PlayerCommand.CancelSleep to sleep::cancel,
         PlayerCommand.ListenToNext to { extras.value.finished?.nextVolume?.let { load(it.bookId, false, true) } },
         PlayerCommand.CloseBook to ::close,
+        PlayerCommand.NextSpeed to { setSpeed(nextSpeedShortcut(engine.playbackParameters.speed)) },
     )
 
     init {
@@ -224,6 +226,7 @@ class BookSession(
             PlayerCommand.Back, PlayerCommand.Forward, PlayerCommand.PreviousChapter, PlayerCommand.NextChapter,
             PlayerCommand.PreviousSentence, PlayerCommand.NextSentence, PlayerCommand.ExtendSleep,
             PlayerCommand.CancelSleep, PlayerCommand.ListenToNext, PlayerCommand.CloseBook,
+            PlayerCommand.NextSpeed,
             -> plainCommands.getValue(command)()
             is PlayerCommand.SetSpeed -> setSpeed(command.speed)
             is PlayerCommand.StartSleep -> {

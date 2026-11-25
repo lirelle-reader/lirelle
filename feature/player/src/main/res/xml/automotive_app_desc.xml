@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- What the app is to a car: a media app, browsed and driven through the playback service. -->
+<automotiveApp>
+    <uses name="media" />
+</automotiveApp>

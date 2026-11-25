@@ -7,6 +7,8 @@
     <string name="player_button_previous_chapter">Previous chapter</string>
     <string name="player_button_next_chapter">Next chapter</string>
     <string name="player_button_listen_next">Listen to the next one</string>
+    <!-- The car's speed button: the current speed, as "1.25" -->
+    <string name="player_button_speed">Speed: %1$s×</string>
     <string name="player_notification_finished">%1$s — finished</string>
     <string name="player_notification_next_available">The next volume is available</string>
     <string name="player_notification_sleep_minutes">Stops in %1$d min</string>

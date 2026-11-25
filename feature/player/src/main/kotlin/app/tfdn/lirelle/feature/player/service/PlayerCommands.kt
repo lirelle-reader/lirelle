@@ -15,6 +15,8 @@ import androidx.media3.session.SessionCommand
 import androidx.media3.session.SessionCommands
 import androidx.media3.session.SessionError
 import androidx.media3.session.SessionResult
+import app.tfdn.lirelle.feature.player.car.CarControllers
+import app.tfdn.lirelle.feature.player.car.ControllerKind
 import com.google.common.util.concurrent.Futures
 import com.google.common.util.concurrent.ListenableFuture
 
@@ -24,13 +26,19 @@ import com.google.common.util.concurrent.ListenableFuture
  * current media buttons; a custom command is handed over as a [PlayerCommand]. The notification dismissed
  * by the user (Media3 lets a paused one be swiped away) closes the book, as "Stop listening" does.
  *
+ * What a controller is offered goes by who it is ([ControllerKind]): the app's own get the whole contract;
+ * other apps the skips and the chapters; a car those, the next speed and the next volume, with buttons of its
+ * own ([buttons] is asked the car's), and it alone browses the library and may set the player's items, which
+ * is how a car starts what it was shown.
+ *
  * Calls arrive on the main thread.
  */
 @OptIn(UnstableApi::class)
 class PlayerCommands(
     private val ownPackage: String,
     private val handle: (PlayerCommand) -> Unit,
-    private val buttons: () -> List<CommandButton>,
+    private val buttons: (car: Boolean) -> List<CommandButton>,
+    private val cars: CarControllers = CarControllers.Media3,
     private val resume: () -> ListenableFuture<MediaSession.MediaItemsWithStartPosition> = ::nothingToResume,
 ) : MediaLibrarySession.Callback {
 
@@ -38,11 +46,11 @@ class PlayerCommands(
         session: MediaSession,
         controller: MediaSession.ControllerInfo,
     ): MediaSession.ConnectionResult {
-        val trusted = isTrusted(controller.packageName, session.isMediaNotificationController(controller))
+        val kind = kindOf(session, controller)
         return MediaSession.ConnectionResult.AcceptedResultBuilder(session, controller)
-            .setAvailableSessionCommands(sessionCommandsFor(trusted))
-            .setAvailablePlayerCommands(offeredPlayerCommands)
-            .setMediaButtonPreferences(buttons())
+            .setAvailableSessionCommands(sessionCommandsFor(kind))
+            .setAvailablePlayerCommands(playerCommandsFor(kind))
+            .setMediaButtonPreferences(buttons(kind == ControllerKind.Car))
             .build()
     }
 
@@ -81,6 +89,13 @@ class PlayerCommands(
     ): ListenableFuture<List<MediaItem>> =
         Futures.immediateFailedFuture(UnsupportedOperationException("Books are loaded with LOAD_BOOK"))
 
+    /** Who [controller] is: the app's own before a car, a car before any other app. */
+    fun kindOf(session: MediaSession, controller: MediaSession.ControllerInfo): ControllerKind = when {
+        isTrusted(controller.packageName, session.isMediaNotificationController(controller)) -> ControllerKind.Own
+        cars.isCar(session, controller) -> ControllerKind.Car
+        else -> ControllerKind.Other
+    }
+
     /** The app itself, its notification and the system's media controls: the whole contract. */
     fun isTrusted(packageName: String, isNotification: Boolean): Boolean =
         isNotification || packageName == ownPackage || packageName == SystemUi
@@ -99,7 +114,7 @@ class PlayerCommands(
         /** What the session is sent when the user dismisses its notification. */
         private const val Dismissed = MediaNotification.NOTIFICATION_DISMISSED_EVENT_KEY
 
-        /** What other apps (a watch, a car, a remote) may ask besides playing: skips and chapters. */
+        /** What other apps (a watch, a remote) may ask besides playing: skips and chapters. */
         private val ForOthers = listOf(
             PlayerSessionContract.ACTION_BACK,
             PlayerSessionContract.ACTION_FORWARD,
@@ -110,19 +125,39 @@ class PlayerCommands(
         /** The whole contract, and the notification's dismissal, which the notification sends only if offered. */
         val sessionCommands: SessionCommands = withActions(PlayerSessionContract.actions + Dismissed)
 
-        /** The player's commands for every controller: never setting or changing its items. */
+        /** A car's too: the speed, by its one button, and the next volume at the end of a book. */
+        private val ForCars = ForOthers +
+            listOf(PlayerSessionContract.ACTION_NEXT_SPEED, PlayerSessionContract.ACTION_LISTEN_TO_NEXT)
+
+        /** The player's commands for every controller but a car: never setting or changing its items. */
         val offeredPlayerCommands: Player.Commands = MediaSession.ConnectionResult.DEFAULT_PLAYER_COMMANDS.buildUpon()
             .removeAll(Player.COMMAND_SET_MEDIA_ITEM, Player.COMMAND_CHANGE_MEDIA_ITEMS)
             .build()
 
         private val othersCommands: SessionCommands = withActions(ForOthers)
 
+        /** A car browses and searches the library besides: the library commands, which no one else is given. */
+        private val carCommands: SessionCommands =
+            withActions(ForCars, MediaSession.ConnectionResult.DEFAULT_SESSION_AND_LIBRARY_COMMANDS)
+
         fun sessionCommandsFor(trusted: Boolean): SessionCommands = if (trusted) sessionCommands else othersCommands
 
-        private fun withActions(actions: List<String>) =
-            MediaSession.ConnectionResult.DEFAULT_SESSION_COMMANDS.buildUpon().apply {
-                actions.forEach { add(SessionCommand(it, Bundle.EMPTY)) }
-            }.build()
+        fun sessionCommandsFor(kind: ControllerKind): SessionCommands = when (kind) {
+            ControllerKind.Own -> sessionCommands
+            ControllerKind.Car -> carCommands
+            ControllerKind.Other -> othersCommands
+        }
+
+        /** A car sets the player's items: that is how it starts a book it browsed, or the last one. */
+        fun playerCommandsFor(kind: ControllerKind): Player.Commands = when (kind) {
+            ControllerKind.Car -> MediaSession.ConnectionResult.DEFAULT_PLAYER_COMMANDS
+            ControllerKind.Own, ControllerKind.Other -> offeredPlayerCommands
+        }
+
+        private fun withActions(
+            actions: List<String>,
+            base: SessionCommands = MediaSession.ConnectionResult.DEFAULT_SESSION_COMMANDS,
+        ) = base.buildUpon().apply { actions.forEach { add(SessionCommand(it, Bundle.EMPTY)) } }.build()
     }
 }
 

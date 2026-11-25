@@ -30,9 +30,10 @@ class SessionPublisherTest {
     })
     private val extras = mutableListOf<Bundle>()
     private val buttons = mutableListOf<List<CommandButton>>()
+    private val carButtons = mutableListOf<List<CommandButton>>()
     private val publisher = SessionPublisher(
         PlayerTexts(ApplicationProvider.getApplicationContext<android.content.Context>().resources),
-        chapters, navigator, { extras += it }, { buttons += it },
+        chapters, navigator, { extras += it }, { buttons += it }, { carButtons += it },
     )
     private val book = SessionBook(BookId("42"), "The Long Road", emptyList(), emptyList(), null, 160_000)
 
@@ -112,5 +113,40 @@ class SessionPublisherTest {
         assertThat(chapters.mediaMetadata.artist.toString()).isEqualTo("Narration finished")
         assertThat(buttons.last()).isEmpty()
         assertThat(PlayerSessionExtras.from(extras.last()).narrationFinished).isTrue()
+    }
+
+    private fun List<List<CommandButton>>.names() = map { list -> list.map { it.displayName.toString() } }
+
+    @Test
+    fun `the car's buttons follow the speed, and nothing is sent while it stays`() {
+        val chapterButtons = listOf("Previous chapter", "Back 15 seconds", "Forward 30 seconds", "Next chapter")
+        publisher.publish(PlayerSessionExtras(book = book))
+        publisher.speed = 1.5f
+        publisher.speed = 1.5f
+        publisher.publish(sleeping(10_000))
+
+        assertThat(carButtons.names()).containsExactly(
+            chapterButtons + "Speed: 1×",
+            chapterButtons + "Speed: 1.5×",
+        ).inOrder()
+        // The others' never had the speed, and did not change.
+        assertThat(buttons.names()).containsExactly(chapterButtons)
+        assertThat(listOf(publisher.buttons(car = true)).names()).containsExactly(chapterButtons + "Speed: 1.5×")
+        assertThat(listOf(publisher.buttons()).names()).containsExactly(chapterButtons)
+    }
+
+    @Test
+    fun `what is sent to every controller reaches the car too, so its own list follows it`() {
+        val sent = mutableListOf<String>()
+        val publisher = SessionPublisher(
+            PlayerTexts(ApplicationProvider.getApplicationContext<android.content.Context>().resources),
+            chapters, navigator, {}, { sent += "all" }, { sent += "car" },
+        )
+
+        publisher.publish(PlayerSessionExtras(book = book))
+        publisher.settings = PlayerSettings(backSeconds = 10)
+        publisher.publish(PlayerSessionExtras(book = book, finished = FinishedBook(null)))
+
+        assertThat(sent).containsExactly("all", "car", "all", "car", "all", "car").inOrder()
     }
 }

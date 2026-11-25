@@ -49,6 +49,12 @@ object PlayerSessionContract {
     /** [ARG_SPEED]: kept for the book, and for the next new one. */
     const val ACTION_SET_SPEED = "${Prefix}SET_SPEED"
 
+    /**
+     * The speed after the current one among the speed sheet's shortcuts, the first after the last: the car's
+     * speed button, which has one tap to give. Kept for the book as [ACTION_SET_SPEED] is.
+     */
+    const val ACTION_NEXT_SPEED = "${Prefix}NEXT_SPEED"
+
     /** [ARG_SLEEP_MINUTES]: 0 is the end of the chapter. */
     const val ACTION_SLEEP_START = "${Prefix}SLEEP_START"
     const val ACTION_SLEEP_EXTEND = "${Prefix}SLEEP_EXTEND"
@@ -151,7 +157,7 @@ object PlayerSessionContract {
         ACTION_BACK, ACTION_FORWARD, ACTION_PREVIOUS_CHAPTER, ACTION_NEXT_CHAPTER, ACTION_SET_SPEED,
         ACTION_SLEEP_START, ACTION_SLEEP_EXTEND, ACTION_SLEEP_CANCEL, ACTION_LOAD_BOOK, ACTION_SEEK_BOOK_TIME,
         ACTION_LISTEN_TO_NEXT, ACTION_CLOSE_BOOK, ACTION_LOAD_NARRATION, ACTION_PREVIOUS_SENTENCE,
-        ACTION_NEXT_SENTENCE,
+        ACTION_NEXT_SENTENCE, ACTION_NEXT_SPEED,
     )
 
     private const val ResumePrefix = "resume/"
@@ -194,6 +200,8 @@ sealed class PlayerCommand(val action: String) {
     data class SetSpeed(val speed: Float) : PlayerCommand(PlayerSessionContract.ACTION_SET_SPEED) {
         override fun args() = Bundle().apply { putFloat(PlayerSessionContract.ARG_SPEED, speed) }
     }
+
+    data object NextSpeed : PlayerCommand(PlayerSessionContract.ACTION_NEXT_SPEED)
 
     data class StartSleep(val choice: SleepChoice) : PlayerCommand(PlayerSessionContract.ACTION_SLEEP_START) {
         override fun args() = Bundle().apply { putInt(PlayerSessionContract.ARG_SLEEP_MINUTES, choice.minutes()) }
@@ -260,7 +268,7 @@ sealed class PlayerCommand(val action: String) {
         private val withoutArgs: Map<String, PlayerCommand> by lazy {
             listOf(
                 Back, Forward, PreviousChapter, NextChapter, ExtendSleep, CancelSleep, ListenToNext, CloseBook,
-                PreviousSentence, NextSentence,
+                PreviousSentence, NextSentence, NextSpeed,
             ).associateBy { it.action }
         }
 

@@ -22,6 +22,8 @@ import app.tfdn.lirelle.core.audio.settings.PlayerSettings
 import app.tfdn.lirelle.core.audio.timer.SleepChoice
 import app.tfdn.lirelle.core.audio.timer.SleepState
 import app.tfdn.lirelle.feature.player.R
+import app.tfdn.lirelle.feature.player.car.CarTexts
+import app.tfdn.lirelle.feature.player.car.speedButton
 import kotlin.math.ceil
 
 private const val MillisPerMinute = 60_000.0
@@ -46,6 +48,9 @@ internal fun offerToContinue(context: Context, title: String, open: PendingInten
 class PlayerTexts(private val resources: Resources) {
     /** The words of a narration's notification. */
     val narration = NarrationTexts(resources)
+
+    /** The words of the car's own buttons. */
+    val car = CarTexts(resources)
 
     fun back(seconds: Int): String = resources.getString(R.string.player_button_back, seconds)
 
@@ -92,12 +97,17 @@ class PlayerTexts(private val resources: Resources) {
 object PlayerNotification {
     private const val ChannelId = "playback"
 
-    /** The session's media button preferences for this moment. */
+    /**
+     * The session's media button preferences for this moment. With a [speed], the car's: the same buttons and
+     * one more, last, that names the speed and goes to the next one. The car has no other way to the speed; at
+     * the end of a book it is offered what everyone is.
+     */
     fun buttons(
         texts: PlayerTexts,
         settings: PlayerSettings,
         finished: FinishedBook?,
         narrationFinished: Boolean = false,
+        speed: Float? = null,
     ): List<CommandButton> {
         if (narrationFinished) return emptyList()
         if (finished != null) {
@@ -113,7 +123,7 @@ object PlayerNotification {
             button(backIcon(back), PlayerCommand.Back, texts.back(back), CommandButton.SLOT_BACK),
             button(forwardIcon(forward), PlayerCommand.Forward, texts.forward(forward), SLOT_FORWARD),
             button(CommandButton.ICON_NEXT, PlayerCommand.NextChapter, texts.nextChapter(), SLOT_OVERFLOW),
-        )
+        ) + listOfNotNull(speed?.let { speedButton(texts.car, it) })
     }
 
     /**

@@ -3,15 +3,18 @@ package app.tfdn.lirelle.feature.player.service
 import android.content.Context
 import android.os.Bundle
 import androidx.media3.common.Player
+import androidx.media3.session.MediaController
 import androidx.media3.session.MediaNotification
 import androidx.media3.session.MediaSession
 import androidx.media3.session.SessionCommand
+import androidx.media3.session.SessionCommands
 import androidx.media3.session.SessionError
 import androidx.media3.session.SessionResult
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import app.tfdn.lirelle.core.audio.timer.SleepChoice
 import app.tfdn.lirelle.core.ids.BookId
+import app.tfdn.lirelle.feature.player.car.ControllerKind
 import com.google.common.truth.Truth.assertThat
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -108,5 +111,119 @@ class PlayerCommandsTest {
         } finally {
             session.release()
         }
+    }
+
+    private fun controller(packageName: String, version: Int = 0, hints: Bundle = Bundle.EMPTY) =
+        MediaSession.ControllerInfo.createTestOnlyControllerInfo(packageName, 0, 0, version, 0, false, hints, false)
+
+    private fun withSession(block: (MediaSession) -> Unit) {
+        val context = ApplicationProvider.getApplicationContext<Context>()
+        val session = MediaSession.Builder(context, FakeEngine()).setId("commands-test").build()
+        try {
+            block(session)
+        } finally {
+            session.release()
+        }
+    }
+
+    private fun custom(vararg actions: String): SessionCommands =
+        MediaSession.ConnectionResult.DEFAULT_SESSION_COMMANDS.buildUpon()
+            .apply { actions.forEach { add(SessionCommand(it, Bundle.EMPTY)) } }
+            .build()
+
+    @Test
+    fun `a controller is the app's own, a car, or another app`() = withSession { session ->
+        val context = ApplicationProvider.getApplicationContext<Context>()
+        val notificationHints =
+            Bundle().apply { putBoolean(MediaController.KEY_MEDIA_NOTIFICATION_CONTROLLER_FLAG, true) }
+        val notification = controller(context.packageName, version = 1, hints = notificationHints)
+
+        assertThat(commands.kindOf(session, notification)).isEqualTo(ControllerKind.Own)
+        assertThat(commands.kindOf(session, controller("app.tfdn.lirelle"))).isEqualTo(ControllerKind.Own)
+        assertThat(commands.kindOf(session, controller("com.android.systemui"))).isEqualTo(ControllerKind.Own)
+        assertThat(commands.kindOf(session, controller("com.google.android.projection.gearhead")))
+            .isEqualTo(ControllerKind.Car)
+        assertThat(commands.kindOf(session, controller("com.android.car.media"))).isEqualTo(ControllerKind.Car)
+        assertThat(commands.kindOf(session, controller("com.example.watch"))).isEqualTo(ControllerKind.Other)
+    }
+
+    @Test
+    fun `the app's own controllers and other apps are offered what they were before the car`() {
+        val dismissed = MediaNotification.NOTIFICATION_DISMISSED_EVENT_KEY
+        val own = PlayerCommands.sessionCommandsFor(ControllerKind.Own)
+        val others = PlayerCommands.sessionCommandsFor(ControllerKind.Other)
+
+        assertThat(own).isEqualTo(custom(*PlayerSessionContract.actions.toTypedArray(), dismissed))
+        assertThat(own).isEqualTo(PlayerCommands.sessionCommandsFor(trusted = true))
+        assertThat(others).isEqualTo(
+            custom(
+                PlayerSessionContract.ACTION_BACK,
+                PlayerSessionContract.ACTION_FORWARD,
+                PlayerSessionContract.ACTION_PREVIOUS_CHAPTER,
+                PlayerSessionContract.ACTION_NEXT_CHAPTER,
+            ),
+        )
+        assertThat(others).isEqualTo(PlayerCommands.sessionCommandsFor(trusted = false))
+        // Neither browses the library.
+        listOf(own, others).forEach {
+            assertThat(it.contains(SessionCommand.COMMAND_CODE_LIBRARY_GET_LIBRARY_ROOT)).isFalse()
+            assertThat(it.contains(SessionCommand.COMMAND_CODE_LIBRARY_GET_CHILDREN)).isFalse()
+            assertThat(it.contains(SessionCommand.COMMAND_CODE_LIBRARY_SEARCH)).isFalse()
+        }
+        // Nor sets the player's items.
+        listOf(ControllerKind.Own, ControllerKind.Other).forEach {
+            assertThat(PlayerCommands.playerCommandsFor(it)).isEqualTo(PlayerCommands.offeredPlayerCommands)
+        }
+        assertThat(PlayerCommands.offeredPlayerCommands).isEqualTo(
+            MediaSession.ConnectionResult.DEFAULT_PLAYER_COMMANDS.buildUpon()
+                .removeAll(Player.COMMAND_SET_MEDIA_ITEM, Player.COMMAND_CHANGE_MEDIA_ITEMS)
+                .build(),
+        )
+    }
+
+    @Test
+    fun `a car is offered the skips, the chapters, the next speed and the next volume, and browses`() {
+        val car = PlayerCommands.sessionCommandsFor(ControllerKind.Car)
+        val allowed = setOf(
+            PlayerSessionContract.ACTION_BACK,
+            PlayerSessionContract.ACTION_FORWARD,
+            PlayerSessionContract.ACTION_PREVIOUS_CHAPTER,
+            PlayerSessionContract.ACTION_NEXT_CHAPTER,
+            PlayerSessionContract.ACTION_NEXT_SPEED,
+            PlayerSessionContract.ACTION_LISTEN_TO_NEXT,
+        )
+
+        PlayerSessionContract.actions.forEach {
+            assertThat(car.contains(SessionCommand(it, Bundle.EMPTY))).isEqualTo(it in allowed)
+        }
+        assertThat(car.contains(SessionCommand(MediaNotification.NOTIFICATION_DISMISSED_EVENT_KEY, Bundle.EMPTY)))
+            .isFalse()
+        assertThat(car.commands).containsAtLeastElementsIn(
+            MediaSession.ConnectionResult.DEFAULT_SESSION_AND_LIBRARY_COMMANDS.commands,
+        )
+        assertThat(car.contains(SessionCommand.COMMAND_CODE_LIBRARY_GET_CHILDREN)).isTrue()
+        assertThat(car.contains(SessionCommand.COMMAND_CODE_LIBRARY_SEARCH)).isTrue()
+    }
+
+    @Test
+    fun `a car that connects may set the player's items and gets its own buttons`() = withSession { session ->
+        val asked = mutableListOf<Boolean>()
+        val commands = PlayerCommands(
+            ownPackage = "app.tfdn.lirelle",
+            handle = {},
+            buttons = { car ->
+                asked += car
+                emptyList()
+            },
+        )
+
+        val car = commands.onConnect(session, controller("com.google.android.projection.gearhead"))
+        val watch = commands.onConnect(session, controller("com.example.watch"))
+
+        assertThat(asked).containsExactly(true, false).inOrder()
+        assertThat(car.availablePlayerCommands).isEqualTo(MediaSession.ConnectionResult.DEFAULT_PLAYER_COMMANDS)
+        assertThat(car.availableSessionCommands).isEqualTo(PlayerCommands.sessionCommandsFor(ControllerKind.Car))
+        assertThat(watch.availablePlayerCommands).isEqualTo(PlayerCommands.offeredPlayerCommands)
+        assertThat(watch.availableSessionCommands).isEqualTo(PlayerCommands.sessionCommandsFor(ControllerKind.Other))
     }
 }
