@@ -116,8 +116,9 @@ internal data class OidcCallbackRequest(
             "state=$Redacted, clientKind=$clientKind, deviceLabel=$deviceLabel)"
 }
 
+/** @property features what the server says it can do, by name; a server that says nothing can do none of it. */
 @Serializable
-internal data class AppInfoDto(val version: String)
+internal data class AppInfoDto(val version: String, val features: List<String> = emptyList())
 
 /** Error body produced by the server's exception filter. `message` is a string or an array. */
 @Serializable
