@@ -66,6 +66,12 @@ internal class ComicCore(val bookId: BookId, val scope: CoroutineScope) {
     /** The pages the strip of an album read vertically shows; empty when it told none. */
     var strip: IntRange = IntRange.EMPTY
 
+    /**
+     * The page the pages were last fetched around: the one last jumped to or settled on; null before any was. A
+     * strip that scrolled far from it has left the pages fetched ahead behind.
+     */
+    var fetchedAround: Int? = null
+
     /** The pages whose image is wider than it is high, as far as they were seen. */
     val wide = mutableSetOf<Int>()
 

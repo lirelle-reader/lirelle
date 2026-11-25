@@ -218,12 +218,106 @@ class ComicReaderStripTest {
         val reader = harness.reader()
         harness.pages.calls.clear()
 
-        reader.stripShows(first = 5, last = 7)
-        assertThat(harness.pages.calls).containsExactly("show 5", "show 6", "show 7").inOrder()
+        reader.stripShows(first = 3, last = 5)
+        assertThat(harness.pages.calls.take(3)).containsExactly("show 3", "show 4", "show 5").inOrder()
 
-        reader.stripShows(first = 5, last = 7)
-        reader.stripShows(first = 6, last = 8)
-        assertThat(harness.pages.calls).containsExactly("show 5", "show 6", "show 7", "show 8").inOrder()
+        reader.stripShows(first = 3, last = 5)
+        reader.stripShows(first = 4, last = 6)
+        assertThat(harness.pages.calls.filter { it in setOf("show 3", "show 4", "show 5", "show 6") })
+            .containsExactly("show 3", "show 4", "show 5", "show 6").inOrder()
+    }
+
+    @Test
+    fun `the two pages after the last one on screen are asked for after those on screen, none behind`() = runTest {
+        val harness = verticalHarness()
+        val reader = harness.reader()
+        harness.pages.calls.clear()
+
+        reader.stripShows(first = 3, last = 5)
+        assertThat(harness.pages.calls).containsExactly("show 3", "show 4", "show 5", "show 6", "show 7").inOrder()
+
+        // A page further: the one that follows those asked ahead, and it alone.
+        harness.pages.calls.clear()
+        reader.stripShows(first = 4, last = 6)
+        assertThat(harness.pages.calls).containsExactly("show 8")
+    }
+
+    @Test
+    fun `no page is asked for past the last one of the album`() = runTest {
+        val harness = verticalHarness()
+        val reader = harness.reader()
+
+        reader.goTo(Pages - 2)
+        reader.stripShows(first = Pages - 2, last = Pages - 1)
+
+        assertThat(harness.pages.calls).contains("show ${Pages - 1}")
+        assertThat(harness.pages.calls).containsNoneOf("show $Pages", "show ${Pages + 1}")
+    }
+
+    @Test
+    fun `a strip flung far drops what was fetched behind, and fetches the page at its top first`() = runTest {
+        val harness = verticalHarness()
+        val reader = harness.reader()
+        harness.pages.calls.clear()
+
+        // Within the pages fetched ahead of the one the album opened on: each is asked for as it comes.
+        reader.stripShows(first = 5, last = 6)
+        assertThat(harness.pages.calls).doesNotContain("jump 5")
+
+        // Further than those: what waits and what is fetched behind is dropped, before anything else is asked.
+        harness.pages.calls.clear()
+        reader.stripShows(first = 6, last = 7)
+        assertThat(harness.pages.calls).containsExactly("jump 6", "show 7", "show 8", "show 9").inOrder()
+
+        // On from there, near: no more is dropped, until the strip is as far again.
+        harness.pages.calls.clear()
+        reader.stripShows(first = 11, last = 12)
+        assertThat(harness.pages.calls).containsExactly("show 11", "show 12", "show 13", "show 14").inOrder()
+        harness.pages.calls.clear()
+        reader.stripShows(first = 12, last = 13)
+        assertThat(harness.pages.calls).containsExactly("jump 12", "show 13", "show 14", "show 15").inOrder()
+    }
+
+    @Test
+    fun `a strip that came to rest is far from there only further on`() = runTest {
+        val harness = verticalHarness()
+        val reader = harness.reader()
+
+        reader.stripShows(first = 4, last = 5)
+        reader.stripRested()
+        advanceTimeBy(301.milliseconds)
+        assertThat(harness.pages.calls).contains("settle 4")
+
+        // Five pages from where the pages around were fetched: still among them.
+        reader.stripShows(first = 9, last = 10)
+        assertThat(harness.pages.calls.filter { it.startsWith("jump") }).isEmpty()
+        reader.stripShows(first = 10, last = 11)
+        assertThat(harness.pages.calls).contains("jump 10")
+    }
+
+    @Test
+    fun `the slider released on the page read lands the strip on the top of that page`() = runTest {
+        val harness = verticalHarness()
+        val reader = harness.reader()
+        reader.stripShows(first = 5, last = 6)
+        harness.pages.calls.clear()
+
+        reader.goTo(5)
+
+        assertThat(reader.state.value.landing).isEqualTo(Landing(page = 5, serial = 1))
+        assertThat(harness.pages.calls).contains("jump 5")
+    }
+
+    @Test
+    fun `paged, the slider released on the spread shown goes nowhere`() = runTest {
+        val harness = ComicHarness(this)
+        val reader = harness.reader()
+        harness.pages.calls.clear()
+
+        reader.goTo(0)
+
+        assertThat(reader.state.value.landing).isEqualTo(Landing())
+        assertThat(harness.pages.calls).isEmpty()
     }
 
     @Test

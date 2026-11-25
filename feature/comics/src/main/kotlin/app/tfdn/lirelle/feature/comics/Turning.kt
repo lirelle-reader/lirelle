@@ -88,7 +88,9 @@ internal class Turning(
     override fun goTo(pageIndex: Int) {
         if (!core.ready) return
         core.update { it.copy(previewPage = null) }
-        if (spreadIndexOf(core.current.spreads, pageIndex) != core.current.spreadIndex) land(pageIndex, moved = true)
+        // A strip may be anywhere in the page read: the slider released on that page still takes it to its top.
+        val elsewhere = spreadIndexOf(core.current.spreads, pageIndex) != core.current.spreadIndex
+        if (elsewhere || core.current.vertical) land(pageIndex, moved = true)
     }
 
     override fun previewPage(pageIndex: Int?) {
@@ -111,7 +113,10 @@ internal class Turning(
      * album read vertically is told where to scroll ([ComicReaderUiState.landing]).
      */
     fun land(pageIndex: Int, moved: Boolean) {
-        show(spreadIndexOf(core.current.spreads, pageIndex), forward = true, moved = moved)
+        val index = spreadIndexOf(core.current.spreads, pageIndex)
+        // Noted before the spread is shown: the pages of a strip are not jumped to twice.
+        core.current.spreads.getOrNull(index)?.let { core.fetchedAround = it.first }
+        show(index, forward = true, moved = moved)
         // A jump fetches around the page by itself.
         settling?.cancel()
         core.pages?.jump(core.page)
@@ -138,6 +143,7 @@ internal class Turning(
         settling?.cancel()
         settling = core.scope.launch {
             delay(timings.settle)
+            core.fetchedAround = spread.first
             core.pages?.settle(spread.first)
         }
     }
