@@ -5,7 +5,9 @@ import app.tfdn.lirelle.core.downloads.model.DownloadFormat
 import app.tfdn.lirelle.core.downloads.model.FormatRecord
 import app.tfdn.lirelle.core.downloads.model.FormatState
 import app.tfdn.lirelle.core.downloads.offline.KeptBookData
+import app.tfdn.lirelle.core.ids.BookId
 import app.tfdn.lirelle.core.library.LibraryRepository
+import app.tfdn.lirelle.core.library.MonotonicClock
 import app.tfdn.lirelle.core.library.SourceCapabilities
 import app.tfdn.lirelle.core.library.model.HomeRowExtent
 import app.tfdn.lirelle.core.library.net.ProfileNetwork
@@ -14,13 +16,16 @@ import javax.inject.Inject
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.map
 
 /**
  * What a car browses of one profile: the rows of its Home, what the device keeps of it, its books to listen to
  * and their series — only what the player can play ([listenable]). It knows nothing of the car's own items:
  * the car's browser turns its answers into them.
  *
+ * @param clock the clock that does not jump: the audio library is kept a short time by it.
  * @param signInNeeded whether the profile waits for a sign-in: its server then refuses everything, and only
  *   what the device keeps is listed.
  */
@@ -29,8 +34,9 @@ class CarLibrary(
     private val capabilities: SourceCapabilities,
     private val downloads: Downloads,
     private val kept: KeptBookData,
+    clock: MonotonicClock,
     private val signInNeeded: () -> Boolean,
-) {
+) : CarShelves {
     /** For the playback service, from its profile's objects. */
     @Inject
     constructor(
@@ -38,16 +44,25 @@ class CarLibrary(
         capabilities: SourceCapabilities,
         downloads: Downloads,
         kept: KeptBookData,
+        clock: MonotonicClock,
         network: ProfileNetwork,
-    ) : this(library, capabilities, downloads, kept, { network.waitsForSignIn.value })
+    ) : this(library, capabilities, downloads, kept, clock, { network.waitsForSignIn.value })
 
-    private val books = ListenableBooks(library, capabilities)
+    private val books = ListenableBooks(library, capabilities, clock)
+
+    /**
+     * The books whose audiobook or narration the device keeps whole, as they change: what the Downloaded tab
+     * is made of.
+     */
+    val keptAudio: Flow<Set<BookId>> = downloads.books.map { books ->
+        books.filter { book -> book.formats.any { it.isKeptAudio } }.mapTo(mutableSetOf()) { it.bookId }
+    }
 
     /**
      * What [place] lists, [pageSize] at a time, pages numbered from 0. The root always lists its tabs; Home is
      * one page, its sections whole.
      */
-    suspend fun children(place: CarPlace, page: Int, pageSize: Int): CarAnswer {
+    override suspend fun children(place: CarPlace, page: Int, pageSize: Int): CarAnswer {
         if (place != CarPlace.Root) {
             refusal(asksServer = place != CarPlace.Tab.Downloaded)?.let { return CarAnswer.Notice(it) }
         }
@@ -68,7 +83,7 @@ class CarLibrary(
     }
 
     /** The books to listen to that the server finds for [text]: its first ones. Nothing for a blank text. */
-    suspend fun search(text: String): CarAnswer {
+    override suspend fun search(text: String): CarAnswer {
         if (text.isBlank()) return CarAnswer.Nodes(emptyList())
         refusal(asksServer = true)?.let { return CarAnswer.Notice(it) }
         return books.matching(text.trim())?.map { it.carBook(authorLine(it.authors)) }.answered()

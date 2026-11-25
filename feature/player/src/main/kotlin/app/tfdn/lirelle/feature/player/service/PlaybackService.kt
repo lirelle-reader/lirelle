@@ -36,7 +36,13 @@ import app.tfdn.lirelle.core.network.di.AuthenticatedClient
 import app.tfdn.lirelle.core.session.profile.CurrentProfile
 import app.tfdn.lirelle.core.session.profile.OpenEntry
 import app.tfdn.lirelle.core.session.profile.openEntryOrNull
+import app.tfdn.lirelle.feature.player.car.CarBrowser
+import app.tfdn.lirelle.feature.player.car.CarCovers
+import app.tfdn.lirelle.feature.player.car.CarIds
+import app.tfdn.lirelle.feature.player.car.CarItems
 import app.tfdn.lirelle.feature.player.car.CarLibrary
+import app.tfdn.lirelle.feature.player.car.NoticeAsError
+import app.tfdn.lirelle.feature.player.car.refreshCars
 import app.tfdn.lirelle.feature.player.car.sendToCars
 import app.tfdn.lirelle.feature.player.di.MediaClient
 import app.tfdn.lirelle.feature.player.di.PlayerProfileEntry
@@ -215,8 +221,11 @@ class PlaybackService : MediaLibraryService() {
             parts.clocks.monotonic, main,
         )
         val chapters = ChapterPlayer(engine, navigator, book)
+        // Once its profile closed, a car that still asks is listed nothing of it.
+        val carItems = CarItems(resources, CarCovers.authority(packageName), open.profileId)
+        val browser = CarBrowser(parts.car, carItems, NoticeAsError(texts.car), main) { left }
         val commands =
-            PlayerCommands(packageName, ::handle, { car -> publisher.buttons(car) }) {
+            PlayerCommands(packageName, ::handle, { car -> publisher.buttons(car) }, browser = browser) {
                 // Its profile closed: there is no book of it to resume.
                 resumption(parts.lastBooks.takeUnless { left }, main)
             }
@@ -401,6 +410,10 @@ class PlaybackService : MediaLibraryService() {
             }.collect(publisher::publish)
         }
         main.launch { parts.sources.settings.settings.collect { publisher.settings = it } }
+        // A car subscribed to a tab asks for it again when told: nothing is said once the session was let go.
+        main.refreshCars(parts.network.waitsForSignIn, parts.car.keptAudio) {
+            session.held?.notifyChildrenChanged(CarIds.of(it), Int.MAX_VALUE, null)
+        }
         main.launch {
             // The book's files changed on the server: the same place in the book, in the new files.
             parts.sources.syncEvents.manifestChanges.collect { id ->

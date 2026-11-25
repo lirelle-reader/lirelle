@@ -2,6 +2,7 @@ package app.tfdn.lirelle.feature.player.car
 
 import app.tfdn.lirelle.core.ids.SeriesId
 import app.tfdn.lirelle.core.library.LibraryRepository
+import app.tfdn.lirelle.core.library.MonotonicClock
 import app.tfdn.lirelle.core.library.SourceCapabilities
 import app.tfdn.lirelle.core.library.model.BookFilters
 import app.tfdn.lirelle.core.library.model.BookListRequest
@@ -14,12 +15,20 @@ import java.text.Collator
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
 
 /**
  * How many books of a kind (with an audio file, read aloud) the car lists at most: its Audiobooks and Series
  * tabs are made of the whole lists, which a car is not made to scroll further anyway.
  */
 internal const val ListenableBound = 600
+
+/**
+ * How long the audio library is kept once read: the pages of one visit of the Audiobooks tab, and the Series tab
+ * opened right after, are made of one reading of the server's lists, which takes up to twenty requests.
+ */
+internal const val ListenableFreshMillis = 2 * 60 * 1_000L
 
 /** The size of the pages the lists are read by: the one the phone's lists ask, which every server answers. */
 private const val BatchSize = 60
@@ -31,16 +40,31 @@ private const val BatchSize = 60
 internal class ListenableBooks(
     private val library: LibraryRepository,
     private val capabilities: SourceCapabilities,
+    private val clock: MonotonicClock,
 ) {
+    /** The audio library as it was last read whole, and when by [clock]; a reading that failed is not kept. */
+    private var last: Pair<Long, List<BookSummary>>? = null
+
+    /** One reading at a time: a tab asked while another reads waits for it, and is made of the same. */
+    private val reading = Mutex()
+
     /** Titles as a reader orders them: no case, no accent. */
     private val collator = Collator.getInstance().apply { strength = Collator.PRIMARY }
 
     /**
-     * All of them, by title, each once. The server's filters cannot say "with an audio file or read aloud" in one
-     * request (its rules are joined by "and"): each kind the source has is asked whole, and the two are merged
-     * here.
+     * All of them, by title, each once: read from the server, or as they were read less than
+     * [ListenableFreshMillis] ago.
      */
-    suspend fun all(): List<BookSummary>? = coroutineScope {
+    suspend fun all(): List<BookSummary>? = reading.withLock {
+        last?.takeIf { (at, _) -> clock.nowMillis() - at < ListenableFreshMillis }?.second
+            ?: read()?.also { last = clock.nowMillis() to it }
+    }
+
+    /**
+     * Reads them from the server. Its filters cannot say "with an audio file or read aloud" in one request (its
+     * rules are joined by "and"): each kind the source has is asked whole, and the two are merged here.
+     */
+    private suspend fun read(): List<BookSummary>? = coroutineScope {
         val kinds = listOfNotNull(
             BookFilters(formats = setOf(FormatFilter.Audio)).takeIf { capabilities.audiobooks },
             BookFilters(readAlongOnly = true).takeIf { capabilities.readAlong },

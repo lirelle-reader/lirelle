@@ -28,6 +28,7 @@ import app.tfdn.lirelle.feature.player.service.FakeDownloads
 import app.tfdn.lirelle.feature.player.service.FakeKeptBookData
 import com.google.common.truth.Truth.assertThat
 import java.time.Instant
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
 
@@ -41,8 +42,11 @@ class CarLibraryTest {
     private val kept = FakeKeptBookData()
     private var signInNeeded = false
 
+    /** The time of the clock that does not jump, moved by the tests. */
+    private var now = 0L
+
     private fun car(capabilities: SourceCapabilities = SourceCapabilities.Everything) =
-        CarLibrary(library, capabilities, downloads, kept) { signInNeeded }
+        CarLibrary(library, capabilities, downloads, kept, { now }) { signInNeeded }
 
     private fun audiobook(id: String, title: String = "Book $id", series: SeriesRef? = null) =
         sampleBook(id, title = title, media = MediaProfile.AudioOnly, series = series)
@@ -405,6 +409,62 @@ class CarLibraryTest {
             .isEqualTo(CarAnswer.Notice(CarNotice.Unreachable))
         assertThat(car.children(CarPlace.OneSeries(SeriesId("4")), 0, AnyPage))
             .isEqualTo(CarAnswer.Notice(CarNotice.Unreachable))
+    }
+
+    // --- the audio library, kept a short time
+
+    @Test
+    fun `the pages of one visit, and Series right after Audiobooks, read the server's lists once`() = runTest {
+        served(audio = listOf(audiobook("1", series = saga("1"))), readAloud = listOf(readAloud("2")))
+        val car = car()
+
+        car.nodes(CarPlace.Tab.Audiobooks, page = 0, pageSize = 1)
+        val asked = library.bookPageRequests.size
+        now = ListenableFreshMillis - 1
+        val second = car.nodes(CarPlace.Tab.Audiobooks, page = 1, pageSize = 1)
+        val series = car.nodes(CarPlace.Tab.Series)
+
+        assertThat(second.bookIds()).containsExactly("2")
+        assertThat(series).containsExactly(CarNode.Series(SeriesId("4"), "A Saga", 1))
+        assertThat(asked).isEqualTo(2)
+        assertThat(library.bookPageRequests).hasSize(asked)
+    }
+
+    @Test
+    fun `two minutes later the audio library is read again`() = runTest {
+        served(audio = listOf(audiobook("1")))
+        val car = car()
+
+        car.nodes(CarPlace.Tab.Audiobooks)
+        served(audio = listOf(audiobook("1"), audiobook("2")))
+        now = ListenableFreshMillis
+
+        assertThat(car.nodes(CarPlace.Tab.Audiobooks).bookIds()).containsExactly("1", "2").inOrder()
+    }
+
+    @Test
+    fun `a read that failed is not kept`() = runTest {
+        library.bookPageAnswer = { _, _, _ -> ApiResult.Failure(ApiError.ServerUnreachable) }
+        val car = car()
+
+        assertThat(car.children(CarPlace.Tab.Audiobooks, 0, AnyPage))
+            .isEqualTo(CarAnswer.Notice(CarNotice.Unreachable))
+        served(audio = listOf(audiobook("1")))
+
+        assertThat(car.nodes(CarPlace.Tab.Series)).isEmpty()
+        assertThat(car.nodes(CarPlace.Tab.Audiobooks).bookIds()).containsExactly("1")
+    }
+
+    @Test
+    fun `the books whose audio the device keeps are told as they change`() = runTest {
+        downloads.has(BookId("1"), DownloadFormat.Audiobook)
+        downloads.has(BookId("2"), DownloadFormat.Text)
+        downloads.has(BookId("3"), DownloadFormat.Narration, state = FormatState.Queued)
+        val car = car()
+
+        assertThat(car.keptAudio.first()).containsExactly(BookId("1"))
+        downloads.has(BookId("3"), DownloadFormat.Narration)
+        assertThat(car.keptAudio.first()).containsExactly(BookId("1"), BookId("3"))
     }
 
     // --- search

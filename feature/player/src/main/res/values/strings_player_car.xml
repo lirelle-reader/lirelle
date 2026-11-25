@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- The tabs of what a car browses -->
+    <string name="car_tab_home">Home</string>
+    <string name="car_tab_downloaded">Downloaded</string>
+    <string name="car_tab_audiobooks">Audiobooks</string>
+    <string name="car_tab_series">Series</string>
+    <!-- The groups of the car's Home tab: the phone's Home rows of the same names -->
+    <string name="car_section_continue">Continue</string>
+    <string name="car_section_up_next">Up next</string>
+    <string name="car_section_recently_added">Recently added</string>
+    <!-- Under a book to continue: the listening time left, as "9h 12m" -->
+    <string name="car_line_left">%1$s left</string>
+    <!-- Under a series: how many of its books can be listened to -->
+    <plurals name="car_series_books">
+        <item quantity="one">%d book</item>
+        <item quantity="other">%d books</item>
+    </plurals>
+    <!-- Why a tab lists nothing -->
+    <string name="car_notice_nothing">This profile has nothing to listen to.</string>
+    <string name="car_notice_sign_in">Open Lirelle on the phone to sign in again.</string>
+    <string name="car_notice_unreachable">The server cannot be reached.</string>
+</resources>

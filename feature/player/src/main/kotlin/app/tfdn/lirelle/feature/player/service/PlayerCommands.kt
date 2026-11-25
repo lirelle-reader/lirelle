@@ -8,14 +8,15 @@ import androidx.media3.common.MediaItem
 import androidx.media3.common.Player
 import androidx.media3.common.util.UnstableApi
 import androidx.media3.session.CommandButton
-import androidx.media3.session.MediaLibraryService.MediaLibrarySession
 import androidx.media3.session.MediaNotification
 import androidx.media3.session.MediaSession
 import androidx.media3.session.SessionCommand
 import androidx.media3.session.SessionCommands
 import androidx.media3.session.SessionError
 import androidx.media3.session.SessionResult
+import app.tfdn.lirelle.feature.player.car.CarBrowser
 import app.tfdn.lirelle.feature.player.car.CarControllers
+import app.tfdn.lirelle.feature.player.car.CarLibraryCallback
 import app.tfdn.lirelle.feature.player.car.ControllerKind
 import com.google.common.util.concurrent.Futures
 import com.google.common.util.concurrent.ListenableFuture
@@ -28,8 +29,8 @@ import com.google.common.util.concurrent.ListenableFuture
  *
  * What a controller is offered goes by who it is ([ControllerKind]): the app's own get the whole contract;
  * other apps the skips and the chapters; a car those, the next speed and the next volume, with buttons of its
- * own ([buttons] is asked the car's), and it alone browses the library and may set the player's items, which
- * is how a car starts what it was shown.
+ * own ([buttons] is asked the car's), and it alone browses the library ([CarLibraryCallback], answered by the
+ * car's browser) and may set the player's items, which is how a car starts what it was shown.
  *
  * Calls arrive on the main thread.
  */
@@ -39,8 +40,9 @@ class PlayerCommands(
     private val handle: (PlayerCommand) -> Unit,
     private val buttons: (car: Boolean) -> List<CommandButton>,
     private val cars: CarControllers = CarControllers.Media3,
+    browser: CarBrowser? = null,
     private val resume: () -> ListenableFuture<MediaSession.MediaItemsWithStartPosition> = ::nothingToResume,
-) : MediaLibrarySession.Callback {
+) : CarLibraryCallback(browser) {
 
     override fun onConnect(
         session: MediaSession,
@@ -90,7 +92,7 @@ class PlayerCommands(
         Futures.immediateFailedFuture(UnsupportedOperationException("Books are loaded with LOAD_BOOK"))
 
     /** Who [controller] is: the app's own before a car, a car before any other app. */
-    fun kindOf(session: MediaSession, controller: MediaSession.ControllerInfo): ControllerKind = when {
+    override fun kindOf(session: MediaSession, controller: MediaSession.ControllerInfo): ControllerKind = when {
         isTrusted(controller.packageName, session.isMediaNotificationController(controller)) -> ControllerKind.Own
         cars.isCar(session, controller) -> ControllerKind.Car
         else -> ControllerKind.Other
