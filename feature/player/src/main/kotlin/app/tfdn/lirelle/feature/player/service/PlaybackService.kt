@@ -425,7 +425,7 @@ class PlaybackService : MediaLibraryService() {
         }
         main.launch { parts.sources.settings.settings.collect { publisher.settings = it } }
         // A car subscribed to a tab asks for it again when told: nothing is said once the session was let go.
-        main.refreshCars(parts.network.waitsForSignIn, parts.car.library.keptAudio) {
+        main.refreshCars(parts.network.waitsForSignIn, parts.network.online, parts.car.library.keptAudio) {
             session.held?.notifyChildrenChanged(CarIds.of(it), Int.MAX_VALUE, null)
         }
         main.launch {
