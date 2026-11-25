@@ -38,6 +38,8 @@ Books and audiobooks from Standard Ebooks and LibriVox, in the public domain. Se
 - **Offline**: download books, comics and audiobooks to read and listen without a network; your progress is sent to
   the server when the network is back.
 - **Reading history**, and the progress made on your other devices.
+- **One library at a time**: when your server has several libraries, the Library's title lets you choose which one
+  to browse; each profile remembers its choice.
 - **Editions**: the page of a book lists the other editions of its work (another language, the audiobook, another
   printing), with their names and your progress in each from BookOrbit 3.10.0.
 - **English and French**, and layouts made for tablets as well as phones.
