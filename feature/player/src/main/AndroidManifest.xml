@@ -14,6 +14,11 @@
     <!-- Only for the rare "tap to continue" notification; the player notification itself needs none. -->
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 
+    <!-- Android Auto is known by who signed it (AndroidAuto.kt): its package must be one the app may look up. -->
+    <queries>
+        <package android:name="com.google.android.projection.gearhead" />
+    </queries>
+
     <application>
         <!-- Android Auto lists the app among its media apps, and browses it through the playback service. -->
         <meta-data
