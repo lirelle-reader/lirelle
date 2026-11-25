@@ -248,3 +248,7 @@ internal data class GenreCountDto(val genre: String? = null, val count: Int = 0)
 
 @Serializable
 internal data class GenreDistributionDto(val items: List<GenreCountDto> = emptyList())
+
+/** One of the server's libraries, of which only the id and the name are read. */
+@Serializable
+internal data class LibraryDto(val id: Long, val name: String = "")

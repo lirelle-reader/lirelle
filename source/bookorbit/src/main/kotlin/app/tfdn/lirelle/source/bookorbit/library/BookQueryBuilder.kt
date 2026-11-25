@@ -15,6 +15,7 @@ private const val ReadAlongFormat = "epub:readalong"
 /**
  * Builds the body of a book query (`BookQuery` in the server's types).
  * Linked copies of one work are always folded into one item; series are never folded.
+ * The request's library is said by its name, the one thing the server's `library` rule matches.
  */
 internal fun buildBookQuery(request: BookListRequest, page: Int, size: Int): JsonObject = buildJsonObject {
     val dir = if (request.direction == SortDirection.Ascending) "asc" else "desc"
@@ -40,7 +41,10 @@ internal fun buildBookQuery(request: BookListRequest, page: Int, size: Int): Jso
     )
     put("collapseLinked", true)
     request.text?.trim()?.takeIf { it.isNotEmpty() }?.let { put("q", it) }
-    val rules = rulesOf(request.filters) + listOfNotNull(request.genre?.let { includesAny("genre", listOf(it)) })
+    val rules = rulesOf(request.filters) + listOfNotNull(
+        request.genre?.let { includesAny("genre", listOf(it)) },
+        request.library?.let { includesAny("library", listOf(it.name)) },
+    )
     if (rules.isNotEmpty()) {
         put(
             "filter",

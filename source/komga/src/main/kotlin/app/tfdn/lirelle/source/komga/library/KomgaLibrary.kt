@@ -22,6 +22,7 @@ import app.tfdn.lirelle.core.library.model.SearchResults
 import app.tfdn.lirelle.core.library.model.SearchSection
 import app.tfdn.lirelle.core.library.model.Series
 import app.tfdn.lirelle.core.library.model.SeriesBooks
+import app.tfdn.lirelle.core.library.model.ServerLibrary
 import app.tfdn.lirelle.core.library.model.Shelves
 import app.tfdn.lirelle.core.network.ApiError
 import app.tfdn.lirelle.core.network.ApiErrorException
@@ -108,7 +109,7 @@ internal class KomgaLibrary(
         throw ApiErrorException(errors.map(exception, KomgaCall.Content))
     }
 
-    override suspend fun series(text: String?): ApiResult<List<Series>> = call { remote ->
+    override suspend fun series(text: String?, library: ServerLibrary?): ApiResult<List<Series>> = call { remote ->
         wholeList { page -> remote.api.series(seriesSearch(text), page, BatchSize, listOf(SeriesOrder)) }
             .filterNot { it.deleted }
             // A series added on the server between two batches shifts the list: one comes twice.

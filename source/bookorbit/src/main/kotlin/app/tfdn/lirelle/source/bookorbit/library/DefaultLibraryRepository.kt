@@ -29,6 +29,7 @@ import app.tfdn.lirelle.core.library.model.SearchResults
 import app.tfdn.lirelle.core.library.model.SearchSection
 import app.tfdn.lirelle.core.library.model.Series
 import app.tfdn.lirelle.core.library.model.SeriesBooks
+import app.tfdn.lirelle.core.library.model.ServerLibrary
 import app.tfdn.lirelle.core.library.model.Shelves
 import app.tfdn.lirelle.core.library.model.SortDirection
 import app.tfdn.lirelle.core.network.ApiError
@@ -43,6 +44,7 @@ import app.tfdn.lirelle.source.bookorbit.network.ErrorMapper
 import app.tfdn.lirelle.source.bookorbit.network.ServerFeatures
 import app.tfdn.lirelle.source.bookorbit.network.bookIdOf
 import app.tfdn.lirelle.source.bookorbit.network.bookOrbit
+import app.tfdn.lirelle.source.bookorbit.network.libraryIdOf
 import java.io.IOException
 import java.time.Instant
 import kotlinx.coroutines.async
@@ -74,13 +76,19 @@ internal class DefaultLibraryRepository(
         return errors.call(CallKind.Authenticated) { block(remote) }
     }
 
+    override suspend fun libraries(): ApiResult<List<ServerLibrary>> = call { remote ->
+        remote.api.libraries().filter { it.name.isNotBlank() }.map { ServerLibrary(libraryIdOf(it.id), it.name) }
+    }
+
     override fun books(source: BookListSource, request: BookListRequest): PagedList<BookSummary> {
         val total = MutableStateFlow<Int?>(null)
+        // Only the whole library's books are narrowed to a library: a shelf's books are its own, wherever they are.
+        val asked = if (source == BookListSource.AllBooks) request else request.copy(library = null)
         val pager = Pager(pagingConfig(BookPageSize)) {
             IndexPagingSource(BookPageSize, onTotal = { total.value = it }) { page, size ->
                 pageOf {
                     val remote = remote() ?: throw IOException("Signed out")
-                    val query = buildBookQuery(request, page, size)
+                    val query = buildBookQuery(asked, page, size)
                     val dto = when (source) {
                         BookListSource.AllBooks -> remote.api.books(query)
                         is BookListSource.Collection -> remote.api.collectionBooks(source.id.bookOrbit(), query)
@@ -93,14 +101,19 @@ internal class DefaultLibraryRepository(
         return PagedList(pager.flow, total)
     }
 
-    override fun authors(sort: AuthorSort, direction: SortDirection, text: String?): PagedList<Author> {
+    override fun authors(
+        sort: AuthorSort,
+        direction: SortDirection,
+        text: String?,
+        library: ServerLibrary?,
+    ): PagedList<Author> {
         val total = MutableStateFlow<Int?>(null)
         val order = if (direction == SortDirection.Ascending) "asc" else "desc"
         val pager = Pager(pagingConfig(BatchSize)) {
             IndexPagingSource(BatchSize, onTotal = { total.value = it }) { page, size ->
                 pageOf {
                     val remote = remote() ?: throw IOException("Signed out")
-                    val dto = remote.api.authors(page, size, sort.field, order, text)
+                    val dto = remote.api.authors(page, size, sort.field, order, text, library?.id?.bookOrbit())
                     PageResult(dto.items.map(remote.mapper::author), dto.total)
                 }
             }
@@ -115,8 +128,11 @@ internal class DefaultLibraryRepository(
         throw ApiErrorException(errors.map(exception, CallKind.Authenticated))
     }
 
-    override suspend fun series(text: String?): ApiResult<List<Series>> = call { remote ->
-        wholeList { page -> remote.api.series(page, BatchSize, text).let { PageResult(it.items, it.total) } }
+    override suspend fun series(text: String?, library: ServerLibrary?): ApiResult<List<Series>> = call { remote ->
+        val libraryNumber = library?.id?.bookOrbit()
+        wholeList { page ->
+            remote.api.series(page, BatchSize, text, libraryNumber).let { PageResult(it.items, it.total) }
+        }
             // A series added on the server between two batches shifts the list: one comes twice.
             .distinctBy { it.id }
             .map(remote.mapper::series)

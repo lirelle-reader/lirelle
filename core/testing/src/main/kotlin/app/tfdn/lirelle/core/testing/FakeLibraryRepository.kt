@@ -24,6 +24,7 @@ import app.tfdn.lirelle.core.library.model.RelatedBooks
 import app.tfdn.lirelle.core.library.model.SearchResults
 import app.tfdn.lirelle.core.library.model.Series
 import app.tfdn.lirelle.core.library.model.SeriesBooks
+import app.tfdn.lirelle.core.library.model.ServerLibrary
 import app.tfdn.lirelle.core.library.model.Shelves
 import app.tfdn.lirelle.core.library.model.SortDirection
 import app.tfdn.lirelle.core.network.ApiError
@@ -46,6 +47,7 @@ private val Loaded = LoadStates(refresh = Idle, prepend = Idle, append = Idle)
  */
 @Suppress("TooManyFunctions") // One function per repository operation.
 class FakeLibraryRepository : LibraryRepository {
+    var librariesResult: ApiResult<List<ServerLibrary>> = ApiResult.Success(emptyList())
     var books: List<BookSummary> = emptyList()
     var authorsList: List<Author> = emptyList()
     var seriesResult: ApiResult<List<Series>> = ApiResult.Success(emptyList())
@@ -70,6 +72,12 @@ class FakeLibraryRepository : LibraryRepository {
 
     /** The text of each authors request, in step with [authorRequests]. */
     val authorTexts = mutableListOf<String?>()
+
+    /** The library of each authors request, in step with [authorRequests]. */
+    val authorLibraries = mutableListOf<ServerLibrary?>()
+
+    /** The library of each series request, in step with the "series" entries of [calls]. */
+    val seriesLibraries = mutableListOf<ServerLibrary?>()
     val calls = mutableListOf<String>()
 
     override fun books(source: BookListSource, request: BookListRequest): PagedList<BookSummary> {
@@ -77,9 +85,15 @@ class FakeLibraryRepository : LibraryRepository {
         return PagedList(flowOf(PagingData.from(books, loadStates)), MutableStateFlow(books.size))
     }
 
-    override fun authors(sort: AuthorSort, direction: SortDirection, text: String?): PagedList<Author> {
+    override fun authors(
+        sort: AuthorSort,
+        direction: SortDirection,
+        text: String?,
+        library: ServerLibrary?,
+    ): PagedList<Author> {
         authorRequests += sort to direction
         authorTexts += text
+        authorLibraries += library
         return PagedList(flowOf(PagingData.from(authorsList, loadStates)), MutableStateFlow(authorsList.size))
     }
 
@@ -89,7 +103,12 @@ class FakeLibraryRepository : LibraryRepository {
         return result
     }
 
-    override suspend fun series(text: String?) = answer(if (text == null) "series" else "series $text", seriesResult)
+    override suspend fun libraries() = answer("libraries", librariesResult)
+
+    override suspend fun series(text: String?, library: ServerLibrary?): ApiResult<List<Series>> {
+        seriesLibraries += library
+        return answer(if (text == null) "series" else "series $text", seriesResult)
+    }
 
     override suspend fun seriesBooks(seriesId: SeriesId) = answer("seriesBooks $seriesId", seriesBooksResult)
 

@@ -16,7 +16,7 @@ private val NumericUses = listOf(
     // An id turned into the BookOrbit number it stands for (BookOrbitNumbers.kt).
     Regex("""\.bookOrbit\(\)"""),
     // An id made from a BookOrbit number (BookOrbitIds.kt).
-    Regex("""\b(book|file|series|author|shelf|mark|read)IdOf\("""),
+    Regex("""\b(book|file|series|author|shelf|mark|read|library)IdOf\("""),
     // An id made from a number literal, quoted or not, or from a number's text: a type's name, not a call like
     // setMediaId.
     Regex("""\b[A-Z]\w*Id\(\s*-?\d"""),
@@ -120,6 +120,7 @@ class OpaqueIdsTest {
             val perhaps = file.id.value.toIntOrNull()
             val asked = api.book(bookId.bookOrbit())
             val made = bookIdOf(dto.id)
+            val listed = libraryIdOf(dto.id)
             val literal = BookId(42)
             val quoted = BookId("-1")
             val numbered = FileId("12")

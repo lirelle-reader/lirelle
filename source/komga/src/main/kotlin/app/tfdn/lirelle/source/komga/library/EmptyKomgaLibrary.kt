@@ -22,6 +22,7 @@ import app.tfdn.lirelle.core.library.model.RelatedBooks
 import app.tfdn.lirelle.core.library.model.SearchResults
 import app.tfdn.lirelle.core.library.model.Series
 import app.tfdn.lirelle.core.library.model.SeriesBooks
+import app.tfdn.lirelle.core.library.model.ServerLibrary
 import app.tfdn.lirelle.core.library.model.Shelves
 import app.tfdn.lirelle.core.library.model.SortDirection
 import app.tfdn.lirelle.core.network.ApiError
@@ -42,11 +43,18 @@ internal fun <T> none(): ApiResult<List<T>> = ApiResult.Success(emptyList())
 @Suppress("TooManyFunctions") // One function per operation of the contract, each answering nothing.
 internal class EmptyKomgaLibrary : LibraryRepository {
 
+    override suspend fun libraries(): ApiResult<List<ServerLibrary>> = none()
+
     override fun books(source: BookListSource, request: BookListRequest): PagedList<BookSummary> = emptyPages()
 
-    override fun authors(sort: AuthorSort, direction: SortDirection, text: String?): PagedList<Author> = emptyPages()
+    override fun authors(
+        sort: AuthorSort,
+        direction: SortDirection,
+        text: String?,
+        library: ServerLibrary?,
+    ): PagedList<Author> = emptyPages()
 
-    override suspend fun series(text: String?): ApiResult<List<Series>> = none()
+    override suspend fun series(text: String?, library: ServerLibrary?): ApiResult<List<Series>> = none()
 
     override suspend fun seriesBooks(seriesId: SeriesId): ApiResult<SeriesBooks> = NotFound
 
