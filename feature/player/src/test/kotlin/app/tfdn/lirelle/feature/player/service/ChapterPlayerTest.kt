@@ -390,6 +390,25 @@ class ChapterPlayerTest {
     }
 
     @Test
+    fun `a second book asked while the first loads keeps its placeholder and its pause when the first ends`() {
+        player.setMediaItem(PlayerSessionContract.startItem(BookId("7"), "The Long Road"))
+        idle()
+        val firstDone = resumed!!
+        player.setMediaItem(PlayerSessionContract.startItem(BookId("8"), "The Wide River"))
+        idle()
+        player.pause()
+        idle()
+
+        firstDone()
+        idle()
+
+        assertThat(asked).containsExactly("start 7", "start 8").inOrder()
+        assertThat(player.currentMediaItem?.mediaMetadata?.title.toString()).isEqualTo("The Wide River")
+        assertThat(player.playbackState).isEqualTo(Player.STATE_BUFFERING)
+        assertThat(playsOnceLoaded!!.invoke()).isFalse()
+    }
+
+    @Test
     fun `any other item is still set to nothing`() {
         player.setMediaItem(MediaItem.Builder().setMediaId("book/7").build())
         player.setMediaItem(MediaItem.Builder().setMediaId("elsewhere").build())

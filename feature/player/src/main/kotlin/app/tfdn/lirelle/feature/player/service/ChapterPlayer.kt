@@ -213,8 +213,11 @@ class ChapterPlayer(
         pausedWhileResuming = false
         val play = { !pausedWhileResuming }
         val done = {
-            resuming = null
-            pausedWhileResuming = false
+            // Another book asked meanwhile is still loading: the placeholder and a pause are its own.
+            if (resuming === item) {
+                resuming = null
+                pausedWhileResuming = false
+            }
             loaded.set(Unit)
             Unit
         }

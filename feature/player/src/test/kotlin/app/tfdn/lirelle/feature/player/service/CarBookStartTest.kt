@@ -10,6 +10,7 @@ import app.tfdn.lirelle.core.network.ApiResult
 import app.tfdn.lirelle.core.testing.FakeAudioRepository
 import app.tfdn.lirelle.core.testing.FakeLibraryRepository
 import com.google.common.truth.Truth.assertThat
+import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.TestScope
 import kotlinx.coroutines.test.currentTime
@@ -112,6 +113,34 @@ class CarBookStartTest {
         assertThat(engine.wantsToPlay).isFalse()
         assertThat(failures).isEqualTo(1)
     }
+
+    @Test
+    fun `a second book asked while the first is looked up is the one that plays, whichever is answered first`() =
+        runTest {
+            // The first book's rules take longer to read than the second's.
+            val slow = CompletableDeferred<Unit>()
+            player()
+            val rules: suspend (BookId) -> LoadRequest? = {
+                asked += it
+                if (it == BookId("42")) slow.await()
+                LoadRequest.Audiobook(it)
+            }
+            val start = CarBookStart(book, backgroundScope, rules) { failures++ }
+            val ended = mutableListOf<String>()
+
+            start.start(BookId("42"), { true }) { ended += "42" }
+            runCurrent()
+            start.start(BookId("43"), { true }) { ended += "43" }
+            settle()
+            slow.complete(Unit)
+            settle()
+
+            assertThat(asked).containsExactly(BookId("42"), BookId("43")).inOrder()
+            assertThat(book.extras.value.book?.id).isEqualTo(BookId("43"))
+            // Each start ends once, the one given up too, and that is no failure.
+            assertThat(ended).containsExactly("42", "43").inOrder()
+            assertThat(failures).isEqualTo(0)
+        }
 
     @Test
     fun `rules that break say the failure too, and the player is not left starting`() = runTest {
