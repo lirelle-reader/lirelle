@@ -1,0 +1,5 @@
+Features
+• Comics can be read vertically, as a continuous strip
+• The author page shows each work once, series count their volumes
+• The book page lists the editions of its work
+• The Library destination shows one library of its server at a time
