@@ -64,9 +64,14 @@ change is reviewed and tested on real devices by a human before it ships. Contri
 - A BookOrbit server, 3.8.0 or later, or a Komga server (tested with Komga 1.30). The editions of a book are grouped
   from BookOrbit 3.10.0.
 
-Lirelle is not published yet. Its releases will be on GitHub, IzzyOnDroid, Google Play and F-Droid. Meanwhile, every
-change to `main` is built as a development pre-release on the
-[releases page](https://github.com/lirelle-reader/lirelle/releases): signed, but not a stable release.
+Each release carries its signed APK on GitHub: download it from the
+[latest release](https://github.com/lirelle-reader/lirelle/releases/latest). To get the new releases as they come, add
+the repository to [Obtainium](https://github.com/ImranR98/Obtainium). Google Play and F-Droid are coming, with the same
+signing key as the APKs here.
+
+Every change to `main` is also built as a development pre-release on the
+[releases page](https://github.com/lirelle-reader/lirelle/releases): signed with the same key, but not a stable
+release.
 
 ## Building
 
