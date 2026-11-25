@@ -4,10 +4,12 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
+import app.tfdn.lirelle.core.library.LibraryChoice
 import app.tfdn.lirelle.core.library.LibraryPreferences
 import app.tfdn.lirelle.core.library.LibraryRepository
 import app.tfdn.lirelle.core.library.model.Author
 import app.tfdn.lirelle.core.library.model.AuthorSort
+import app.tfdn.lirelle.core.library.model.ServerLibrary
 import app.tfdn.lirelle.core.library.model.SortDirection
 import app.tfdn.lirelle.core.network.ApiError
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -40,6 +42,7 @@ private const val PreferencesKey = "authors"
 class AuthorsViewModel @Inject constructor(
     private val repository: LibraryRepository,
     private val preferences: LibraryPreferences,
+    choice: LibraryChoice,
 ) : ViewModel() {
 
     private val order: Flow<Pair<AuthorSort, SortDirection>> = preferences.view(PreferencesKey).map { prefs ->
@@ -52,8 +55,13 @@ class AuthorsViewModel @Inject constructor(
         sort to direction
     }.distinctUntilChanged()
 
-    private val lists = order
-        .map { (sort, direction) -> repository.authors(sort, direction) }
+    /** The library the profile chose, null for all. */
+    private val library: Flow<ServerLibrary?> = choice.state.map { it.chosen }.distinctUntilChanged()
+
+    // Another library, or the same one under a new name, is a new list, from its top.
+    private val lists = combine(order, library) { (sort, direction), library ->
+        repository.authors(sort, direction, library = library)
+    }
         .shareIn(viewModelScope, SharingStarted.Eagerly, replay = 1)
 
     val authors: Flow<PagingData<Author>> = lists.flatMapLatest { it.items }.cachedIn(viewModelScope)

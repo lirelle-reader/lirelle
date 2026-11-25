@@ -1,21 +1,26 @@
 package app.tfdn.lirelle.feature.library.books
 
 import androidx.paging.testing.asSnapshot
+import app.tfdn.lirelle.core.ids.LibraryId
 import app.tfdn.lirelle.core.ids.ShelfId
+import app.tfdn.lirelle.core.library.LibraryChoiceState
 import app.tfdn.lirelle.core.library.Presentation
 import app.tfdn.lirelle.core.library.SourceCapabilities
 import app.tfdn.lirelle.core.library.model.BookFilters
 import app.tfdn.lirelle.core.library.model.BookListSource
 import app.tfdn.lirelle.core.library.model.BookSort
 import app.tfdn.lirelle.core.library.model.FormatFilter
+import app.tfdn.lirelle.core.library.model.ServerLibrary
 import app.tfdn.lirelle.core.library.model.SortDirection
 import app.tfdn.lirelle.core.library.model.StatusFilter
+import app.tfdn.lirelle.core.testing.FakeLibraryChoice
 import app.tfdn.lirelle.core.testing.FakeLibraryRepository
 import app.tfdn.lirelle.core.testing.InMemoryLibraryPreferences
 import app.tfdn.lirelle.core.testing.KomgaLikeCapabilities
 import app.tfdn.lirelle.core.testing.MainDispatcherRule
 import app.tfdn.lirelle.core.testing.sampleBook
 import com.google.common.truth.Truth.assertThat
+import com.google.common.truth.Truth.assertWithMessage
 import kotlinx.coroutines.test.runTest
 import org.junit.Rule
 import org.junit.Test
@@ -27,11 +32,14 @@ class BookListViewModelTest {
 
     private val repository = FakeLibraryRepository().apply { books = listOf(sampleBook("1"), sampleBook("2")) }
     private val preferences = InMemoryLibraryPreferences()
+    private val comics = ServerLibrary(LibraryId("1"), "Comics")
+    private val manga = ServerLibrary(LibraryId("2"), "Manga")
+    private val choice = FakeLibraryChoice(LibraryChoiceState(listOf(comics, manga)))
 
     private fun viewModel(
         scope: BookListScope = BookListScope.library(),
         capabilities: SourceCapabilities = SourceCapabilities.Everything,
-    ) = BookListViewModel(scope, repository, preferences, capabilities)
+    ) = BookListViewModel(scope, repository, preferences, capabilities, choice)
 
     @Test
     fun `a source that can do everything offers every sort and filter`() = runTest(mainRule.dispatcher) {
@@ -284,4 +292,106 @@ class BookListViewModelTest {
         assertThat(viewModel(BookListScope.genre("Horror")).state.value.request.sort).isEqualTo(BookSort.Title)
         assertThat(viewModel(BookListScope.library()).state.value.request.sort).isEqualTo(BookSort.Added)
     }
+
+    @Test
+    fun `only the Library's own list of books follows the chosen library`() {
+        assertThat(BookListScope.library().followsLibrary).isTrue()
+        assertThat(otherScopes.map { it.followsLibrary }.distinct()).containsExactly(false)
+    }
+
+    @Test
+    fun `the Books tab asks for every library when none is chosen`() = runTest(mainRule.dispatcher) {
+        viewModel().books.asSnapshot()
+
+        assertThat(repository.bookRequests.last().second.library).isNull()
+    }
+
+    @Test
+    fun `the Books tab asks for the chosen library`() = runTest(mainRule.dispatcher) {
+        choice.choose(comics)
+
+        viewModel().books.asSnapshot()
+
+        assertThat(repository.bookRequests.map { it.second.library }).containsExactly(comics)
+    }
+
+    @Test
+    fun `another choice gives the Books tab a new list, its sort and filters kept`() = runTest(mainRule.dispatcher) {
+        val viewModel = viewModel()
+        viewModel.onSort(BookSort.Title)
+        viewModel.onToggleFormat(FormatFilter.Epub)
+        viewModel.books.asSnapshot()
+        val before = repository.bookRequests.last().second
+        val asked = repository.bookRequests.size
+
+        choice.choose(manga)
+        viewModel.books.asSnapshot()
+
+        assertThat(repository.bookRequests).hasSize(asked + 1)
+        assertThat(repository.bookRequests.last().second).isEqualTo(before.copy(library = manga))
+        assertThat(before.sort).isEqualTo(BookSort.Title)
+        assertThat(before.filters.formats).containsExactly(FormatFilter.Epub)
+        assertThat(viewModel.state.value.request.library).isEqualTo(manga)
+
+        choice.choose(null)
+        viewModel.books.asSnapshot()
+
+        assertThat(repository.bookRequests.last().second).isEqualTo(before)
+    }
+
+    @Test
+    fun `a chosen library renamed on the server gives the Books tab a new list under its new name`() =
+        runTest(mainRule.dispatcher) {
+            choice.choose(comics)
+            val viewModel = viewModel()
+            viewModel.books.asSnapshot()
+            val asked = repository.bookRequests.size
+            val renamed = comics.copy(name = "Bandes dessinées")
+
+            choice.libraries(listOf(renamed, manga))
+            viewModel.books.asSnapshot()
+
+            assertThat(repository.bookRequests).hasSize(asked + 1)
+            assertThat(repository.bookRequests.last().second.library).isEqualTo(renamed)
+        }
+
+    @Test
+    fun `the libraries read again as they were ask the Books tab nothing more`() = runTest(mainRule.dispatcher) {
+        choice.choose(comics)
+        val viewModel = viewModel()
+        viewModel.books.asSnapshot()
+        val asked = repository.bookRequests.size
+
+        choice.libraries(listOf(comics, manga, ServerLibrary(LibraryId("3"), "Novels")))
+        viewModel.books.asSnapshot()
+
+        assertThat(repository.bookRequests).hasSize(asked)
+    }
+
+    @Test
+    fun `the other lists of books never ask for a library, whatever the choice`() = runTest(mainRule.dispatcher) {
+        choice.choose(comics)
+
+        otherScopes.forEach { scope ->
+            val viewModel = viewModel(scope)
+            viewModel.books.asSnapshot()
+            val asked = repository.bookRequests.size
+
+            choice.choose(manga)
+            viewModel.books.asSnapshot()
+            choice.choose(comics)
+
+            assertWithMessage("requests of $scope").that(repository.bookRequests).hasSize(asked)
+        }
+        assertThat(repository.bookRequests.map { it.second.library }.distinct()).containsExactly(null)
+    }
+
+    private val otherScopes = listOf(
+        BookListScope.genre("Fantasy"),
+        BookListScope.search("lighthouse"),
+        BookListScope.status(StatusFilter.Reading, "reading"),
+        BookListScope.recentlyAdded(),
+        BookListScope.shelf(BookListSource.Collection(ShelfId("7"))),
+        BookListScope.shelf(BookListSource.SmartList(ShelfId("3"))),
+    )
 }

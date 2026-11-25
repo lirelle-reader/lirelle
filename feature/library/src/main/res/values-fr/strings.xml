@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="library_title">Bibliothèque</string>
+    <string name="library_all">Toutes les bibliothèques</string>
+    <string name="library_selector_description">Bibliothèque affichée\u00A0: %1$s. Changer de bibliothèque</string>
     <string name="library_tab_books">Livres</string>
     <string name="library_tab_series">Séries</string>
     <string name="library_tab_authors">Auteurs</string>

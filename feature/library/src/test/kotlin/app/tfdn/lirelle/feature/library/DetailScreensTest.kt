@@ -26,6 +26,7 @@ import app.tfdn.lirelle.core.library.model.SeriesBooks
 import app.tfdn.lirelle.core.library.model.SeriesRef
 import app.tfdn.lirelle.core.network.ApiError
 import app.tfdn.lirelle.core.network.ApiResult
+import app.tfdn.lirelle.core.testing.FakeLibraryChoice
 import app.tfdn.lirelle.core.testing.FakeLibraryRepository
 import app.tfdn.lirelle.core.testing.InMemoryLibraryPreferences
 import app.tfdn.lirelle.core.testing.MainDispatcherRule
@@ -174,10 +175,11 @@ class DetailScreensTest {
     @Test
     fun `a list of books, as in the Books tab or a shelf, shows no volume number`() {
         repository.books = volumeBooks
-        val viewModel = BookListViewModel(BookListScope.library(), repository, preferences, Everything)
+        val scope = BookListScope.library()
+        val viewModel = BookListViewModel(scope, repository, preferences, Everything, FakeLibraryChoice())
         compose.setContent {
             LirelleTheme {
-                BookListScreen(BookListScope.library(), onOpenBook = {}, emptyText = "", viewModel = viewModel)
+                BookListScreen(scope, onOpenBook = {}, emptyText = "", viewModel = viewModel)
             }
         }
 
@@ -188,7 +190,7 @@ class DetailScreensTest {
 
     private fun showGenre(): BookListViewModel {
         val scope = BookListScope.genre("Fantasy")
-        val viewModel = BookListViewModel(scope, repository, preferences, Everything)
+        val viewModel = BookListViewModel(scope, repository, preferences, Everything, FakeLibraryChoice())
         compose.setContent {
             LirelleTheme {
                 BookListDetailScreen(

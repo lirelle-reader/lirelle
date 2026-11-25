@@ -14,6 +14,7 @@ import androidx.compose.material3.PrimaryTabRow
 import androidx.compose.material3.ProvideTextStyle
 import androidx.compose.material3.Tab
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.key
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
@@ -22,11 +23,15 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import app.tfdn.lirelle.core.designsystem.SingleLineLabel
 import app.tfdn.lirelle.core.ids.AuthorId
 import app.tfdn.lirelle.core.ids.BookId
 import app.tfdn.lirelle.core.ids.SeriesId
+import app.tfdn.lirelle.core.library.LibraryChoiceState
+import app.tfdn.lirelle.core.library.model.ServerLibrary
 import app.tfdn.lirelle.core.library.model.Shelf
+import app.tfdn.lirelle.core.ui.OnShown
 import app.tfdn.lirelle.core.ui.ScreenTitleRow
 import app.tfdn.lirelle.feature.library.authors.AuthorsTab
 import app.tfdn.lirelle.feature.library.books.BookListScope
@@ -50,10 +55,15 @@ fun LibraryRoute(
     titleAction: @Composable () -> Unit = {},
     viewModel: LibraryViewModel = hiltViewModel(),
 ) {
+    val libraries by viewModel.libraries.collectAsStateWithLifecycle()
+    // The libraries of the server may have changed while the Library was not looked at.
+    OnShown(viewModel::refresh)
     LibraryScreen(
         modifier = modifier,
         tabs = viewModel.tabs,
         startTab = viewModel.startTab,
+        libraries = libraries,
+        onChooseLibrary = viewModel::onChoose,
         titleAction = titleAction,
     ) { tab ->
         when (tab) {
@@ -76,6 +86,9 @@ fun LibraryRoute(
  *   kept by its place could otherwise be another tab's.
  * @param startTab the tab the Library opens on, the source's (the first when it is not among [tabs]). Only a
  *   Library shown for the first time opens there: the tab the user left comes back with the pager's saved state.
+ * @param libraries the libraries of the server and the one shown: from two libraries, the title chooses among them.
+ *   Another choice leaves the tab shown as it is; the lists of the tabs start again by themselves.
+ * @param onChooseLibrary the library chosen in the title's menu, null for all of them.
  * @param titleAction what stands at the end of the title's row, centred on the title as far as the tabs
  *   under it allow; the row is as high with it as without.
  * @param page the content of a tab. The pager keeps the state of the pages the user leaves.
@@ -85,6 +98,8 @@ fun LibraryScreen(
     modifier: Modifier = Modifier,
     tabs: List<LibraryTab> = LibraryTab.entries,
     startTab: LibraryTab = LibraryTab.Books,
+    libraries: LibraryChoiceState = LibraryChoiceState(),
+    onChooseLibrary: (ServerLibrary?) -> Unit = {},
     titleAction: @Composable () -> Unit = {},
     page: @Composable (LibraryTab) -> Unit,
 ) {
@@ -94,12 +109,11 @@ fun LibraryScreen(
             .safeDrawingPadding(),
     ) {
         ScreenTitleRow(
-            title = stringResource(R.string.library_title),
             modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 16.dp, bottom = TitleToTabs),
-            // The tabs are right under: the action stays clear of them.
+            // The tabs are right under: the action stays clear of them, and so does the title when it is a button.
             roomBelow = TitleToTabs,
             action = titleAction,
-        )
+        ) { LibraryTitle(libraries, onChooseLibrary, roomBelow = TitleToTabs) }
         // Other tabs are another pager: a page kept by its place could otherwise be another tab's. Keyed by the
         // tabs' names, whose hash is the same in every process (an enum's is not), so the saved tab and pages
         // come back after the process was stopped.

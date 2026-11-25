@@ -17,6 +17,7 @@ import app.tfdn.lirelle.core.library.model.ShelfKind
 import app.tfdn.lirelle.core.library.model.Shelves
 import app.tfdn.lirelle.core.network.ApiError
 import app.tfdn.lirelle.core.network.ApiResult
+import app.tfdn.lirelle.core.testing.FakeLibraryChoice
 import app.tfdn.lirelle.core.testing.FakeLibraryRepository
 import app.tfdn.lirelle.core.testing.InMemoryLibraryPreferences
 import app.tfdn.lirelle.core.testing.KomgaLikeCapabilities
@@ -142,6 +143,7 @@ class ShelvesTest {
             repository,
             InMemoryLibraryPreferences(),
             SourceCapabilities.Everything,
+            FakeLibraryChoice(),
         )
         val openedBooks = mutableListOf<BookId>()
         compose.setContent {

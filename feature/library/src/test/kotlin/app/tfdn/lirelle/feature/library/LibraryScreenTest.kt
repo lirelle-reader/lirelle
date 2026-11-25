@@ -17,6 +17,8 @@ import androidx.compose.ui.test.swipeLeft
 import androidx.test.core.app.ApplicationProvider
 import app.tfdn.lirelle.core.designsystem.LirelleTheme
 import app.tfdn.lirelle.core.library.SourceCapabilities
+import app.tfdn.lirelle.core.testing.FakeLibraryChoice
+import app.tfdn.lirelle.core.testing.FakeLibraryRepository
 import app.tfdn.lirelle.core.testing.KomgaLikeCapabilities
 import com.google.common.truth.Truth.assertThat
 import org.junit.Rule
@@ -31,6 +33,9 @@ class LibraryScreenTest {
     val compose = createComposeRule()
 
     private val context: Context = ApplicationProvider.getApplicationContext()
+
+    private fun viewModel(capabilities: SourceCapabilities) =
+        LibraryViewModel(capabilities, FakeLibraryRepository(), FakeLibraryChoice())
 
     private fun showTabs(tabs: () -> List<LibraryTab>) {
         compose.setContent {
@@ -66,13 +71,13 @@ class LibraryScreenTest {
     @Test
     fun `a source that can do everything has the four tabs`() {
         assertThat(SourceCapabilities.Everything.libraryTabs()).containsExactlyElementsIn(LibraryTab.entries).inOrder()
-        assertThat(LibraryViewModel(SourceCapabilities.Everything).tabs)
+        assertThat(viewModel(SourceCapabilities.Everything).tabs)
             .containsExactlyElementsIn(LibraryTab.entries).inOrder()
     }
 
     @Test
     fun `a Komga-like source has Books, Series and Shelves, without Authors`() {
-        val tabs = LibraryViewModel(KomgaLikeCapabilities).tabs
+        val tabs = viewModel(KomgaLikeCapabilities).tabs
         assertThat(tabs).containsExactly(LibraryTab.Books, LibraryTab.Series, LibraryTab.Shelves).inOrder()
 
         showTabs { tabs }
@@ -105,8 +110,8 @@ class LibraryScreenTest {
 
     @Test
     fun `the Library opens on the tab its source starts on`() {
-        val komga = LibraryViewModel(KomgaLikeCapabilities)
-        val bookOrbit = LibraryViewModel(SourceCapabilities.Everything)
+        val komga = viewModel(KomgaLikeCapabilities)
+        val bookOrbit = viewModel(SourceCapabilities.Everything)
         assertThat(komga.startTab).isEqualTo(LibraryTab.Series)
         assertThat(bookOrbit.startTab).isEqualTo(LibraryTab.Books)
 
