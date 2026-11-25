@@ -1,6 +1,8 @@
 package app.tfdn.lirelle.core.library.di
 
+import app.tfdn.lirelle.core.library.DataStoreLibraryChoice
 import app.tfdn.lirelle.core.library.DataStoreRecentSearches
+import app.tfdn.lirelle.core.library.LibraryChoice
 import app.tfdn.lirelle.core.library.LibraryFiles
 import app.tfdn.lirelle.core.library.RecentSearches
 import app.tfdn.lirelle.core.session.profile.ProfileComponent
@@ -25,4 +27,10 @@ internal object LibraryProfileModule {
     @ProfileScoped
     fun recentSearches(folders: ProfileFolders, @ProfileLife life: CoroutineScope): RecentSearches =
         DataStoreRecentSearches(folders.newDataStore(LibraryFiles.Searches, life))
+
+    /** A file of its own too: the libraries are the server's, and the one shown is the account's choice. */
+    @Provides
+    @ProfileScoped
+    fun libraryChoice(folders: ProfileFolders, @ProfileLife life: CoroutineScope): LibraryChoice =
+        DataStoreLibraryChoice(folders.newDataStore(LibraryFiles.Choice, life))
 }

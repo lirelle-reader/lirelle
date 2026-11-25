@@ -16,6 +16,7 @@ class IdsTest {
         val shelf: ShelfId,
         val mark: MarkId,
         val read: ReadId,
+        val library: LibraryId,
     )
 
     private val holder = Holder(
@@ -26,6 +27,7 @@ class IdsTest {
         shelf = ShelfId("7"),
         mark = MarkId("m"),
         read = ReadId("r"),
+        library = LibraryId("l-1"),
     )
 
     @Test
@@ -33,7 +35,8 @@ class IdsTest {
         val json = Json.encodeToString(Holder.serializer(), holder)
 
         assertThat(json).isEqualTo(
-            """{"book":"12","file":"0B5Y","series":"s-3","author":"a","shelf":"7","mark":"m","read":"r"}""",
+            """{"book":"12","file":"0B5Y","series":"s-3","author":"a","shelf":"7","mark":"m","read":"r",""" +
+                """"library":"l-1"}""",
         )
     }
 
@@ -61,7 +64,7 @@ class IdsTest {
     fun `an id prints as its text`() {
         assertThat(BookId("12").toString()).isEqualTo("12")
         assertThat("${FileId("x")} ${SeriesId("s")} ${AuthorId("a")}").isEqualTo("x s a")
-        assertThat("${ShelfId("h")} ${MarkId("m")} ${ReadId("r")}").isEqualTo("h m r")
+        assertThat("${ShelfId("h")} ${MarkId("m")} ${ReadId("r")} ${LibraryId("l")}").isEqualTo("h m r l")
     }
 
     @Test
