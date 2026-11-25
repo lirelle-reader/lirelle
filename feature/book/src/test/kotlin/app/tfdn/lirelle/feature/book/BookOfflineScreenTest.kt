@@ -24,10 +24,13 @@ import app.tfdn.lirelle.core.designsystem.LirelleTheme
 import app.tfdn.lirelle.core.downloads.model.DownloadFormat
 import app.tfdn.lirelle.core.ids.BookId
 import app.tfdn.lirelle.core.library.model.BookDetail
+import app.tfdn.lirelle.core.library.model.BookEdition
 import app.tfdn.lirelle.core.library.model.BookFileKind
 import app.tfdn.lirelle.core.library.model.BookReading
 import app.tfdn.lirelle.core.library.model.PlaybackState
 import app.tfdn.lirelle.core.library.model.CoverShape
+import app.tfdn.lirelle.core.library.model.EditionMedia
+import app.tfdn.lirelle.core.library.model.EditionProgress
 import app.tfdn.lirelle.core.library.model.RelatedBook
 import app.tfdn.lirelle.core.library.model.RelatedBooks
 import app.tfdn.lirelle.core.network.ApiError
@@ -67,6 +70,17 @@ class BookOfflineScreenTest {
 
     /** A read-along EPUB alone: listening is the reader narrating. */
     private val readAlong = book.copy(files = book.files.filter { it.kind != BookFileKind.Audio })
+
+    /** The same book, which its server knows in two editions. */
+    private val withEditions = book.copy(
+        editions = listOf(
+            edition("12", "Unabridged", EditionMedia.Text, isOpen = true),
+            edition("40", "Full cast", EditionMedia.Audio, isOpen = false),
+        ),
+    )
+
+    private fun edition(id: String, label: String, media: EditionMedia, isOpen: Boolean) =
+        BookEdition(BookId(id), isOpen, label, book.title, coverUrl = null, media, EditionProgress.Finished)
 
     private fun text(id: Int, vararg args: Any) = context.getString(id, *args)
 
@@ -206,6 +220,21 @@ class BookOfflineScreenTest {
 
         assertAbsent(text(R.string.section_in_series), "Next volume")
         compose.onAllNodesWithTag(PagingErrorBarTag).assertCountEquals(0)
+    }
+
+    @Test
+    fun `the editions, which only the server knows, are not shown`() {
+        show(offline(kept = setOf(DownloadFormat.Text), detail = withEditions))
+
+        compose.onAllNodesWithTag(EditionsTag).assertCountEquals(0)
+        assertAbsent(text(R.string.section_editions), "Full cast")
+    }
+
+    @Test
+    fun `gone from the server, the editions are not shown either`() {
+        show(offline(kept = setOf(DownloadFormat.Text), detail = withEditions, noNetwork = false))
+
+        compose.onAllNodesWithTag(EditionsTag).assertCountEquals(0)
     }
 
     @Test

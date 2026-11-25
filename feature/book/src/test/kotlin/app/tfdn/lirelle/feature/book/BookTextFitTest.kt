@@ -8,8 +8,11 @@ import app.tfdn.lirelle.core.designsystem.LirelleTheme
 import app.tfdn.lirelle.core.designsystem.LocalWindowWidthClass
 import app.tfdn.lirelle.core.designsystem.WindowWidthClass
 import app.tfdn.lirelle.core.ids.BookId
+import app.tfdn.lirelle.core.library.model.BookEdition
 import app.tfdn.lirelle.core.library.model.BookReading
 import app.tfdn.lirelle.core.library.model.CoverShape
+import app.tfdn.lirelle.core.library.model.EditionMedia
+import app.tfdn.lirelle.core.library.model.EditionProgress
 import app.tfdn.lirelle.core.library.model.MediaProfile
 import app.tfdn.lirelle.core.library.model.PlaybackState
 import app.tfdn.lirelle.core.library.model.ReadState
@@ -45,9 +48,39 @@ class BookTextFitTest(private val screen: String, language: String, fontScale: F
     val compose = createAndroidComposeRule<ComponentActivity>()
 
     private val book = sampleBookDetail().copy(
-        title = "A title long enough to need several lines on a narrow phone at a large text size",
+        title = LongTitle,
         publisher = "A publisher with a rather long corporate name, Incorporated",
         genres = listOf("Fantasy", LongGenre),
+        editionName = "Version en français, tome 2/2, édition intégrale illustrée",
+        editions = listOf(
+            BookEdition(
+                bookId = BookId("1046"),
+                isOpen = false,
+                label = "Version en anglais, édition du vingtième anniversaire",
+                title = "A Game of Thrones, the first book of a long series",
+                coverUrl = null,
+                media = EditionMedia.TextAndAudio,
+                progress = EditionProgress.Finished,
+            ),
+            BookEdition(
+                bookId = BookId("1052"),
+                isOpen = false,
+                label = "Version en français, tome 1/2, édition intégrale illustrée",
+                title = "Le trône de fer, premier livre d'une longue série",
+                coverUrl = null,
+                media = EditionMedia.TextAndAudio,
+                progress = EditionProgress.InProgress(42),
+            ),
+            BookEdition(
+                bookId = BookId("12"),
+                isOpen = true,
+                label = "Version en français, tome 2/2, édition intégrale illustrée",
+                title = LongTitle,
+                coverUrl = null,
+                media = EditionMedia.Text,
+                progress = EditionProgress.NotStarted,
+            ),
+        ),
     )
     private val reading = BookReading(42, Instant.parse("2026-03-01T20:00:00Z"), totalSeconds = 7_200, sessionCount = 5)
 
@@ -88,6 +121,22 @@ class BookTextFitTest(private val screen: String, language: String, fontScale: F
     fun `the whole page`() {
         val texts = show(BookUiState(Loadable.Ready(book), reading, related))
 
+        // The line of the edition under the series, and the lines of the block of the editions: all there.
+        compose.onNodeWithTag(BookEditionNameTag, useUnmergedTree = true).assertExists()
+        compose.onNodeWithTag(EditionsTag).assertExists()
+        val bookAndAudio = text(R.string.edition_media_text_and_audio)
+        val editionTexts = book.editions.flatMap { listOfNotNull(it.label, it.title.takeIf { _ -> !it.isOpen }) } +
+            listOf(
+                text(R.string.section_editions),
+                text(R.string.edition_this),
+                text(R.string.edition_details, bookAndAudio, text(R.string.edition_progress_percent, 42)),
+                text(R.string.edition_details, bookAndAudio, text(R.string.edition_progress_finished)),
+            )
+        editionTexts.forEach { expected ->
+            assertWithMessage("texts that say \"$expected\"").that(texts.filter { it.text == expected }).isNotEmpty()
+        }
+        // The title of the open book is said by its header alone, not by its line among the editions.
+        assertWithMessage("texts that say the title").that(texts.filter { it.text == LongTitle }).hasSize(1)
         val volume = texts.single { it.text == "12.5" }
         assertWithMessage("$volume is cut short").that(volume.isEllipsized).isFalse()
         // A genre is a link that grows with its name: all of it is there, on as many lines as it needs.
@@ -224,6 +273,7 @@ class BookTextFitTest(private val screen: String, language: String, fontScale: F
         private const val Phone = "w411dp-h891dp"
         private const val Tablet = "w700dp-h1000dp"
         private const val Wide = "w1100dp-h800dp"
+        private const val LongTitle = "A title long enough to need several lines on a narrow phone at a large text size"
         private const val LongGenre = "A genre with a remarkably long name for a chip"
 
         @JvmStatic

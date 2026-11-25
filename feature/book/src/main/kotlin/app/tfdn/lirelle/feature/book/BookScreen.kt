@@ -291,6 +291,8 @@ private fun OneColumn(book: BookDetail, state: BookUiState, links: BookLinks) {
         )
         ActionsBlock(book, state.reading, state.listening, links.starts, links.download)
         FactsBlock(book, ratings = links.offers.ratings)
+        // What only the server knows is not on a page built without it.
+        if (!state.offline) EditionsBlock(book, links.onOpenBook)
         LowerBlocks(book, state, links)
     }
 }
@@ -323,7 +325,10 @@ private fun TwoColumns(book: BookDetail, state: BookUiState, links: BookLinks) {
                 .verticalScroll(rememberScrollState())
                 .padding(PagePadding),
             verticalArrangement = Arrangement.spacedBy(BlockSpacing),
-        ) { LowerBlocks(book, state, links) }
+        ) {
+            if (!state.offline) EditionsBlock(book, links.onOpenBook, columns = 2)
+            LowerBlocks(book, state, links)
+        }
     }
 }
 

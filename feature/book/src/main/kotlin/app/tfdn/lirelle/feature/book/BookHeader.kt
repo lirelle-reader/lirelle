@@ -31,6 +31,7 @@ import app.tfdn.lirelle.core.ui.PagedLabel
 
 internal const val BookCoverTag = "book-cover"
 internal const val BookTitleTag = "book-title"
+internal const val BookEditionNameTag = "book-edition-name"
 
 private val StackedCoverMaxWidth = 220.dp
 private val CoverGap = 16.dp
@@ -145,6 +146,15 @@ private fun HeaderTexts(book: BookDetail, onOpenAuthor: ((AuthorId) -> Unit)?, t
     book.series?.let { series ->
         Text(
             text = series.index?.let { stringResource(R.string.book_series_line, series.name, it) } ?: series.name,
+            style = MaterialTheme.typography.bodyMedium,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+        )
+    }
+    // What sets this edition apart from the others of its work, as the block of the editions names it.
+    book.editionName?.let {
+        Text(
+            text = it,
+            modifier = Modifier.testTag(BookEditionNameTag),
             style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
         )

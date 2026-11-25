@@ -71,6 +71,18 @@
     <string name="detail_added">Ajouté le</string>
     <string name="detail_collections">Collections</string>
 
+    <string name="section_editions">Éditions</string>
+    <string name="edition_this">Cette édition</string>
+    <string name="edition_media_text">Livre</string>
+    <string name="edition_media_audio">Audio</string>
+    <string name="edition_media_text_and_audio">Livre et audio</string>
+    <string name="edition_media_comic">BD</string>
+    <string name="edition_progress_percent">lu à %1$d %%</string>
+    <string name="edition_progress_finished">terminé</string>
+    <string name="edition_progress_not_started">pas commencé</string>
+    <string name="edition_details">%1$s · %2$s</string>
+    <string name="edition_open">Ouvrir cette édition</string>
+
     <string name="section_in_series">Dans la série</string>
     <string name="action_open_series">Ouvrir la série</string>
     <string name="section_same_author">Du même auteur</string>
