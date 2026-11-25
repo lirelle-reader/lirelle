@@ -74,7 +74,7 @@ internal class KomgaLibrary(
                     val dto: PageDto<BookDto> = when (source) {
                         BookListSource.AllBooks -> {
                             val seriesIds = request.genre?.let { genre ->
-                                genreSeries ?: seriesOfGenre(remote, genre).also { genreSeries = it }
+                                genreSeries ?: seriesOfGenre(remote, genre, request.library).also { genreSeries = it }
                             }
                             val sorts = bookSorts(request.sort, request.direction)
                             // A genre no series has: no book to ask for.
@@ -99,9 +99,11 @@ internal class KomgaLibrary(
         return PagedList(pager.flow, total)
     }
 
-    private suspend fun seriesOfGenre(remote: Remote, genre: String): List<String> =
-        wholeList { page -> remote.api.series(seriesSearch(text = null, genre), page, BatchSize, listOf(SeriesOrder)) }
-            .map { it.id }
+    /** In [library] only when one is chosen: the books asked next are its own, and the list read is no longer. */
+    private suspend fun seriesOfGenre(remote: Remote, genre: String, library: ServerLibrary?): List<String> {
+        val search = seriesSearch(text = null, genre, library)
+        return wholeList { page -> remote.api.series(search, page, BatchSize, listOf(SeriesOrder)) }.map { it.id }
+    }
 
     /** A page fetched for the paging, which knows no HTTP: what the server refused comes out as its error. */
     private suspend fun <T> pageOf(fetch: suspend () -> PageResult<T>): PageResult<T> = try {

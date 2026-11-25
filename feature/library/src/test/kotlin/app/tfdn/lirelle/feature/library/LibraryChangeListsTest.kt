@@ -220,6 +220,20 @@ class LibraryChangeListsTest {
     }
 
     @Test
+    fun `another library shows its series from the top, even answered before the loading was drawn`() {
+        repository.seriesResult = ApiResult.Success((1..Many).map { sampleSeries("$it") })
+        val viewModel = SeriesListViewModel(repository, InMemoryLibraryPreferences(), choice)
+        compose.setContent { LirelleTheme { SeriesTab(onOpenSeries = {}, viewModel = viewModel) } }
+        scrollAway("series-1")
+        repository.seriesResult = ApiResult.Success((101..100 + Many).map { sampleSeries("$it") })
+
+        chooseManga()
+
+        compose.onNodeWithTag("series-101").assertIsDisplayed()
+        assertNoneShown("series", 1..Many)
+    }
+
+    @Test
     fun `a pull to refresh of the books tells the Library`() {
         showBooks()
 

@@ -30,13 +30,14 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-/** [series] is already sorted and filtered. */
+/** [series] is already sorted and filtered; they are those of [library], null for every library. */
 data class SeriesListUiState(
     val series: Loadable<List<Series>> = Loadable.Loading,
     val sort: SeriesSort = SeriesSort.Name,
     val direction: SortDirection = SortDirection.Ascending,
     val filter: SeriesProgressFilter? = null,
     val refreshing: Boolean = false,
+    val library: ServerLibrary? = null,
 )
 
 /** A name reads best from A; the counts and dates are looked at from the largest. */
@@ -53,6 +54,9 @@ class SeriesListViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val loaded = MutableStateFlow<Loadable<List<Series>>>(Loadable.Loading)
+
+    /** The library [loaded] is of. */
+    private val shown = MutableStateFlow<ServerLibrary?>(null)
     private val filter = MutableStateFlow<SeriesProgressFilter?>(null)
     private val refreshing = MutableStateFlow(false)
 
@@ -61,10 +65,11 @@ class SeriesListViewModel @Inject constructor(
 
     val state: StateFlow<SeriesListUiState> = combine(
         loaded,
+        shown,
         preferences.view(PreferencesKey),
         filter,
         refreshing,
-    ) { loaded, prefs, filter, refreshing ->
+    ) { loaded, shown, prefs, filter, refreshing ->
         val sort = prefs.sort?.let { name -> SeriesSort.entries.firstOrNull { it.name == name } } ?: SeriesSort.Name
         val direction = when (prefs.descending) {
             null -> sort.defaultDirection
@@ -75,7 +80,7 @@ class SeriesListViewModel @Inject constructor(
             is Loadable.Ready -> Loadable.Ready(loaded.value.arranged(sort, direction, filter))
             else -> loaded
         }
-        SeriesListUiState(arranged, sort, direction, filter, refreshing)
+        SeriesListUiState(arranged, sort, direction, filter, refreshing, shown)
     }.stateIn(viewModelScope, SharingStarted.Eagerly, SeriesListUiState())
 
     /** One more for each retry. */
@@ -91,6 +96,7 @@ class SeriesListViewModel @Inject constructor(
                 refresh?.cancel()
                 refreshing.value = false
                 loaded.value = Loadable.Loading
+                shown.value = library
                 loaded.value = repository.series(library = library).toLoadable()
             }
         }

@@ -23,6 +23,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -35,6 +36,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import app.tfdn.lirelle.core.designsystem.LocalWindowWidthClass
 import app.tfdn.lirelle.core.designsystem.WindowWidthClass
 import app.tfdn.lirelle.core.ids.SeriesId
+import app.tfdn.lirelle.core.library.model.Series
 import app.tfdn.lirelle.core.library.model.SeriesProgressFilter
 import app.tfdn.lirelle.core.library.model.SeriesSort
 import app.tfdn.lirelle.core.ui.CollectionEdgePadding
@@ -109,19 +111,33 @@ fun SeriesTabContent(
             onRetry = onRetry,
             loading = { SeriesGrid { items(PlaceholderTiles) { SeriesPlaceholder() } } },
         ) { series ->
-            SeriesGrid {
-                item(key = "bar", span = { GridItemSpan(maxLineSpan) }) {
-                    SeriesBar(state, count = series.size, onSort = onSort, onFilter = onFilter)
-                }
-                if (series.isEmpty()) {
-                    item(key = "empty", span = { GridItemSpan(maxLineSpan) }) {
-                        NoSeries(filtered = state.filter != null, onClearFilter = { onFilter(null) })
-                    }
-                }
-                // A list's key must go in a Bundle: the id's text, not the id.
-                items(series, key = { it.id.value }) { SeriesTile(it, onClick = { onOpenSeries(it.id) }) }
+            // Another library's series start at the top: the server may answer before the loading is drawn, and
+            // the grid would keep the place the list left was scrolled to.
+            key(state.library?.id) { SeriesGrid(series, state, onOpenSeries, onSort, onFilter) }
+        }
+    }
+}
+
+/** The series under their bar, or why there is none. */
+@Composable
+private fun SeriesGrid(
+    series: List<Series>,
+    state: SeriesListUiState,
+    onOpenSeries: (SeriesId) -> Unit,
+    onSort: (SeriesSort) -> Unit,
+    onFilter: (SeriesProgressFilter?) -> Unit,
+) {
+    SeriesGrid {
+        item(key = "bar", span = { GridItemSpan(maxLineSpan) }) {
+            SeriesBar(state, count = series.size, onSort = onSort, onFilter = onFilter)
+        }
+        if (series.isEmpty()) {
+            item(key = "empty", span = { GridItemSpan(maxLineSpan) }) {
+                NoSeries(filtered = state.filter != null, onClearFilter = { onFilter(null) })
             }
         }
+        // A list's key must go in a Bundle: the id's text, not the id.
+        items(series, key = { it.id.value }) { SeriesTile(it, onClick = { onOpenSeries(it.id) }) }
     }
 }
 

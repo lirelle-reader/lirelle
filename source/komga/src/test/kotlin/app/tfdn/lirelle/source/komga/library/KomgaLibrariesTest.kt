@@ -101,6 +101,19 @@ class KomgaLibrariesTest {
     }
 
     @Test
+    fun `the series of a genre are asked in the chosen library only, as its books are`() = runBlocking<Unit> {
+        server.enqueueJson(pageJson(SeriesJson))
+        server.enqueueJson(pageJson(ReadingBookJson))
+        val request = BookListRequest(genre = "Drama", library = seinen)
+
+        library.books(BookListSource.AllBooks, request).items.asSnapshot()
+
+        assertThat(Json.parseToJsonElement(server.takeRequest().bodyText()))
+            .isEqualTo(seriesSearch(text = null, genre = "Drama", library = seinen))
+        assertThat(server.takeRequest().bodyText()).contains(inSeinen)
+    }
+
+    @Test
     fun `a read list's books are not narrowed to the library of the request`() = runBlocking<Unit> {
         server.enqueueJson(pageJson(ReadingBookJson))
 
