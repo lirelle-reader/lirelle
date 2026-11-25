@@ -23,6 +23,9 @@ private const val CoverBound = 200
 /** The folder of those covers, in the profile's cache. */
 private const val CoverFolder = "car-covers"
 
+/** How old a picture being written is when no fetch can still be writing it: the app was stopped meanwhile. */
+private const val StalePartMillis = 60 * 60 * 1_000L
+
 /** How many characters of a digest name a file: enough that two books, or two addresses, never share one. */
 private const val NameLength = 24
 
@@ -123,19 +126,24 @@ class CarCoverFiles(
     /** Served now: among the last to go. */
     private fun File.served(): File = also { it.setLastModified(System.currentTimeMillis()) }
 
-    /** Writes the picture at [url] into [target], whole or not at all; false when it cannot be had. */
+    /**
+     * Writes the picture at [url] into [target], whole or not at all; false when it cannot be had. Each fetch
+     * writes a file of its own: two requests of one cover at once do not write over each other, and the one that
+     * ends last finds the cover there.
+     */
     private fun fetch(url: String, target: File): Boolean {
-        val part = File(target.path + Part)
+        var part: File? = null
         return try {
             folder.mkdirs()
-            download(url, part) && part.renameTo(target)
+            part = File.createTempFile("${target.name}-", Part, folder)
+            download(url, part) && (part.renameTo(target) || target.isFile)
         } catch (_: IOException) {
             false
         } catch (_: IllegalArgumentException) {
             // An address that is not one.
             false
         } finally {
-            part.delete()
+            part?.delete()
         }
     }
 
@@ -145,10 +153,12 @@ class CarCoverFiles(
             response.isSuccessful
         }
 
-    /** Past the bound, the covers served longest ago go. */
+    /** Past the bound, the covers served longest ago go; and what a fetch that never ended left behind. */
     private fun trim() {
-        val all = folder.listFiles().orEmpty().filterNot { it.name.endsWith(Part) }
-        all.sortedByDescending { it.lastModified() }.drop(bound).forEach { it.delete() }
+        val (parts, covers) = folder.listFiles().orEmpty().partition { it.name.endsWith(Part) }
+        covers.sortedByDescending { it.lastModified() }.drop(bound).forEach { it.delete() }
+        val longAgo = System.currentTimeMillis() - StalePartMillis
+        parts.filter { it.lastModified() < longAgo }.forEach { it.delete() }
     }
 
     private companion object {

@@ -15,6 +15,7 @@ import java.util.concurrent.Semaphore
 import java.util.concurrent.TimeUnit
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.runTest
 import okhttp3.Interceptor
@@ -189,7 +190,7 @@ class CarCoverFilesTest {
 
     @Test
     fun `as many covers as may are fetched at once - one more has none, and is fetched when asked again`() =
-        runBlocking {
+        runBlocking<Unit> {
             urls.remember(BookId("1"), "https://books.example/c/1")
             urls.remember(BookId("2"), "https://books.example/c/2")
             val files = files(atOnce = 1)
@@ -204,6 +205,37 @@ class CarCoverFilesTest {
             assertThat(first.await()).isNotNull()
             // Turned away, not failed: nothing is remembered of it.
             assertThat(files.file(BookId("2"))?.readText()).isEqualTo("https://books.example/c/2")
+        }
+
+    @Test
+    fun `two requests of the same cover at once are both served it, and nothing half-written is left`() =
+        runBlocking<Unit> {
+            urls.remember(BookId("1"), "https://books.example/c/1")
+            val files = files()
+            val answer = CountDownLatch(1).also { server.hold = it }
+
+            val both = List(2) { async(Dispatchers.IO) { files.file(BookId("1")) } }
+            assertThat(server.arrived.tryAcquire(2, 5, TimeUnit.SECONDS)).isTrue()
+            answer.countDown()
+
+            val served = both.awaitAll()
+            assertThat(served.map { it?.readText() })
+                .containsExactly("https://books.example/c/1", "https://books.example/c/1")
+            assertThat(cache.listFiles()!!.toList()).containsExactly(served.first())
+        }
+
+    @Test
+    fun `what a fetch that never ended left behind goes with the next cover fetched, not one being written`() =
+        runTest {
+            cache.mkdirs()
+            val left = File(cache, "left.part").apply { writeText("half") }
+            val written = File(cache, "written.part").apply { writeText("half") }
+            left.setLastModified(System.currentTimeMillis() - 2 * 60 * 60 * 1_000L)
+            urls.remember(BookId("1"), "https://books.example/c/1")
+
+            val cover = files().file(BookId("1"))
+
+            assertThat(cache.listFiles()!!.toList()).containsExactly(cover, written)
         }
 
     @Test
