@@ -4,7 +4,12 @@ import app.tfdn.lirelle.source.bookorbit.network.testing.enqueueJson
 import app.tfdn.lirelle.source.bookorbit.network.testing.pathText
 import app.tfdn.lirelle.source.bookorbit.network.testing.serverUrl
 import com.google.common.truth.Truth.assertThat
+import java.util.concurrent.TimeUnit
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.runBlocking
+import mockwebserver3.MockResponse
 import mockwebserver3.MockWebServer
 import okhttp3.OkHttpClient
 import org.junit.After
@@ -45,6 +50,13 @@ class ServerFeaturesTest {
     }
 
     @Test
+    fun `a server before 3_10 does not group editions`() = runBlocking {
+        server.enqueueJson(appInfo("book-links", "reading-history"))
+
+        assertThat(features.has(ServerFeatures.BookEditions)).isFalse()
+    }
+
+    @Test
     fun `a server that lists no features has none`() = runBlocking {
         server.enqueueJson("""{"version":"v3.4.0"}""")
 
@@ -59,6 +71,23 @@ class ServerFeaturesTest {
         features.has(ServerFeatures.BookEditions)
         features.has("book-links")
 
+        assertThat(server.requestCount).isEqualTo(1)
+    }
+
+    @Test
+    fun `two questions at once ask the server once`() = runBlocking {
+        val slow = MockResponse.Builder()
+            .addHeader("Content-Type", "application/json")
+            .body(appInfo("book-editions"))
+            .headersDelay(300, TimeUnit.MILLISECONDS)
+            .build()
+        // Two answers ready: a second request would be answered, and counted.
+        server.enqueue(slow)
+        server.enqueue(slow)
+
+        val answers = List(2) { async(Dispatchers.IO) { features.has(ServerFeatures.BookEditions) } }.awaitAll()
+
+        assertThat(answers).containsExactly(true, true)
         assertThat(server.requestCount).isEqualTo(1)
     }
 
