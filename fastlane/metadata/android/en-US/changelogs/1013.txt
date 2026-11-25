@@ -1,0 +1,6 @@
+Features
+• Lirelle runs on Android 14 and later
+Fixes
+• A turn is not answered by a relocation of what came before it
+• Closing a profile while its jobs run ends them quietly
+• The panel read is kept when the screen turns
