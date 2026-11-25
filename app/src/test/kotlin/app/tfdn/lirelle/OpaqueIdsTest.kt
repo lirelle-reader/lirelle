@@ -43,6 +43,8 @@ private val Allowed: Map<String, String> = mapOf(
         "maps BookOrbit's answers, numbered, to the library's models",
     "source/bookorbit/src/main/kotlin/app/tfdn/lirelle/source/bookorbit/library/BookOrbitFiles.kt" to
         "maps BookOrbit's files, numbered, to the library's book files",
+    "source/bookorbit/src/main/kotlin/app/tfdn/lirelle/source/bookorbit/library/Editions.kt" to
+        "maps BookOrbit's linked books, numbered, to the editions of a book",
     "source/bookorbit/src/main/kotlin/app/tfdn/lirelle/source/bookorbit/history/HistoryMapper.kt" to
         "maps BookOrbit's history answers, numbered, to the history's models",
     "source/bookorbit/src/main/kotlin/app/tfdn/lirelle/source/bookorbit/history/BookOrbitHistoryRepository.kt" to
