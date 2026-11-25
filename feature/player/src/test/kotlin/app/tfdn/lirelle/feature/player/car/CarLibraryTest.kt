@@ -487,4 +487,24 @@ class CarLibraryTest {
         assertThat(car().search("  ")).isEqualTo(CarAnswer.Nodes(emptyList()))
         assertThat(library.calls).isEmpty()
     }
+
+    // --- covers
+
+    @Test
+    fun `the cover's address of each book listed is written down, for when the car asks its cover`() = runTest {
+        val covers = CarCoverUrls()
+        val car = CarLibrary(library, SourceCapabilities.Everything, downloads, kept, { now }, covers) { false }
+        served(audio = listOf(audiobook("1").copy(coverUrl = "https://books.example/c/1?v=3"), audiobook("2")))
+        row(HomeRowKind.Continue, audiobook("3").copy(coverUrl = "https://books.example/c/3"))
+
+        car.nodes(CarPlace.Tab.Audiobooks)
+        car.nodes(CarPlace.Tab.Home)
+
+        assertThat(covers.of(BookId("1"))).isEqualTo("https://books.example/c/1?v=3")
+        assertThat(covers.of(BookId("3"))).isEqualTo("https://books.example/c/3")
+        // Listed without a cover: known to have none.
+        assertThat(covers.knows(BookId("2"))).isTrue()
+        assertThat(covers.of(BookId("2"))).isNull()
+        assertThat(covers.knows(BookId("9"))).isFalse()
+    }
 }

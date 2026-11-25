@@ -6,7 +6,7 @@ import app.tfdn.lirelle.core.ids.BookId
 
 /**
  * The addresses of the covers the app serves to a car, which loads pictures by itself and cannot sign in to the
- * server: `content://<authority>/<profileId>/<bookId>`.
+ * server: `content://<authority>/<profileId>/<bookId>`. [CarCoverProvider] answers them.
  */
 object CarCovers {
     /** The authority of the app whose package is [packageName]: the one its manifest declares. */

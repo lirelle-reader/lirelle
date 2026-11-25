@@ -9,6 +9,7 @@ import app.tfdn.lirelle.core.ids.BookId
 import app.tfdn.lirelle.core.library.LibraryRepository
 import app.tfdn.lirelle.core.library.MonotonicClock
 import app.tfdn.lirelle.core.library.SourceCapabilities
+import app.tfdn.lirelle.core.library.model.BookSummary
 import app.tfdn.lirelle.core.library.model.HomeRowExtent
 import app.tfdn.lirelle.core.library.net.ProfileNetwork
 import app.tfdn.lirelle.core.network.ApiResult
@@ -26,6 +27,7 @@ import kotlinx.coroutines.flow.map
  * the car's browser turns its answers into them.
  *
  * @param clock the clock that does not jump: the audio library is kept a short time by it.
+ * @param covers where the cover's address of each book listed is written, for whoever serves the car its covers.
  * @param signInNeeded whether the profile waits for a sign-in: its server then refuses everything, and only
  *   what the device keeps is listed.
  */
@@ -35,6 +37,7 @@ class CarLibrary(
     private val downloads: Downloads,
     private val kept: KeptBookData,
     clock: MonotonicClock,
+    private val covers: CarCoverUrls = CarCoverUrls(),
     private val signInNeeded: () -> Boolean,
 ) : CarShelves {
     /** For the playback service, from its profile's objects. */
@@ -46,7 +49,8 @@ class CarLibrary(
         kept: KeptBookData,
         clock: MonotonicClock,
         network: ProfileNetwork,
-    ) : this(library, capabilities, downloads, kept, clock, { network.waitsForSignIn.value })
+        covers: CarCoverUrls,
+    ) : this(library, capabilities, downloads, kept, clock, covers, { network.waitsForSignIn.value })
 
     private val books = ListenableBooks(library, capabilities, clock)
 
@@ -77,17 +81,21 @@ class CarLibrary(
         CarPlace.Root -> CarPlace.Tab.entries.map(CarNode::Tab)
         CarPlace.Tab.Home -> home()
         CarPlace.Tab.Downloaded -> downloaded()
-        CarPlace.Tab.Audiobooks -> books.all()?.map { it.carBook(authorLine(it.authors)) }
+        CarPlace.Tab.Audiobooks -> books.all()?.map { it.listed(authorLine(it.authors)) }
         CarPlace.Tab.Series -> books.series()
-        is CarPlace.OneSeries -> books.ofSeries(place.id)?.map { it.carBook(it.seriesLine()) }
+        is CarPlace.OneSeries -> books.ofSeries(place.id)?.map { it.listed(it.seriesLine()) }
     }
 
     /** The books to listen to that the server finds for [text]: its first ones. Nothing for a blank text. */
     override suspend fun search(text: String): CarAnswer {
         if (text.isBlank()) return CarAnswer.Nodes(emptyList())
         refusal(asksServer = true)?.let { return CarAnswer.Notice(it) }
-        return books.matching(text.trim())?.map { it.carBook(authorLine(it.authors)) }.answered()
+        return books.matching(text.trim())?.map { it.listed(authorLine(it.authors)) }.answered()
     }
+
+    /** The book as the car shows it; the address of its cover is written down for when the car asks it. */
+    private fun BookSummary.listed(line: CarLine?, section: CarSection? = null): CarNode.Book =
+        carBook(line, section).also { covers.remember(id, coverUrl) }
 
     /** A list the server could not give is said as one thing: the car has one way to say it. */
     private fun List<CarNode>?.answered(): CarAnswer =
@@ -112,7 +120,7 @@ class CarLibrary(
             .mapNotNull { (section, row) -> (row as? ApiResult.Success)?.let { section to it.value.books } }
         if (rows.isEmpty() && asked.isNotEmpty()) return@coroutineScope null
         rows.flatMap { (section, books) ->
-            books.filter { listenable(it, capabilities) }.map { it.carBook(it.lineIn(section), section) }
+            books.filter { listenable(it, capabilities) }.map { it.listed(it.lineIn(section), section) }
         }.distinctBy { it.id }
     }
 

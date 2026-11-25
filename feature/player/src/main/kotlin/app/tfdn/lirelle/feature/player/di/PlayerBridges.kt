@@ -3,6 +3,7 @@ package app.tfdn.lirelle.feature.player.di
 import app.tfdn.lirelle.core.session.profile.CurrentProfile
 import app.tfdn.lirelle.core.session.profile.ProfileComponent
 import app.tfdn.lirelle.core.session.profile.entry
+import app.tfdn.lirelle.feature.player.car.CarCoverFiles
 import app.tfdn.lirelle.feature.player.controller.PlayerController
 import app.tfdn.lirelle.feature.player.controller.PlayerControllerScope
 import app.tfdn.lirelle.feature.player.service.LastBookMark
@@ -32,10 +33,14 @@ interface PlayerProfileEntry {
 
     /** For the play button's receiver, which is nobody's to inject. */
     fun lastBookMark(): LastBookMark
+
+    /** For the provider of the car's covers, which the system makes. */
+    fun carCovers(): CarCoverFiles
 }
 
 /**
- * The way to the open profile for the play button's receiver, which Media3 makes and Hilt does not inject.
+ * The way to the open profile for the play button's receiver, which Media3 makes, and for the provider of the
+ * car's covers, which the system makes: Hilt injects neither.
  */
 @EntryPoint
 @InstallIn(SingletonComponent::class)
