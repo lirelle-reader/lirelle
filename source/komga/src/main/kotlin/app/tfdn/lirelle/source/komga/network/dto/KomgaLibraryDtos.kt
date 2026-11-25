@@ -101,3 +101,7 @@ internal data class BooksMetadataDto(val authors: List<KomgaAuthorDto> = emptyLi
 /** A read list (`ReadListDto`): the ids of its books, in its order. */
 @Serializable
 internal data class ReadListDto(val id: String, val name: String = "", val bookIds: List<String> = emptyList())
+
+/** A library of the server (`LibraryDto`): its id and its name; Komga says more of it than the app reads. */
+@Serializable
+internal data class LibraryDto(val id: String, val name: String = "")

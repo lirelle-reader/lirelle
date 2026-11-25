@@ -3,6 +3,7 @@ package app.tfdn.lirelle.source.komga.library
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import app.tfdn.lirelle.core.ids.BookId
+import app.tfdn.lirelle.core.ids.LibraryId
 import app.tfdn.lirelle.core.ids.SeriesId
 import app.tfdn.lirelle.core.library.IndexPagingSource
 import app.tfdn.lirelle.core.library.LibraryRepository
@@ -109,8 +110,13 @@ internal class KomgaLibrary(
         throw ApiErrorException(errors.map(exception, KomgaCall.Content))
     }
 
+    override suspend fun libraries(): ApiResult<List<ServerLibrary>> = call { remote ->
+        remote.api.libraries().filter { it.name.isNotBlank() }.map { ServerLibrary(LibraryId(it.id), it.name) }
+    }
+
     override suspend fun series(text: String?, library: ServerLibrary?): ApiResult<List<Series>> = call { remote ->
-        wholeList { page -> remote.api.series(seriesSearch(text), page, BatchSize, listOf(SeriesOrder)) }
+        val search = seriesSearch(text, library = library)
+        wholeList { page -> remote.api.series(search, page, BatchSize, listOf(SeriesOrder)) }
             .filterNot { it.deleted }
             // A series added on the server between two batches shifts the list: one comes twice.
             .distinctBy { it.id }

@@ -8,6 +8,7 @@ import app.tfdn.lirelle.core.library.model.BookListRequest
 import app.tfdn.lirelle.core.library.model.BookSort
 import app.tfdn.lirelle.core.library.model.FormatFilter
 import app.tfdn.lirelle.core.library.model.HomeRowExtent
+import app.tfdn.lirelle.core.library.model.ServerLibrary
 import app.tfdn.lirelle.core.library.model.SortDirection
 import app.tfdn.lirelle.core.library.model.StatusFilter
 import kotlinx.serialization.json.JsonArray
@@ -65,20 +66,27 @@ internal val HomeRowExtent.size: Int
 private const val HomeRowSize = 20
 private const val SeeAllSize = 50
 
-/** The search of the books [request] asks, those of [seriesIds] only when given (the series of a genre). */
+/**
+ * The search of the books [request] asks, those of [seriesIds] only when given (the series of a genre), and of the
+ * library the request names, if it does.
+ */
 internal fun bookSearch(request: BookListRequest, seriesIds: List<String>? = null): JsonObject {
     val scope = seriesIds?.let { ids -> listOfNotNull(anyOf(ids.map { isValue("seriesId", it) })) }.orEmpty()
-    return booksMatching(scope, request)
+    return booksMatching(scope, request, request.library)
 }
 
-/** The search of the books of the read list [readListId] that [request] asks, narrowed as every list of books. */
+/**
+ * The search of the books of the read list [readListId] that [request] asks, narrowed as every list of books but
+ * never to a library: a read list is the account's own, across them.
+ */
 internal fun readListBookSearch(readListId: String, request: BookListRequest): JsonObject =
-    booksMatching(listOf(isValue("readListId", readListId)), request)
+    booksMatching(listOf(isValue("readListId", readListId)), request, library = null)
 
-private fun booksMatching(scope: List<JsonObject>, request: BookListRequest): JsonObject {
+private fun booksMatching(scope: List<JsonObject>, request: BookListRequest, library: ServerLibrary?): JsonObject {
     val statuses = request.filters.statuses.sortedBy { it.ordinal }.mapNotNull { it.readStatus }
     val profiles = request.filters.formats.sortedBy { it.ordinal }.mapNotNull { it.mediaProfile }
     val conditions = scope + NotDeleted + listOfNotNull(
+        library?.let(::inLibrary),
         anyOf(statuses.map { isValue("readStatus", it) }),
         anyOf(profiles.map { isValue("mediaProfile", it) }),
     )
@@ -89,9 +97,9 @@ private fun booksMatching(scope: List<JsonObject>, request: BookListRequest): Js
 internal fun seriesBooksSearch(seriesId: String): JsonObject =
     search(listOf(isValue("seriesId", seriesId), NotDeleted), text = null)
 
-/** The series still in the library, matching [text] and of [genre] when given. */
-internal fun seriesSearch(text: String?, genre: String? = null): JsonObject =
-    search(listOfNotNull(NotDeleted, genre?.let { isValue("genre", it) }), text)
+/** The series still in the library, matching [text] and of [genre] and [library] when given. */
+internal fun seriesSearch(text: String?, genre: String? = null, library: ServerLibrary? = null): JsonObject =
+    search(listOfNotNull(NotDeleted, genre?.let { isValue("genre", it) }, library?.let(::inLibrary)), text)
 
 /** Komga's sort keys for the app's [sort], most significant first. */
 internal fun bookSorts(sort: BookSort, direction: SortDirection): List<String> {
@@ -151,6 +159,9 @@ private fun isValue(field: String, value: String): JsonObject = buildJsonObject 
         },
     )
 }
+
+/** What is in [library]: Komga's libraries are told apart by their id. */
+private fun inLibrary(library: ServerLibrary): JsonObject = isValue("libraryId", library.id.value)
 
 /** Any one of [conditions]: the condition itself when there is one, none when there is none. */
 private fun anyOf(conditions: List<JsonObject>): JsonObject? = when (conditions.size) {

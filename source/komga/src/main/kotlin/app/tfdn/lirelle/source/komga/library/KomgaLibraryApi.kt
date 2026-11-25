@@ -1,6 +1,7 @@
 package app.tfdn.lirelle.source.komga.library
 
 import app.tfdn.lirelle.source.komga.network.dto.BookDto
+import app.tfdn.lirelle.source.komga.network.dto.LibraryDto
 import app.tfdn.lirelle.source.komga.network.dto.PageDto
 import app.tfdn.lirelle.source.komga.network.dto.ReadListDto
 import app.tfdn.lirelle.source.komga.network.dto.SeriesDto
@@ -33,6 +34,10 @@ internal interface KomgaLibraryApi {
         @Query("size") size: Int,
         @Query("sort") sort: List<String>,
     ): PageDto<SeriesDto>
+
+    /** The libraries the account can open, in Komga's order (a bare array). */
+    @GET("api/v1/libraries")
+    suspend fun libraries(): List<LibraryDto>
 
     @GET("api/v1/books/{bookId}")
     suspend fun book(@Path("bookId") bookId: String): BookDto
