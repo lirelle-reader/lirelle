@@ -32,6 +32,7 @@ import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.hideFromAccessibility
 import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.semantics.testTag
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -46,6 +47,9 @@ import app.tfdn.lirelle.core.ui.BookCover
 const val EditionsTag = "book-editions"
 
 internal fun editionTag(id: BookId) = "edition-${id.value}"
+
+/** The bar of an edition being read, on its line. */
+internal const val EditionBarTag = "edition-bar"
 
 private val EditionMinHeight = 72.dp
 private val EditionCoverWidth = 36.dp
@@ -91,9 +95,10 @@ internal fun EditionsBlock(book: BookDetail, onOpenBook: (BookId) -> Unit, colum
 /**
  * One edition: its cover, what names it, what it is made of and where the reader is in it.
  *
- * What takes the tap and is read is a layer under the texts rather than around them: it is as large as the
- * line and says it in one sentence, the texts are not read a second time, and they are no labels of a button,
- * which stay on one line: they wrap as they need.
+ * In this module a text under a `Role.Button` node must stay on one line (the text-fit rule of `LaidOutText`),
+ * and these texts wrap as they need. So what takes the tap and is read is not around the texts: it is a sibling
+ * layer under them, as large as the line, which says the line in one sentence; the texts themselves are hidden
+ * from accessibility, so that they are not read a second time.
  *
  * @param openTitle the title of the book whose page this is.
  */
@@ -172,7 +177,7 @@ private fun EditionBar(percent: Int) {
             .padding(vertical = 4.dp)
             .fillMaxWidth()
             .height(EditionBarHeight)
-            .clearAndSetSemantics { },
+            .clearAndSetSemantics { testTag = EditionBarTag },
         // No dot at the end of the track: it reads as progress.
         drawStopIndicator = {},
     )

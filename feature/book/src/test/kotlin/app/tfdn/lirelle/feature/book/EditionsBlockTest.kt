@@ -5,6 +5,7 @@ import androidx.compose.ui.semantics.SemanticsActions
 import androidx.compose.ui.semantics.SemanticsProperties
 import androidx.compose.ui.semantics.getOrNull
 import androidx.compose.ui.test.SemanticsMatcher
+import androidx.compose.ui.test.SemanticsNodeInteractionCollection
 import androidx.compose.ui.test.assertCountEquals
 import androidx.compose.ui.test.assertHasClickAction
 import androidx.compose.ui.test.assertHasNoClickAction
@@ -63,11 +64,17 @@ class EditionsBlockTest {
     private fun bounds(edition: BookEdition): DpRect = line(edition).getUnclippedBoundsInRoot()
 
     /** How many times the line of an edition shows a text: the texts lie on the line, they are not held by it. */
-    private fun shown(edition: BookEdition, text: String): Int {
+    private fun shown(edition: BookEdition, text: String): Int =
+        on(edition, compose.onAllNodesWithText(text, useUnmergedTree = true))
+
+    /** How many bars the line of an edition draws. */
+    private fun bars(edition: BookEdition): Int =
+        on(edition, compose.onAllNodesWithTag(EditionBarTag, useUnmergedTree = true))
+
+    private fun on(edition: BookEdition, nodes: SemanticsNodeInteractionCollection): Int {
         val within = bounds(edition)
-        val texts = compose.onAllNodesWithText(text, useUnmergedTree = true)
-        return texts.fetchSemanticsNodes().indices.count { index ->
-            val at = texts[index].getUnclippedBoundsInRoot()
+        return nodes.fetchSemanticsNodes().indices.count { index ->
+            val at = nodes[index].getUnclippedBoundsInRoot()
             at.top >= within.top && at.bottom <= within.bottom && at.left >= within.left && at.right <= within.right
         }
     }
@@ -133,6 +140,59 @@ class EditionsBlockTest {
         line(english).performClick()
 
         assertThat(opened).containsExactly(BookId("1046"))
+    }
+
+    @Test
+    fun `only an edition being read draws how far the reader is`() {
+        show()
+
+        assertThat(bars(first)).isEqualTo(1)
+        assertThat(bars(english)).isEqualTo(0)
+        assertThat(bars(open)).isEqualTo(0)
+        compose.onAllNodesWithTag(EditionBarTag, useUnmergedTree = true).assertCountEquals(1)
+        // Under the texts of its line, and no wider than them.
+        val bar = compose.onNodeWithTag(EditionBarTag, useUnmergedTree = true).getUnclippedBoundsInRoot()
+        val details = compose.onAllNodesWithText("Book and audio · 42% read", useUnmergedTree = true)[0]
+            .getUnclippedBoundsInRoot()
+        assertThat(bar.top).isAtLeast(details.bottom)
+        assertThat(bar.left).isEqualTo(details.left)
+        assertThat((bar.bottom - bar.top).value).isWithin(0.5f).of(4f)
+    }
+
+    @Test
+    fun `the open edition being read draws its bar too`() {
+        val reading = open.copy(progress = EditionProgress.InProgress(7))
+        show(listOf(english, reading))
+
+        assertThat(bars(reading)).isEqualTo(1)
+        assertThat(shown(reading, "Book · 7% read")).isEqualTo(1)
+    }
+
+    @Test
+    fun `an audiobook and a comic say what they are`() {
+        val audio = english.copy(media = EditionMedia.Audio)
+        val comic = first.copy(media = EditionMedia.Comic, progress = EditionProgress.NotStarted)
+        show(listOf(audio, comic, open))
+
+        assertThat(shown(audio, "Audio · finished")).isEqualTo(1)
+        assertThat(shown(comic, "Comic · not started")).isEqualTo(1)
+        assertThat(spoken(comic)).isEqualTo("Version en français, tome 1/2, Le trône de fer, Comic · not started")
+    }
+
+    @Test
+    @Config(qualifiers = "fr-w411dp-h891dp")
+    fun `in French the percentage keeps its sign, and each kind its word`() {
+        val audio = english.copy(media = EditionMedia.Audio)
+        val comic = open.copy(media = EditionMedia.Comic)
+        show(listOf(audio, first, comic))
+
+        // A space that does not break before the sign: "42" never ends a line that "%" begins.
+        assertThat(shown(first, "Livre et audio · lu à 42\u00A0%")).isEqualTo(1)
+        assertThat(shown(audio, "Audio · terminé")).isEqualTo(1)
+        assertThat(shown(comic, "BD · pas commencé")).isEqualTo(1)
+        assertThat(shown(comic, "Cette édition")).isEqualTo(1)
+        assertThat(line(first).fetchSemanticsNode().config.getOrNull(SemanticsActions.OnClick)?.label)
+            .isEqualTo("Ouvrir cette édition")
     }
 
     @Test
