@@ -82,8 +82,9 @@ internal class LibraryMapper(private val serverUrl: String) {
         id = seriesIdOf(dto.id),
         name = dto.name,
         authors = dto.authors,
-        bookCount = dto.bookCount,
-        readCount = dto.readCount,
+        // By volume, as the server's own pages: an edition of a volume is not one more book to read.
+        bookCount = dto.ownedVolumeCount ?: dto.bookCount,
+        readCount = dto.readVolumeCount ?: dto.readCount,
         coverUrls = dto.coverBookIds.take(SeriesTileCovers).map { imageUrl(it, Thumbnail, version = null) },
         lastAddedAt = instant(dto.lastAddedAt),
     )
@@ -92,8 +93,9 @@ internal class LibraryMapper(private val serverUrl: String) {
         id = seriesIdOf(dto.id),
         name = dto.name,
         authors = dto.authors,
-        bookCount = dto.bookCount,
-        readCount = dto.readCount,
+        // By volume, as the server's own pages: an edition of a volume is not one more book to read.
+        bookCount = dto.ownedVolumeCount ?: dto.bookCount,
+        readCount = dto.readVolumeCount ?: dto.readCount,
         coverUrls = coverUrls,
         lastAddedAt = null,
     )
@@ -101,7 +103,7 @@ internal class LibraryMapper(private val serverUrl: String) {
     fun author(dto: AuthorSummaryDto) = Author(
         id = authorIdOf(dto.id),
         name = dto.name,
-        bookCount = dto.bookCount,
+        bookCount = dto.workCount ?: dto.bookCount,
         portraitUrl = dto.imageUrl?.let { if (it.startsWith("/")) serverUrl + it else it },
     )
 

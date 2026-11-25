@@ -310,6 +310,22 @@ class DefaultLibraryRepositoryTest {
             .isEqualTo("/api/v1/authors/3/books?sort=publishedYear&order=desc&page=1&size=100&collapseLinked=true")
     }
 
+    @Test
+    fun `the counts by work and by volume are read from the server's answers`() = runBlocking {
+        server.enqueueJson("""{"id":53,"name":"A","bookCount":23,"workCount":7}""")
+        server.enqueueJson(
+            """{"items":[{"id":1,"title":"B1"}],"total":1,"seriesInfo":{"id":4,"name":"S","bookCount":16,
+                "readCount":2,"ownedVolumeCount":15,"readVolumeCount":1}}""",
+        )
+
+        val author = repository.author(AuthorId("53")) as ApiResult.Success
+        val series = repository.seriesBooks(SeriesId("4")) as ApiResult.Success
+
+        assertThat(author.value.author.bookCount).isEqualTo(7)
+        assertThat(series.value.series.bookCount).isEqualTo(15)
+        assertThat(series.value.series.readCount).isEqualTo(1)
+    }
+
     // --- shelves
 
     @Test
