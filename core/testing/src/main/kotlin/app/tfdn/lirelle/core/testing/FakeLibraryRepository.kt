@@ -7,6 +7,7 @@ import app.tfdn.lirelle.core.ids.AuthorId
 import app.tfdn.lirelle.core.ids.BookId
 import app.tfdn.lirelle.core.ids.SeriesId
 import app.tfdn.lirelle.core.library.LibraryRepository
+import app.tfdn.lirelle.core.library.PageResult
 import app.tfdn.lirelle.core.library.PagedList
 import app.tfdn.lirelle.core.library.model.Author
 import app.tfdn.lirelle.core.library.model.AuthorDetail
@@ -74,7 +75,16 @@ class FakeLibraryRepository : LibraryRepository {
     /** The pages of the authors of a library, as [bookPages]; null leaves [authorsList], loaded. */
     var authorPages: (ServerLibrary?) -> Flow<PagingData<Author>>? = { null }
 
+    /**
+     * The answer to one page of books asked without a list (the request, the page, its size); null leaves
+     * [books], cut into pages.
+     */
+    var bookPageAnswer: (BookListRequest, Int, Int) -> ApiResult<PageResult<BookSummary>>? = { _, _, _ -> null }
+
     val bookRequests = mutableListOf<Pair<BookListSource, BookListRequest>>()
+
+    /** Each page of books asked without a list: its request and its number. */
+    val bookPageRequests = mutableListOf<Pair<BookListRequest, Int>>()
     val authorRequests = mutableListOf<Pair<AuthorSort, SortDirection>>()
 
     /** The text of each authors request, in step with [authorRequests]. */
@@ -91,6 +101,16 @@ class FakeLibraryRepository : LibraryRepository {
         bookRequests += source to request
         val pages = bookPages(request) ?: flowOf(PagingData.from(books, loadStates))
         return PagedList(pages, MutableStateFlow(books.size))
+    }
+
+    override suspend fun bookPage(
+        request: BookListRequest,
+        page: Int,
+        size: Int,
+    ): ApiResult<PageResult<BookSummary>> {
+        bookPageRequests += request to page
+        val whole = ApiResult.Success(PageResult(books.drop(page * size).take(size), books.size))
+        return answer("bookPage $page", bookPageAnswer(request, page, size) ?: whole)
     }
 
     override fun authors(

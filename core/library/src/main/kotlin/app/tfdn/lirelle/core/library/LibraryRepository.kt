@@ -40,6 +40,12 @@ interface LibraryRepository {
     fun books(source: BookListSource, request: BookListRequest): PagedList<BookSummary>
 
     /**
+     * One page of the whole library's books, numbered from 0 and of [size] books at most: what [books] lists,
+     * for what reads it without a screen. A paged list is collected by a list on screen, and by nothing else.
+     */
+    suspend fun bookPage(request: BookListRequest, page: Int, size: Int): ApiResult<PageResult<BookSummary>>
+
+    /**
      * [text], when given, narrows the list to the authors matching it.
      * [library], when given, narrows it to the authors of that library.
      */

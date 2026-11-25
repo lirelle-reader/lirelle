@@ -101,6 +101,15 @@ internal class DefaultLibraryRepository(
         return PagedList(pager.flow, total)
     }
 
+    override suspend fun bookPage(
+        request: BookListRequest,
+        page: Int,
+        size: Int,
+    ): ApiResult<PageResult<BookSummary>> = call { remote ->
+        val dto = remote.api.books(buildBookQuery(request, page, size))
+        PageResult(dto.items.map(remote.mapper::summary), dto.total)
+    }
+
     override fun authors(
         sort: AuthorSort,
         direction: SortDirection,

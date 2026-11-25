@@ -36,6 +36,7 @@ import app.tfdn.lirelle.core.network.di.AuthenticatedClient
 import app.tfdn.lirelle.core.session.profile.CurrentProfile
 import app.tfdn.lirelle.core.session.profile.OpenEntry
 import app.tfdn.lirelle.core.session.profile.openEntryOrNull
+import app.tfdn.lirelle.feature.player.car.CarLibrary
 import app.tfdn.lirelle.feature.player.car.sendToCars
 import app.tfdn.lirelle.feature.player.di.MediaClient
 import app.tfdn.lirelle.feature.player.di.PlayerProfileEntry
@@ -77,7 +78,10 @@ class MediaStreams @Inject constructor(
 /** Where listening goes: the position (stored, sent every 5 s) and the listening sessions, both queued. */
 class ListeningOutput @Inject constructor(val writer: PositionWriter, val sessions: ListeningSessionSender)
 
-/** Where books come from: the server, the device's positions, the settings and the downloads. */
+/**
+ * Where books come from: the server, the device's positions, the settings and the downloads, and the word that
+ * a book's files changed on its server.
+ */
 class BookSources @Inject constructor(
     val audio: AudioRepository,
     val library: LibraryRepository,
@@ -89,6 +93,7 @@ class BookSources @Inject constructor(
     private val conflicts: ListeningConflicts,
     /** What the device keeps of the books: a downloaded one plays without the server. */
     val kept: KeptBooks,
+    val syncEvents: PlaybackSyncEvents,
 ) {
     /** Whether a position of [bookId] still waits to be sent. */
     suspend fun waiting(bookId: BookId): Boolean = outbox.pending().any { it.bookId == bookId }
@@ -114,12 +119,13 @@ class PlaybackParts @Inject constructor(
     val sources: BookSources,
     val listening: ListeningOutput,
     val clocks: PlaybackClocks,
-    val syncEvents: PlaybackSyncEvents,
     val streams: MediaStreams,
     val shutdown: PlaybackShutdown,
     val lastBooks: LastBookStore,
     val narration: NarrationOutput,
     val network: ProfileNetwork,
+    /** What a car browses of the profile. */
+    val car: CarLibrary,
 )
 
 /**
@@ -397,7 +403,7 @@ class PlaybackService : MediaLibraryService() {
         main.launch { parts.sources.settings.settings.collect { publisher.settings = it } }
         main.launch {
             // The book's files changed on the server: the same place in the book, in the new files.
-            parts.syncEvents.manifestChanges.collect { id ->
+            parts.sources.syncEvents.manifestChanges.collect { id ->
                 // An audiobook's files: a narration of the same book plays on as it is.
                 val extras = book.extras.value
                 if (extras.book?.id != id || extras.narrationFileId != null) return@collect

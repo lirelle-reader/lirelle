@@ -5,6 +5,7 @@ import app.tfdn.lirelle.core.ids.AuthorId
 import app.tfdn.lirelle.core.ids.BookId
 import app.tfdn.lirelle.core.ids.SeriesId
 import app.tfdn.lirelle.core.library.LibraryRepository
+import app.tfdn.lirelle.core.library.PageResult
 import app.tfdn.lirelle.core.library.PagedList
 import app.tfdn.lirelle.core.library.model.Author
 import app.tfdn.lirelle.core.library.model.AuthorDetail
@@ -46,6 +47,12 @@ internal class EmptyKomgaLibrary : LibraryRepository {
     override suspend fun libraries(): ApiResult<List<ServerLibrary>> = none()
 
     override fun books(source: BookListSource, request: BookListRequest): PagedList<BookSummary> = emptyPages()
+
+    override suspend fun bookPage(
+        request: BookListRequest,
+        page: Int,
+        size: Int,
+    ): ApiResult<PageResult<BookSummary>> = ApiResult.Success(PageResult(emptyList(), 0))
 
     override fun authors(
         sort: AuthorSort,

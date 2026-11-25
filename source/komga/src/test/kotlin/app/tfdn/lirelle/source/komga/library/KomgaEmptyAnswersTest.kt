@@ -36,6 +36,8 @@ class KomgaEmptyAnswersTest {
 
         assertThat(library.books(BookListSource.AllBooks, BookListRequest()).items.asSnapshot()).isEmpty()
         assertThat(library.books(BookListSource.AllBooks, BookListRequest()).total.value).isEqualTo(0)
+        assertThat((library.bookPage(BookListRequest(), page = 0, size = 60) as ApiResult.Success).value.items)
+            .isEmpty()
         assertThat(library.authors(AuthorSort.Name, SortDirection.Ascending).items.asSnapshot()).isEmpty()
         assertThat(library.series()).isEqualTo(ApiResult.Success(emptyList<Any>()))
         assertThat(library.genres()).isEqualTo(ApiResult.Success(emptyList<Any>()))
