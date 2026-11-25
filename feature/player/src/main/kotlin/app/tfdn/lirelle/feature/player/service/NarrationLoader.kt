@@ -31,7 +31,8 @@ import kotlinx.coroutines.coroutineScope
  *
  * [NarrationStart.Resume] starts at the newer of this device's narration place and the server's (the start of
  * its sentence, or its time on the narration clock when the sentence is not known); without either, at the
- * beginning. The speed is the narration's own for the book, else the book's audiobook speed, else 1×.
+ * beginning. [NarrationStart.AtMarker] starts at the sentence the page marker is in, and as a resumption when
+ * the marker names none. The speed is the narration's own for the book, else the book's audiobook speed, else 1×.
  *
  * A narration the device has whole plays the map its download kept, with the server there too: that map is the
  * one of the files on the device, and the one the reader follows. The page kept stands in for the server's when
@@ -49,20 +50,29 @@ class NarrationLoader @Inject constructor(
     /** Null when the book has no read-along file [fileId] or the map cannot be had. */
     suspend fun load(bookId: BookId, fileId: FileId, start: NarrationStart): LoadedBook? = coroutineScope {
         // The server's place is asked at once: it answers in its own time.
-        val serverAsked = if (start == NarrationStart.Resume) async { serverPlace(fileId) } else null
+        val serverAsked = if (start !is NarrationStart.AtSentence) async { serverPlace(fileId) } else null
         val copy = kept.copyOf(bookId, DownloadFormat.Narration)
         val page = pageOf(bookId, copy)
         val map = page?.let { mapOf(bookId, fileId, it, copy) }
         val cover = copy?.coverAddress(bookId) ?: page?.coverUrl
         val playlist = if (page != null && map != null) playlistOf(fileId, page, map, cover) else null
         if (map == null || playlist == null) return@coroutineScope null.also { coroutineContext.cancelChildren() }
-        val startMs = when (start) {
-            is NarrationStart.AtSentence -> map.timeOf(start)
-            NarrationStart.Resume -> newer(narrations.get(fileId), serverAsked?.await())?.let(map::timeOf)
-        } ?: 0
+        val startMs = startOf(start, map) { newer(narrations.get(fileId), serverAsked?.await())?.let(map::timeOf) }
         val speed = settings.narrationSpeedOf(bookId) ?: settings.speedOf(bookId) ?: 1f
         LoadedBook(bookId, playlist, seriesId = null, startMs, speed, BookSource.Narration(fileId, map), copy != null)
     }
+
+    /**
+     * Where [start] is on the narration; [resumed] is where it was left, null when it never played. A page
+     * marker that names no sentence leaves the narration where it was: never at the start of the marker's
+     * section, which may be pages before it.
+     */
+    private suspend fun startOf(start: NarrationStart, map: ReadAlongMap, resumed: suspend () -> Long?): Long =
+        when (start) {
+            is NarrationStart.AtSentence -> map.timeOf(start)
+            is NarrationStart.AtMarker -> map.sentenceAtMarker(start.cfi)?.startMs ?: resumed()
+            NarrationStart.Resume -> resumed()
+        } ?: 0
 
     /** The server's page of the book; the one [copy] kept when the server cannot give its own. */
     private suspend fun pageOf(bookId: BookId, copy: KeptBookData?): BookDetail? {

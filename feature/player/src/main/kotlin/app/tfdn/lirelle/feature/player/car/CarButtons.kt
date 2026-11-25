@@ -79,6 +79,14 @@ class CarTexts(private val resources: Resources) {
         },
     )
 
+    /** Nothing can be listened to for the words [query] a car was told. */
+    fun searchNothing(query: String): String = resources.getString(R.string.car_search_nothing, query)
+
+    fun nothingToResume(): String = resources.getString(R.string.car_nothing_to_resume)
+
+    /** A book could not be loaded: the words of the phone's player. */
+    fun loadFailed(): String = resources.getString(R.string.player_load_failed)
+
     /**
      * "9h 12m", "40 min": the time left in short, in the words of the phone's Home (its formatter is a
      * composable, which a service cannot call: the strings are the same).

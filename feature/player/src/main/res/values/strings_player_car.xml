@@ -20,4 +20,9 @@
     <string name="car_notice_nothing">This profile has nothing to listen to.</string>
     <string name="car_notice_sign_in">Open Lirelle on the phone to sign in again.</string>
     <string name="car_notice_unreachable">The server cannot be reached.</string>
+
+    <!-- Said by the car when a voice request finds no book to listen to; %1$s is what was asked. -->
+    <string name="car_search_nothing">Nothing to listen to for “%1$s”.</string>
+    <!-- Said by the car when asked to play with nothing named, and no book was begun. -->
+    <string name="car_nothing_to_resume">No book to resume.</string>
 </resources>

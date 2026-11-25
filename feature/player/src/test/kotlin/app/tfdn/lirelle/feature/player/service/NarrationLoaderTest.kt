@@ -176,4 +176,29 @@ class NarrationLoaderTest {
         settings.narrationSpeeds[BookId("42")] = 1.25f
         assertThat(loader.load(BookId("42"), FileId("1"), NarrationStart.Resume)!!.speed).isEqualTo(1.25f)
     }
+
+    @Test
+    fun `a narration asked at the book's page marker starts at the sentence the marker is in`() = runTest {
+        maps.map = ReadAlongMaps.inventedMap()
+        deviceAt(1, "text/one.xhtml#s1", "2026-11-10T10:00:00Z")
+
+        // In the third sentence of section 1, which starts 9 s into the narration.
+        val inside = loader.load(BookId("42"), FileId("1"), NarrationStart.AtMarker("epubcfi(/6/4!/4/2[s3]/1:7)"))
+        // In a section without narration: the first sentence of the next narrated one, at 15 s.
+        val skipped = loader.load(BookId("42"), FileId("1"), NarrationStart.AtMarker("epubcfi(/6/6!/4/2/1:0)"))
+
+        assertThat(inside?.startMs).isEqualTo(9_000)
+        assertThat(skipped?.startMs).isEqualTo(15_000)
+    }
+
+    @Test
+    fun `a marker that names no sentence leaves the narration where it was, never at its section's start`() = runTest {
+        maps.map = ReadAlongMaps.inventedMap()
+        deviceAt(1, "text/one.xhtml#s2", "2026-11-10T10:00:00Z")
+
+        // Between the sentences of section 1: the place is in the page, which nothing here can read.
+        val between = loader.load(BookId("42"), FileId("1"), NarrationStart.AtMarker("epubcfi(/6/4!/4/2[p1]/3:1)"))
+
+        assertThat(between?.startMs).isEqualTo(4_000)
+    }
 }

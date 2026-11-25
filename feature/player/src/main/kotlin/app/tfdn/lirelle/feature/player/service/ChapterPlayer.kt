@@ -67,7 +67,8 @@ private val NoBookCommands = Player.Commands.Builder().addAll(
  * `seekToPreviousMediaItem` go to the next and previous chapters. Play goes through [Actions.play] (the
  * rewind on resume); the speed through [Actions.setSpeed] (kept for the book).
  *
- * Setting the last book's [PlayerSessionContract.resumeItem] (playback resumption) loads that book.
+ * Setting the last book's [PlayerSessionContract.resumeItem] (playback resumption) loads that book; setting a
+ * [PlayerSessionContract.startItem] (a book the car starts) loads it as the car's rules say ([Starts]).
  *
  * Call [refresh] when playback may have crossed into another chapter (every tick).
  */
@@ -76,7 +77,14 @@ class ChapterPlayer(
     private val engine: Player,
     private val navigator: BookNavigator,
     private val actions: Actions,
+    private val starts: Starts = Starts { _, _, done -> done() },
 ) : ForwardingSimpleBasePlayer(engine) {
+
+    /** How a book the car asked for is started; without a car, nothing is. */
+    fun interface Starts {
+        /** Loads [bookId], playing it if [play] still says so then; [done] once it is loaded or could not be. */
+        fun start(bookId: BookId, play: () -> Boolean, done: () -> Unit)
+    }
 
     interface Actions {
         fun play()
@@ -111,7 +119,7 @@ class ChapterPlayer(
             invalidateState()
         }
 
-    /** The last book being loaded for a play button (playback resumption). */
+    /** The book being loaded for a play button (playback resumption), or for the car. */
     private var resuming: MediaItem? = null
 
     /** Pause was pressed while the last book loaded: it stays paused once loaded. */
@@ -182,24 +190,31 @@ class ChapterPlayer(
         return Futures.immediateVoidFuture()
     }
 
-    /** Only the last book's [PlayerSessionContract.resumeItem]: a play button after the service ended. */
+    /**
+     * Only the last book's [PlayerSessionContract.resumeItem], a play button after the service ended, and a
+     * [PlayerSessionContract.startItem], a book the car starts.
+     */
     override fun handleSetMediaItems(
         mediaItems: List<MediaItem>,
         startIndex: Int,
         startPositionMs: Long,
     ): ListenableFuture<*> {
         val item = mediaItems.getOrNull(if (startIndex == C.INDEX_UNSET) 0 else startIndex)
-        val bookId = item?.let { PlayerSessionContract.resumedBookId(it.mediaId) }
-            ?: return Futures.immediateVoidFuture()
+        val resumed = item?.let { PlayerSessionContract.resumedBookId(it.mediaId) }
+        val started = item?.let { PlayerSessionContract.startedBookId(it.mediaId) }
+        if (resumed == null && started == null) return Futures.immediateVoidFuture()
         // The session shows the placeholder until the book is loaded.
         val loaded = SettableFuture.create<Unit>()
         resuming = item
         pausedWhileResuming = false
-        actions.resume(bookId, { !pausedWhileResuming }) {
+        val play = { !pausedWhileResuming }
+        val done = {
             resuming = null
             pausedWhileResuming = false
             loaded.set(Unit)
+            Unit
         }
+        resumed?.let { actions.resume(it, play, done) } ?: started?.let { starts.start(it, play, done) }
         return loaded
     }
 

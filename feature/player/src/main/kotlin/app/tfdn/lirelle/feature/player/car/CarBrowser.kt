@@ -117,6 +117,9 @@ class CarBrowser(
         answered(if (kept is CarAnswer.Nodes) CarAnswer.Nodes(kept.nodes.pageOf(page, pageSize)) else kept, car)
     }
 
+    /** The book a car was listed under [mediaId]; null when none was. */
+    fun listedBook(mediaId: String): CarNode.Book? = listed[mediaId] as? CarNode.Book
+
     /** The car [controller] left: its search is no longer kept. */
     fun forget(controller: Any) {
         searches -= controller

@@ -80,17 +80,23 @@ abstract class CarLibraryCallback(private val library: CarBrowser?) : MediaLibra
         library == null -> Futures.immediateFuture(LibraryResult.ofError(SessionError.ERROR_NOT_SUPPORTED))
         kindOf(session, controller) != ControllerKind.Car ->
             Futures.immediateFuture(LibraryResult.ofError(SessionError.ERROR_PERMISSION_DENIED))
-        else -> library.ask(SessionCarLink(session, controller))
+        else -> library.ask(linkOf(session, controller))
     }
+
+    /** The car [controller] as what can be told something through [session]. */
+    protected fun linkOf(session: MediaSession, controller: MediaSession.ControllerInfo): CarLink =
+        SessionCarLink(session, controller)
 }
 
 /** A car as the session knows it: what it is told goes through the session. */
 private class SessionCarLink(
-    private val session: MediaLibrarySession,
+    private val session: MediaSession,
     override val controller: MediaSession.ControllerInfo,
 ) : CarLink {
     override fun say(error: SessionError) = session.sendError(controller, error)
 
-    override fun searchChanged(query: String, count: Int, params: LibraryParams?) =
-        session.notifySearchResultChanged(controller, query, count, params)
+    /** Only a session with a library has a search to tell of. */
+    override fun searchChanged(query: String, count: Int, params: LibraryParams?) {
+        (session as? MediaLibrarySession)?.notifySearchResultChanged(controller, query, count, params)
+    }
 }

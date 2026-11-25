@@ -2,6 +2,8 @@ package app.tfdn.lirelle.feature.player.service
 
 import android.content.Context
 import android.os.Bundle
+import androidx.media3.common.C
+import androidx.media3.common.MediaItem
 import androidx.media3.common.Player
 import androidx.media3.session.CommandButton
 import androidx.media3.session.MediaController
@@ -15,8 +17,18 @@ import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import app.tfdn.lirelle.core.audio.timer.SleepChoice
 import app.tfdn.lirelle.core.ids.BookId
+import app.tfdn.lirelle.feature.player.car.CarAnswer
+import app.tfdn.lirelle.feature.player.car.CarAsks
+import app.tfdn.lirelle.feature.player.car.CarNode
+import app.tfdn.lirelle.feature.player.car.CarPlace
+import app.tfdn.lirelle.feature.player.car.CarSection
+import app.tfdn.lirelle.feature.player.car.CarTexts
 import app.tfdn.lirelle.feature.player.car.ControllerKind
+import app.tfdn.lirelle.feature.player.car.FakeCarShelves
 import com.google.common.truth.Truth.assertThat
+import com.google.common.util.concurrent.Futures
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import org.junit.Test
 import org.junit.runner.RunWith
 
@@ -227,5 +239,58 @@ class PlayerCommandsTest {
             assertThat(watch.availableSessionCommands)
                 .isEqualTo(PlayerCommands.sessionCommandsFor(ControllerKind.Other))
             assertThat(watch.availableSessionCommands.contains(PlayerCommand.NextSpeed.sessionCommand)).isFalse()
+        }
+
+    @Test
+    fun `what a car sets or adds is what its asks answer, and another app is refused as before`() =
+        withSession { session ->
+            val shelves = FakeCarShelves()
+            val context = ApplicationProvider.getApplicationContext<Context>()
+            val asks = CarAsks(shelves, CarTexts(context.resources), CoroutineScope(Dispatchers.Unconfined))
+            val commands = PlayerCommands("app.tfdn.lirelle", handle = {}, buttons = { emptyList() }, asks = asks)
+            val tapped = listOf(MediaItem.Builder().setMediaId("book/7").build())
+            val car = controller("com.google.android.projection.gearhead")
+            val watch = controller("com.example.watch")
+
+            val set = commands.onSetMediaItems(session, car, tapped, C.INDEX_UNSET, C.TIME_UNSET).get()
+            val added = commands.onAddMediaItems(session, car, tapped).get()
+
+            assertThat(set.mediaItems.map { it.mediaId }).containsExactly("start/7")
+            assertThat(set.startIndex).isEqualTo(0)
+            assertThat(set.startPositionMs).isEqualTo(C.TIME_UNSET)
+            assertThat(added.map { it.mediaId }).containsExactly("start/7")
+            listOf(watch, controller("app.tfdn.lirelle"), controller("com.android.systemui")).forEach { other ->
+                assertThat(runCatching { commands.onSetMediaItems(session, other, tapped, 0, 0).get() }.isFailure)
+                    .isTrue()
+                assertThat(runCatching { commands.onAddMediaItems(session, other, tapped).get() }.isFailure).isTrue()
+            }
+        }
+
+    @Test
+    fun `a car's play with nothing loaded starts what its asks answer, anyone else's the last book as before`() =
+        withSession { session ->
+            val shelves = FakeCarShelves()
+            shelves.places[CarPlace.Tab.Home] = CarAnswer.Nodes(
+                listOf(CarNode.Book(BookId("2"), "Begun", null, CarSection.Continue)),
+            )
+            val context = ApplicationProvider.getApplicationContext<Context>()
+            val asks = CarAsks(shelves, CarTexts(context.resources), CoroutineScope(Dispatchers.Unconfined))
+            var resumed = 0
+            val commands = PlayerCommands("app.tfdn.lirelle", {}, { emptyList() }, asks = asks) {
+                resumed++
+                Futures.immediateFailedFuture(UnsupportedOperationException("No book to resume"))
+            }
+
+            val car = commands
+                .onPlaybackResumption(session, controller("com.google.android.projection.gearhead"), true).get()
+
+            // No last book: the first book to continue.
+            assertThat(car.mediaItems.map { it.mediaId }).containsExactly("start/2")
+            assertThat(resumed).isEqualTo(0)
+            listOf(controller("com.android.systemui"), controller("com.example.headset")).forEach { other ->
+                assertThat(runCatching { commands.onPlaybackResumption(session, other, true).get() }.isFailure)
+                    .isTrue()
+            }
+            assertThat(resumed).isEqualTo(2)
         }
 }

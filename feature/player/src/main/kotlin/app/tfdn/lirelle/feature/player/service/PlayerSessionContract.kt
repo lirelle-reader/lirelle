@@ -162,6 +162,9 @@ object PlayerSessionContract {
 
     private const val ResumePrefix = "resume/"
 
+    /** Before the id of a book the car starts: no id of the car's own lists, nor of the player's items. */
+    private const val StartPrefix = "start/"
+
     /**
      * The item a play button gets back after the service ended (playback resumption): the last book, as a
      * placeholder that the session's player turns into loading it.
@@ -177,6 +180,21 @@ object PlayerSessionContract {
                 .build(),
         )
         .build()
+
+    /**
+     * The item the player is set to for a book the car starts: a placeholder, as [resumeItem] is, that the
+     * session's player turns into loading the book in the medium listened to last. [title] when the car was
+     * listed the book.
+     */
+    fun startItem(bookId: BookId, title: String?): MediaItem = MediaItem.Builder()
+        .setMediaId("$StartPrefix${bookId.value}")
+        .setMediaMetadata(MediaMetadata.Builder().setTitle(title).setIsPlayable(true).setIsBrowsable(false).build())
+        .build()
+
+    /** The book of a [startItem]; null for another item. */
+    fun startedBookId(mediaId: String): BookId? =
+        mediaId.takeIf { it.startsWith(StartPrefix) }?.removePrefix(StartPrefix)?.takeIf { it.isNotEmpty() }
+            ?.let(::BookId)
 
     /** The book of a [resumeItem]; null for another item. */
     fun resumedBookId(mediaId: String): BookId? =

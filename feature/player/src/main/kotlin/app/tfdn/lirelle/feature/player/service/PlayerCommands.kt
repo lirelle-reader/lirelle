@@ -4,6 +4,7 @@ package app.tfdn.lirelle.feature.player.service
 
 import android.os.Bundle
 import androidx.annotation.OptIn
+import androidx.media3.common.C
 import androidx.media3.common.MediaItem
 import androidx.media3.common.Player
 import androidx.media3.common.util.UnstableApi
@@ -14,12 +15,14 @@ import androidx.media3.session.SessionCommand
 import androidx.media3.session.SessionCommands
 import androidx.media3.session.SessionError
 import androidx.media3.session.SessionResult
+import app.tfdn.lirelle.feature.player.car.CarAsks
 import app.tfdn.lirelle.feature.player.car.CarBrowser
 import app.tfdn.lirelle.feature.player.car.CarControllers
 import app.tfdn.lirelle.feature.player.car.CarLibraryCallback
 import app.tfdn.lirelle.feature.player.car.ControllerKind
 import com.google.common.util.concurrent.Futures
 import com.google.common.util.concurrent.ListenableFuture
+import com.google.common.util.concurrent.MoreExecutors
 
 /**
  * The session's answer to its controllers: every controller (the app's screens, the notification, the
@@ -30,7 +33,7 @@ import com.google.common.util.concurrent.ListenableFuture
  * What a controller is offered goes by who it is ([ControllerKind]): the app's own get the whole contract;
  * other apps the skips and the chapters; a car those, the next speed and the next volume, and it alone browses
  * the library ([CarLibraryCallback], answered by the car's browser) and may set the player's items, which is
- * how a car starts what it was shown.
+ * how a car starts what it was shown, or what it was told ([asks]).
  *
  * The [buttons] are the same for everyone: Android Auto connects as a platform controller, which Media3 can
  * give no list of its own, and is shown the platform session's. A button whose command a controller is not
@@ -46,6 +49,7 @@ class PlayerCommands(
     private val buttons: () -> List<CommandButton>,
     private val cars: CarControllers = CarControllers.Media3,
     browser: CarBrowser? = null,
+    private val asks: CarAsks? = null,
     private val resume: () -> ListenableFuture<MediaSession.MediaItemsWithStartPosition> = ::nothingToResume,
 ) : CarLibraryCallback(browser) {
 
@@ -70,16 +74,23 @@ class PlayerCommands(
         Futures.immediateFuture(SessionResult(dispatch(customCommand.customAction, args)))
 
     /**
-     * A play button with nothing loaded (a headset, a car, the system's media controls after the service
-     * ended, or after a reboot): the last book, as a placeholder the session's player loads.
+     * A play button with nothing loaded (a headset, the system's media controls after the service ended, or
+     * after a reboot): the last book, as a placeholder the session's player loads. A car's play is answered as
+     * its request with nothing named: without a last book, the first book to continue.
      */
     override fun onPlaybackResumption(
         mediaSession: MediaSession,
         controller: MediaSession.ControllerInfo,
         isForPlayback: Boolean,
-    ): ListenableFuture<MediaSession.MediaItemsWithStartPosition> = resume()
+    ): ListenableFuture<MediaSession.MediaItemsWithStartPosition> =
+        asks?.takeIf { kindOf(mediaSession, controller) == ControllerKind.Car }
+            ?.items(linkOf(mediaSession, controller), emptyList())?.let(::fromItsStart)
+            ?: resume()
 
-    /** No controller sets the books: a book is loaded with [PlayerCommand.LoadBook]. */
+    /**
+     * No controller sets the books, a book is loaded with [PlayerCommand.LoadBook]; but a car, which starts
+     * this way the book tapped, or asked for by voice: it is answered the one item that stands for it.
+     */
     override fun onSetMediaItems(
         mediaSession: MediaSession,
         controller: MediaSession.ControllerInfo,
@@ -87,14 +98,25 @@ class PlayerCommands(
         startIndex: Int,
         startPositionMs: Long,
     ): ListenableFuture<MediaSession.MediaItemsWithStartPosition> =
-        Futures.immediateFailedFuture(UnsupportedOperationException("Books are loaded with LOAD_BOOK"))
+        fromItsStart(onAddMediaItems(mediaSession, controller, mediaItems))
+
+    /** The items as what the player is set to: the place to start is the book's, found when it is loaded. */
+    private fun fromItsStart(
+        items: ListenableFuture<List<MediaItem>>,
+    ): ListenableFuture<MediaSession.MediaItemsWithStartPosition> = Futures.transform(
+        items,
+        { MediaSession.MediaItemsWithStartPosition(it, 0, C.TIME_UNSET) },
+        MoreExecutors.directExecutor(),
+    )
 
     override fun onAddMediaItems(
         mediaSession: MediaSession,
         controller: MediaSession.ControllerInfo,
         mediaItems: List<MediaItem>,
     ): ListenableFuture<List<MediaItem>> =
-        Futures.immediateFailedFuture(UnsupportedOperationException("Books are loaded with LOAD_BOOK"))
+        asks?.takeIf { kindOf(mediaSession, controller) == ControllerKind.Car }
+            ?.items(linkOf(mediaSession, controller), mediaItems)
+            ?: Futures.immediateFailedFuture(UnsupportedOperationException("Books are loaded with LOAD_BOOK"))
 
     /** Who [controller] is: the app's own before a car, a car before any other app. */
     override fun kindOf(session: MediaSession, controller: MediaSession.ControllerInfo): ControllerKind = when {

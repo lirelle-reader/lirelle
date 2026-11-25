@@ -36,11 +36,13 @@ import app.tfdn.lirelle.core.network.di.AuthenticatedClient
 import app.tfdn.lirelle.core.session.profile.CurrentProfile
 import app.tfdn.lirelle.core.session.profile.OpenEntry
 import app.tfdn.lirelle.core.session.profile.openEntryOrNull
+import app.tfdn.lirelle.feature.player.car.CarAsks
 import app.tfdn.lirelle.feature.player.car.CarBrowser
 import app.tfdn.lirelle.feature.player.car.CarCovers
 import app.tfdn.lirelle.feature.player.car.CarIds
 import app.tfdn.lirelle.feature.player.car.CarItems
 import app.tfdn.lirelle.feature.player.car.CarLibrary
+import app.tfdn.lirelle.feature.player.car.CarStart
 import app.tfdn.lirelle.feature.player.car.NoticeAsError
 import app.tfdn.lirelle.feature.player.car.refreshCars
 import app.tfdn.lirelle.feature.player.di.MediaClient
@@ -119,6 +121,14 @@ class NarrationOutput @Inject constructor(
     val cursor: NarrationCursor,
 )
 
+/**
+ * What the car is given of a profile.
+ *
+ * @property library what it browses.
+ * @property start what a book started from it plays, and from where.
+ */
+class CarParts @Inject constructor(val library: CarLibrary, val start: CarStart)
+
 /** What the playback service is made of, from the objects of the profile it plays for. */
 class PlaybackParts @Inject constructor(
     val sources: BookSources,
@@ -129,8 +139,7 @@ class PlaybackParts @Inject constructor(
     val lastBooks: LastBookStore,
     val narration: NarrationOutput,
     val network: ProfileNetwork,
-    /** What a car browses of the profile. */
-    val car: CarLibrary,
+    val car: CarParts,
 )
 
 /**
@@ -219,12 +228,14 @@ class PlaybackService : MediaLibraryService() {
             engine, navigator, loader, sleep, timer, sources.settings, sources::nextVolume,
             parts.clocks.monotonic, main,
         )
-        val chapters = ChapterPlayer(engine, navigator, book)
-        // Once its profile closed, a car that still asks is listed nothing of it.
+        // Once its profile closed, a car that still asks is listed nothing of it, and starts nothing.
         val carItems = CarItems(resources, CarCovers.authority(packageName), open.profileId)
-        val browser = CarBrowser(parts.car, carItems, NoticeAsError(texts.car), main) { left }
+        val browser = CarBrowser(parts.car.library, carItems, NoticeAsError(texts.car), main) { left }
+        val asks = CarAsks(parts.car.library, texts.car, main, browser::listedBook, { left }) { parts.lastBooks.get() }
+        val carStart = CarBookStart(book, main, { parts.car.start.takeUnless { left }?.requestFor(it) }, asks::failed)
+        val chapters = ChapterPlayer(engine, navigator, book, carStart)
         val commands =
-            PlayerCommands(packageName, ::handle, { publisher.buttons() }, browser = browser) {
+            PlayerCommands(packageName, ::handle, { publisher.buttons() }, browser = browser, asks = asks) {
                 // Its profile closed: there is no book of it to resume.
                 resumption(parts.lastBooks.takeUnless { left }, main)
             }
@@ -409,7 +420,7 @@ class PlaybackService : MediaLibraryService() {
         }
         main.launch { parts.sources.settings.settings.collect { publisher.settings = it } }
         // A car subscribed to a tab asks for it again when told: nothing is said once the session was let go.
-        main.refreshCars(parts.network.waitsForSignIn, parts.car.keptAudio) {
+        main.refreshCars(parts.network.waitsForSignIn, parts.car.library.keptAudio) {
             session.held?.notifyChildrenChanged(CarIds.of(it), Int.MAX_VALUE, null)
         }
         main.launch {
