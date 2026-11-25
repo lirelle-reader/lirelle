@@ -66,8 +66,8 @@ change is reviewed and tested on real devices by a human before it ships. Contri
 
 Each release carries its signed APK on GitHub: download it from the
 [latest release](https://github.com/lirelle-reader/lirelle/releases/latest). To get the new releases as they come, add
-the repository to [Obtainium](https://github.com/ImranR98/Obtainium). Google Play and F-Droid are coming, with the same
-signing key as the APKs here.
+the repository to [Obtainium](https://github.com/ImranR98/Obtainium). Google Play is coming, with the same signing key
+as the APKs here.
 
 Every change to `main` is also built as a development pre-release on the
 [releases page](https://github.com/lirelle-reader/lirelle/releases): signed with the same key, but not a stable
