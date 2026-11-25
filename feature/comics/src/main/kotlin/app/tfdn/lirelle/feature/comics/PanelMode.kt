@@ -1,9 +1,9 @@
 package app.tfdn.lirelle.feature.comics
 
 import android.util.Log
+import app.tfdn.lirelle.core.comics.layout.sideways
 import app.tfdn.lirelle.core.comics.panels.PagePanels
 import app.tfdn.lirelle.core.comics.panels.PageZones
-import app.tfdn.lirelle.core.comics.layout.sideways
 import app.tfdn.lirelle.core.comics.settings.ComicSettingsStore
 import app.tfdn.lirelle.core.comics.settings.Direction
 import app.tfdn.lirelle.feature.comics.page.wholeReason
