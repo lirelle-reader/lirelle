@@ -23,6 +23,7 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
 import app.tfdn.lirelle.core.comics.settings.Direction
 import app.tfdn.lirelle.core.comics.settings.DirectionScope
+import app.tfdn.lirelle.core.library.model.PagedKind
 import app.tfdn.lirelle.core.ui.GripSheet
 
 private val SheetMaxWidth = 640.dp
@@ -32,7 +33,8 @@ private val SwitchMinHeight = 48.dp
 /**
  * The reading settings, in a sheet over the bottom of the page, in the reader's dark look: the fit, two pages
  * side by side, the background, for an album that can be read panel by panel what that takes from the device,
- * and the reading direction. Each choice is taken at once, the page changing behind the sheet.
+ * and the reading direction. An album read vertically has neither the fit nor the two pages, which do not
+ * apply to it. Each choice is taken at once, the page changing behind the sheet.
  *
  * @param onZones the switch that draws the zones of the pages was turned; null in a build that cannot be
  *   debugged, which has no such switch.
@@ -58,8 +60,11 @@ internal fun ComicSettingsSheet(
                 modifier = Modifier.semantics { heading() },
                 style = MaterialTheme.typography.titleLarge,
             )
-            FitGroup(state.settings.fit, actions::setFit)
-            TwoPagesGroup(state.settings.twoPages, actions::setTwoPages)
+            // Read vertically, a page is as wide as the strip and alone: neither applies. Their values are kept.
+            if (!state.vertical) {
+                FitGroup(state.settings.fit, actions::setFit)
+                TwoPagesGroup(state.settings.twoPages, actions::setTwoPages)
+            }
             BackgroundGroup(state.settings.background, actions::setBackground)
             if (state.panels.offered) PanelsGroup(state.settings.wholePageFirst, actions::setWholePageFirst)
             DirectionGroup(state, actions::setDirection)
@@ -89,15 +94,22 @@ private fun ZonesSwitch(shown: Boolean, onChange: (Boolean) -> Unit) {
     }
 }
 
-/** The direction, and what it is remembered for: the series, named, or the album alone. */
+/**
+ * The direction, and what it is remembered for: the series, named, or the album alone. A comic can also be read
+ * vertically, which is said in a few words once chosen.
+ */
 @Composable
 private fun DirectionGroup(state: ComicReaderUiState, onSelect: (Direction) -> Unit) {
     SettingGroup(stringResource(R.string.comics_settings_direction)) {
-        val choices = listOf(
+        val choices = listOfNotNull(
             Direction.LeftToRight to stringResource(R.string.comics_direction_left_to_right),
             Direction.RightToLeft to stringResource(R.string.comics_direction_right_to_left),
+            // Only a comic's pages follow one another down the screen.
+            (Direction.Vertical to stringResource(R.string.comics_direction_vertical))
+                .takeIf { state.kind == PagedKind.Comic },
         )
         SegmentedChoice(choices, state.settings.direction, onSelect)
+        if (state.vertical) Note(stringResource(R.string.comics_direction_vertical_note))
         val series = state.series?.name?.takeIf { state.directionScope is DirectionScope.Series }
         Note(
             series?.let { stringResource(R.string.comics_direction_for_series, it) }

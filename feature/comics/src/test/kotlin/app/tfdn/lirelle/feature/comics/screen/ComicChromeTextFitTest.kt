@@ -181,6 +181,20 @@ class ComicChromeTextFitTest(screenSize: String, language: String, fontScale: Fl
         assertThat(texts.filter { it.isEllipsized && it.text !in oneLine }).isEmpty()
     }
 
+    @Test
+    fun `the settings sheet of an album read vertically`() {
+        screen.state = longAlbum(openAlbum(settings = ComicSettings(direction = Direction.Vertical)))
+        show()
+        compose.onNodeWithTag(ComicSettingsButtonTag).performClick()
+
+        val texts = show()
+
+        assertThat(texts.count { it.text == "Vertical" }).isEqualTo(1)
+        assertThat(texts.count { it.text.startsWith("Vertical: ") || it.text.startsWith("Vertical\u00A0: ") })
+            .isEqualTo(1)
+        assertThat(texts.filter { it.isEllipsized && it.text !in oneLine }).isEmpty()
+    }
+
     private fun longAlbum(state: ComicReaderUiState) =
         state.copy(title = LongTitle, series = SeriesLine(LongSeries, "12"))
 
