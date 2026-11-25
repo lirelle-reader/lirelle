@@ -69,7 +69,7 @@ class SliceDecodersTest {
     }
 
     @Test
-    fun `a picture stays open from a slice to the next, and is opened again once closed`() = runTest {
+    fun `a picture stays open from a slice to the next, and nothing is opened once closed`() = runTest {
         val decoders = SliceDecoders(UnconfinedTestDispatcher(testScheduler))
         val page = tallPage()
 
@@ -81,8 +81,10 @@ class SliceDecodersTest {
         decoders.close()
         assertThat(decoders.openCount).isEqualTo(0)
 
-        assertThat(decoders.decode(page, StripSlice(5900, 6000), sample = 1)?.getPixel(0, 0)).isEqualTo(Color.BLUE)
-        decoders.close()
+        // Closed for good: a slice asked by a strip that is gone opens no picture, which nothing would close.
+        assertThat(decoders.decode(page, StripSlice(5900, 6000), sample = 1)).isNull()
+        assertThat(decoders.decode(tallPage("other.png"), StripSlice(0, 100), sample = 1)).isNull()
+        assertThat(decoders.openCount).isEqualTo(0)
     }
 
     @Test

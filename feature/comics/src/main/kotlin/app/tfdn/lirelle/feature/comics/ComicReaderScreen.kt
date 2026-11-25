@@ -32,6 +32,7 @@ import app.tfdn.lirelle.feature.comics.end.EndedBook
 import app.tfdn.lirelle.feature.comics.page.ComicSpreadView
 import app.tfdn.lirelle.feature.comics.page.SpreadColours
 import app.tfdn.lirelle.feature.comics.page.colours
+import app.tfdn.lirelle.feature.comics.strip.ComicStripView
 
 /** How long the bars take to appear and to disappear. */
 private const val BarFadeMillis = 150
@@ -110,15 +111,25 @@ private fun Opening(state: ComicReaderUiState, phase: ComicPhase, colours: Sprea
 }
 
 /**
- * The pages, filling the screen, and over them the bars while they are shown, the offer of a newer page or what
- * an album that cannot be cut says, and the settings sheet once its button was pressed, with the switch of the
- * zones in a build that is [debuggable];
+ * The pages, filling the screen, turned or in a strip as the album is read, and over them the bars while they are
+ * shown, the offer of a newer page or what an album that cannot be cut says, and the settings sheet once its
+ * button was pressed, with the switch of the zones in a build that is [debuggable];
  * over it all, what reading panel by panel is, the first time it is turned on.
  */
 @Composable
 private fun BoxScope.OpenAlbum(state: ComicReaderUiState, actions: ComicReaderActions, debuggable: Boolean) {
     var settingsOpen by rememberSaveable { mutableStateOf(false) }
-    ComicSpreadView(state, navigation = actions, onToggleBars = actions::toggleBars, onHideBars = actions::hideBars)
+    if (state.vertical) {
+        ComicStripView(
+            state = state,
+            navigation = actions,
+            strip = actions,
+            onToggleBars = actions::toggleBars,
+            onHideBars = actions::hideBars,
+        )
+    } else {
+        ComicSpreadView(state, navigation = actions, onToggleBars = actions::toggleBars, onHideBars = actions::hideBars)
+    }
     Bar(state.barsShown, Modifier.align(Alignment.TopCenter)) {
         ComicTopBar(
             state = state,

@@ -24,18 +24,25 @@ private const val OpenAtOnce = 4
  * Slices are asked from several threads. The pictures open are found under one lock, held only for that; each
  * picture is read and closed under its own, so that it is never closed under a region being decoded. The two are
  * never held together.
+ *
+ * Once [close]d it decodes nothing more: a slice still on its way then gives null and opens no picture, so that
+ * none is left open behind the strip.
  */
 internal class SliceDecoders(private val dispatcher: CoroutineDispatcher = Dispatchers.IO) {
     private data class Key(val path: String, val written: Long)
 
     private val open = LinkedHashMap<Key, BitmapRegionDecoder>(OpenAtOnce, 1f, true)
 
+    /** Whether the strip is gone; read and written under the lock of [open]. */
+    private var closed = false
+
     /** How many pictures are open. */
     val openCount: Int get() = synchronized(open) { open.size }
 
     /**
      * The rows [slice] of the picture in [file], one pixel in [sample] kept each way; null when the picture cannot
-     * be read in parts (a format the device does not cut, a file that is gone or is no picture) or has no such rows.
+     * be read in parts (a format the device does not cut, a file that is gone or is no picture, rows the device
+     * has no memory for) or has no such rows, and once the decoders are [close]d.
      */
     suspend fun decode(file: File, slice: StripSlice, sample: Int): Bitmap? = withContext(dispatcher) {
         ensureActive()
@@ -49,32 +56,43 @@ internal class SliceDecoders(private val dispatcher: CoroutineDispatcher = Dispa
             val decoder = decoder(file) ?: return null
             // One region at a time for a picture: its decoder is not made for more.
             synchronized(decoder) {
-                // Closed since it was found, for another picture to open or with the strip: it is opened again.
+                // Closed since it was found, for another picture to open: it is opened again. With the strip: it
+                // is not, and the slice is given up.
                 if (!decoder.isRecycled) return decoder.region(slice, options)
             }
         }
     }
 
-    /** Closes every picture: the strip is gone. A slice asked after it opens its picture again. */
+    /**
+     * Closes every picture, for good: the strip is gone. A slice asked after it, or being asked, has no picture.
+     * It waits for the regions being decoded to end, one picture after the other.
+     */
     fun close() {
-        val closed = synchronized(open) { open.values.toList().also { open.clear() } }
-        closed.forEach { it.close() }
+        val left = synchronized(open) {
+            closed = true
+            open.values.toList().also { open.clear() }
+        }
+        left.forEach { it.close() }
     }
 
-    /** The picture of [file], opened if it is not; null when it cannot be. Those it takes the place of are closed. */
+    /**
+     * The picture of [file], opened if it is not; null when it cannot be, and once the decoders are closed. Those
+     * it takes the place of are closed.
+     */
     private fun decoder(file: File): BitmapRegionDecoder? {
         val key = Key(file.path, file.lastModified())
-        val closed = mutableListOf<BitmapRegionDecoder>()
+        val replaced = mutableListOf<BitmapRegionDecoder>()
         val found = synchronized(open) {
+            if (closed) return null
             open[key] ?: open(file)?.also { opened ->
                 // The picture the file held before it was written again will not be asked for.
-                closed += open.keys.filter { it.path == key.path }.mapNotNull(open::remove)
+                replaced += open.keys.filter { it.path == key.path }.mapNotNull(open::remove)
                 open[key] = opened
-                while (open.size > OpenAtOnce) closed += checkNotNull(open.remove(open.keys.first()))
+                while (open.size > OpenAtOnce) replaced += checkNotNull(open.remove(open.keys.first()))
             }
         }
         // Outside the lock of the pictures open: a region being decoded from one ends first, and may be long.
-        closed.forEach { it.close() }
+        replaced.forEach { it.close() }
         return found
     }
 }
@@ -95,6 +113,9 @@ private fun BitmapRegionDecoder.region(slice: StripSlice, options: BitmapFactory
     return try {
         decodeRegion(rows, options)
     } catch (_: IllegalArgumentException) {
+        null
+    } catch (_: OutOfMemoryError) {
+        // Too large for what memory is left: the page is drawn whole, smaller, instead of ending the reader.
         null
     }
 }
