@@ -20,6 +20,7 @@ internal class SettingsPart(
     private val core: ComicCore,
     private val store: ComicSettingsStore,
     private val bars: Bars,
+    private val scrolling: Scrolling,
 ) : ComicSettingsActions {
     private var following: Job? = null
 
@@ -36,7 +37,11 @@ internal class SettingsPart(
         core.update { it.copy(settings = kept) }
         following = core.scope.launch {
             settings.collect { settings ->
-                core.update { it.copy(settings = settings.forKind(it.kind)) }
+                val next = settings.forKind(core.current.kind)
+                // The strip goes with the vertical direction, and may not have come to rest: the page at its top
+                // is written while it is still followed.
+                if (next.direction != Direction.Vertical) scrolling.stripRested()
+                core.update { it.copy(settings = next) }
                 core.layout()
             }
         }

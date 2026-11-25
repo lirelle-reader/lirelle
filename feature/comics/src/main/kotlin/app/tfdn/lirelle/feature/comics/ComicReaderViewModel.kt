@@ -61,10 +61,10 @@ internal class ComicReader(
 ) {
     val core = ComicCore(bookId, scope)
     val bars = Bars(core, services.timings)
-    val settings = SettingsPart(core, services.settings, bars)
     val end = EndOfAlbum(core, services.end)
     val turning = Turning(core, services.timings, bars, end)
     val scrolling = Scrolling(core, turning, bars, end)
+    val settings = SettingsPart(core, services.settings, bars, scrolling)
     val opening = ComicOpening(core, services, lasting, fromStart, OpenedParts(settings, turning, bars))
     private val network = NetworkReturn(core, online, opening)
     val host = ComicHost(core, turning, scrolling, network)
@@ -91,6 +91,8 @@ internal class ComicReader(
 
     /** The reader is gone: what was read is written if it was not, and the pages are given back. */
     fun close() {
+        // As on leaving: a strip that moves told no rest.
+        scrolling.stripRested()
         core.session?.close()
         core.panels?.close()
         core.pages?.close()

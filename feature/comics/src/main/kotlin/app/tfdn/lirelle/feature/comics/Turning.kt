@@ -3,6 +3,7 @@ package app.tfdn.lirelle.feature.comics
 import app.tfdn.lirelle.core.comics.layout.pageNumberOf
 import app.tfdn.lirelle.core.comics.layout.spreadIndexOf
 import app.tfdn.lirelle.feature.comics.end.EndOfAlbum
+import kotlinx.coroutines.CoroutineStart
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -129,7 +130,11 @@ internal class Turning(
         endWritten = moved && spread.pages.last() == state.pageCount - 1
         told = spread.first
         end.onPosition(fraction)
-        core.scope.launch { core.session?.relocated(pageNumberOf(spread.first), fraction, moved) }
+        // Begun at once, even in a scope that is over (the reader cleared while its strip moved): the session notes
+        // the place before it waits, and writes it when it is closed.
+        core.scope.launch(start = CoroutineStart.UNDISPATCHED) {
+            core.session?.relocated(pageNumberOf(spread.first), fraction, moved)
+        }
         settling?.cancel()
         settling = core.scope.launch {
             delay(timings.settle)

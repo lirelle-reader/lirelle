@@ -22,11 +22,7 @@ internal class Scrolling(
         val end = core.current.pageCount - 1
         val page = first.coerceIn(0, end)
         core.strip = page..last.coerceIn(page, end)
-        if (page != core.page) {
-            core.page = page
-            core.update { it.copy(spreadIndex = spreadIndexOf(it.spreads, page), forward = true) }
-        }
-        core.onLayout()
+        read(page)
     }
 
     override fun stripRested() {
@@ -36,9 +32,22 @@ internal class Scrolling(
     override fun stripPastEnd() {
         if (!following) return
         bars.hide()
-        stripShows(core.current.pageCount - 1, core.current.pageCount - 1)
+        val last = core.current.pageCount - 1
+        // The last page is the page read, wherever it is on screen: the short pages above it stay shown.
+        val first = core.strip.takeIf { !it.isEmpty() && core.page in it }?.first ?: last
+        core.strip = first..last
+        read(last)
         // As a turn past the last spread does: the end is written before the panel waits for the server to have it.
         if (!turning.endWritten) turning.arrived(moved = true)
         end.onPastEnd()
+    }
+
+    /** [page] is the page read: the spread shown is its own, and the pages are told what the strip shows. */
+    private fun read(page: Int) {
+        if (page != core.page) {
+            core.page = page
+            core.update { it.copy(spreadIndex = spreadIndexOf(it.spreads, page), forward = true) }
+        }
+        core.onLayout()
     }
 }
