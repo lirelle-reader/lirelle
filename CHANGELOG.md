@@ -1,5 +1,15 @@
 # Changelog
 
+## [0.7.0](https://github.com/lirelle-reader/lirelle/compare/v0.6.1...v0.7.0) (2026-11-25)
+
+
+### Features
+
+* comics can be read vertically, as a continuous strip ([#44](https://github.com/lirelle-reader/lirelle/issues/44)) ([566440e](https://github.com/lirelle-reader/lirelle/commit/566440e2e029e096446831e18a2e4f44069230b9))
+* the author page shows each work once, series count their volumes ([#36](https://github.com/lirelle-reader/lirelle/issues/36)) ([8ec8569](https://github.com/lirelle-reader/lirelle/commit/8ec8569a0923469e1cc7ab884148a34a15f65363))
+* the book page lists the editions of its work ([#38](https://github.com/lirelle-reader/lirelle/issues/38)) ([d44d310](https://github.com/lirelle-reader/lirelle/commit/d44d310834d6a6b9294f510f51d4f15d7fb0561a))
+* the Library destination shows one library of its server at a time ([#41](https://github.com/lirelle-reader/lirelle/issues/41)) ([ef06f56](https://github.com/lirelle-reader/lirelle/commit/ef06f5602c1ad3c83d17d96c40b93b507eeb7014))
+
 ## [0.6.1](https://github.com/lirelle-reader/lirelle/compare/v0.6.0...v0.6.1) (2026-11-25)
 
 
