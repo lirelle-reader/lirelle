@@ -6,8 +6,9 @@ import app.tfdn.lirelle.feature.comics.end.EndOfAlbum
 /**
  * Following the strip of an album read vertically, which has no page turned: the page at the top of the strip is
  * the spread shown, told to the pages as it scrolls, which fetch it, and to the session only once the strip came
- * to rest ([Turning.arrived]). Past the bottom of the last page is the end of the album. An album whose pages are
- * turned has no strip: what one tells is ignored.
+ * to rest ([Turning.arrived]). At the very bottom of the strip the last page is the one read, once the user
+ * scrolled there. Past the bottom of the last page is the end of the album. An album whose pages are turned has
+ * no strip: what one tells is ignored.
  */
 internal class Scrolling(
     private val core: ComicCore,
@@ -17,12 +18,21 @@ internal class Scrolling(
 ) : StripNavigation {
     private val following: Boolean get() = core.ready && core.current.vertical
 
-    override fun stripShows(first: Int, last: Int) {
+    override fun stripShows(first: Int, last: Int, atEnd: Boolean, scrolled: Boolean) {
         if (!following) return
         val end = core.current.pageCount - 1
-        val page = first.coerceIn(0, end)
-        core.strip = page..last.coerceIn(page, end)
-        read(page)
+        val top = first.coerceIn(0, end)
+        val strip = top..last.coerceIn(top, end)
+        core.strip = strip
+        read(
+            when {
+                // Where the album opened, or the reader landed: a strip held at its bottom, or at its top, has
+                // that page lower than the top of the screen, and the user has read no other.
+                !scrolled && core.page in strip -> core.page
+                atEnd -> strip.last
+                else -> top
+            },
+        )
     }
 
     override fun stripRested() {

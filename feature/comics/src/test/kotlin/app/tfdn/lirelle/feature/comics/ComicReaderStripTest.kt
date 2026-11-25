@@ -28,6 +28,10 @@ private val vertical = mapOf<DirectionScope, Direction>(Series to Direction.Vert
 private fun TestScope.verticalHarness() =
     ComicHarness(this, settings = InMemoryComicSettingsStore(directions = vertical, noticeSeen = true))
 
+/** The strip, scrolled by the user, shows the pages from [first] to [last], short of its bottom. */
+private fun ComicReaderViewModel.stripShows(first: Int, last: Int) =
+    stripShows(first, last, atEnd = false, scrolled = true)
+
 /**
  * An album read vertically: what the strip of its pages tells the reader as it scrolls, and what the reader tells
  * the pages and the session of it.
@@ -293,6 +297,64 @@ class ComicReaderStripTest {
         assertThat(harness.pages.calls.filter { it.startsWith("jump") }).isEmpty()
         reader.stripShows(first = 10, last = 11)
         assertThat(harness.pages.calls).contains("jump 10")
+    }
+
+    @Test
+    fun `at the bottom of the strip the last page is read, and the pages above it stay on screen`() = runTest {
+        val harness = verticalHarness()
+        val reader = harness.reader()
+
+        reader.stripShows(first = Pages - 5, last = Pages - 1, atEnd = true, scrolled = true)
+
+        val state = reader.state.value
+        assertThat(state.spread).isEqualTo(Spread(Pages - 1))
+        assertThat(state.pages.keys)
+            .containsExactly(Pages - 7, Pages - 6, Pages - 5, Pages - 4, Pages - 3, Pages - 2, Pages - 1)
+        reader.stripRested()
+        assertThat(harness.store.positions[AlbumFile]?.page).isEqualTo(Pages)
+    }
+
+    @Test
+    fun `landed near the end, the page landed on is the page read until the user scrolls`() = runTest {
+        val harness = verticalHarness()
+        val reader = harness.reader()
+        reader.goTo(Pages - 2)
+
+        // Short pages: the strip is held at its bottom, the page landed on lower than its top.
+        reader.stripShows(first = Pages - 4, last = Pages - 1, atEnd = true, scrolled = false)
+        assertThat(reader.state.value.spread).isEqualTo(Spread(Pages - 2))
+        assertThat(reader.state.value.pages.keys).containsAtLeast(Pages - 4, Pages - 3, Pages - 2, Pages - 1)
+
+        reader.stripRested()
+        reader.leave()
+        assertThat(harness.store.positions[AlbumFile]?.page).isEqualTo(Pages - 1)
+    }
+
+    @Test
+    fun `opened near the end, the page opened on is the page read until the user scrolls`() = runTest {
+        val harness = verticalHarness()
+        harness.serverHas(page = Pages - 1)
+        val reader = harness.reader()
+        assertThat(reader.state.value.spread).isEqualTo(Spread(Pages - 2))
+
+        reader.stripShows(first = Pages - 4, last = Pages - 1, atEnd = true, scrolled = false)
+        assertThat(reader.state.value.spread).isEqualTo(Spread(Pages - 2))
+        reader.leave()
+        assertThat(harness.store.positions[AlbumFile]?.percent ?: 0.0).isLessThan(100.0)
+
+        // Scrolled, even back to the same place: the bottom of the strip reads the last page.
+        reader.stripShows(first = Pages - 4, last = Pages - 1, atEnd = true, scrolled = true)
+        assertThat(reader.state.value.spread).isEqualTo(Spread(Pages - 1))
+    }
+
+    @Test
+    fun `a strip not scrolled that no longer shows the page read reads the page at its top`() = runTest {
+        val harness = verticalHarness()
+        val reader = harness.reader()
+
+        reader.stripShows(first = 3, last = 4, atEnd = false, scrolled = false)
+
+        assertThat(reader.state.value.spread).isEqualTo(Spread(3))
     }
 
     @Test

@@ -17,7 +17,10 @@ interface ComicNavigation {
     /** To the spread before; nothing on the first one. */
     fun previous()
 
-    /** The slider was released on [pageIndex]: the reader goes to the spread that shows it. */
+    /**
+     * The slider was released on [pageIndex]: the reader goes to the spread that shows it. Read vertically, the
+     * strip goes to the top of that page, the page read too.
+     */
     fun goTo(pageIndex: Int)
 
     /** The slider is dragged over [pageIndex]; null when it no longer is, without having gone anywhere. */
@@ -36,10 +39,16 @@ interface ComicNavigation {
 /** What the strip of an album read vertically tells the reader as it scrolls. Pages are indexes from 0. */
 interface StripNavigation {
     /**
-     * The strip shows the pages from [first] to [last]; [first], at the top of the screen, is the page read. At
-     * the very bottom of the strip the page read is the last one, however little of the screen it takes.
+     * The strip shows the pages from [first] to [last]; [first], at the top of the screen, is the page read. With
+     * [atEnd] the strip is at its very bottom: the page read is [last], the last one of the album, however little
+     * of the screen it takes, and the pages above it are still those shown.
+     *
+     * Without [scrolled] the user has not moved the strip since the album opened, or since the reader last landed
+     * on a page: the page read stays the one opened or landed on while the strip shows it, even where a strip
+     * held at its bottom has it lower than the top of the screen. Opening an album near its end does not read it
+     * to its end.
      */
-    fun stripShows(first: Int, last: Int)
+    fun stripShows(first: Int, last: Int, atEnd: Boolean, scrolled: Boolean)
 
     /** The strip came to rest: where the reader is is written, and the pages around are fetched ahead. */
     fun stripRested()

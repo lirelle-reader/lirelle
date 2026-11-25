@@ -1,6 +1,6 @@
 package app.tfdn.lirelle.feature.comics.strip
 
-import androidx.compose.foundation.gestures.animateScrollBy
+import androidx.compose.animation.core.animate
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.interaction.DragInteraction
 import androidx.compose.foundation.layout.Box
@@ -15,6 +15,7 @@ import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.rememberUpdatedState
@@ -38,7 +39,11 @@ import app.tfdn.lirelle.feature.comics.ComicReaderUiState
 import app.tfdn.lirelle.feature.comics.StripNavigation
 import app.tfdn.lirelle.feature.comics.page.PageSetting
 import app.tfdn.lirelle.feature.comics.page.colours
+import kotlin.math.abs
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.cancel
+import kotlinx.coroutines.job
 import kotlinx.coroutines.launch
 
 /** The list of the strip. */
@@ -50,11 +55,15 @@ internal val StripMaxWidth = 600.dp
 /** How far the finger pulls on, past the bottom of the last page, for the end of the album to open. */
 private val PastEndPull = 64.dp
 
+/** Under this many pixels left unmoved of what a step asked, the strip is not held by one of its ends. */
+private const val StepSlack = 0.5f
+
 /**
  * The pages of an album read vertically: one under the other, edge to edge, in a strip as wide as the window up
  * to [StripMaxWidth], centred beyond; the finger scrolls it, a tap in the top or bottom quarter of the window
- * moves it by about a screen, a tap between shows or hides the bars. It draws no background: the screen's shows
- * beside the strip, and under a slice that is not decoded yet.
+ * moves it by about a screen, a tap between shows or hides the bars. Taps that follow one another faster than
+ * the strip moves are each taken from where the one before leads to, as they are on pages that are turned. It
+ * draws no background: the screen's shows beside the strip, and under a slice that is not decoded yet.
  *
  * The strip tells the reader the pages it shows as they change ([StripNavigation]), and goes where the reader
  * lands ([ComicReaderUiState.landing]).
@@ -90,10 +99,12 @@ internal fun ComicStripView(
         val pastEnd = remember(list, pull) { PastEnd(list, pull) { hands.strip.stripPastEnd() } }
         val drawing = stripDrawing(state.settings.background, navigation, pictures)
 
-        StripReports(list, state, frame.layout, strip)
-        LaunchedEffect(list, pastEnd) {
+        StripReports(list, state, frame.layout, StripFollowed(strip, moves))
+        LaunchedEffect(list, pastEnd, moves) {
             list.interactionSource.interactions.collect {
                 if (it is DragInteraction.Start) {
+                    // The finger takes the strip from the step a tap gave it.
+                    moves.stop()
                     pastEnd.start()
                     hands.onHideBars()
                 }
@@ -142,6 +153,14 @@ private fun stripDrawing(background: Background, navigation: ComicNavigation, pi
 }
 
 /**
+ * Who is told of the strip, and what moves it besides the list itself.
+ *
+ * @property reader what the strip tells.
+ * @property moves the steps taps give the strip.
+ */
+private class StripFollowed(val reader: StripNavigation, val moves: StripMoves)
+
+/**
  * Tells the reader what the strip shows, and takes the strip where the reader lands.
  *
  * The pages shown are told when they change, not as the strip moves under them: each time, the reader fetches
@@ -149,21 +168,26 @@ private fun stripDrawing(background: Background, navigation: ComicNavigation, pi
  * wherever the strip is, nor between a landing and the scroll to it: the reader is already on the page landed
  * on, and would be sent back to the one the strip is leaving.
  *
- * The strip is said at rest when a scroll ends, after the pages it then shows: an album that opens was not
- * moved, and says nothing.
+ * With them goes whether the user moved the strip since it opened, or since it last went where the reader landed:
+ * a finger, a fling, the step of a tap, a service that scrolls. The scroll to a page landed on is not the user's.
+ *
+ * The strip is said at rest when a scroll or a step ends, after the pages it then shows: an album that opens was
+ * not moved, and says nothing.
  */
 @Composable
-private fun StripReports(list: LazyListState, state: ComicReaderUiState, layout: StripLayout, strip: StripNavigation) {
+private fun StripReports(list: LazyListState, state: ComicReaderUiState, layout: StripLayout, followed: StripFollowed) {
     val items by rememberUpdatedState(layout)
     val landing by rememberUpdatedState(state.landing)
-    val lastPage by rememberUpdatedState(state.pageCount - 1)
     val ended by rememberUpdatedState(state.endPanel != null)
-    val reader by rememberUpdatedState(strip)
+    val reader by rememberUpdatedState(followed.reader)
+    val moves = followed.moves
     // The landing the strip last scrolled for: it opened on the page of the one it starts with.
     var landed by remember { mutableIntStateOf(state.landing.serial) }
-    LaunchedEffect(list, state.landing.serial) {
+    LaunchedEffect(list, moves, state.landing.serial) {
         val serial = landing.serial
         if (serial == landed) return@LaunchedEffect
+        // A step under way would go on from the page landed on.
+        moves.stop()
         try {
             list.scrollToItem(items.itemOf(landing.page))
         } finally {
@@ -171,16 +195,27 @@ private fun StripReports(list: LazyListState, state: ComicReaderUiState, layout:
             landed = serial
         }
     }
-    LaunchedEffect(list) {
-        var told: StripShown? = null
+    LaunchedEffect(list, moves) {
+        var told: StripTold? = null
         var scrolling = false
+        var scrolled = false
+        var at = landed
         snapshotFlow {
-            val quiet = ended || landing.serial != landed
-            StripReport(if (quiet) null else list.shown(lastPage), list.isScrollInProgress)
+            val arrived = landing.serial == landed
+            StripReport(
+                shown = if (ended || !arrived) null else list.shown(),
+                scrolling = arrived && (list.isScrollInProgress || moves.stepping),
+                landed = landed,
+            )
         }.collect { report ->
-            report.shown?.takeIf { it != told }?.let {
+            if (report.landed != at) {
+                at = report.landed
+                scrolled = false
+            }
+            if (report.scrolling) scrolled = true
+            report.shown?.let { StripTold(it, scrolled) }?.takeIf { it != told }?.let {
                 told = it
-                reader.stripShows(it.first, it.last)
+                reader.stripShows(it.shown.first, it.shown.last, it.shown.atEnd, it.scrolled)
             }
             if (scrolling && !report.scrolling) reader.stripRested()
             scrolling = report.scrolling
@@ -188,42 +223,64 @@ private fun StripReports(list: LazyListState, state: ComicReaderUiState, layout:
     }
 }
 
-/** The pages the strip shows: [first] is the one read, [last] the last one on screen. */
-private data class StripShown(val first: Int, val last: Int)
+/**
+ * The pages the strip shows, from [first] at the top of the screen to [last]; [atEnd] at the very bottom of the
+ * strip, where the last page of the album is the one read: short pages above it would otherwise keep it from ever
+ * being read.
+ */
+private data class StripShown(val first: Int, val last: Int, val atEnd: Boolean)
 
-/** What the strip has to tell: the pages it [shown], null when there is nothing to tell, and whether it moves. */
-private data class StripReport(val shown: StripShown?, val scrolling: Boolean)
+/** What the reader was last told: the pages [shown], and whether the user had [scrolled] the strip. */
+private data class StripTold(val shown: StripShown, val scrolled: Boolean)
 
 /**
- * The pages the list shows, in an album whose last page is [lastPage]; null while nothing is laid out. The page
- * read is the one at the top of the screen; at the very bottom of the strip it is the last one, which short
- * pages above it would otherwise keep from ever being read.
+ * What the strip has to tell: the pages it [shown], null when there is nothing to tell, whether the user's hand
+ * moves it ([scrolling]), and the landing it last went to ([landed]).
+ */
+private data class StripReport(val shown: StripShown?, val scrolling: Boolean, val landed: Int)
+
+/**
+ * The pages the list shows; null while nothing is laid out.
  *
  * Pages are told from the keys of the items laid out, not from their indexes: between the moment a page turns
  * out to be several slices and the moment the list is laid out again, an index is another page's.
  */
-private fun LazyListState.shown(lastPage: Int): StripShown? {
+private fun LazyListState.shown(): StripShown? {
     val info = layoutInfo
     val top = info.visibleItemsInfo.firstOrNull() ?: return null
     val bottom = info.visibleItemsInfo.last()
     val first = pageOfStripKey(top.key) ?: return null
     val last = pageOfStripKey(bottom.key) ?: return null
-    val atEnd = bottom.index == info.totalItemsCount - 1 && !canScrollForward
-    return if (atEnd) StripShown(lastPage, lastPage) else StripShown(first, last)
+    return StripShown(first, last, atEnd = bottom.index == info.totalItemsCount - 1 && !canScrollForward)
 }
 
 /** What the gestures of the strip ask of the reader: read when a gesture ends, never kept. */
 private class StripHands(val strip: StripNavigation, val onToggleBars: () -> Unit, val onHideBars: () -> Unit)
 
 /**
- * The moves a tap gives the strip. A finger put down on a strip that is moving, flung or stepping, stops it and
- * is no tap: the list keeps it for itself.
+ * The moves a tap gives the strip: a step of about a screen, which the strip takes a moment to make. A tap that
+ * comes meanwhile is taken from where the step leads to: two quick taps forward move the strip by two steps, and
+ * a tap between the edges leaves the step to end.
+ *
+ * A step moves the strip without the list being told it scrolls: a list that scrolls keeps the finger put down
+ * on it for itself, to stop, and the second of two quick taps would be lost and stop the first midway. So a
+ * finger put down on a strip that was flung stops it and is no tap, while one put down on a strip that steps is
+ * a tap, or, if it drags, takes the strip ([stop]).
  */
 private class StripMoves(
     private val list: LazyListState,
     private val scope: CoroutineScope,
     private val hands: () -> StripHands,
 ) {
+    private var step: Job? = null
+
+    /** How far the step under way still has to go, in pixels, forward when positive; 0 without one. */
+    private var left = 0f
+
+    /** Whether the strip moves by a step: the list does not say it scrolls then. */
+    var stepping by mutableStateOf(false)
+        private set
+
     /** A tap at [y] in a window [height] high. */
     fun tapped(y: Float, height: Float) {
         when (stripTap(y, height)) {
@@ -239,8 +296,40 @@ private class StripMoves(
         }
     }
 
+    /** A finger drags the strip, or the reader lands elsewhere: the step under way stops where it is. */
+    fun stop() {
+        step?.cancel()
+        over()
+    }
+
     private fun by(distance: Float) {
-        scope.launch { list.animateScrollBy(distance) }
+        // From where the step before leads to, not from where the strip is on its way there.
+        val whole = left + distance
+        step?.cancel()
+        left = whole
+        stepping = true
+        step = scope.launch {
+            var done = 0f
+            try {
+                animate(initialValue = 0f, targetValue = whole) { value, _ ->
+                    val asked = value - done
+                    val moved = list.dispatchRawDelta(asked)
+                    done += moved
+                    left = whole - done
+                    // An end of the strip: there is nowhere further to go.
+                    if (abs(asked - moved) > StepSlack) cancel()
+                }
+            } finally {
+                // Not when another step took its place, or it was stopped: what is left is no longer its own.
+                if (step === coroutineContext.job) over()
+            }
+        }
+    }
+
+    private fun over() {
+        step = null
+        left = 0f
+        stepping = false
     }
 }
 
