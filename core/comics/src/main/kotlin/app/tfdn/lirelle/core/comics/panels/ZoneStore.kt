@@ -130,7 +130,7 @@ internal class ZoneStore(
 
     private fun file(key: ComicKey, direction: Direction): File {
         val way = when (direction) {
-            Direction.LeftToRight -> "ltr"
+            Direction.LeftToRight, Direction.Vertical -> "ltr"
             Direction.RightToLeft -> "rtl"
         }
         fun name(version: String) = listOf(key.fileId.fileName, version, way, "c$cutVersion").joinToString(Separator)

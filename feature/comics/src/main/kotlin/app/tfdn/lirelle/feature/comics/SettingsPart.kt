@@ -1,11 +1,13 @@
 package app.tfdn.lirelle.feature.comics
 
 import app.tfdn.lirelle.core.comics.settings.Background
+import app.tfdn.lirelle.core.comics.settings.ComicSettings
 import app.tfdn.lirelle.core.comics.settings.ComicSettingsStore
 import app.tfdn.lirelle.core.comics.settings.Direction
 import app.tfdn.lirelle.core.comics.settings.DirectionScope
 import app.tfdn.lirelle.core.comics.settings.Fit
 import app.tfdn.lirelle.core.comics.settings.TwoPages
+import app.tfdn.lirelle.core.library.model.PagedKind
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
@@ -24,16 +26,17 @@ internal class SettingsPart(
     /**
      * Reads the settings of an album whose direction is kept for [scope], then follows them: the album
      * opens with them, and the spreads follow the two pages' setting. Its direction is [default] (its
-     * server's) as long as the user chose none for [scope].
+     * server's) as long as the user chose none for [scope]. A PDF or a DjVu is never read vertically, whatever
+     * its series or its server say.
      */
     suspend fun follow(scope: DirectionScope, default: Direction?) {
         following?.cancel()
         val settings = store.settings(scope, default)
-        val kept = settings.first()
+        val kept = settings.first().forKind(core.current.kind)
         core.update { it.copy(settings = kept) }
         following = core.scope.launch {
             settings.collect { settings ->
-                core.update { it.copy(settings = settings) }
+                core.update { it.copy(settings = settings.forKind(it.kind)) }
                 core.layout()
             }
         }
@@ -62,3 +65,7 @@ internal class SettingsPart(
         core.scope.launch { write() }
     }
 }
+
+/** The settings as an album of this kind is read: only a comic's pages follow one another down the screen. */
+private fun ComicSettings.forKind(kind: PagedKind): ComicSettings =
+    if (kind != PagedKind.Comic && direction == Direction.Vertical) copy(direction = Direction.LeftToRight) else this

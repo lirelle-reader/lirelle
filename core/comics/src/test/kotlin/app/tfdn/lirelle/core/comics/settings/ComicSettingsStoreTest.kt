@@ -88,6 +88,20 @@ class ComicSettingsStoreTest {
     }
 
     @Test
+    fun `a vertical direction is kept for a series, and for an album alone`() = runBlocking<Unit> {
+        val store = store()
+
+        store.setDirection(series, Direction.Vertical)
+
+        assertThat(store.settings(series).first().direction).isEqualTo(Direction.Vertical)
+        assertThat(store.settings(book).first().direction).isEqualTo(Direction.LeftToRight)
+
+        store.setDirection(book, Direction.Vertical)
+
+        assertThat(store.settings(book).first().direction).isEqualTo(Direction.Vertical)
+    }
+
+    @Test
     fun `the direction given by default is the series's until the user chooses one, and is not kept`() =
         runBlocking<Unit> {
             val store = store()

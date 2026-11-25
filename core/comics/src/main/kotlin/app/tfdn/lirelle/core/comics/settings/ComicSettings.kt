@@ -22,8 +22,11 @@ enum class TwoPages {
     Never,
 }
 
-/** The way the album is read: where a page starts, and which way the next one is. */
-enum class Direction { LeftToRight, RightToLeft }
+/**
+ * The way the album is read: where a page starts, and which way the next one is. [Vertical] is no page turned:
+ * the pages follow one another down the screen, which scrolls (a webtoon).
+ */
+enum class Direction { LeftToRight, RightToLeft, Vertical }
 
 /** The colour around the pages. */
 enum class Background { Black, Grey, White }

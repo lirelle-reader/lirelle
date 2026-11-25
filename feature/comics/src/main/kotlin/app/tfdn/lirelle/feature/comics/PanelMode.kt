@@ -3,6 +3,7 @@ package app.tfdn.lirelle.feature.comics
 import android.util.Log
 import app.tfdn.lirelle.core.comics.panels.PagePanels
 import app.tfdn.lirelle.core.comics.panels.PageZones
+import app.tfdn.lirelle.core.comics.layout.sideways
 import app.tfdn.lirelle.core.comics.settings.ComicSettingsStore
 import app.tfdn.lirelle.core.comics.settings.Direction
 import app.tfdn.lirelle.feature.comics.page.wholeReason
@@ -100,11 +101,12 @@ internal class PanelMode(
 
     /**
      * How the album is read, then where the reader is, then whether its pages are cut: zones are those of a
-     * direction, and the page shown is the first cut. Only what changed.
+     * direction, and the page shown is the first cut. Only what changed. The panels know only pages turned: they
+     * are never told a vertical direction.
      */
     private fun tell(panels: PagePanels) {
         val state = core.current
-        val direction = state.settings.direction
+        val direction = state.settings.direction.sideways()
         val shown = (state.spread ?: return).first to state.pageCount
         if (direction != this.direction) {
             this.direction = direction

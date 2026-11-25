@@ -578,14 +578,14 @@ class KomgaLibraryTest {
         }
 
     @Test
-    fun `a manga's series reads right to left, vertical, webtoon and left to right ones left to right`() =
+    fun `a manga's series reads right to left, a vertical or a webtoon one vertically, another as it says`() =
         runBlocking<Unit> {
             answer("GET /api/v1/books/0BK1A", ReadingBookJson)
             val said = mapOf(
                 "RIGHT_TO_LEFT" to PageDirection.RightToLeft,
                 "LEFT_TO_RIGHT" to PageDirection.LeftToRight,
-                "VERTICAL" to PageDirection.LeftToRight,
-                "WEBTOON" to PageDirection.LeftToRight,
+                "VERTICAL" to PageDirection.Vertical,
+                "WEBTOON" to PageDirection.Vertical,
                 // None said, or one the app does not know: the reader's own default.
                 "" to null,
                 "DIAGONAL" to null,
