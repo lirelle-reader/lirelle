@@ -4,7 +4,6 @@ package app.tfdn.lirelle.feature.player.car
 
 import androidx.annotation.OptIn
 import androidx.media3.common.util.UnstableApi
-import androidx.media3.session.CommandButton
 import androidx.media3.session.MediaSession
 
 /**
@@ -17,10 +16,6 @@ enum class ControllerKind { Own, Car, Other }
 fun interface CarControllers {
     fun isCar(session: MediaSession, controller: MediaSession.ControllerInfo): Boolean
 
-    /** The cars connected to [session] now. Call it on the main thread. */
-    fun connected(session: MediaSession): List<MediaSession.ControllerInfo> =
-        session.connectedControllers.filter { isCar(session, it) }
-
     companion object {
         /**
          * Media3's own check: Android Auto on the phone, or the media app of a car that runs Android. It goes
@@ -31,12 +26,4 @@ fun interface CarControllers {
             session.isAutoCompanionController(controller) || session.isAutomotiveController(controller)
         }
     }
-}
-
-/**
- * Gives the cars connected now their own media [buttons]. Media3 sends them to its own controllers only: a car
- * that reads the platform's session — Android Auto on a phone does — is shown the buttons of the notification.
- */
-internal fun MediaSession.sendToCars(buttons: List<CommandButton>, cars: CarControllers = CarControllers.Media3) {
-    cars.connected(this).forEach { setMediaButtonPreferences(it, buttons) }
 }

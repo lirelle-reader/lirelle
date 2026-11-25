@@ -12,10 +12,6 @@ private const val SecondMs = 1_000L
  * Tells the session's controllers what changed: the extras ([PlayerSessionExtras], the sleep timer's time
  * left to the second), the media buttons (the intervals, the end of the book), and what the current chapter
  * shows in the notification (the time left, "finished"). Only what changed is sent. Call it on the main thread.
- *
- * A car has buttons of its own, which name the [speed]: [setButtons] sends a list to every controller,
- * [setCarButtons] the car's list to the cars. What goes to every controller reaches the cars too, so the car's
- * list is sent again after it.
  */
 @OptIn(UnstableApi::class)
 class SessionPublisher(
@@ -24,12 +20,10 @@ class SessionPublisher(
     private val navigator: BookNavigator,
     private val setExtras: (Bundle) -> Unit,
     private val setButtons: (List<CommandButton>) -> Unit,
-    private val setCarButtons: (List<CommandButton>) -> Unit,
 ) {
     private var extras = PlayerSessionExtras()
     private var sentExtras: PlayerSessionExtras? = null
     private var sentButtons: List<CommandButton>? = null
-    private var sentCarButtons: List<CommandButton>? = null
 
     var settings = PlayerSettings()
         set(value) {
@@ -38,7 +32,7 @@ class SessionPublisher(
             publishButtons()
         }
 
-    /** The speed playback has now: the car's speed button names it. */
+    /** The speed playback has now: the speed button names it. */
     var speed = 1f
         set(value) {
             field = value
@@ -68,22 +62,15 @@ class SessionPublisher(
         chapters.refresh()
     }
 
-    /** The media buttons for this moment, for a controller that connects: the car's own for a [car]. */
-    fun buttons(car: Boolean = false): List<CommandButton> =
-        PlayerNotification.buttons(texts, settings, extras.finished, extras.narrationFinished, speed.takeIf { car })
+    /** The media buttons for this moment, for a controller that connects. */
+    fun buttons(): List<CommandButton> =
+        PlayerNotification.buttons(texts, settings, extras.finished, extras.narrationFinished, speed)
 
     private fun publishButtons() {
         val buttons = buttons()
-        val carButtons = buttons(car = true)
-        val changed = buttons != sentButtons
-        if (changed) {
-            sentButtons = buttons
-            setButtons(buttons)
-        }
-        if (changed || carButtons != sentCarButtons) {
-            sentCarButtons = carButtons
-            setCarButtons(carButtons)
-        }
+        if (buttons == sentButtons) return
+        sentButtons = buttons
+        setButtons(buttons)
     }
 }
 

@@ -3,6 +3,7 @@ package app.tfdn.lirelle.feature.player.service
 import android.content.Context
 import android.os.Bundle
 import androidx.media3.common.Player
+import androidx.media3.session.CommandButton
 import androidx.media3.session.MediaController
 import androidx.media3.session.MediaNotification
 import androidx.media3.session.MediaSession
@@ -206,24 +207,25 @@ class PlayerCommandsTest {
     }
 
     @Test
-    fun `a car that connects may set the player's items and gets its own buttons`() = withSession { session ->
-        val asked = mutableListOf<Boolean>()
-        val commands = PlayerCommands(
-            ownPackage = "app.tfdn.lirelle",
-            handle = {},
-            buttons = { car ->
-                asked += car
-                emptyList()
-            },
-        )
+    fun `a car that connects may set the player's items, and gets the buttons every controller gets`() =
+        withSession { session ->
+            val speed = CommandButton.Builder(CommandButton.ICON_PLAYBACK_SPEED)
+                .setSessionCommand(PlayerCommand.NextSpeed.sessionCommand)
+                .setDisplayName("Speed")
+                .build()
+            val commands = PlayerCommands(ownPackage = "app.tfdn.lirelle", handle = {}, buttons = { listOf(speed) })
 
-        val car = commands.onConnect(session, controller("com.google.android.projection.gearhead"))
-        val watch = commands.onConnect(session, controller("com.example.watch"))
+            val car = commands.onConnect(session, controller("com.google.android.projection.gearhead"))
+            val watch = commands.onConnect(session, controller("com.example.watch"))
+            val own = commands.onConnect(session, controller("app.tfdn.lirelle"))
 
-        assertThat(asked).containsExactly(true, false).inOrder()
-        assertThat(car.availablePlayerCommands).isEqualTo(MediaSession.ConnectionResult.DEFAULT_PLAYER_COMMANDS)
-        assertThat(car.availableSessionCommands).isEqualTo(PlayerCommands.sessionCommandsFor(ControllerKind.Car))
-        assertThat(watch.availablePlayerCommands).isEqualTo(PlayerCommands.offeredPlayerCommands)
-        assertThat(watch.availableSessionCommands).isEqualTo(PlayerCommands.sessionCommandsFor(ControllerKind.Other))
-    }
+            listOf(car, watch, own).forEach { assertThat(it.mediaButtonPreferences).containsExactly(speed) }
+            assertThat(car.availablePlayerCommands).isEqualTo(MediaSession.ConnectionResult.DEFAULT_PLAYER_COMMANDS)
+            assertThat(car.availableSessionCommands).isEqualTo(PlayerCommands.sessionCommandsFor(ControllerKind.Car))
+            assertThat(watch.availablePlayerCommands).isEqualTo(PlayerCommands.offeredPlayerCommands)
+            // Another app is offered the button with everyone, not its command: Media3 gives it to it disabled.
+            assertThat(watch.availableSessionCommands)
+                .isEqualTo(PlayerCommands.sessionCommandsFor(ControllerKind.Other))
+            assertThat(watch.availableSessionCommands.contains(PlayerCommand.NextSpeed.sessionCommand)).isFalse()
+        }
 }

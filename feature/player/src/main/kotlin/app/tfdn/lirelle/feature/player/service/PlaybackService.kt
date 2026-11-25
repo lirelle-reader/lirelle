@@ -43,7 +43,6 @@ import app.tfdn.lirelle.feature.player.car.CarItems
 import app.tfdn.lirelle.feature.player.car.CarLibrary
 import app.tfdn.lirelle.feature.player.car.NoticeAsError
 import app.tfdn.lirelle.feature.player.car.refreshCars
-import app.tfdn.lirelle.feature.player.car.sendToCars
 import app.tfdn.lirelle.feature.player.di.MediaClient
 import app.tfdn.lirelle.feature.player.di.PlayerProfileEntry
 import dagger.hilt.android.AndroidEntryPoint
@@ -225,7 +224,7 @@ class PlaybackService : MediaLibraryService() {
         val carItems = CarItems(resources, CarCovers.authority(packageName), open.profileId)
         val browser = CarBrowser(parts.car, carItems, NoticeAsError(texts.car), main) { left }
         val commands =
-            PlayerCommands(packageName, ::handle, { car -> publisher.buttons(car) }, browser = browser) {
+            PlayerCommands(packageName, ::handle, { publisher.buttons() }, browser = browser) {
                 // Its profile closed: there is no book of it to resume.
                 resumption(parts.lastBooks.takeUnless { left }, main)
             }
@@ -235,10 +234,9 @@ class PlaybackService : MediaLibraryService() {
             .build()
         session = SessionHold(this, mediaSession)
         // Through the hold: once its profile closed the session is released, and nothing is said to it.
-        publisher = SessionPublisher(
-            texts, chapters, navigator, { session.held?.setSessionExtras(it) },
-            { session.held?.setMediaButtonPreferences(it) },
-        ) { session.held?.sendToCars(it) }
+        publisher = SessionPublisher(texts, chapters, navigator, { session.held?.setSessionExtras(it) }) {
+            session.held?.setMediaButtonPreferences(it)
+        }
         // A book played from its download waits for no network.
         watcher = NetworkWatcher(engine, parts.network.online, main) { !book.playsDownload }.also { it.start() }
         focus = FocusGuard(engine, main).also { it.start() }
@@ -255,7 +253,7 @@ class PlaybackService : MediaLibraryService() {
                 if (isPlaying) PlayerNotification.dismissContinue(this@PlaybackService)
             }
 
-            // The car's speed button names the speed.
+            // The speed button names the speed.
             override fun onPlaybackParametersChanged(playbackParameters: PlaybackParameters) {
                 publisher.speed = playbackParameters.speed
             }

@@ -28,9 +28,14 @@ import com.google.common.util.concurrent.ListenableFuture
  * by the user (Media3 lets a paused one be swiped away) closes the book, as "Stop listening" does.
  *
  * What a controller is offered goes by who it is ([ControllerKind]): the app's own get the whole contract;
- * other apps the skips and the chapters; a car those, the next speed and the next volume, with buttons of its
- * own ([buttons] is asked the car's), and it alone browses the library ([CarLibraryCallback], answered by the
- * car's browser) and may set the player's items, which is how a car starts what it was shown.
+ * other apps the skips and the chapters; a car those, the next speed and the next volume, and it alone browses
+ * the library ([CarLibraryCallback], answered by the car's browser) and may set the player's items, which is
+ * how a car starts what it was shown.
+ *
+ * The [buttons] are the same for everyone: Android Auto connects as a platform controller, which Media3 can
+ * give no list of its own, and is shown the platform session's. A button whose command a controller is not
+ * offered (the speed, for another app) reaches a Media3 controller disabled, and its command is refused from
+ * any other.
  *
  * Calls arrive on the main thread.
  */
@@ -38,7 +43,7 @@ import com.google.common.util.concurrent.ListenableFuture
 class PlayerCommands(
     private val ownPackage: String,
     private val handle: (PlayerCommand) -> Unit,
-    private val buttons: (car: Boolean) -> List<CommandButton>,
+    private val buttons: () -> List<CommandButton>,
     private val cars: CarControllers = CarControllers.Media3,
     browser: CarBrowser? = null,
     private val resume: () -> ListenableFuture<MediaSession.MediaItemsWithStartPosition> = ::nothingToResume,
@@ -52,7 +57,7 @@ class PlayerCommands(
         return MediaSession.ConnectionResult.AcceptedResultBuilder(session, controller)
             .setAvailableSessionCommands(sessionCommandsFor(kind))
             .setAvailablePlayerCommands(playerCommandsFor(kind))
-            .setMediaButtonPreferences(buttons(kind == ControllerKind.Car))
+            .setMediaButtonPreferences(buttons())
             .build()
     }
 

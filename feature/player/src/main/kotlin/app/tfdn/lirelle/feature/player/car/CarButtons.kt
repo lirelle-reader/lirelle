@@ -30,7 +30,7 @@ private val SpeedIcons = listOf(
     2f to CommandButton.ICON_PLAYBACK_SPEED_2_0,
 )
 
-/** The words of the car, in the device's language: those of its own buttons, and of what it browses. */
+/** The words of the car, in the device's language: those of the speed button, and of what it browses. */
 class CarTexts(private val resources: Resources) {
     /** "Speed: 1.25×": the number as the language writes it, without a needless zero. */
     fun speed(speed: Float): String {
@@ -95,8 +95,9 @@ class CarTexts(private val resources: Resources) {
 }
 
 /**
- * The car's speed button: it names the current [speed], and a tap goes to the next one
- * ([PlayerCommand.NextSpeed]). The car has no room for a sheet of speeds, nor the driver the time.
+ * The speed button, made for the car: it names the current [speed], and a tap goes to the next one
+ * ([PlayerCommand.NextSpeed]). The car has no room for a sheet of speeds, nor the driver the time. In the
+ * overflow: after the other buttons, wherever there is room for it.
  */
 internal fun speedButton(texts: CarTexts, speed: Float): CommandButton =
     CommandButton.Builder(speedIcon(speed))
