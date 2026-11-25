@@ -68,12 +68,52 @@ jobs:
           export LIRELLE_KEYSTORE_FILE="$RUNNER_TEMP/release.jks"
           # Never from the build cache: a cached output of a library once gave a release an older module.
           ./gradlew :app:assembleRelease --no-build-cache
+      - name: versionCode as written in the release PR
+        # F-Droid reads lirelle.versionCode in the tagged commit; the build counts commits. They differ when a pull
+        # request was merged just before the release PR, before release-please could update it: nothing goes out.
+        if: needs.release-please.outputs.release_created == 'true'
+        run: |
+          built=$("$(printf '%s\n' "$ANDROID_HOME"/build-tools/*/aapt2 | sort -V | tail -1)" dump badging \
+            app/build/outputs/apk/release/app-release.apk | sed -n "s/^package: .*versionCode='\([0-9]*\)'.*/\1/p")
+          written=$(sed -n 's/^lirelle\.versionCode=//p' gradle.properties)
+          echo "built $built, written $written"
+          test "$built" = "$written"
       - name: Publish
         env:
           GH_TOKEN: ${{ github.token }}
           RELEASE_CREATED: ${{ needs.release-please.outputs.release_created }}
           TAG_NAME: ${{ needs.release-please.outputs.tag_name }}
         run: ci/publish-github.sh
-      - name: Keystore removed
+      - name: AAB, signed with the upload key
+        if: needs.release-please.outputs.release_created == 'true'
+        env:
+          LIRELLE_UPLOAD_KEYSTORE_B64: ${{ secrets.LIRELLE_UPLOAD_KEYSTORE_B64 }}
+          LIRELLE_KEYSTORE_PASSWORD: ${{ secrets.LIRELLE_UPLOAD_KEYSTORE_PASSWORD }}
+          LIRELLE_KEY_ALIAS: ${{ secrets.LIRELLE_UPLOAD_KEY_ALIAS }}
+          LIRELLE_KEY_PASSWORD: ${{ secrets.LIRELLE_UPLOAD_KEY_PASSWORD }}
+        run: |
+          echo "$LIRELLE_UPLOAD_KEYSTORE_B64" | base64 -d > "$RUNNER_TEMP/upload.jks"
+          export LIRELLE_KEYSTORE_FILE="$RUNNER_TEMP/upload.jks"
+          ./gradlew :app:bundleRelease --no-build-cache
+      - name: To Google Play
+        # Off until the store is set up (#27) and the first AAB is sent by hand (#28): then PLAY_PUBLISH is true.
+        if: needs.release-please.outputs.release_created == 'true' && vars.PLAY_PUBLISH == 'true'
+        env:
+          PLAY_SERVICE_ACCOUNT_JSON: ${{ secrets.PLAY_SERVICE_ACCOUNT_JSON }}
+        run: |
+          printf '%s' "$PLAY_SERVICE_ACCOUNT_JSON" > "$RUNNER_TEMP/play.json"
+          gem install --user-install --no-document fastlane
+          "$(ruby -e 'print Gem.user_dir')/bin/fastlane" supply --package_name app.tfdn.lirelle \
+            --json_key "$RUNNER_TEMP/play.json" --track production --release_status completed \
+            --aab app/build/outputs/bundle/release/app-release.aab --skip_upload_apk true \
+            --metadata_path fastlane/metadata/android --sync_image_upload true
+      - name: AAB kept for a first upload by hand
+        if: needs.release-please.outputs.release_created == 'true' && vars.PLAY_PUBLISH != 'true'
+        uses: actions/upload-artifact@v7
+        with:
+          name: lirelle-aab
+          path: app/build/outputs/bundle/release/app-release.aab
+          retention-days: 14
+      - name: Keys removed
         if: always()
-        run: rm -f "$RUNNER_TEMP/release.jks"
+        run: rm -f "$RUNNER_TEMP/release.jks" "$RUNNER_TEMP/upload.jks" "$RUNNER_TEMP/play.json"
