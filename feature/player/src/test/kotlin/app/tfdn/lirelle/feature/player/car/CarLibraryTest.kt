@@ -470,8 +470,9 @@ class CarLibraryTest {
     // --- search
 
     @Test
-    fun `a search asks the books matching the text and keeps those to listen to`() = runTest {
-        library.books = listOf(audiobook("1"), sampleBook("2"), readAloud("3"))
+    fun `a search asks each kind of book to listen to for the text, and merges what is found`() = runTest {
+        // A read-aloud book with an audio file is found twice; a text the server lists all the same is left out.
+        served(audio = listOf(audiobook("1"), sampleBook("2"), readAloud("3")), readAloud = listOf(readAloud("3")))
 
         val answer = car().search(" road ") as CarAnswer.Nodes
 
@@ -479,7 +480,39 @@ class CarLibraryTest {
             CarNode.Book(BookId("1"), "Book 1", CarLine.Author("Author 1")),
             CarNode.Book(BookId("3"), "Book 3", CarLine.Author("Author 3")),
         ).inOrder()
-        assertThat(library.bookPageRequests).containsExactly(BookListRequest(text = "road") to 0)
+        assertThat(library.bookPageRequests).containsExactly(
+            BookListRequest(text = "road", filters = BookFilters(formats = setOf(FormatFilter.Audio))) to 0,
+            BookListRequest(text = "road", filters = BookFilters(readAlongOnly = true)) to 0,
+        )
+    }
+
+    @Test
+    fun `a search finds an audiobook however many texts match too - the server is asked for what is listened to`() =
+        runTest {
+            val texts = (1..80).map { sampleBook("$it") }
+            // As a server answers: the books of the kind asked that match, the texts first when no kind is.
+            library.bookPageAnswer = { request, _, size ->
+                val found = when {
+                    request.filters.formats == setOf(FormatFilter.Audio) -> listOf(audiobook("99"))
+                    request.filters.readAlongOnly -> emptyList()
+                    else -> texts + audiobook("99")
+                }
+                ApiResult.Success(PageResult(found.take(size), found.size))
+            }
+
+            val answer = car().search("road") as CarAnswer.Nodes
+
+            assertThat(answer.nodes.bookIds()).containsExactly("99")
+        }
+
+    @Test
+    fun `a search asks only the kinds its source has`() = runTest {
+        served(audio = listOf(audiobook("1")), readAloud = listOf(readAloud("2")))
+
+        val answer = car(SourceCapabilities.Everything.copy(audiobooks = false)).search("road") as CarAnswer.Nodes
+
+        assertThat(answer.nodes.bookIds()).containsExactly("2")
+        assertThat(library.bookPageRequests.map { it.first.filters }).containsExactly(BookFilters(readAlongOnly = true))
     }
 
     @Test

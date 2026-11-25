@@ -64,19 +64,26 @@ internal class ListenableBooks(
      * Reads them from the server. Its filters cannot say "with an audio file or read aloud" in one request (its
      * rules are joined by "and"): each kind the source has is asked whole, and the two are merged here.
      */
-    private suspend fun read(): List<BookSummary>? = coroutineScope {
-        val kinds = listOfNotNull(
-            BookFilters(formats = setOf(FormatFilter.Audio)).takeIf { capabilities.audiobooks },
-            BookFilters(readAlongOnly = true).takeIf { capabilities.readAlong },
-        )
-        val lists = kinds.map { async { whole(it) } }.awaitAll()
-        if (lists.any { it == null }) return@coroutineScope null
-        lists.filterNotNull().flatten()
-            // A read-aloud book with an audio file besides is in both lists.
-            .distinctBy { it.id }
-            .filter { listenable(it, capabilities) }
-            .sortedWith { a, b -> collator.compare(a.title, b.title) }
-    }
+    private suspend fun read(): List<BookSummary>? =
+        ofEachKind { whole(it) }?.sortedWith { a, b -> collator.compare(a.title, b.title) }
+
+    /**
+     * What [ask] answers for each kind the source has, asked together and merged, each book once: the books
+     * with an audio file first. Null when one of them could not be had.
+     */
+    private suspend fun ofEachKind(ask: suspend (BookFilters) -> List<BookSummary>?): List<BookSummary>? =
+        coroutineScope {
+            val kinds = listOfNotNull(
+                BookFilters(formats = setOf(FormatFilter.Audio)).takeIf { capabilities.audiobooks },
+                BookFilters(readAlongOnly = true).takeIf { capabilities.readAlong },
+            )
+            val lists = kinds.map { async { ask(it) } }.awaitAll()
+            if (lists.any { it == null }) return@coroutineScope null
+            lists.filterNotNull().flatten()
+                // A read-aloud book with an audio file besides is in both lists.
+                .distinctBy { it.id }
+                .filter { listenable(it, capabilities) }
+        }
 
     /** The books of the series [all] has, as the car lists series: by name, with how many of them each has. */
     suspend fun series(): List<CarNode.Series>? = all()?.let { books ->
@@ -90,10 +97,14 @@ internal class ListenableBooks(
     suspend fun ofSeries(id: SeriesId): List<BookSummary>? =
         (library.seriesBooks(id) as? ApiResult.Success)?.value?.books?.filter { listenable(it, capabilities) }
 
-    /** Those among the first books the server finds for [text]. */
-    suspend fun matching(text: String): List<BookSummary>? =
-        (library.bookPage(BookListRequest(text = text), 0, BatchSize) as? ApiResult.Success)
-            ?.value?.items?.filter { listenable(it, capabilities) }
+    /**
+     * The first ones the server finds for [text], asked as [read] asks them: of each kind, so that the texts
+     * the server finds first do not take the place of a book to listen to.
+     */
+    suspend fun matching(text: String): List<BookSummary>? = ofEachKind { filters ->
+        (library.bookPage(BookListRequest(filters = filters, text = text), 0, BatchSize) as? ApiResult.Success)
+            ?.value?.items
+    }
 
     /** Every page of the books [filters] keep, by title, up to [ListenableBound] books. */
     private suspend fun whole(filters: BookFilters): List<BookSummary>? {
