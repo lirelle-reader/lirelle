@@ -78,6 +78,7 @@
     <string name="edition_progress_finished">finished</string>
     <string name="edition_progress_not_started">not started</string>
     <string name="edition_details">%1$s\u00A0· %2$s</string>
+    <string name="edition_details_spoken">%1$s, %2$s</string>
     <string name="edition_open">Open this edition</string>
 
     <string name="section_in_series">In the series</string>

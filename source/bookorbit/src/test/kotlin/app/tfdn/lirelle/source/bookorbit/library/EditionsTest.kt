@@ -103,7 +103,7 @@ class EditionsTest {
             ),
         )
 
-        assertThat(list.map { it.label }).containsExactly("Albin Michel · 2013", "Another Voice").inOrder()
+        assertThat(list.map { it.label }).containsExactly("Albin Michel\u00A0· 2013", "Another Voice").inOrder()
     }
 
     @Test
@@ -118,7 +118,8 @@ class EditionsTest {
         )
 
         // Listed the newest first, those without a year last.
-        assertThat(list.map { it.label }).containsExactly("Scribner · 2011", "1998", "Pygmalion", "Comics").inOrder()
+        assertThat(list.map { it.label })
+            .containsExactly("Scribner\u00A0· 2011", "1998", "Pygmalion", "Comics").inOrder()
     }
 
     @Test
@@ -133,7 +134,8 @@ class EditionsTest {
         )
 
         // The last two are already named by their library: nothing is added to it.
-        assertThat(list.map { it.label }).containsExactly("Poche · Books", "poche · Shelf", "Books", "Books").inOrder()
+        assertThat(list.map { it.label })
+            .containsExactly("Poche\u00A0· Books", "poche\u00A0· Shelf", "Books", "Books").inOrder()
     }
 
     // --- order

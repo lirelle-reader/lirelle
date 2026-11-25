@@ -200,7 +200,7 @@ class EditionsBlockTest {
 
         assertThat(shown(audio, "Audio\u00A0· finished")).isEqualTo(1)
         assertThat(shown(comic, "Comic\u00A0· not started")).isEqualTo(1)
-        assertThat(spoken(comic)).isEqualTo("Version en français, tome 1/2, Le trône de fer, Comic\u00A0· not started")
+        assertThat(spoken(comic)).isEqualTo("Version en français, tome 1/2, Le trône de fer, Comic, not started")
     }
 
     @Test
@@ -265,10 +265,10 @@ class EditionsBlockTest {
     fun `a line is announced as one element`() {
         show()
 
-        assertThat(spoken(english)).isEqualTo("Version en anglais, A Game of Thrones, Book and audio\u00A0· finished")
+        assertThat(spoken(english)).isEqualTo("Version en anglais, A Game of Thrones, Book and audio, finished")
         assertThat(spoken(first))
-            .isEqualTo("Version en français, tome 1/2, Le trône de fer, Book and audio\u00A0· 42% read")
-        assertThat(spoken(open)).isEqualTo("Version en français, tome 2/2, Book\u00A0· not started, This edition")
+            .isEqualTo("Version en français, tome 1/2, Le trône de fer, Book and audio, 42% read")
+        assertThat(spoken(open)).isEqualTo("Version en français, tome 2/2, Book, not started, This edition")
         // Nothing of the block is read a second time: its heading, and one element per line.
         val read = compose.onAllNodesWithText("", substring = true, useUnmergedTree = true).fetchSemanticsNodes()
             .filterNot { SemanticsProperties.HideFromAccessibility in it.config }

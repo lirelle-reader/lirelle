@@ -15,7 +15,8 @@ import java.time.format.DateTimeParseException
 import kotlin.math.roundToInt
 
 private const val Present = "present"
-private const val LabelSeparator = " · "
+/** The dot stays with what comes before it: it never starts a line. */
+private const val LabelSeparator = "\u00A0· "
 private const val LowestInProgress = 1
 private const val HighestInProgress = 99
 

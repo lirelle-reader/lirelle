@@ -113,7 +113,9 @@ private fun EditionLine(edition: BookEdition, openTitle: String, onOpenBook: (Bo
     val titleLine = edition.title.takeIf { edition.label != null && it.isNotBlank() && it != openTitle }
     val details = editionDetails(edition)
     val mark = if (edition.isOpen) stringResource(R.string.edition_this) else null
-    val spoken = listOfNotNull(firstLine, titleLine, details, mark).joinToString(", ")
+    // Said with commas: the dot that joins the media and the progress is for the eye.
+    val spokenDetails = editionDetails(edition, spoken = true)
+    val spoken = listOfNotNull(firstLine, titleLine, spokenDetails, mark).joinToString(", ")
     val openLabel = stringResource(R.string.edition_open)
     // The open edition stands out, and leads nowhere: its page is the one shown.
     val ground = if (edition.isOpen) MaterialTheme.colorScheme.surfaceContainerHigh else Color.Transparent
@@ -190,7 +192,7 @@ private fun EditionBar(percent: Int) {
 
 /** "Book and audio · 42% read"; the media alone when the progress is not known. */
 @Composable
-private fun editionDetails(edition: BookEdition): String {
+private fun editionDetails(edition: BookEdition, spoken: Boolean = false): String {
     val media = stringResource(
         when (edition.media) {
             EditionMedia.Text -> R.string.edition_media_text
@@ -205,5 +207,6 @@ private fun editionDetails(edition: BookEdition): String {
         EditionProgress.Finished -> stringResource(R.string.edition_progress_finished)
         EditionProgress.Unknown -> null
     }
-    return if (progress == null) media else stringResource(R.string.edition_details, media, progress)
+    val joined = if (spoken) R.string.edition_details_spoken else R.string.edition_details
+    return if (progress == null) media else stringResource(joined, media, progress)
 }
