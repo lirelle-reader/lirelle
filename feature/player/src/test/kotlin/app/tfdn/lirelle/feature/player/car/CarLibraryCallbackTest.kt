@@ -32,7 +32,7 @@ class BrowsedService : MediaLibraryService() {
         super.onCreate()
         val items = CarItems(resources, "app.tfdn.lirelle.covers", "profile-1")
         val browser =
-            CarBrowser(shelves, items, NoticeAsError(CarTexts(resources)), CoroutineScope(Dispatchers.Unconfined))
+            CarBrowser(shelves, items, NoticeAsLine(CarTexts(resources)), CoroutineScope(Dispatchers.Unconfined))
         commands = PlayerCommands("app.tfdn.lirelle", handle = {}, buttons = { emptyList() }, browser = browser)
         session = MediaLibrarySession.Builder(this, FakeEngine(), commands).setId("browsed-test").build()
     }

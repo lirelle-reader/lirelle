@@ -58,10 +58,9 @@ class PlayerCommandsTest {
 
         assertThat(handled).containsExactly(PlayerCommand.CloseBook)
         // Offered to the notification, which sends it only then; not to other apps.
-        assertThat(PlayerCommands.sessionCommandsFor(trusted = true).contains(SessionCommand(dismissed, Bundle.EMPTY)))
-            .isTrue()
-        assertThat(PlayerCommands.sessionCommandsFor(trusted = false).contains(SessionCommand(dismissed, Bundle.EMPTY)))
-            .isFalse()
+        val command = SessionCommand(dismissed, Bundle.EMPTY)
+        assertThat(PlayerCommands.sessionCommandsFor(ControllerKind.Own).contains(command)).isTrue()
+        assertThat(PlayerCommands.sessionCommandsFor(ControllerKind.Other).contains(command)).isFalse()
     }
 
     @Test
@@ -89,7 +88,7 @@ class PlayerCommandsTest {
 
     @Test
     fun `other controllers get the skips and the chapters only`() {
-        val others = PlayerCommands.sessionCommandsFor(trusted = false)
+        val others = PlayerCommands.sessionCommandsFor(ControllerKind.Other)
         val allowed = setOf(
             PlayerSessionContract.ACTION_BACK,
             PlayerSessionContract.ACTION_FORWARD,
@@ -100,7 +99,7 @@ class PlayerCommandsTest {
         PlayerSessionContract.actions.forEach {
             assertThat(others.contains(SessionCommand(it, Bundle.EMPTY))).isEqualTo(it in allowed)
         }
-        assertThat(PlayerCommands.sessionCommandsFor(trusted = true)).isEqualTo(PlayerCommands.sessionCommands)
+        assertThat(PlayerCommands.sessionCommandsFor(ControllerKind.Own)).isEqualTo(PlayerCommands.sessionCommands)
     }
 
     @Test
@@ -167,7 +166,6 @@ class PlayerCommandsTest {
         val others = PlayerCommands.sessionCommandsFor(ControllerKind.Other)
 
         assertThat(own).isEqualTo(custom(*PlayerSessionContract.actions.toTypedArray(), dismissed))
-        assertThat(own).isEqualTo(PlayerCommands.sessionCommandsFor(trusted = true))
         assertThat(others).isEqualTo(
             custom(
                 PlayerSessionContract.ACTION_BACK,
@@ -176,7 +174,6 @@ class PlayerCommandsTest {
                 PlayerSessionContract.ACTION_NEXT_CHAPTER,
             ),
         )
-        assertThat(others).isEqualTo(PlayerCommands.sessionCommandsFor(trusted = false))
         // Neither browses the library.
         listOf(own, others).forEach {
             assertThat(it.contains(SessionCommand.COMMAND_CODE_LIBRARY_GET_LIBRARY_ROOT)).isFalse()

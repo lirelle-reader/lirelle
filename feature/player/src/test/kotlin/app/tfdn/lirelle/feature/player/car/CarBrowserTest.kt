@@ -31,7 +31,7 @@ class CarBrowserTest {
     private val browser = CarBrowser(
         shelves,
         CarItems(context.resources, "app.tfdn.lirelle.covers", "profile-1"),
-        NoticeAsError(texts),
+        NoticeAsLine(texts),
         scope,
     ) { closed }
 
@@ -98,23 +98,12 @@ class CarBrowserTest {
     }
 
     @Test
-    fun `a place that says why it lists nothing is answered the way notices are said`() {
-        shelves.places[CarPlace.Tab.Home] = CarAnswer.Notice(CarNotice.NothingToListen)
-
-        val refused = browser.children(link, "tab/home", 0, 100).now()
-
-        assertThat(refused.resultCode).isEqualTo(SessionError.ERROR_NOT_SUPPORTED)
-        assertThat(link.said.map { it.message }).containsExactly("This profile has nothing to listen to.")
-    }
-
-    @Test
-    fun `the way notices are said is the browser's one place for it`() {
+    fun `a place that says why it lists nothing is answered a line that says it`() {
         shelves.places[CarPlace.Tab.Home] = CarAnswer.Notice(CarNotice.Unreachable)
-        val items = CarItems(context.resources, "app.tfdn.lirelle.covers", "profile-1")
-        val withLines = CarBrowser(shelves, items, NoticeAsLine(texts), scope)
 
-        val line = withLines.children(link, "tab/home", 0, 100).now()
+        val line = browser.children(link, "tab/home", 0, 100).now()
 
+        assertThat(line.resultCode).isEqualTo(LibraryResult.RESULT_SUCCESS)
         assertThat(checkNotNull(line.value).single().mediaMetadata.title.toString())
             .isEqualTo("The server cannot be reached.")
         assertThat(link.said).isEmpty()
@@ -208,8 +197,10 @@ class CarBrowserTest {
         assertThat(link.found).containsExactly("road" to 1)
         assertThat(link.said).isEmpty()
 
-        assertThat(browser.searchResult(link, "road", 0, 100).now().resultCode).isEqualTo(SessionError.ERROR_IO)
-        assertThat(link.said.map { it.message }).containsExactly("The server cannot be reached.")
+        val result = browser.searchResult(link, "road", 0, 100).now()
+        assertThat(checkNotNull(result.value).single().mediaMetadata.title.toString())
+            .isEqualTo("The server cannot be reached.")
+        assertThat(link.said).isEmpty()
     }
 
     @Test

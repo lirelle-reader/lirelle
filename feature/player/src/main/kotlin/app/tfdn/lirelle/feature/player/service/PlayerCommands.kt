@@ -169,8 +169,6 @@ class PlayerCommands(
         private val carCommands: SessionCommands =
             withActions(ForCars, MediaSession.ConnectionResult.DEFAULT_SESSION_AND_LIBRARY_COMMANDS)
 
-        fun sessionCommandsFor(trusted: Boolean): SessionCommands = if (trusted) sessionCommands else othersCommands
-
         fun sessionCommandsFor(kind: ControllerKind): SessionCommands = when (kind) {
             ControllerKind.Own -> sessionCommands
             ControllerKind.Car -> carCommands
