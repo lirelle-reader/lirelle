@@ -17,6 +17,7 @@ import app.tfdn.lirelle.source.bookorbit.library.LibraryApi
 import app.tfdn.lirelle.source.bookorbit.library.ReaderApi
 import app.tfdn.lirelle.source.bookorbit.network.ApiProvider
 import app.tfdn.lirelle.source.bookorbit.network.ErrorMapper
+import app.tfdn.lirelle.source.bookorbit.network.ServerFeatures
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -49,11 +50,13 @@ internal object BookOrbitLibraryModule {
         api: ApiProvider<LibraryApi>,
         @SourceOf(ServerKind.BookOrbit) json: Json,
         session: ProfileSession,
+        features: ServerFeatures,
         @SourceOf(ServerKind.BookOrbit) audio: AudioRepository,
     ): LibraryRepository =
         DefaultLibraryRepository(
             api = api,
             errors = ErrorMapper(json),
+            features = features,
             serverUrl = { session.session.value.serverUrl },
             audio = audio,
         )

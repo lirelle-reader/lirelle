@@ -62,8 +62,14 @@ internal interface LibraryApi {
     @GET("authors/{id}")
     suspend fun author(@Path("id") id: Long): AuthorSummaryDto
 
+    /** [collapseLinked] exists since 3.10.0 and an older server refuses it: null sends nothing. */
     @GET("authors/{id}/books?sort=publishedYear&order=desc")
-    suspend fun authorBooks(@Path("id") id: Long, @Query("page") page: Int, @Query("size") size: Int): BooksPageDto
+    suspend fun authorBooks(
+        @Path("id") id: Long,
+        @Query("page") page: Int,
+        @Query("size") size: Int,
+        @Query("collapseLinked") collapseLinked: Boolean? = null,
+    ): BooksPageDto
 
     @GET("collections")
     suspend fun collections(): List<CollectionDto>
