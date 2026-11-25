@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.6.1](https://github.com/lirelle-reader/lirelle/compare/v0.6.0...v0.6.1) (2026-11-25)
+
+
+### Fixes
+
+* the APK leaves out Google's dependency block, the AAB carries native symbols ([#34](https://github.com/lirelle-reader/lirelle/issues/34)) ([0b30fbf](https://github.com/lirelle-reader/lirelle/commit/0b30fbf8243c4353b27acd8b54fd21ee47c70e5c))
+
 ## [0.6.0](https://github.com/lirelle-reader/lirelle/compare/v0.5.0...v0.6.0) (2026-11-25)
 
 

@@ -1,0 +1,2 @@
+Fixes
+• The APK leaves out Google's dependency block, the AAB carries native symbols
