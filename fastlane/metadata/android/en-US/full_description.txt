@@ -7,6 +7,7 @@ Lirelle reads, shows and plays the books, comics and audiobooks of your own serv
 
 <b>Read & listen</b>
 • Audiobooks with chapters, playback speed, a sleep timer and audio bookmarks
+• Android Auto: browse and play your audiobooks in the car
 • Read-along: the sentence being read is highlighted in the book, for the books that carry it
 
 <b>Comics and manga</b>
