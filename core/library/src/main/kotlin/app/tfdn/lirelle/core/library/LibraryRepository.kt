@@ -20,6 +20,7 @@ import app.tfdn.lirelle.core.library.model.RelatedBooks
 import app.tfdn.lirelle.core.library.model.SearchResults
 import app.tfdn.lirelle.core.library.model.Series
 import app.tfdn.lirelle.core.library.model.SeriesBooks
+import app.tfdn.lirelle.core.library.model.ServerLibrary
 import app.tfdn.lirelle.core.library.model.Shelves
 import app.tfdn.lirelle.core.library.model.SortDirection
 import app.tfdn.lirelle.core.network.ApiError
@@ -31,17 +32,30 @@ import kotlinx.coroutines.flow.StateFlow
 class PagedList<T : Any>(val items: Flow<PagingData<T>>, val total: StateFlow<Int?>)
 
 /** Read-only access to the library. Nothing here modifies the server. */
+@Suppress("TooManyFunctions") // One function per repository operation.
 interface LibraryRepository {
+    /** The libraries the account can open, in the server's order. */
+    suspend fun libraries(): ApiResult<List<ServerLibrary>>
+
     fun books(source: BookListSource, request: BookListRequest): PagedList<BookSummary>
 
-    /** [text], when given, narrows the list to the authors matching it. */
-    fun authors(sort: AuthorSort, direction: SortDirection, text: String? = null): PagedList<Author>
+    /**
+     * [text], when given, narrows the list to the authors matching it.
+     * [library], when given, narrows it to the authors of that library.
+     */
+    fun authors(
+        sort: AuthorSort,
+        direction: SortDirection,
+        text: String? = null,
+        library: ServerLibrary? = null,
+    ): PagedList<Author>
 
     /**
      * The whole list: series are sorted and filtered on the device.
      * [text], when given, narrows the list to the series matching it.
+     * [library], when given, narrows it to the series of that library.
      */
-    suspend fun series(text: String? = null): ApiResult<List<Series>>
+    suspend fun series(text: String? = null, library: ServerLibrary? = null): ApiResult<List<Series>>
 
     suspend fun seriesBooks(seriesId: SeriesId): ApiResult<SeriesBooks>
 

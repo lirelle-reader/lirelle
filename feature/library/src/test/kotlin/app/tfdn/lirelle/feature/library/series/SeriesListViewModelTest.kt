@@ -1,10 +1,14 @@
 package app.tfdn.lirelle.feature.library.series
 
+import app.tfdn.lirelle.core.ids.LibraryId
+import app.tfdn.lirelle.core.library.LibraryChoiceState
 import app.tfdn.lirelle.core.library.model.SeriesProgressFilter
 import app.tfdn.lirelle.core.library.model.SeriesSort
+import app.tfdn.lirelle.core.library.model.ServerLibrary
 import app.tfdn.lirelle.core.library.model.SortDirection
 import app.tfdn.lirelle.core.network.ApiError
 import app.tfdn.lirelle.core.network.ApiResult
+import app.tfdn.lirelle.core.testing.FakeLibraryChoice
 import app.tfdn.lirelle.core.testing.FakeLibraryRepository
 import app.tfdn.lirelle.core.testing.InMemoryLibraryPreferences
 import app.tfdn.lirelle.core.testing.MainDispatcherRule
@@ -28,8 +32,11 @@ class SeriesListViewModelTest {
         seriesResult = ApiResult.Success(listOf(small, large, started))
     }
     private val preferences = InMemoryLibraryPreferences()
+    private val comics = ServerLibrary(LibraryId("1"), "Comics")
+    private val manga = ServerLibrary(LibraryId("2"), "Manga")
+    private val choice = FakeLibraryChoice(LibraryChoiceState(listOf(comics, manga)))
 
-    private fun viewModel() = SeriesListViewModel(repository, preferences)
+    private fun viewModel() = SeriesListViewModel(repository, preferences, choice)
 
     private fun SeriesListViewModel.names() = (state.value.series as Loadable.Ready).value.map { it.name }
 
@@ -120,4 +127,140 @@ class SeriesListViewModelTest {
         assertThat(viewModel.state.value.refreshing).isFalse()
         assertThat(viewModel.names()).hasSize(3)
     }
+
+    @Test
+    fun `asks for every library when none is chosen`() = runTest(mainRule.dispatcher) {
+        viewModel()
+
+        assertThat(repository.seriesLibraries).containsExactly(null)
+    }
+
+    @Test
+    fun `asks for the chosen library at the first load, a retry and a refresh`() = runTest(mainRule.dispatcher) {
+        choice.choose(comics)
+        val viewModel = viewModel()
+        assertThat(repository.seriesLibraries).containsExactly(comics)
+
+        viewModel.load()
+        viewModel.refresh()
+
+        assertThat(repository.seriesLibraries).containsExactly(comics, comics, comics)
+    }
+
+    @Test
+    fun `another choice loads the series again from the start, the sort and the filter kept`() =
+        runTest(mainRule.dispatcher) {
+            val viewModel = viewModel()
+            viewModel.onSort(SeriesSort.BookCount)
+            viewModel.onFilter(SeriesProgressFilter.InProgress)
+            repository.gate = CompletableDeferred()
+
+            choice.choose(manga)
+
+            // The list of the library left is not kept under the new one's name.
+            assertThat(viewModel.state.value.series).isEqualTo(Loadable.Loading)
+            repository.gate!!.complete(Unit)
+            assertThat(repository.seriesLibraries).containsExactly(null, manga).inOrder()
+            assertThat(viewModel.names()).containsExactly("Gamma")
+            assertThat(viewModel.state.value.sort).isEqualTo(SeriesSort.BookCount)
+            assertThat(viewModel.state.value.filter).isEqualTo(SeriesProgressFilter.InProgress)
+        }
+
+    @Test
+    fun `a chosen library renamed on the server loads the series again under its new name`() =
+        runTest(mainRule.dispatcher) {
+            choice.choose(comics)
+            viewModel()
+            val renamed = comics.copy(name = "Bandes dessinées")
+
+            choice.libraries(listOf(renamed, manga))
+
+            assertThat(repository.seriesLibraries).containsExactly(comics, renamed).inOrder()
+        }
+
+    @Test
+    fun `the libraries read again as they were load nothing more`() = runTest(mainRule.dispatcher) {
+        choice.choose(comics)
+        viewModel()
+
+        choice.libraries(listOf(manga, comics))
+
+        assertThat(repository.seriesLibraries).containsExactly(comics)
+    }
+
+    @Test
+    fun `a refresh answered after another library was chosen does not show the library left`() =
+        runTest(mainRule.dispatcher) {
+            val viewModel = viewModel()
+            val refresh = CompletableDeferred<Unit>()
+            repository.gate = refresh
+            viewModel.refresh()
+            repository.seriesResult = ApiResult.Success(listOf(small))
+            repository.gate = null
+
+            choice.choose(manga)
+            assertThat(viewModel.names()).containsExactly("Beta")
+            refresh.complete(Unit)
+
+            assertThat(viewModel.names()).containsExactly("Beta")
+            assertThat(viewModel.state.value.refreshing).isFalse()
+        }
+
+    @Test
+    fun `a retry answered after another library was chosen does not show the library left`() =
+        runTest(mainRule.dispatcher) {
+            repository.seriesResult = ApiResult.Failure(ApiError.ServerUnreachable)
+            val viewModel = viewModel()
+            val retry = CompletableDeferred<Unit>()
+            repository.gate = retry
+            repository.seriesResult = ApiResult.Success(listOf(small))
+            viewModel.load()
+            repository.gate = null
+            repository.seriesResult = ApiResult.Success(listOf(large))
+
+            choice.choose(manga)
+            assertThat(viewModel.names()).containsExactly("Alpha")
+            retry.complete(Unit)
+
+            assertThat(viewModel.names()).containsExactly("Alpha")
+        }
+
+    @Test
+    fun `a retry asked twice shows the answer of the last one`() = runTest(mainRule.dispatcher) {
+        repository.seriesResult = ApiResult.Failure(ApiError.ServerUnreachable)
+        val viewModel = viewModel()
+        val first = CompletableDeferred<Unit>()
+        repository.gate = first
+        repository.seriesResult = ApiResult.Success(listOf(small))
+        viewModel.load()
+        repository.gate = null
+        repository.seriesResult = ApiResult.Success(listOf(large))
+
+        viewModel.load()
+        first.complete(Unit)
+
+        assertThat(viewModel.names()).containsExactly("Alpha")
+    }
+
+    @Test
+    fun `another library chosen during a refresh leaves no refresh shown over its load`() =
+        runTest(mainRule.dispatcher) {
+            val viewModel = viewModel()
+            val refresh = CompletableDeferred<Unit>()
+            repository.gate = refresh
+            viewModel.refresh()
+            assertThat(viewModel.state.value.refreshing).isTrue()
+            val load = CompletableDeferred<Unit>()
+            repository.gate = load
+
+            choice.choose(manga)
+
+            assertThat(viewModel.state.value.refreshing).isFalse()
+            assertThat(viewModel.state.value.series).isEqualTo(Loadable.Loading)
+            refresh.complete(Unit)
+            assertThat(viewModel.state.value.series).isEqualTo(Loadable.Loading)
+            load.complete(Unit)
+            assertThat(viewModel.names()).hasSize(3)
+            assertThat(viewModel.state.value.refreshing).isFalse()
+        }
 }

@@ -55,3 +55,10 @@ value class MarkId(val value: String) {
 value class ReadId(val value: String) {
     override fun toString(): String = value
 }
+
+/** One library of a server: a part of what it serves, with its own books, series and authors. */
+@JvmInline
+@Serializable
+value class LibraryId(val value: String) {
+    override fun toString(): String = value
+}

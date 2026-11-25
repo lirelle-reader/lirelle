@@ -17,9 +17,13 @@ import androidx.paging.testing.asSnapshot
 import androidx.test.core.app.ApplicationProvider
 import app.tfdn.lirelle.core.designsystem.LirelleTheme
 import app.tfdn.lirelle.core.ids.AuthorId
+import app.tfdn.lirelle.core.ids.LibraryId
+import app.tfdn.lirelle.core.library.LibraryChoiceState
 import app.tfdn.lirelle.core.library.model.Author
 import app.tfdn.lirelle.core.library.model.AuthorSort
+import app.tfdn.lirelle.core.library.model.ServerLibrary
 import app.tfdn.lirelle.core.library.model.SortDirection
+import app.tfdn.lirelle.core.testing.FakeLibraryChoice
 import app.tfdn.lirelle.core.testing.FakeLibraryRepository
 import app.tfdn.lirelle.core.testing.InMemoryLibraryPreferences
 import app.tfdn.lirelle.core.testing.MainDispatcherRule
@@ -54,9 +58,12 @@ class AuthorsTest {
         authorsList = listOf(Author(AuthorId("1"), "Ada Writer", 12, null), Author(AuthorId("2"), "Bo Author", 1, null))
     }
     private val preferences = InMemoryLibraryPreferences()
+    private val comics = ServerLibrary(LibraryId("1"), "Comics")
+    private val manga = ServerLibrary(LibraryId("2"), "Manga")
+    private val choice = FakeLibraryChoice(LibraryChoiceState(listOf(comics, manga)))
     private val idle = LoadState.NotLoading(endOfPaginationReached = true)
 
-    private fun viewModel() = AuthorsViewModel(repository, preferences)
+    private fun viewModel() = AuthorsViewModel(repository, preferences, choice)
 
     private fun text(id: Int, vararg args: Any) = context.getString(id, *args)
 
@@ -213,4 +220,72 @@ class AuthorsTest {
 
         compose.onNodeWithText(text(R.string.authors_empty)).assertIsDisplayed()
     }
+
+    @Test
+    fun `authors are asked for every library when none is chosen`() = runTest(mainRule.dispatcher) {
+        viewModel().authors.asSnapshot()
+
+        assertThat(repository.authorLibraries).containsExactly(null)
+    }
+
+    @Test
+    fun `authors are asked for the chosen library`() = runTest(mainRule.dispatcher) {
+        choice.choose(comics)
+
+        viewModel().authors.asSnapshot()
+
+        assertThat(repository.authorLibraries).containsExactly(comics)
+    }
+
+    @Test
+    fun `another choice gives a new list of authors, the sort kept`() = runTest(mainRule.dispatcher) {
+        val viewModel = viewModel()
+        viewModel.onSort(AuthorSort.BookCount)
+        viewModel.authors.asSnapshot()
+        val asked = repository.authorRequests.size
+
+        choice.choose(manga)
+        viewModel.authors.asSnapshot()
+
+        assertThat(repository.authorRequests).hasSize(asked + 1)
+        assertThat(repository.authorLibraries.last()).isEqualTo(manga)
+        assertThat(repository.authorRequests.last()).isEqualTo(AuthorSort.BookCount to SortDirection.Descending)
+        assertThat(viewModel.state.value.sort).isEqualTo(AuthorSort.BookCount)
+    }
+
+    @Test
+    fun `a chosen library renamed on the server gives a new list of authors under its new name`() =
+        runTest(mainRule.dispatcher) {
+            choice.choose(comics)
+            val viewModel = viewModel()
+            viewModel.authors.asSnapshot()
+            val asked = repository.authorRequests.size
+            val renamed = comics.copy(name = "Bandes dessinées")
+
+            choice.libraries(listOf(renamed, manga))
+            viewModel.authors.asSnapshot()
+
+            assertThat(repository.authorRequests).hasSize(asked + 1)
+            assertThat(repository.authorLibraries.last()).isEqualTo(renamed)
+
+            choice.libraries(listOf(manga, renamed))
+            viewModel.authors.asSnapshot()
+
+            assertThat(repository.authorRequests).hasSize(asked + 1)
+        }
+
+    @Test
+    fun `a sort goes on in the same pages of authors, another library has pages of its own`() =
+        runTest(mainRule.dispatcher) {
+            val viewModel = viewModel()
+            val first = viewModel.pages.value!!
+
+            viewModel.onSort(AuthorSort.BookCount)
+            assertThat(viewModel.pages.value).isSameInstanceAs(first)
+
+            choice.choose(manga)
+            assertThat(viewModel.pages.value).isNotSameInstanceAs(first)
+            assertThat(viewModel.pages.value!!.library).isEqualTo(manga)
+            assertThat(viewModel.pages.value!!.items.asSnapshot()).hasSize(2)
+        }
 }

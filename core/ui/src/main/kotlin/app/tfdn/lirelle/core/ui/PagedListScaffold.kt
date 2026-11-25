@@ -37,6 +37,7 @@ const val PagingErrorBarTag = "paging-error"
  * counts, so an item placed after them is hundreds of rows away from the reader.
  *
  * @param errorOf turns a failed load into the error to show.
+ * @param onRefresh what else a pull to refresh does, once the list was asked again.
  * @param content the list, drawn for the given phase. It is called from one place whatever
  *   the phase, so what it remembers (an open menu in its header) survives a reload.
  */
@@ -46,6 +47,7 @@ fun <T : Any> PagedListScaffold(
     items: LazyPagingItems<T>,
     errorOf: (Throwable) -> ApiError,
     modifier: Modifier = Modifier,
+    onRefresh: () -> Unit = {},
     content: @Composable (PagedPhase) -> Unit,
 ) {
     val refresh = items.loadState.refresh
@@ -62,7 +64,10 @@ fun <T : Any> PagedListScaffold(
     val pageWaitsForSignIn = pageFailure != null && errorOf(pageFailure.error).isNoNetwork && signInWait() != null
     PullToRefreshBox(
         isRefreshing = refresh is LoadState.Loading && hasItems,
-        onRefresh = items::refresh,
+        onRefresh = {
+            items.refresh()
+            onRefresh()
+        },
         modifier = modifier,
     ) {
         Column(modifier = Modifier.fillMaxSize()) {

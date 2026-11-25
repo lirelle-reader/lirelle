@@ -3,6 +3,7 @@ package app.tfdn.lirelle.source.bookorbit.network
 import app.tfdn.lirelle.core.ids.AuthorId
 import app.tfdn.lirelle.core.ids.BookId
 import app.tfdn.lirelle.core.ids.FileId
+import app.tfdn.lirelle.core.ids.LibraryId
 import app.tfdn.lirelle.core.ids.MarkId
 import app.tfdn.lirelle.core.ids.ReadId
 import app.tfdn.lirelle.core.ids.SeriesId
@@ -31,6 +32,9 @@ internal fun markIdOf(number: Long): MarkId = MarkId(number.toString())
 
 /** The id of the finished reading BookOrbit numbers [number]. */
 internal fun readIdOf(number: Long): ReadId = ReadId(number.toString())
+
+/** The id of the library BookOrbit numbers [number]. */
+internal fun libraryIdOf(number: Long): LibraryId = LibraryId(number.toString())
 
 /** The version of a listening state BookOrbit gave [revision]: opaque to the app, which only compares it. */
 internal fun versionOf(revision: Int): String = revision.toString()

@@ -1,10 +1,12 @@
 package app.tfdn.lirelle.source.komga.library
 
+import app.tfdn.lirelle.core.ids.LibraryId
 import app.tfdn.lirelle.core.library.model.BookFilters
 import app.tfdn.lirelle.core.library.model.BookListRequest
 import app.tfdn.lirelle.core.library.model.BookSort
 import app.tfdn.lirelle.core.library.model.FormatFilter
 import app.tfdn.lirelle.core.library.model.HomeRowExtent
+import app.tfdn.lirelle.core.library.model.ServerLibrary
 import app.tfdn.lirelle.core.library.model.SortDirection
 import app.tfdn.lirelle.core.library.model.StatusFilter
 import com.google.common.truth.Truth.assertThat
@@ -199,5 +201,64 @@ class KomgaSearchTest {
                     """"fullTextSearch":"a\\:b"}""",
             ),
         )
+    }
+
+    private val seinen = ServerLibrary(LibraryId("0DSQ0FDV47DMP"), "Seinen")
+    private val inSeinen = """{"libraryId":{"operator":"is","value":"0DSQ0FDV47DMP"}}"""
+
+    @Test
+    fun `the books of one library carry its id, after the trash condition`() {
+        assertThat(bookSearch(BookListRequest(library = seinen))).isEqualTo(allOf(notDeleted, inSeinen))
+    }
+
+    @Test
+    fun `a library, a status and a text go together in the books search`() {
+        val request = BookListRequest(
+            filters = BookFilters(statuses = setOf(StatusFilter.Reading)),
+            text = "tide",
+            library = seinen,
+        )
+
+        assertThat(bookSearch(request)).isEqualTo(
+            json(
+                """{"condition":{"allOf":[$notDeleted,$inSeinen,""" +
+                    """{"readStatus":{"operator":"is","value":"IN_PROGRESS"}}]},"fullTextSearch":"tide"}""",
+            ),
+        )
+    }
+
+    @Test
+    fun `the books of a genre's series are narrowed to the library too`() {
+        assertThat(bookSearch(BookListRequest(library = seinen), seriesIds = listOf("0SR1A")))
+            .isEqualTo(allOf("""{"seriesId":{"operator":"is","value":"0SR1A"}}""", notDeleted, inSeinen))
+    }
+
+    @Test
+    fun `a search without a library never names one`() {
+        assertThat(bookSearch(BookListRequest()).toString()).doesNotContain("libraryId")
+        assertThat(seriesSearch(text = "tide", library = null).toString()).doesNotContain("libraryId")
+    }
+
+    @Test
+    fun `the series of one library carry its id, alone, with a text, and with a genre`() {
+        assertThat(seriesSearch(text = null, library = seinen)).isEqualTo(allOf(notDeleted, inSeinen))
+        assertThat(seriesSearch(text = "tide", library = seinen)).isEqualTo(
+            json("""{"condition":{"allOf":[$notDeleted,$inSeinen]},"fullTextSearch":"tide"}"""),
+        )
+        assertThat(seriesSearch(text = null, genre = "Seinen", library = seinen)).isEqualTo(
+            allOf(notDeleted, """{"genre":{"operator":"is","value":"Seinen"}}""", inSeinen),
+        )
+    }
+
+    @Test
+    fun `a read list's books never carry a library, whatever the request says`() {
+        val request = BookListRequest(
+            filters = BookFilters(statuses = setOf(StatusFilter.Unread)),
+            library = seinen,
+        )
+
+        assertThat(readListBookSearch("0RL1", request).toString()).doesNotContain("libraryId")
+        assertThat(readListBookSearch("0RL1", request))
+            .isEqualTo(readListBookSearch("0RL1", request.copy(library = null)))
     }
 }

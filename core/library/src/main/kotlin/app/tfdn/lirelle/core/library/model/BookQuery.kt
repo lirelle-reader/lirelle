@@ -42,6 +42,8 @@ data class BookListRequest(
     /** Narrows the list to the books matching this text; blank means no text. */
     val text: String? = null,
     val genre: String? = null,
+    /** Narrows the whole library's books to one library of the server; null for all. Ignored by a shelf's books. */
+    val library: ServerLibrary? = null,
 )
 
 /** Where a paged list of books comes from. */

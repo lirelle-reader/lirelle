@@ -11,4 +11,7 @@ object LibraryFiles {
 
     /** The profile's preferences file of its recent searches. */
     const val Searches = "searches"
+
+    /** The profile's preferences file of the library its Library destination shows, and of its server's libraries. */
+    const val Choice = "library_choice"
 }

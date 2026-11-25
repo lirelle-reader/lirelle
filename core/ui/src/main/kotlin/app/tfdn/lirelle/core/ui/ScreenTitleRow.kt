@@ -30,9 +30,28 @@ fun ScreenTitleRow(
     roomBelow: Dp = Dp.Unspecified,
     action: @Composable () -> Unit = {},
 ) {
+    ScreenTitleRow(modifier, roomBelow, action) {
+        Text(title, Modifier.semantics { heading() }, style = MaterialTheme.typography.headlineMedium)
+    }
+}
+
+/**
+ * The same row around a title that is more than a text, such as one that opens a menu. The row is as high as
+ * [title], which takes the width the action leaves.
+ *
+ * @param title what stands for the title. It says itself that it is a heading, and is drawn in the title's
+ *   style, `headlineMedium`, when the screen must look like the others.
+ */
+@Composable
+fun ScreenTitleRow(
+    modifier: Modifier = Modifier,
+    roomBelow: Dp = Dp.Unspecified,
+    action: @Composable () -> Unit = {},
+    title: @Composable () -> Unit,
+) {
     Layout(
         content = {
-            Text(title, Modifier.semantics { heading() }, style = MaterialTheme.typography.headlineMedium)
+            Box { title() }
             Box { action() }
         },
         modifier = modifier,

@@ -6,6 +6,7 @@ import app.tfdn.lirelle.source.bookorbit.library.dto.BookDetailDto
 import app.tfdn.lirelle.source.bookorbit.library.dto.BooksPageDto
 import app.tfdn.lirelle.source.bookorbit.library.dto.CollectionDto
 import app.tfdn.lirelle.source.bookorbit.library.dto.GenreDistributionDto
+import app.tfdn.lirelle.source.bookorbit.library.dto.LibraryDto
 import app.tfdn.lirelle.source.bookorbit.library.dto.ReadingProgressListDto
 import app.tfdn.lirelle.source.bookorbit.library.dto.RelatedBookDto
 import app.tfdn.lirelle.source.bookorbit.library.dto.ScrollerDto
@@ -27,6 +28,9 @@ import retrofit2.http.Query
  */
 @Suppress("TooManyFunctions") // One function per server route.
 internal interface LibraryApi {
+    @GET("libraries")
+    suspend fun libraries(): List<LibraryDto>
+
     @POST("books/query")
     suspend fun books(@Body query: JsonObject): BooksPageDto
 
@@ -36,11 +40,13 @@ internal interface LibraryApi {
     @POST("smart-scopes/{id}/books/query")
     suspend fun smartListBooks(@Path("id") id: Long, @Body query: JsonObject): BooksPageDto
 
+    /** [libraryId] narrows the list to one library's series: null sends nothing. */
     @GET("series")
     suspend fun series(
         @Query("page") page: Int,
         @Query("size") size: Int,
         @Query("q") text: String? = null,
+        @Query("libraryId") libraryId: Long? = null,
     ): SeriesPageDto
 
     @GET("series/{id}/books?sort=seriesIndex&order=asc")
@@ -50,6 +56,8 @@ internal interface LibraryApi {
         @Query("size") size: Int,
     ): SeriesBooksPageDto
 
+    /** [libraryId] narrows the list to one library's authors: null sends nothing. */
+    @Suppress("LongParameterList") // One parameter per key of the route's query.
     @GET("authors")
     suspend fun authors(
         @Query("page") page: Int,
@@ -57,6 +65,7 @@ internal interface LibraryApi {
         @Query("sort") sort: String,
         @Query("order") order: String,
         @Query("q") text: String? = null,
+        @Query("libraryId") libraryId: Long? = null,
     ): AuthorsPageDto
 
     @GET("authors/{id}")

@@ -3,6 +3,7 @@ package app.tfdn.lirelle.source.komga.library
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import app.tfdn.lirelle.core.ids.BookId
+import app.tfdn.lirelle.core.ids.LibraryId
 import app.tfdn.lirelle.core.ids.SeriesId
 import app.tfdn.lirelle.core.library.IndexPagingSource
 import app.tfdn.lirelle.core.library.LibraryRepository
@@ -22,6 +23,7 @@ import app.tfdn.lirelle.core.library.model.SearchResults
 import app.tfdn.lirelle.core.library.model.SearchSection
 import app.tfdn.lirelle.core.library.model.Series
 import app.tfdn.lirelle.core.library.model.SeriesBooks
+import app.tfdn.lirelle.core.library.model.ServerLibrary
 import app.tfdn.lirelle.core.library.model.Shelves
 import app.tfdn.lirelle.core.network.ApiError
 import app.tfdn.lirelle.core.network.ApiErrorException
@@ -72,7 +74,7 @@ internal class KomgaLibrary(
                     val dto: PageDto<BookDto> = when (source) {
                         BookListSource.AllBooks -> {
                             val seriesIds = request.genre?.let { genre ->
-                                genreSeries ?: seriesOfGenre(remote, genre).also { genreSeries = it }
+                                genreSeries ?: seriesOfGenre(remote, genre, request.library).also { genreSeries = it }
                             }
                             val sorts = bookSorts(request.sort, request.direction)
                             // A genre no series has: no book to ask for.
@@ -97,9 +99,11 @@ internal class KomgaLibrary(
         return PagedList(pager.flow, total)
     }
 
-    private suspend fun seriesOfGenre(remote: Remote, genre: String): List<String> =
-        wholeList { page -> remote.api.series(seriesSearch(text = null, genre), page, BatchSize, listOf(SeriesOrder)) }
-            .map { it.id }
+    /** In [library] only when one is chosen: the books asked next are its own, and the list read is no longer. */
+    private suspend fun seriesOfGenre(remote: Remote, genre: String, library: ServerLibrary?): List<String> {
+        val search = seriesSearch(text = null, genre, library)
+        return wholeList { page -> remote.api.series(search, page, BatchSize, listOf(SeriesOrder)) }.map { it.id }
+    }
 
     /** A page fetched for the paging, which knows no HTTP: what the server refused comes out as its error. */
     private suspend fun <T> pageOf(fetch: suspend () -> PageResult<T>): PageResult<T> = try {
@@ -108,8 +112,13 @@ internal class KomgaLibrary(
         throw ApiErrorException(errors.map(exception, KomgaCall.Content))
     }
 
-    override suspend fun series(text: String?): ApiResult<List<Series>> = call { remote ->
-        wholeList { page -> remote.api.series(seriesSearch(text), page, BatchSize, listOf(SeriesOrder)) }
+    override suspend fun libraries(): ApiResult<List<ServerLibrary>> = call { remote ->
+        remote.api.libraries().filter { it.name.isNotBlank() }.map { ServerLibrary(LibraryId(it.id), it.name) }
+    }
+
+    override suspend fun series(text: String?, library: ServerLibrary?): ApiResult<List<Series>> = call { remote ->
+        val search = seriesSearch(text, library = library)
+        wholeList { page -> remote.api.series(search, page, BatchSize, listOf(SeriesOrder)) }
             .filterNot { it.deleted }
             // A series added on the server between two batches shifts the list: one comes twice.
             .distinctBy { it.id }

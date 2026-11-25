@@ -1,6 +1,7 @@
 package app.tfdn.lirelle.core.library.di
 
 import app.tfdn.lirelle.core.library.AudioRepository
+import app.tfdn.lirelle.core.library.LibraryChoice
 import app.tfdn.lirelle.core.library.LibraryRepository
 import app.tfdn.lirelle.core.library.ReaderRepository
 import app.tfdn.lirelle.core.library.ReadingChanges
@@ -20,6 +21,8 @@ import dagger.hilt.android.components.ViewModelComponent
 @InstallIn(ProfileComponent::class)
 interface LibraryProfileEntry {
     fun recentSearches(): RecentSearches
+
+    fun libraryChoice(): LibraryChoice
 
     fun libraryRepository(): LibraryRepository
 
@@ -43,6 +46,9 @@ internal object LibraryBridges {
 
     @Provides
     fun recentSearches(current: CurrentProfile): RecentSearches = current.entry<LibraryProfileEntry>().recentSearches()
+
+    @Provides
+    fun libraryChoice(current: CurrentProfile): LibraryChoice = current.entry<LibraryProfileEntry>().libraryChoice()
 
     /** What the source of the profile open when the view model is made can do: a switch makes new view models. */
     @Provides

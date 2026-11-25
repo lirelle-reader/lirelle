@@ -3,7 +3,7 @@ package app.tfdn.lirelle.feature.library.books
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
-import androidx.paging.cachedIn
+import app.tfdn.lirelle.core.library.LibraryChoice
 import app.tfdn.lirelle.core.library.LibraryPreferences
 import app.tfdn.lirelle.core.library.LibraryRepository
 import app.tfdn.lirelle.core.library.Presentation
@@ -14,9 +14,13 @@ import app.tfdn.lirelle.core.library.model.BookListRequest
 import app.tfdn.lirelle.core.library.model.BookSort
 import app.tfdn.lirelle.core.library.model.BookSummary
 import app.tfdn.lirelle.core.library.model.FormatFilter
+import app.tfdn.lirelle.core.library.model.ServerLibrary
 import app.tfdn.lirelle.core.library.model.SortDirection
 import app.tfdn.lirelle.core.library.model.StatusFilter
 import app.tfdn.lirelle.core.network.ApiError
+import app.tfdn.lirelle.feature.library.LibraryList
+import app.tfdn.lirelle.feature.library.LibraryPages
+import app.tfdn.lirelle.feature.library.pagesOf
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
@@ -28,7 +32,9 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.shareIn
 import kotlinx.coroutines.flow.stateIn
@@ -54,6 +60,7 @@ class BookListViewModel @AssistedInject constructor(
     private val repository: LibraryRepository,
     private val preferences: LibraryPreferences,
     capabilities: SourceCapabilities,
+    choice: LibraryChoice,
 ) : ViewModel() {
 
     @AssistedFactory
@@ -71,7 +78,12 @@ class BookListViewModel @AssistedInject constructor(
     private val filters = MutableStateFlow(BookFilters())
     private val stored: Flow<ViewPreferences> = preferences.view(preferencesKey)
 
-    private val request: Flow<BookListRequest> = combine(stored, filters) { prefs, filters ->
+    /** The library the list is narrowed to: the profile's choice for a list that follows it, none for any other. */
+    private val library: Flow<ServerLibrary?> =
+        if (scope.followsLibrary) choice.state.map { it.chosen }.distinctUntilChanged() else flowOf(null)
+
+    // Another library, or the same one under a new name, is another request: a new list, from its top.
+    private val request: Flow<BookListRequest> = combine(stored, filters, library) { prefs, filters, library ->
         // A stored sort the source does not offer reads back as the default, in the default's own direction.
         val sort = prefs.sort?.let { name -> choices.sorts.firstOrNull { it.name == name } } ?: BookSort.Added
         val direction = when (prefs.descending.takeIf { sort.name == prefs.sort }) {
@@ -79,19 +91,24 @@ class BookListViewModel @AssistedInject constructor(
             true -> SortDirection.Descending
             false -> SortDirection.Ascending
         }
-        BookListRequest(sort, direction, filters.withLockedStatus(), text = scope.text, genre = scope.genre)
+        BookListRequest(sort, direction, filters.withLockedStatus(), scope.text, scope.genre, library)
     }.distinctUntilChanged()
 
     private val lists = request
-        .map { repository.books(scope.source, it) }
+        .map { LibraryList(it.library, repository.books(scope.source, it)) }
         .shareIn(viewModelScope, SharingStarted.Eagerly, replay = 1)
 
-    val books: Flow<PagingData<BookSummary>> = lists.flatMapLatest { it.items }.cachedIn(viewModelScope)
+    /** The books of the library shown, null until the choice is read: other pages for each other library. */
+    val pages: StateFlow<LibraryPages<BookSummary>?> =
+        library.pagesOf(lists).stateIn(viewModelScope, SharingStarted.Eagerly, null)
+
+    /** The books of whatever library is shown. A screen shows [pages], which says when the library changes. */
+    val books: Flow<PagingData<BookSummary>> = pages.filterNotNull().flatMapLatest { it.items }
 
     val state: StateFlow<BookListUiState> = combine(
         request,
         stored.map { it.presentation },
-        lists.flatMapLatest { it.total },
+        lists.flatMapLatest { it.list.total },
     ) { request, presentation, total ->
         BookListUiState(
             request = request,
