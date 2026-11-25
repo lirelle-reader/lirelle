@@ -53,6 +53,7 @@ class CarCoverUrls @Inject constructor() {
  *
  * @param client the authenticated one.
  * @param folder where the fetched covers are kept; made when the first one is.
+ * @param fetches what bounds the asking of the server.
  */
 class CarCoverFiles(
     private val kept: KeptBookData,
@@ -60,6 +61,7 @@ class CarCoverFiles(
     private val library: LibraryRepository,
     private val client: OkHttpClient,
     private val folder: File,
+    private val fetches: CarCoverFetches,
     private val bound: Int = CoverBound,
 ) {
     /** For the covers' provider, from the open profile's objects. */
@@ -70,7 +72,8 @@ class CarCoverFiles(
         library: LibraryRepository,
         @AuthenticatedClient client: OkHttpClient,
         folders: ProfileFolders,
-    ) : this(kept, urls, library, client, File(folders.cache, CoverFolder))
+        fetches: CarCoverFetches,
+    ) : this(kept, urls, library, client, File(folders.cache, CoverFolder), fetches)
 
     /**
      * The cover of [bookId] as a file to read; null when it has none, or when it cannot be had. It may block on
@@ -80,17 +83,28 @@ class CarCoverFiles(
         // The audiobook's own cover first: the car lists what is listened to.
         kept.audioCoverFile(bookId) ?: kept.coverFile(bookId) ?: fromServer(bookId)
 
-    /** The server's cover: the one kept in the folder, else fetched into it. */
+    /** The server's cover: the one kept in the folder, else fetched into it, as far as [fetches] let it. */
     private suspend fun fromServer(bookId: BookId): File? {
         val book = digest(bookId.value)
         val listed = urls.knows(bookId)
-        if (!listed) {
+        val before = if (listed) {
+            urls.of(bookId)?.let { fileOf(book, it) }?.takeIf { it.isFile }
+        } else {
             // Not listed since the app started (the car shows a list it kept): the cover fetched before will do.
-            stored(book).maxByOrNull { it.lastModified() }?.let { return it.served() }
+            stored(book).maxByOrNull { it.lastModified() }
         }
-        val url = (if (listed) urls.of(bookId) else pageCover(bookId)) ?: return null
-        val file = File(folder, "$book-${digest(url)}")
-        if (file.isFile) return file.served()
+        if (before != null) return before.served()
+        return fetches.attempt(bookId) {
+            (if (listed) urls.of(bookId) else pageCover(bookId))?.let { url -> fetched(book, url) }
+        }
+    }
+
+    /** Where the cover of the book named [book] at [url] is kept. */
+    private fun fileOf(book: String, url: String) = File(folder, "$book-${digest(url)}")
+
+    /** The cover of the book named [book] at [url], fetched into the folder; null when it cannot be had. */
+    private suspend fun fetched(book: String, url: String): File? {
+        val file = fileOf(book, url)
         return file.takeIf { runInterruptible(Dispatchers.IO) { fetch(url, it) } }?.also {
             // The cover changed: the one of before is of no use.
             stored(book).filter { old -> old != file }.forEach { old -> old.delete() }

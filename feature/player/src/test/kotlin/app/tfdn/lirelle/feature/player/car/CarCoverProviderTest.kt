@@ -34,6 +34,7 @@ class CarCoverProviderTest {
     private val kept = FakeKeptBookData()
     private val urls = CarCoverUrls()
     private val server = CoverServer()
+    private val fetches = CarCoverFetches({ 0 }, 4)
 
     /** The profile open now; null when none is. */
     private var open: String? = "profile-1"
@@ -42,8 +43,9 @@ class CarCoverProviderTest {
     private var asked = 0
 
     private fun provider(timeoutMillis: Long = 10_000): CarCoverProvider {
-        val files =
-            CarCoverFiles(kept, urls, FakeLibraryRepository(), server.client, File(folder.root, "car-covers"))
+        val files = CarCoverFiles(
+            kept, urls, FakeLibraryRepository(), server.client, File(folder.root, "car-covers"), fetches,
+        )
         val provider = CarCoverProvider(timeoutMillis) {
             asked++
             open?.let { ProfileCovers(it, files) }
@@ -128,6 +130,12 @@ class CarCoverProviderTest {
         assertThrows(FileNotFoundException::class.java) {
             provider(timeoutMillis = 50).coverFile(uri(bookId = "2"), Gearhead)
         }
+        // Neither is asked again at once, whatever the server would answer now: a thread is not held twice.
+        server.delayMillis = 0
+        listOf("1", "2").forEach {
+            assertThrows(FileNotFoundException::class.java) { provider().coverFile(uri(bookId = it), Gearhead) }
+        }
+        assertThat(server.asked).hasSize(2)
     }
 
     @Test

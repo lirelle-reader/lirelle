@@ -9,6 +9,13 @@ import app.tfdn.lirelle.feature.player.service.FakeKeptBookData
 import com.google.common.truth.Truth.assertThat
 import java.io.File
 import java.io.IOException
+import java.util.Collections
+import java.util.concurrent.CountDownLatch
+import java.util.concurrent.Semaphore
+import java.util.concurrent.TimeUnit
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.runTest
 import okhttp3.Interceptor
 import okhttp3.MediaType.Companion.toMediaType
@@ -22,7 +29,14 @@ import org.junit.rules.TemporaryFolder
 
 /** A server of covers: it answers each address with the address itself as the picture, and notes what it is asked. */
 class CoverServer {
-    val asked = mutableListOf<String>()
+    val asked: MutableList<String> = Collections.synchronizedList(mutableListOf<String>())
+
+    /** One permit per request that arrived. */
+    val arrived = Semaphore(0)
+
+    /** What every answer waits for, when there is one. */
+    @Volatile
+    var hold: CountDownLatch? = null
 
     /** The answer's code; null fails the connection. */
     var code: Int? = 200
@@ -35,6 +49,8 @@ class CoverServer {
             Interceptor { chain ->
                 val url = chain.request().url.toString()
                 asked += url
+                arrived.release()
+                hold?.await()
                 if (delayMillis > 0) Thread.sleep(delayMillis)
                 Response.Builder()
                     .request(chain.request())
@@ -60,7 +76,11 @@ class CarCoverFilesTest {
     private val server = CoverServer()
     private val cache by lazy { File(folder.root, "car-covers") }
 
-    private fun files(bound: Int = 200) = CarCoverFiles(kept, urls, library, server.client, cache, bound)
+    /** The clock that does not jump, as the test sets it. */
+    private var now = 0L
+
+    private fun files(bound: Int = 200, atOnce: Int = 4) =
+        CarCoverFiles(kept, urls, library, server.client, cache, CarCoverFetches({ now }, atOnce), bound)
 
     private fun keptFile(name: String) = folder.newFile(name).apply { writeText(name) }
 
@@ -117,7 +137,8 @@ class CarCoverFilesTest {
         assertThat(library.calls).containsExactly("book 7")
 
         // Another start of the app: nothing is remembered, the file is there.
-        val again = CarCoverFiles(kept, CarCoverUrls(), library, server.client, cache).file(BookId("7"))
+        val again = CarCoverFiles(kept, CarCoverUrls(), library, server.client, cache, CarCoverFetches({ now }, 4))
+            .file(BookId("7"))
         assertThat(again).isEqualTo(fetched)
         assertThat(library.calls).containsExactly("book 7")
         assertThat(server.asked).hasSize(1)
@@ -137,6 +158,53 @@ class CarCoverFilesTest {
         assertThat(files().file(BookId("2"))).isNull()
         assertThat(cache.listFiles().orEmpty()).isEmpty()
     }
+
+    @Test
+    fun `a cover that could not be had is not asked again for a minute, then is`() = runTest {
+        urls.remember(BookId("1"), "https://books.example/c/1")
+        val files = files()
+        server.code = null
+        assertThat(files.file(BookId("1"))).isNull()
+        server.code = 200
+
+        now = 59_000
+        assertThat(files.file(BookId("1"))).isNull()
+        assertThat(server.asked).hasSize(1)
+
+        now = 60_000
+        assertThat(files.file(BookId("1"))).isNotNull()
+        assertThat(server.asked).hasSize(2)
+    }
+
+    @Test
+    fun `a book whose page cannot be had is not asked again for a minute either`() = runTest {
+        library.bookResult = ApiResult.Failure(ApiError.ServerUnreachable)
+        val files = files()
+
+        assertThat(files.file(BookId("9"))).isNull()
+        assertThat(files.file(BookId("9"))).isNull()
+
+        assertThat(library.calls).containsExactly("book 9")
+    }
+
+    @Test
+    fun `as many covers as may are fetched at once - one more has none, and is fetched when asked again`() =
+        runBlocking {
+            urls.remember(BookId("1"), "https://books.example/c/1")
+            urls.remember(BookId("2"), "https://books.example/c/2")
+            val files = files(atOnce = 1)
+            val answer = CountDownLatch(1).also { server.hold = it }
+
+            val first = async(Dispatchers.IO) { files.file(BookId("1")) }
+            assertThat(server.arrived.tryAcquire(5, TimeUnit.SECONDS)).isTrue()
+            assertThat(files.file(BookId("2"))).isNull()
+            assertThat(server.asked).hasSize(1)
+            answer.countDown()
+
+            assertThat(first.await()).isNotNull()
+            // Turned away, not failed: nothing is remembered of it.
+            assertThat(files.file(BookId("2"))?.readText()).isEqualTo("https://books.example/c/2")
+        }
 
     @Test
     fun `the folder is bounded - past the bound the covers served longest ago go`() = runTest {

@@ -49,7 +49,7 @@ class CarCoverProvider internal constructor(
 
     override fun onCreate(): Boolean = true
 
-    /** On a binder thread, which may wait for the server. */
+    /** On a binder thread, which may wait for the server: [CarCoverFetches] bound how many do, and how often. */
     override fun openFile(uri: Uri, mode: String): ParcelFileDescriptor {
         if (mode != "r") notFound("A cover is only read")
         return ParcelFileDescriptor.open(coverFile(uri, callingPackage), ParcelFileDescriptor.MODE_READ_ONLY)
