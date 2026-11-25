@@ -78,6 +78,9 @@ android {
             isShrinkResources = true
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"))
             signingConfig = signingConfigs.findByName("release")
+            // The native libraries' symbols go into the AAB, for Google Play to read native crashes (#32). The APK
+            // is not touched.
+            ndk { debugSymbolLevel = "SYMBOL_TABLE" }
         }
         // Optimised like the release, but signed with the debug key and installed in place of the
         // debug build: for judging speed on a device before a merge request. Never published.
@@ -91,6 +94,13 @@ android {
 
     androidResources {
         generateLocaleConfig = true
+    }
+
+    // Google's encrypted list of dependencies, which only Google can read, stays out of the APK: F-Droid and
+    // IzzyOnDroid refuse an APK that carries it (#33). Google Play gets it in the AAB.
+    dependenciesInfo {
+        includeInApk = false
+        includeInBundle = true
     }
 
     buildFeatures {
