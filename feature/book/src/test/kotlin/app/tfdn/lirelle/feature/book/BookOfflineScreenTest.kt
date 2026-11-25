@@ -1,6 +1,8 @@
 package app.tfdn.lirelle.feature.book
 
 import android.content.Context
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.test.assertContentDescriptionEquals
 import androidx.compose.ui.test.assertCountEquals
@@ -21,13 +23,18 @@ import androidx.compose.ui.test.performTouchInput
 import androidx.compose.ui.test.swipe
 import androidx.test.core.app.ApplicationProvider
 import app.tfdn.lirelle.core.designsystem.LirelleTheme
+import app.tfdn.lirelle.core.designsystem.LocalWindowWidthClass
+import app.tfdn.lirelle.core.designsystem.WindowWidthClass
 import app.tfdn.lirelle.core.downloads.model.DownloadFormat
 import app.tfdn.lirelle.core.ids.BookId
 import app.tfdn.lirelle.core.library.model.BookDetail
+import app.tfdn.lirelle.core.library.model.BookEdition
 import app.tfdn.lirelle.core.library.model.BookFileKind
 import app.tfdn.lirelle.core.library.model.BookReading
 import app.tfdn.lirelle.core.library.model.PlaybackState
 import app.tfdn.lirelle.core.library.model.CoverShape
+import app.tfdn.lirelle.core.library.model.EditionMedia
+import app.tfdn.lirelle.core.library.model.EditionProgress
 import app.tfdn.lirelle.core.library.model.RelatedBook
 import app.tfdn.lirelle.core.library.model.RelatedBooks
 import app.tfdn.lirelle.core.network.ApiError
@@ -68,6 +75,17 @@ class BookOfflineScreenTest {
     /** A read-along EPUB alone: listening is the reader narrating. */
     private val readAlong = book.copy(files = book.files.filter { it.kind != BookFileKind.Audio })
 
+    /** The same book, which its server knows in two editions. */
+    private val withEditions = book.copy(
+        editions = listOf(
+            edition("12", "Unabridged", EditionMedia.Text, isOpen = true),
+            edition("40", "Full cast", EditionMedia.Audio, isOpen = false),
+        ),
+    )
+
+    private fun edition(id: String, label: String, media: EditionMedia, isOpen: Boolean) =
+        BookEdition(BookId(id), isOpen, label, book.title, coverUrl = null, media, EditionProgress.Finished)
+
     private fun text(id: Int, vararg args: Any) = context.getString(id, *args)
 
     private fun spoken(name: Int, status: Int? = null, vararg args: Any) = context.spokenAction(name, status, *args)
@@ -86,24 +104,30 @@ class BookOfflineScreenTest {
         keptFormats = kept,
     )
 
-    private fun show(state: BookUiState) {
+    /** @param width the width class of the window; the phone's by default. */
+    private fun show(state: BookUiState, width: WindowWidthClass = WindowWidthClass.Compact) {
         compose.setContent {
             LirelleTheme {
-                BookContent(
-                    state = state,
-                    onBack = {},
-                    onRetry = { retries++ },
-                    onRefresh = { refreshes++ },
-                    onOpenBook = {},
-                    onOpenAuthor = {},
-                    onOpenGenre = {},
-                    onRead = { id, _ -> read += id },
-                    onListen = { id, _ -> listened += id },
-                    onNarrate = { narrated += it },
-                    onOpenDownloads = { downloadsOpened++ },
-                )
+                CompositionLocalProvider(LocalWindowWidthClass provides width) { Page(state) }
             }
         }
+    }
+
+    @Composable
+    private fun Page(state: BookUiState) {
+        BookContent(
+            state = state,
+            onBack = {},
+            onRetry = { retries++ },
+            onRefresh = { refreshes++ },
+            onOpenBook = {},
+            onOpenAuthor = {},
+            onOpenGenre = {},
+            onRead = { id, _ -> read += id },
+            onListen = { id, _ -> listened += id },
+            onNarrate = { narrated += it },
+            onOpenDownloads = { downloadsOpened++ },
+        )
     }
 
     private fun assertAbsent(vararg texts: String) =
@@ -206,6 +230,31 @@ class BookOfflineScreenTest {
 
         assertAbsent(text(R.string.section_in_series), "Next volume")
         compose.onAllNodesWithTag(PagingErrorBarTag).assertCountEquals(0)
+    }
+
+    @Test
+    fun `the editions, which only the server knows, are not shown`() {
+        show(offline(kept = setOf(DownloadFormat.Text), detail = withEditions))
+
+        compose.onAllNodesWithTag(EditionsTag).assertCountEquals(0)
+        assertAbsent(text(R.string.section_editions), "Full cast")
+    }
+
+    @Test
+    @Config(qualifiers = "w1100dp-h800dp")
+    fun `on a wide screen the editions are not shown either`() {
+        show(offline(kept = setOf(DownloadFormat.Text), detail = withEditions), WindowWidthClass.Expanded)
+
+        compose.onNodeWithTag(OfflineChipTag).assertExists()
+        compose.onAllNodesWithTag(EditionsTag).assertCountEquals(0)
+        assertAbsent(text(R.string.section_editions), "Full cast")
+    }
+
+    @Test
+    fun `gone from the server, the editions are not shown either`() {
+        show(offline(kept = setOf(DownloadFormat.Text), detail = withEditions, noNetwork = false))
+
+        compose.onAllNodesWithTag(EditionsTag).assertCountEquals(0)
     }
 
     @Test

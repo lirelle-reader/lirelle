@@ -110,7 +110,7 @@ internal class LibraryMapper(private val serverUrl: String) {
     fun smartList(dto: SmartScopeDto) = Shelf(ShelfKind.SmartList, shelfIdOf(dto.id), dto.name, dto.bookCount)
 
     /** [audioChapterCount] comes from the book's audio metadata and is shown on audio files. */
-    fun detail(dto: BookDetailDto, audioChapterCount: Int?) = BookDetail(
+    fun detail(dto: BookDetailDto, audioChapterCount: Int?, groupsEditions: Boolean = false) = BookDetail(
         id = bookIdOf(dto.id),
         title = dto.title.orEmpty(),
         subtitle = dto.subtitle,
@@ -136,6 +136,8 @@ internal class LibraryMapper(private val serverUrl: String) {
         readState = readStateOf(dto.readStatus),
         startedAt = instant(dto.readStatus?.startedAt),
         audioCover = dto.covers?.audio?.let { audioCovers.of(dto.id, it.updatedAt) },
+        editionName = dto.editionName?.trim()?.takeIf { it.isNotEmpty() },
+        editions = editionsOf(dto, groupsEditions) { number, version -> imageUrl(number, Thumbnail, version) },
     ).withReaderFileWithoutDownload()
 
     /**

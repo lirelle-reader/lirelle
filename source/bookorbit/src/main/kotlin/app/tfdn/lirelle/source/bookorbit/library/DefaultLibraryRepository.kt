@@ -177,7 +177,9 @@ internal class DefaultLibraryRepository(
 
     private suspend fun fetchBook(bookId: BookId): ApiResult<BookDetail> = call { remote ->
         val dto = remote.api.book(bookId.bookOrbit())
-        remote.mapper.detail(dto, dto.audioMetadata?.chapters?.size)
+        // Asked only for a book that has linked books: the others need nothing of it.
+        val groupsEditions = dto.linkedBooks.isNotEmpty() && features.has(ServerFeatures.BookEditions)
+        remote.mapper.detail(dto, dto.audioMetadata?.chapters?.size, groupsEditions)
     }
 
     override suspend fun bookReading(bookId: BookId): ApiResult<BookReading> = call { remote ->

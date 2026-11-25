@@ -10,6 +10,7 @@ import app.tfdn.lirelle.core.library.model.AuthorSort
 import app.tfdn.lirelle.core.library.model.BookFilters
 import app.tfdn.lirelle.core.library.model.BookListRequest
 import app.tfdn.lirelle.core.library.model.BookListSource
+import app.tfdn.lirelle.core.library.model.EditionProgress
 import app.tfdn.lirelle.core.library.model.Genre
 import app.tfdn.lirelle.core.library.model.HomeRowExtent
 import app.tfdn.lirelle.core.library.model.HomeRowKind
@@ -44,6 +45,7 @@ import org.junit.After
 import org.junit.Before
 import org.junit.Test
 
+@Suppress("LargeClass") // One test per repository operation.
 class DefaultLibraryRepositoryTest {
 
     private val server = MockWebServer()
@@ -81,6 +83,19 @@ class DefaultLibraryRepositoryTest {
 
     private fun cards(ids: IntRange, total: Int) =
         """{"items":[${ids.joinToString(",") { """{"id":$it,"title":"B$it"}""" }}],"total":$total}"""
+
+    /** A linked book as a 3.10.0 server answers it, with the keys of a real answer, the unread ones included. */
+    private val linkedBook = """{"id":1481,"addedAt":"2026-01-01T00:00:00.000Z","title":"22/11/63",
+        "editionName":"Version en français","originalPublishedYear":null,"linkGroupId":1,"linkIsLead":false,
+        "linkSelf":{"bookId":1481,"libraryId":3,"libraryName":"EBooks","title":"22/11/63","formats":["epub","m4b"],
+          "mediaKind":"ebook","status":"present","isLead":false,"editionName":"Version en français",
+          "publisher":"Albin Michel","publishedYear":2013,"originalPublishedYear":null,
+          "narrators":["A Narrator"],"coverUpdatedAt":"2026-11-08T14:28:53.881Z",
+          "progress":{"percentage":42.5,"finished":false},"lastReadAt":"2026-11-20T10:00:00.000Z"},
+        "linkedBooks":[{"bookId":1477,"libraryId":3,"libraryName":"EBooks","title":"11/22/63","formats":["epub"],
+          "mediaKind":"ebook","status":"present","isLead":true,"editionName":"Version en anglais",
+          "publisher":"Scribner","publishedYear":2011,"originalPublishedYear":null,"narrators":[],
+          "coverUpdatedAt":"2026-10-07T13:08:54.938Z","progress":null,"lastReadAt":null}]}"""
 
     private fun appInfo(vararg features: String) =
         """{"version":"v3.10.0","features":[${features.joinToString(",") { "\"$it\"" }}]}"""
@@ -366,7 +381,40 @@ class DefaultLibraryRepositoryTest {
         val book = (repository.book(BookId("12")) as ApiResult.Success).value
 
         assertThat(book.files).isNotEmpty()
+        assertThat(book.editions).isEmpty()
         assertThat(server.takeRequest().target()).isEqualTo("/api/v1/books/12")
+        // A book without linked books asks nothing about what its server can do.
+        assertThat(server.requestCount).isEqualTo(1)
+    }
+
+    @Test
+    fun `a book with other editions lists them, named and ordered as its server does`() = runBlocking {
+        server.enqueueJson(linkedBook)
+        server.enqueueJson(appInfo("book-links", "book-editions"))
+
+        val book = (repository.book(BookId("1481")) as ApiResult.Success).value
+
+        assertThat(book.editionName).isEqualTo("Version en français")
+        assertThat(book.editions.map { it.label })
+            .containsExactly("Version en anglais", "Version en français").inOrder()
+        assertThat(book.editions.map { it.isOpen }).containsExactly(false, true).inOrder()
+        assertThat(book.editions.last().progress).isEqualTo(EditionProgress.InProgress(43))
+        assertThat(book.editions.first().coverUrl)
+            .isEqualTo("${server.serverUrl}/api/v1/books/1477/thumbnail?t=2026-10-07T13%3A08%3A54.938Z")
+        assertThat(server.takeRequest().target()).isEqualTo("/api/v1/books/1481")
+        assertThat(server.takeRequest().target()).isEqualTo("/api/v1/app-info")
+    }
+
+    @Test
+    fun `other editions are listed without names when the server's features cannot be read`() = runBlocking<Unit> {
+        server.enqueueJson(linkedBook)
+        server.enqueueJson("""{"statusCode":500,"message":"Internal server error"}""", code = 500)
+
+        val book = (repository.book(BookId("1481")) as ApiResult.Success).value
+
+        assertThat(book.editions.map { it.bookId.value }).containsExactly("1477", "1481").inOrder()
+        assertThat(book.editions.map { it.label }).containsExactly(null, null)
+        assertThat(book.editions.map { it.progress }.toSet()).containsExactly(EditionProgress.Unknown)
     }
 
     @Test

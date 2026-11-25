@@ -68,6 +68,19 @@
     <string name="detail_added">Added</string>
     <string name="detail_collections">Collections</string>
 
+    <string name="section_editions">Editions</string>
+    <string name="edition_this">This edition</string>
+    <string name="edition_media_text">Book</string>
+    <string name="edition_media_audio">Audio</string>
+    <string name="edition_media_text_and_audio">Book and audio</string>
+    <string name="edition_media_comic">Comic</string>
+    <string name="edition_progress_percent">%1$d%% read</string>
+    <string name="edition_progress_finished">finished</string>
+    <string name="edition_progress_not_started">not started</string>
+    <string name="edition_details">%1$s\u00A0· %2$s</string>
+    <string name="edition_details_spoken">%1$s, %2$s</string>
+    <string name="edition_open">Open this edition</string>
+
     <string name="section_in_series">In the series</string>
     <string name="action_open_series">Open the series</string>
     <string name="section_same_author">By the same author</string>

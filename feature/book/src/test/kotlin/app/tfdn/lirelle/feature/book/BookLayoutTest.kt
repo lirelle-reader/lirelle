@@ -1,8 +1,10 @@
 package app.tfdn.lirelle.feature.book
 
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.ui.test.assertCountEquals
 import androidx.compose.ui.test.getUnclippedBoundsInRoot
 import androidx.compose.ui.test.junit4.createComposeRule
+import androidx.compose.ui.test.onAllNodesWithTag
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.unit.DpRect
@@ -12,7 +14,11 @@ import androidx.compose.ui.unit.width
 import app.tfdn.lirelle.core.designsystem.LirelleTheme
 import app.tfdn.lirelle.core.designsystem.LocalWindowWidthClass
 import app.tfdn.lirelle.core.designsystem.WindowWidthClass
+import app.tfdn.lirelle.core.ids.BookId
 import app.tfdn.lirelle.core.library.model.BookDetail
+import app.tfdn.lirelle.core.library.model.BookEdition
+import app.tfdn.lirelle.core.library.model.EditionMedia
+import app.tfdn.lirelle.core.library.model.EditionProgress
 import app.tfdn.lirelle.core.testing.laidOutTexts
 import app.tfdn.lirelle.core.testing.sampleBookDetail
 import app.tfdn.lirelle.core.ui.Loadable
@@ -24,7 +30,10 @@ import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
 import org.robolectric.annotation.GraphicsMode
 
-/** Where the header of the book page is laid out, by width and text size; its actions: `BookActionsLayoutTest`. */
+/**
+ * Where the header of the book page and the block of its editions are laid out, by width and text size; its
+ * actions: `BookActionsLayoutTest`.
+ */
 @RunWith(RobolectricTestRunner::class)
 @GraphicsMode(GraphicsMode.Mode.NATIVE) // Real font metrics: the default mode counts one pixel per character.
 @Config(qualifiers = Phone)
@@ -53,6 +62,15 @@ class BookLayoutTest {
             }
         }
     }
+
+    private val editions = listOf(
+        edition("1046", "Version en anglais", EditionProgress.Finished),
+        edition("1052", "Version en français, tome 1/2", EditionProgress.InProgress(42)),
+        edition("12", "Version en français, tome 2/2", EditionProgress.NotStarted, isOpen = true),
+    )
+
+    private fun edition(id: String, label: String, progress: EditionProgress, isOpen: Boolean = false) =
+        BookEdition(BookId(id), isOpen, label, "Edition $id", coverUrl = null, EditionMedia.TextAndAudio, progress)
 
     private fun bounds(tag: String): DpRect =
         compose.onNodeWithTag(tag, useUnmergedTree = true).getUnclippedBoundsInRoot()
@@ -103,6 +121,58 @@ class BookLayoutTest {
         assertThat(author.getUnclippedBoundsInRoot().height).isLessThan(32.dp)
         val touchHeight = with(compose.density) { author.fetchSemanticsNode().touchBoundsInRoot.height.toDp() }
         assertThat(touchHeight).isAtLeast(48.dp)
+    }
+
+    @Test
+    fun `the name of the edition is under the series of the book`() {
+        show(book = sampleBookDetail().copy(editionName = "Full cast"))
+
+        val name = compose.onNodeWithText("Full cast").getUnclippedBoundsInRoot()
+        assertThat(bounds(BookEditionNameTag)).isEqualTo(name)
+        val series = compose.onNodeWithText("A Saga", substring = true).getUnclippedBoundsInRoot()
+        assertThat(name.top).isAtLeast(series.bottom)
+        assertThat(name.top).isAtLeast(bounds("author-9").bottom)
+        assertThat(name.left).isEqualTo(bounds(BookTitleTag).left)
+    }
+
+    @Test
+    fun `a book without a name for its edition has no such line`() {
+        show()
+
+        compose.onAllNodesWithTag(BookEditionNameTag, useUnmergedTree = true).assertCountEquals(0)
+    }
+
+    @Test
+    fun `on a phone the editions are under the facts and above the reading, one per row`() {
+        show(book = sampleBookDetail().copy(editions = editions))
+
+        val block = bounds(EditionsTag)
+        val facts = compose.onNodeWithText("412", substring = true).getUnclippedBoundsInRoot()
+        assertThat(block.top).isAtLeast(facts.bottom)
+        assertThat(bounds("book-reading").top).isAtLeast(block.bottom)
+        assertThat(block.left).isEqualTo(bounds("book-header").left)
+        assertThat(block.right).isEqualTo(bounds("book-header").right)
+        val lines = editions.map { bounds(editionTag(it.bookId)) }
+        assertThat(lines[1].top).isAtLeast(lines[0].bottom)
+        assertThat(lines[2].top).isAtLeast(lines[1].bottom)
+    }
+
+    @Test
+    @Config(qualifiers = "w1100dp-h800dp")
+    fun `on a wide screen the editions open the right column, two per row`() {
+        show(WindowWidthClass.Expanded, sampleBookDetail().copy(editions = editions))
+
+        val block = bounds(EditionsTag)
+        assertThat(block.left).isGreaterThan(bounds("book-header").right)
+        // The first block of its column: level with the top of the header, above the reading.
+        assertThat(block.top).isEqualTo(bounds("book-header").top)
+        assertThat(bounds("book-reading").top).isAtLeast(block.bottom)
+        assertThat(bounds("book-reading").left).isEqualTo(block.left)
+        val lines = editions.map { bounds(editionTag(it.bookId)) }
+        assertThat(lines[1].top).isEqualTo(lines[0].top)
+        assertThat(lines[1].left).isGreaterThan(lines[0].right)
+        assertThat(lines[2].top).isAtLeast(lines[0].bottom)
+        assertThat(lines[2].left).isEqualTo(lines[0].left)
     }
 
     @Test

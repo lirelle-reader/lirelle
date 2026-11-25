@@ -78,6 +78,13 @@ data class BookDetail(
      * it, and the book is neither gone nor updated. BookOrbit never says so.
      */
     val filesUnavailable: Boolean = false,
+    /** What sets this edition apart, as written on its server; null when it has no name of its own. */
+    val editionName: String? = null,
+    /**
+     * Every edition of the work, this one included, in the order to list them; empty when the book has no other
+     * edition, or when its source has none (Komga).
+     */
+    val editions: List<BookEdition> = emptyList(),
 ) {
     /**
      * Whether the book has an audio file to play: an audiobook file of its own, not only the narration
