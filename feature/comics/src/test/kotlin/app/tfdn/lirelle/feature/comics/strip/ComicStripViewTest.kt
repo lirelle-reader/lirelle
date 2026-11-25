@@ -1,9 +1,13 @@
 package app.tfdn.lirelle.feature.comics.strip
 
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.semantics.SemanticsActions
 import androidx.compose.ui.test.SemanticsNodeInteraction
 import androidx.compose.ui.test.assertCountEquals
@@ -96,6 +100,9 @@ class ComicStripViewTest {
     private var hides = 0
     private var state by mutableStateOf(ComicReaderUiState())
 
+    /** How wide the window is, in pixels, when it is not the whole screen. */
+    private var windowWidth by mutableStateOf<Int?>(null)
+
     /** The pages [indexes] on the device, each 400 by 600. */
     private fun ready(indexes: Iterable<Int>): Map<Int, PageState> =
         indexes.associateWith { pageImage(folder.root, it, width = 400, height = 600) }
@@ -123,7 +130,10 @@ class ComicStripViewTest {
         compose.setContent {
             images.Provide {
                 LirelleTheme {
-                    ComicStripView(state, reader, reader, onToggleBars = { toggles++ }, onHideBars = { hides++ })
+                    val width = windowWidth?.let { with(LocalDensity.current) { Modifier.width(it.toDp()) } }
+                    Box(width ?: Modifier) {
+                        ComicStripView(state, reader, reader, onToggleBars = { toggles++ }, onHideBars = { hides++ })
+                    }
                 }
             }
         }
@@ -357,6 +367,43 @@ class ComicStripViewTest {
     }
 
     @Test
+    fun `a tap back on an album that fits on screen leaves the page read as it is, and nothing is written`() {
+        show(strip(pageCount = 2, pages = short(0 until 2)))
+        assertThat(reader.shows).containsExactly("stripShows 0 1 end")
+
+        tapAt(0.1f)
+
+        // Not said scrolled, which would read the last page at the bottom of the strip, nor at rest, which writes.
+        assertThat(reader.shows).containsExactly("stripShows 0 1 end")
+        assertThat(reader.calls).doesNotContain("stripRested")
+        assertThat(hides).isEqualTo(1)
+    }
+
+    @Test
+    fun `a tap back at the top of the strip is not the user's move`() {
+        show(strip())
+
+        tapAt(0.1f)
+
+        assertThat(reader.shows).containsExactly("stripShows 0 1")
+        assertThat(reader.calls).doesNotContain("stripRested")
+    }
+
+    @Test
+    fun `a quick tap back before the strip moved forward leaves it where it was`() {
+        show(strip())
+        compose.mainClock.autoAdvance = false
+
+        tapAt(0.9f, settle = false)
+        tapAt(0.1f, settle = false)
+        tapAt(0.1f, settle = false)
+        compose.mainClock.autoAdvance = true
+        compose.waitForIdle()
+
+        assertThat(page(0).drawn().top).isEqualTo(0f)
+    }
+
+    @Test
     fun `a tap forward at the bottom of the last page asks for the end`() {
         show(strip(pageCount = 2))
         scrollBy(400f)
@@ -528,6 +575,59 @@ class ComicStripViewTest {
 
         assertThat(page(3).drawn().top).isEqualTo(0f)
         assertThat(reader.shows).containsExactly("stripShows 3 4")
+    }
+
+    @Test
+    fun `a window that narrows inside a tall page keeps the page read and the place in it`() {
+        // Eight slices in a strip 400 wide, four in one 200 wide: the item at the top is no longer there.
+        val tall = pageImage(folder.root, index = 0, width = 400, height = 15_000)
+        show(strip(pageCount = 4, pages = ready(1 until 4) + (0 to tall)))
+        list().performScrollToIndex(7)
+        compose.waitForIdle()
+        assertThat(page(1).drawn().top).isEqualTo(15_000f - 7 * 2048f)
+        val rests = reader.calls.count { it == "stripRested" }
+
+        windowWidth = 200
+        compose.waitForIdle()
+
+        // As far into the page, half as high: its last rows, then the page after it.
+        assertThat(firstShown()).isEqualTo(0)
+        assertThat(page(1).drawn().top).isWithin(1f).of((15_000f - 7 * 2048f) / 2)
+        // The strip was not moved by the user.
+        assertThat(reader.calls.count { it == "stripRested" }).isEqualTo(rests)
+    }
+
+    @Test
+    fun `a window that widens keeps the page read`() {
+        show(strip(page = 5))
+        windowWidth = 200
+        compose.waitForIdle()
+        scrollBy(150f)
+
+        windowWidth = 400
+        compose.waitForIdle()
+
+        // Half way down the page, as it was.
+        assertThat(firstShown()).isEqualTo(5)
+        assertThat(page(5).drawn().top).isWithin(1f).of(-300f)
+    }
+
+    @Test
+    fun `a tall page found unreadable in parts from its last rows leaves the strip where it is`() {
+        val unreadable = folder.newFile("no-picture").apply { writeText("not a picture") }
+        val pages = ready(1 until 5) + (0 to PageState.Ready(unreadable, width = 400, height = 6000))
+        show(strip(page = 1, pageCount = 5, pages = pages))
+
+        // Up into its last slice, the third, which cannot be decoded: the page becomes one item.
+        scrollBy(-100f)
+        compose.waitUntil(SliceWait) { page(0).drawn().height == 6000f }
+        compose.waitForIdle()
+
+        // Not on the third item of the strip, which is now another page: where it was when the page was found
+        // unreadable, on its way up.
+        assertThat(page(1).drawn().top).isGreaterThan(0f)
+        assertThat(page(1).drawn().top).isAtMost(100f)
+        assertThat(firstShown()).isEqualTo(0)
     }
 
     @Test

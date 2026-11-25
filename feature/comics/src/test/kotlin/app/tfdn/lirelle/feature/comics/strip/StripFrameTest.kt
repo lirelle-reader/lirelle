@@ -94,4 +94,48 @@ class StripFrameTest {
         assertThat(pageOfStripKey(after.keyOf(2))).isEqualTo(0)
         assertThat((0 until after.layout.size).map(after::keyOf).toSet()).hasSize(4)
     }
+
+    @Test
+    fun `a place in a tall page is as far into it in a strip of another width`() {
+        val pages = mapOf(0 to page(400, 600), 1 to page(400, 15_000))
+        val wide = pictures.frame(pages, pageCount = 3, window)
+        val narrow = pictures.frame(pages, pageCount = 3, IntSize(200, 800))
+        assertThat(wide.rooms[1].items).isEqualTo(8)
+        assertThat(narrow.rooms[1].items).isEqualTo(4)
+
+        // The last slice of the page, 14,336 rows down, and 64 more.
+        val place = wide.placeOf(item = 8, offset = 64)
+
+        assertThat(place.page).isEqualTo(1)
+        assertThat(place.fraction).isWithin(1e-6f).of(14_400f / 15_000)
+        // Half as high: 7,200 rows down, 1,056 into the last slice of four, which starts 6,144 down.
+        assertThat(narrow.itemAt(place)).isEqualTo(StripSpot(item = 4, offset = 1056))
+        assertThat(wide.itemAt(place)).isEqualTo(StripSpot(item = 8, offset = 64))
+    }
+
+    @Test
+    fun `a place in a page drawn whole is found in its one item, and the bottom of a page is still that page`() {
+        val frame = pictures.frame(mapOf(0 to page(400, 600), 1 to page(400, 500)), pageCount = 2, window)
+
+        assertThat(frame.placeOf(item = 1, offset = 250)).isEqualTo(StripPlace(page = 1, fraction = 0.5f))
+        assertThat(frame.itemAt(StripPlace(page = 1, fraction = 0.5f))).isEqualTo(StripSpot(item = 1, offset = 250))
+        assertThat(frame.itemAt(StripPlace(page = 0, fraction = 1f))).isEqualTo(StripSpot(item = 0, offset = 599))
+    }
+
+    @Test
+    fun `the list keeps its place by itself only in a strip as wide where the item at its top still is`() {
+        val pages = mapOf(0 to page(400, 6000), 1 to page(400, 600))
+        val before = pictures.frame(pages, pageCount = 2, window)
+
+        // A page that arrived, the same strip otherwise.
+        assertThat(pictures.frame(pages, pageCount = 2, window).follows(before, item = 2)).isTrue()
+        // Another width: the same slice is other rows of the page.
+        assertThat(pictures.frame(pages, pageCount = 2, IntSize(200, 800)).follows(before, item = 0)).isFalse()
+        // The page is no longer cut: its third slice is gone, its first is the page whole.
+        pictures.unreadable(0)
+        val whole = pictures.frame(pages, pageCount = 2, window)
+        assertThat(whole.follows(before, item = 2)).isFalse()
+        assertThat(whole.follows(before, item = 0)).isTrue()
+        assertThat(whole.itemAt(before.placeOf(item = 2, offset = 100))).isEqualTo(StripSpot(item = 0, offset = 4196))
+    }
 }

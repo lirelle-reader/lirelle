@@ -27,6 +27,9 @@ internal data class StripRoom(
     /** How many items of the strip the page is. */
     val items: Int get() = slices.size.coerceAtLeast(1)
 
+    /** How high its items are together, in pixels: at least one. */
+    val drawn: Int get() = (if (slices.isEmpty()) heightOf(0) else height).coerceAtLeast(1)
+
     /**
      * How high the item [slice] of the page is, in pixels. Slices are cut where their rows fall in the page's
      * height, so that they add up to it to the pixel: none overlaps the next, and no line shows between two.
@@ -53,7 +56,41 @@ internal class StripFrame(val width: Int, val rooms: List<StripRoom>) {
      * it turns out to be several slices: the list stays on what it shows.
      */
     fun keyOf(item: Int): Long = stripKey(layout.pageOf(item), layout.sliceOf(item))
+
+    /** The place in the strip of the row [offset] pixels down the item [item]. */
+    fun placeOf(item: Int, offset: Int): StripPlace {
+        val page = layout.pageOf(item)
+        val room = rooms.getOrNull(page) ?: return StripPlace(page, 0f)
+        val above = (0 until layout.sliceOf(item)).sumOf(room::heightOf)
+        return StripPlace(page, ((above + offset).toFloat() / room.drawn).coerceIn(0f, 1f))
+    }
+
+    /** Where [place] is in this strip: the item, and how many pixels down it. */
+    fun itemAt(place: StripPlace): StripSpot {
+        val first = layout.itemOf(place.page)
+        val room = rooms.getOrNull(layout.pageOf(first)) ?: return StripSpot(first, 0)
+        var down = (place.fraction * room.drawn).roundToInt().coerceIn(0, room.drawn - 1)
+        var slice = 0
+        while (slice < room.items - 1 && down >= room.heightOf(slice)) down -= room.heightOf(slice++)
+        return StripSpot(first + slice, down)
+    }
+
+    /**
+     * Whether the list keeps its place by itself when this strip takes the place of [before], with the item
+     * [item] of [before] at its top: the list follows the key of that item, which is the same rows of the same
+     * page only in a strip as wide, and only while the page is still cut there.
+     */
+    fun follows(before: StripFrame, item: Int): Boolean {
+        val page = before.layout.pageOf(item)
+        return width == before.width && before.layout.sliceOf(item) < (rooms.getOrNull(page)?.items ?: 0)
+    }
 }
+
+/** A place in the strip: the [fraction] of the height of [page], from its top. */
+internal data class StripPlace(val page: Int, val fraction: Float)
+
+/** A row of the strip as the list counts it: [offset] pixels down the item [item]. */
+internal data class StripSpot(val item: Int, val offset: Int)
 
 private const val PageShift = 32
 

@@ -13,7 +13,9 @@ import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -92,6 +94,7 @@ internal fun ComicStripView(
         // On the page read. The place of the list is not kept with the screen's: the items of the strip are not
         // the same from one opening to the next, and the item it was on could be another page's.
         val list = remember { LazyListState(frame.layout.itemOf(state.spread?.first ?: 0)) }
+        KeepsPlace(list, frame)
         val scope = rememberCoroutineScope()
         val hands by rememberUpdatedState(StripHands(strip, onToggleBars, onHideBars))
         val moves = remember(list, scope) { StripMoves(list, scope) { hands } }
@@ -113,25 +116,53 @@ internal fun ComicStripView(
         // Taps are taken over the whole window, beside the strip too; a page that failed keeps those on its
         // button.
         Box(Modifier.fillMaxSize().stripTaps(moves)) {
-            LazyColumn(
-                modifier = Modifier
-                    .align(Alignment.TopCenter)
-                    .width(width)
-                    .fillMaxHeight()
-                    .nestedScroll(pastEnd)
-                    .testTag(ComicStripTag),
-                state = list,
-            ) {
-                items(
-                    count = frame.layout.size,
-                    key = frame::keyOf,
-                    contentType = { frame.rooms[frame.layout.pageOf(it)].slices.isNotEmpty() },
-                ) { item ->
-                    val index = frame.layout.pageOf(item)
-                    val place = StripItem(index, frame.layout.sliceOf(item), frame.rooms[index], frame.width)
-                    StripPage(place, state.pageState(index), drawing)
+            // A strip of another width is another list of the same place: its items are measured anew at once,
+            // not a frame after the place was asked for, when the rows asked for would be those of the old ones.
+            key(frame.width) {
+                LazyColumn(
+                    modifier = Modifier
+                        .align(Alignment.TopCenter)
+                        .width(width)
+                        .fillMaxHeight()
+                        .nestedScroll(pastEnd)
+                        .testTag(ComicStripTag),
+                    state = list,
+                ) {
+                    items(
+                        count = frame.layout.size,
+                        key = frame::keyOf,
+                        contentType = { frame.rooms[frame.layout.pageOf(it)].slices.isNotEmpty() },
+                    ) { item ->
+                        val index = frame.layout.pageOf(item)
+                        val place = StripItem(index, frame.layout.sliceOf(item), frame.rooms[index], frame.width)
+                        StripPage(place, state.pageState(index), drawing)
+                    }
                 }
             }
+        }
+    }
+}
+
+/**
+ * Keeps the strip on the rows it shows when it is laid out again and the list would not by itself: in a window
+ * of another width (the device turned, a window resized) a tall page is cut in other slices, and a page that turns
+ * out unreadable in parts is one item where it was several. The list would stay on an item of the same number,
+ * which may be another page's, and the page read would change without the user moving the strip.
+ *
+ * The strip is put back as far into the page at its top, before the list is measured with its new items. It is
+ * not a scroll: the strip is not said moved by the user. A scroll under way stops there.
+ */
+@Composable
+private fun KeepsPlace(list: LazyListState, frame: StripFrame) {
+    // The strip the list was last measured with.
+    val laid = remember(list) { arrayOf(frame) }
+    SideEffect {
+        val before = laid[0]
+        laid[0] = frame
+        if (before !== frame && !frame.follows(before, list.firstVisibleItemIndex)) {
+            val place = before.placeOf(list.firstVisibleItemIndex, list.firstVisibleItemScrollOffset)
+            val spot = frame.itemAt(place)
+            list.requestScrollToItem(spot.item, spot.offset)
         }
     }
 }
@@ -260,7 +291,8 @@ private class StripHands(val strip: StripNavigation, val onToggleBars: () -> Uni
 /**
  * The moves a tap gives the strip: a step of about a screen, which the strip takes a moment to make. A tap that
  * comes meanwhile is taken from where the step leads to: two quick taps forward move the strip by two steps, and
- * a tap between the edges leaves the step to end.
+ * a tap between the edges leaves the step to end. A tap towards an end the strip is held by starts no step: the
+ * strip would be said moved by the user where it stayed.
  *
  * A step moves the strip without the list being told it scrolls: a list that scrolls keeps the finger put down
  * on it for itself, to stop, and the second of two quick taps would be lost and stop the first midway. So a
@@ -305,6 +337,12 @@ private class StripMoves(
     private fun by(distance: Float) {
         // From where the step before leads to, not from where the strip is on its way there.
         val whole = left + distance
+        val held = if (whole > 0f) !list.canScrollForward else !list.canScrollBackward
+        if (held) {
+            // Nowhere to go that way: the step under way, which this tap takes back, stops too.
+            stop()
+            return
+        }
         step?.cancel()
         left = whole
         stepping = true
