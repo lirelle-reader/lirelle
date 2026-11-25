@@ -70,6 +70,9 @@ private val NoBookCommands = Player.Commands.Builder().addAll(
  * Setting the last book's [PlayerSessionContract.resumeItem] (playback resumption) loads that book; setting a
  * [PlayerSessionContract.startItem] (a book the car starts) loads it as the car's rules say ([Starts]).
  *
+ * @param artwork the address said for a book's cover, which a controller may load by itself: the cover's own
+ *   unless told (the service says one a car can open).
+ *
  * Call [refresh] when playback may have crossed into another chapter (every tick).
  */
 @OptIn(UnstableApi::class)
@@ -78,6 +81,7 @@ class ChapterPlayer(
     private val navigator: BookNavigator,
     private val actions: Actions,
     private val starts: Starts = Starts { _, _, done -> done() },
+    private val artwork: (BookPlaylist) -> Uri? = { it.artworkUrl?.let(Uri::parse) },
 ) : ForwardingSimpleBasePlayer(engine) {
 
     /** How a book the car asked for is started; without a car, nothing is. */
@@ -268,7 +272,7 @@ class ChapterPlayer(
             .setSubtitle(chapter.title)
             .setArtist(override.artist ?: chapter.title)
             .setAlbumTitle(book.manifest.title)
-            .setArtworkUri(book.artworkUrl?.let(Uri::parse))
+            .setArtworkUri(artwork(book))
             .setExtras(extras)
             .build()
         val item = MediaItem.Builder().setMediaId("${book.manifest.bookId}/$index").setMediaMetadata(metadata).build()

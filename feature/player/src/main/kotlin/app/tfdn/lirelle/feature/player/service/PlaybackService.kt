@@ -44,6 +44,7 @@ import app.tfdn.lirelle.feature.player.car.CarItems
 import app.tfdn.lirelle.feature.player.car.CarLibrary
 import app.tfdn.lirelle.feature.player.car.CarStart
 import app.tfdn.lirelle.feature.player.car.NoticeAsError
+import app.tfdn.lirelle.feature.player.car.PlayingCover
 import app.tfdn.lirelle.feature.player.car.refreshCars
 import app.tfdn.lirelle.feature.player.di.MediaClient
 import app.tfdn.lirelle.feature.player.di.PlayerProfileEntry
@@ -233,14 +234,18 @@ class PlaybackService : MediaLibraryService() {
         val browser = CarBrowser(parts.car.library, carItems, NoticeAsError(texts.car), main) { left }
         val asks = CarAsks(parts.car.library, texts.car, main, browser::listedBook, { left }) { parts.lastBooks.get() }
         val carStart = CarBookStart(book, main, { parts.car.start.takeUnless { left }?.requestFor(it) }, asks::failed)
-        val chapters = ChapterPlayer(engine, navigator, book, carStart)
+        // The cover's address is said as one the car can open; the app's own picture comes from where it did.
+        val cover = PlayingCover(CarCovers.authority(packageName), open.profileId)
+        val chapters = ChapterPlayer(engine, navigator, book, carStart) {
+            cover.said(it.manifest.bookId, it.artworkUrl)
+        }
         val commands =
             PlayerCommands(packageName, ::handle, { publisher.buttons() }, browser = browser, asks = asks) {
                 // Its profile closed: there is no book of it to resume.
                 resumption(parts.lastBooks.takeUnless { left }, main)
             }
         val mediaSession = MediaLibrarySession.Builder(this, chapters, commands)
-            .setBitmapLoader(parts.streams.sessionCovers(this))
+            .setBitmapLoader(cover.loader(parts.streams.sessionCovers(this)))
             .apply { sessionActivity(null, open.profileId)?.let(::setSessionActivity) }
             .build()
         session = SessionHold(this, mediaSession)

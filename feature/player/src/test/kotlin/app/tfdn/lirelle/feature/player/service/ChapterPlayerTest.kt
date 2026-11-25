@@ -34,11 +34,16 @@ class ChapterPlayerTest {
     }
     private var playsOnceLoaded: (() -> Boolean)? = null
     private var resumed: (() -> Unit)? = null
-    private val player = ChapterPlayer(engine, navigator, actions) { bookId, play, done ->
-        asked += "start $bookId"
-        resumed = done
-        playsOnceLoaded = play
-    }
+    private val player = ChapterPlayer(
+        engine,
+        navigator,
+        actions,
+        starts = { bookId, play, done ->
+            asked += "start $bookId"
+            resumed = done
+            playsOnceLoaded = play
+        },
+    )
     private val playlist =
         BookPlaylist.of(Manifests.twoFiles(), "https://b/cover", { "Part $it" }) { "https://b/$it" }!!
 
@@ -77,6 +82,24 @@ class ChapterPlayerTest {
         assertThat(PlayerSessionContract.chapterStartMs(metadata)).isEqualTo(60_000)
         assertThat(metadata.extras!!.getLong(PlayerSessionContract.EXTRA_CHAPTER_END_MS)).isEqualTo(100_000)
         assertThat(metadata.extras!!.getString(PlayerSessionContract.EXTRA_CHAPTER_ID)).isEqualTo("c2")
+    }
+
+    @Test
+    fun `the cover's address is said as the service tells, for every chapter`() {
+        val said = Uri.parse("content://app.tfdn.lirelle.covers/profile-1/b1")
+        val told = mutableListOf<BookPlaylist>()
+        val player = ChapterPlayer(engine, navigator, actions, artwork = { said.also { _ -> told += it } })
+        navigator.open(playlist, 0)
+        engine.engineState = Player.STATE_READY
+        engine.durationsMs = listOf(100_000, 60_000)
+        engine.update()
+        player.refresh()
+        idle()
+
+        val covers = (0 until player.mediaItemCount).map { player.getMediaItemAt(it).mediaMetadata.artworkUri }
+        assertThat(covers.distinct()).containsExactly(said)
+        assertThat(player.mediaMetadata.artworkUri).isEqualTo(said)
+        assertThat(told.distinct()).containsExactly(playlist)
     }
 
     @Test
