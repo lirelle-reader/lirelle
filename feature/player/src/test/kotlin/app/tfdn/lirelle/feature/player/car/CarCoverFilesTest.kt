@@ -10,6 +10,7 @@ import com.google.common.truth.Truth.assertThat
 import java.io.File
 import java.io.IOException
 import java.util.Collections
+import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.Semaphore
 import java.util.concurrent.TimeUnit
@@ -39,6 +40,9 @@ class CoverServer {
     @Volatile
     var hold: CountDownLatch? = null
 
+    /** What the answer to one address waits for. */
+    val holds = ConcurrentHashMap<String, CountDownLatch>()
+
     /** The answer's code; null fails the connection. */
     var code: Int? = 200
 
@@ -52,6 +56,7 @@ class CoverServer {
                 asked += url
                 arrived.release()
                 hold?.await()
+                holds[url]?.await()
                 if (delayMillis > 0) Thread.sleep(delayMillis)
                 Response.Builder()
                     .request(chain.request())
@@ -128,6 +133,25 @@ class CarCoverFilesTest {
         assertThat(newer?.readText()).isEqualTo("https://books.example/c/1?v=2")
         assertThat(cache.listFiles()!!.toList()).containsExactly(newer)
     }
+
+    @Test
+    fun `a fetch that ends after the cover changed leaves the newer cover, which is being served`() =
+        runBlocking<Unit> {
+            val files = files()
+            val older = CountDownLatch(1).also { server.holds["https://books.example/c/1?v=1"] = it }
+            urls.remember(BookId("1"), "https://books.example/c/1?v=1")
+            val first = async(Dispatchers.IO) { files.file(BookId("1")) }
+            assertThat(server.arrived.tryAcquire(5, TimeUnit.SECONDS)).isTrue()
+
+            urls.remember(BookId("1"), "https://books.example/c/1?v=2")
+            val newer = files.file(BookId("1"))
+            older.countDown()
+            first.await()
+
+            assertThat(newer?.isFile).isTrue()
+            assertThat(files.file(BookId("1"))).isEqualTo(newer)
+            assertThat(server.asked).hasSize(2)
+        }
 
     @Test
     fun `a book that was not listed since the app started shows the cover kept before, else its page's`() = runTest {

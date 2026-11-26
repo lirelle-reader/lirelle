@@ -98,19 +98,25 @@ class CarCoverFiles(
         }
         if (before != null) return before.served()
         return fetches.attempt(bookId) {
-            (if (listed) urls.of(bookId) else pageCover(bookId))?.let { url -> fetched(book, url) }
+            (if (listed) urls.of(bookId) else pageCover(bookId))?.let { url -> fetched(bookId, url) }
         }
     }
 
     /** Where the cover of the book named [book] at [url] is kept. */
     private fun fileOf(book: String, url: String) = File(folder, "$book-${digest(url)}")
 
-    /** The cover of the book named [book] at [url], fetched into the folder; null when it cannot be had. */
-    private suspend fun fetched(book: String, url: String): File? {
+    /**
+     * The cover of [bookId] at [url], fetched into the folder; null when it cannot be had. The covers of before go,
+     * unless the book was listed at another address meanwhile: this fetch is then the one of before, and the
+     * newer cover, which may be on its way to the car, stays.
+     */
+    private suspend fun fetched(bookId: BookId, url: String): File? {
+        val book = digest(bookId.value)
         val file = fileOf(book, url)
         return file.takeIf { runInterruptible(Dispatchers.IO) { fetch(url, it) } }?.also {
-            // The cover changed: the one of before is of no use.
-            stored(book).filter { old -> old != file }.forEach { old -> old.delete() }
+            if (!urls.knows(bookId) || urls.of(bookId) == url) {
+                stored(book).filter { old -> old != file }.forEach { old -> old.delete() }
+            }
             trim()
         }
     }
