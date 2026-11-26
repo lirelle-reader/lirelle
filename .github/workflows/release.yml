@@ -85,7 +85,9 @@ jobs:
           TAG_NAME: ${{ needs.release-please.outputs.tag_name }}
         run: ci/publish-github.sh
       - name: AAB, signed with the upload key
-        if: needs.release-please.outputs.release_created == 'true'
+        # Every build, development ones too: a development AAB can be sent by hand to a Play test track (a feature
+        # that must be declared in an upload first, as Android Auto). Only one built from main: its versionCode is
+        # one no release will have, whereas a branch's could be a coming release's, which Play would then refuse.
         env:
           LIRELLE_UPLOAD_KEYSTORE_B64: ${{ secrets.LIRELLE_UPLOAD_KEYSTORE_B64 }}
           LIRELLE_KEYSTORE_PASSWORD: ${{ secrets.LIRELLE_UPLOAD_KEYSTORE_PASSWORD }}
@@ -107,8 +109,7 @@ jobs:
             --json_key "$RUNNER_TEMP/play.json" --track production --release_status completed \
             --aab app/build/outputs/bundle/release/app-release.aab --skip_upload_apk true \
             --metadata_path fastlane/metadata/android --sync_image_upload true
-      - name: AAB kept for a first upload by hand
-        if: needs.release-please.outputs.release_created == 'true' && vars.PLAY_PUBLISH != 'true'
+      - name: AAB kept for an upload by hand
         uses: actions/upload-artifact@v7
         with:
           name: lirelle-aab
