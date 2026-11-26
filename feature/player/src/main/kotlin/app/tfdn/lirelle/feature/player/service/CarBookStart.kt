@@ -59,3 +59,13 @@ class CarBookStart(
         }
     }
 }
+
+/**
+ * [rules] for a profile that may close: nothing once it [left], asked before the rules are read and again when
+ * they answer, since reading them takes the time of the server, in which the profile may close: nothing is then
+ * loaded with the objects of an account that left.
+ */
+internal fun whileOpen(
+    left: () -> Boolean,
+    rules: suspend (BookId) -> LoadRequest?,
+): suspend (BookId) -> LoadRequest? = { bookId -> if (left()) null else rules(bookId)?.takeUnless { left() } }

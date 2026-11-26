@@ -235,7 +235,7 @@ class PlaybackService : MediaLibraryService() {
         val carItems = CarItems(resources, CarCovers.authority(packageName), open.profileId)
         val browser = CarBrowser(parts.car.library, carItems, NoticeAsLine(texts.car), main) { left }
         val asks = CarAsks(parts.car.library, texts.car, main, browser::listedBook, { left }) { parts.lastBooks.get() }
-        val carStart = CarBookStart(book, main, { parts.car.start.takeUnless { left }?.requestFor(it) }, asks::failed)
+        val carStart = CarBookStart(book, main, whileOpen({ left }, parts.car.start::requestFor), asks::failed)
         // The cover's address is said as one the car can open; the app's own picture comes from where it did.
         val cover = PlayingCover(CarCovers.authority(packageName), open.profileId)
         val chapters = ChapterPlayer(engine, navigator, book, carStart) {

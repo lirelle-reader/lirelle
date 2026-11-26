@@ -178,6 +178,39 @@ class CarBookStartTest {
     }
 
     @Test
+    fun `a profile that closes while the rules are read starts nothing, one still open does`() = runTest {
+        val slow = CompletableDeferred<Unit>()
+        var left = false
+        player()
+        val rules = whileOpen({ left }) {
+            asked += it
+            slow.await()
+            LoadRequest.Audiobook(it)
+        }
+        val start = CarBookStart(book, backgroundScope, rules) { failures++ }
+
+        start.start(BookId("42"), { true }) {}
+        settle()
+        left = true
+        slow.complete(Unit)
+        settle()
+
+        assertThat(audio.calls).isEmpty()
+        assertThat(book.extras.value.book).isNull()
+        assertThat(engine.wantsToPlay).isFalse()
+        // Once closed, the rules are not even read.
+        start.start(BookId("43"), { true }) {}
+        settle()
+        assertThat(asked).containsExactly(BookId("42"))
+
+        left = false
+        start.start(BookId("44"), { true }) {}
+        settle()
+        assertThat(book.extras.value.book?.id).isEqualTo(BookId("44"))
+        assertThat(engine.wantsToPlay).isTrue()
+    }
+
+    @Test
     fun `rules that break say the failure too, and the player is not left starting`() = runTest {
         request = { error("A store that cannot be read") }
         val player = player()
