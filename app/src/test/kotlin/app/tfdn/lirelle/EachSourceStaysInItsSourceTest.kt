@@ -27,6 +27,7 @@ private class SourceModule(val folder: String, val dependency: String, val packa
 private val Sources = listOf(
     SourceModule("source/bookorbit/", "\":source:bookorbit\"", "app.tfdn.lirelle.source.bookorbit", fewest = 30),
     SourceModule("source/komga/", "\":source:komga\"", "app.tfdn.lirelle.source.komga", fewest = 5),
+    SourceModule("source/kavita/", "\":source:kavita\"", "app.tfdn.lirelle.source.kavita", fewest = 5),
 )
 
 /** The one module that may depend on a source, by its Gradle path: the app, which ships them. */
