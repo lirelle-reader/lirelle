@@ -9,6 +9,7 @@ import app.tfdn.lirelle.core.session.ServerKind
 import app.tfdn.lirelle.core.session.SessionState
 import app.tfdn.lirelle.core.testing.FakeAuthRepository
 import app.tfdn.lirelle.core.testing.MainDispatcherRule
+import app.tfdn.lirelle.core.testing.TestUserAgent
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
@@ -36,7 +37,7 @@ class SignInWhileSignedInTest {
     private val redirect = "bookorbit://oauth2-callback?code=code-1&state=state-1"
 
     private fun signIn(server: String? = null) =
-        SignInViewModel(auth, relay, server, ServerKind.BookOrbit.takeIf { server != null })
+        SignInViewModel(auth, relay, TestUserAgent, server, ServerKind.BookOrbit.takeIf { server != null })
 
     private fun SignInViewModel.typeCredentials() {
         onUsernameChange("camille")

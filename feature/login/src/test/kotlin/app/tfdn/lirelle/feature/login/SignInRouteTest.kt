@@ -23,6 +23,7 @@ import app.tfdn.lirelle.core.network.LoginOptions
 import app.tfdn.lirelle.core.network.OidcProvider
 import app.tfdn.lirelle.core.network.OidcRedirectRelay
 import app.tfdn.lirelle.core.testing.FakeAuthRepository
+import app.tfdn.lirelle.core.testing.TestUserAgent
 import com.google.common.truth.Truth.assertThat
 import org.junit.Rule
 import org.junit.Test
@@ -49,7 +50,7 @@ class SignInRouteTest {
     private val redirect = "bookorbit://oauth2-callback?code=code-1&state=state-1"
 
     private fun show(onChangeServer: () -> Unit = {}) {
-        val viewModel = SignInViewModel(auth, OidcRedirectRelay(), server = null, kind = null)
+        val viewModel = SignInViewModel(auth, OidcRedirectRelay(), TestUserAgent, server = null, kind = null)
         compose.setContent {
             LirelleTheme {
                 SignInRoute(onChangeServer = onChangeServer, viewModel = viewModel)

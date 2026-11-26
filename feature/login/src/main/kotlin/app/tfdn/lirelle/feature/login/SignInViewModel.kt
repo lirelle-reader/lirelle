@@ -9,6 +9,7 @@ import app.tfdn.lirelle.core.network.LoginOptions
 import app.tfdn.lirelle.core.network.OidcProvider
 import app.tfdn.lirelle.core.network.OidcRedirectRelay
 import app.tfdn.lirelle.core.network.ProviderFlow
+import app.tfdn.lirelle.core.network.UserAgent
 import app.tfdn.lirelle.core.session.ServerKind
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
@@ -87,6 +88,8 @@ sealed interface AuthTabResult {
 class SignInViewModel @AssistedInject constructor(
     private val auth: AuthRepository,
     private val redirects: OidcRedirectRelay,
+    /** How the app names itself: the provider's WebView adds it to its own agent. */
+    val userAgent: UserAgent,
     @Assisted server: String?,
     @Assisted kind: ServerKind?,
 ) : ViewModel() {

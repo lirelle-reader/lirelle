@@ -4,6 +4,7 @@ import androidx.compose.ui.test.junit4.createComposeRule
 import app.tfdn.lirelle.core.designsystem.LirelleTheme
 import app.tfdn.lirelle.core.session.ServerKind
 import app.tfdn.lirelle.core.testing.DeviceRule
+import app.tfdn.lirelle.core.testing.TestUserAgent
 import app.tfdn.lirelle.core.testing.assertAllTextFits
 import com.google.common.truth.Truth.assertThat
 import com.google.common.truth.Truth.assertWithMessage
@@ -44,7 +45,7 @@ class ProviderPageTextFitTest(
             providerName = providerName,
         )
         compose.setContent {
-            LirelleTheme { ProviderPageScreen(page, ProviderPageCookies(FakeWebCookies()), onEnd = {}) }
+            LirelleTheme { ProviderPageScreen(page, ProviderPageCookies(FakeWebCookies()), TestUserAgent, onEnd = {}) }
         }
     }
 

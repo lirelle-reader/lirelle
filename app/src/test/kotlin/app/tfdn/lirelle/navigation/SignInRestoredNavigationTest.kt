@@ -11,6 +11,7 @@ import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithText
 import app.tfdn.lirelle.core.network.OidcRedirectRelay
 import app.tfdn.lirelle.core.testing.FakeAuthRepository
+import app.tfdn.lirelle.core.testing.TestUserAgent
 import app.tfdn.lirelle.feature.login.RedirectsOutsideSignIn
 import app.tfdn.lirelle.feature.login.SignInViewModel
 import app.tfdn.lirelle.feature.login.StrayRedirectsViewModel
@@ -64,7 +65,7 @@ class SignInRestoredNavigationTest {
                 listen = { _, _ -> },
                 signIn = { _, _ ->
                     // Made with the screen, as after the process ended: it holds nothing of the sign-in begun.
-                    val step = remember { SignInViewModel(auth, relay, server = null, kind = null) }
+                    val step = remember { SignInViewModel(auth, relay, TestUserAgent, server = null, kind = null) }
                     LaunchedEffect(step) { step.signedIn.collect { completedByScreen++ } }
                     Text("sign-in")
                 },

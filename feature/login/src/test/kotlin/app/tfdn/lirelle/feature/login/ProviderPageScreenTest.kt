@@ -16,6 +16,7 @@ import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import app.tfdn.lirelle.core.designsystem.LirelleTheme
 import app.tfdn.lirelle.core.session.ServerKind
+import app.tfdn.lirelle.core.testing.TestUserAgent
 import com.google.common.truth.Truth.assertThat
 import org.junit.Rule
 import org.junit.Test
@@ -42,7 +43,7 @@ class ProviderPageScreenTest {
 
     private fun show() {
         compose.setContent {
-            LirelleTheme { ProviderPageScreen(page, ProviderPageCookies(store), onEnd = { ends += it }) }
+            LirelleTheme { ProviderPageScreen(page, ProviderPageCookies(store), TestUserAgent, onEnd = { ends += it }) }
         }
         compose.waitForIdle()
     }
@@ -77,7 +78,12 @@ class ProviderPageScreenTest {
                 SignInOverProfile(SignInPurpose.Add, onLeave = { left++ }, viewModel = screens) { _, _ ->
                     var open by remember { mutableStateOf(false) }
                     if (open) {
-                        ProviderPageScreen(page, ProviderPageCookies(store), onEnd = { ends += it; open = false })
+                        ProviderPageScreen(
+                            page,
+                            ProviderPageCookies(store),
+                            TestUserAgent,
+                            onEnd = { ends += it; open = false },
+                        )
                     } else {
                         Text("sign-in-step", Modifier.clickable { open = true })
                     }
@@ -128,18 +134,24 @@ class ProviderPageScreenTest {
     }
 
     @Test
-    fun `the WebView runs the provider's scripts, reaches no file, and says what it is`() {
+    fun `the WebView runs the provider's scripts, reaches no file, and says it is Lirelle's`() {
         val webView = WebView(compose.activity)
         val userAgent = webView.settings.userAgentString
 
-        configureProviderWebView(webView)
+        configureProviderWebView(webView, TestUserAgent)
 
         with(webView.settings) {
             assertThat(javaScriptEnabled).isTrue()
             assertThat(allowFileAccess).isFalse()
             assertThat(allowContentAccess).isFalse()
-            assertThat(userAgentString).isEqualTo(userAgent)
+            assertThat(userAgentString).isEqualTo("$userAgent Lirelle/test")
         }
         webView.destroy()
+    }
+
+    @Test
+    fun `the provider still sees the WebView's own agent, Lirelle's added after it`() {
+        assertThat(providerUserAgent("Mozilla/5.0 (Linux; Android 16; wv)", TestUserAgent))
+            .isEqualTo("Mozilla/5.0 (Linux; Android 16; wv) Lirelle/test")
     }
 }

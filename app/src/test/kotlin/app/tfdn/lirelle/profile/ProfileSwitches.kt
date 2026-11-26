@@ -6,6 +6,7 @@ import android.net.NetworkCapabilities
 import androidx.lifecycle.viewModelScope
 import app.tfdn.lirelle.core.session.SessionState
 import app.tfdn.lirelle.core.session.profile.ProfileGraph
+import app.tfdn.lirelle.core.testing.TestUserAgent
 import app.tfdn.lirelle.feature.login.ServerViewModel
 import app.tfdn.lirelle.feature.login.SignInViewModel
 import app.tfdn.lirelle.signout.GraphView
@@ -71,7 +72,7 @@ internal suspend fun TestDevice.signsInOn(server: RecordingServer, userId: Long)
     // The test's server speaks without TLS, which the user is asked to accept.
     serverStep.onCleartextConfirmed()
     until("the address typed is checked and remembered") { auth.serverUrl.value == server.address }
-    val step = SignInViewModel(auth, data.oidcRedirects(), null, null)
+    val step = SignInViewModel(auth, data.oidcRedirects(), TestUserAgent, null, null)
     until("the server's sign-in methods are offered") { step.state.value.options != null }
     coroutineScope {
         val told = async(start = CoroutineStart.UNDISPATCHED) { step.signedIn.first() }
