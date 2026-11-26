@@ -108,16 +108,19 @@ private const val KavitaLogin = "/login"
  */
 private val KavitaFlow = setOf("/oidc/login", "/signin-oidc")
 
+/** Slashes that follow one another in a path, which a server reads as one. */
+private val RepeatedSlashes = Regex("/{2,}")
+
 /**
  * Kavita's end, on its own [page]: its pages are an application whose address says nothing of the sign-in. Under
  * the [server]'s base path, the login page with an `error` is the sign-in refused (its message is not shown),
  * looked at first: a session left by an earlier page would not make it one that succeeded. Any other page, once
  * the session's cookie is held ([hasSessionCookie]), is the sign-in done — but the addresses of the flow itself,
- * which end nothing. The paths are compared whatever their case.
+ * which end nothing. The paths are compared whatever their case, and however many slashes part their segments.
  */
 private fun kavitaPageOutcome(server: HttpUrl, page: HttpUrl, hasSessionCookie: () -> Boolean): ProviderPageOutcome? {
     val base = server.encodedPath.trimEnd('/')
-    val path = page.encodedPath.trimEnd('/')
+    val path = page.encodedPath.replace(RepeatedSlashes, "/").trimEnd('/')
     val underBase = path.length == base.length || path.getOrNull(base.length) == '/'
     if (!path.startsWith(base, ignoreCase = true) || !underBase) return null
     val own = path.substring(base.length).lowercase()

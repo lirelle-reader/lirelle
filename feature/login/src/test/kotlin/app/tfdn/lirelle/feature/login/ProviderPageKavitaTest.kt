@@ -43,6 +43,25 @@ class ProviderPageKavitaTest {
     }
 
     @Test
+    fun `the login page with an error is the sign-in refused, however its path is written`() {
+        assertThat(kavita("$Server//login?error=x", cookie = true)).isEqualTo(ProviderPageOutcome.Refused)
+        assertThat(kavita("$Server/login/?error=x", cookie = true)).isEqualTo(ProviderPageOutcome.Refused)
+        assertThat(kavita("$Server//login?error=x", cookie = false)).isEqualTo(ProviderPageOutcome.Refused)
+        assertThat(kavita("$Server/login/?error=x", cookie = false)).isEqualTo(ProviderPageOutcome.Refused)
+    }
+
+    /** A server in cleartext, which the user accepted on the Server screen, is still the server. */
+    @Test
+    fun `a server in cleartext ends the sign-in on its own pages as any other`() {
+        val cleartext = "http://kavita.lan:5000"
+
+        assertThat(kavita("$cleartext/", cookie = true, serverUrl = cleartext)).isEqualTo(ProviderPageOutcome.SignedIn)
+        assertThat(kavita("$cleartext/", cookie = false, serverUrl = cleartext)).isNull()
+        assertThat(kavita("$cleartext/login?error=x", cookie = false, serverUrl = cleartext))
+            .isEqualTo(ProviderPageOutcome.Refused)
+    }
+
+    @Test
     fun `an error on another page than the login page refuses nothing`() {
         assertThat(kavita("$Server/home?error=x", cookie = false)).isNull()
         assertThat(kavita("$Server/home?error=x", cookie = true)).isEqualTo(ProviderPageOutcome.SignedIn)

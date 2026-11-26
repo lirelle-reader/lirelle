@@ -1,5 +1,6 @@
 package app.tfdn.lirelle.feature.login
 
+import android.content.Context
 import android.net.Uri
 import android.webkit.WebResourceRequest
 import android.webkit.WebView
@@ -16,13 +17,24 @@ private const val SignedIn = "$Server/?server_redirect=Y"
 
 /**
  * What watches the provider's pages: the server's page that ends the flow is told once, from the main frame only —
- * by the navigation, or by the page starting when no navigation was asked about; a page in cleartext outside the
- * server ends it as unencrypted; the page shown is told for the bar; a renderer that dies closes the page.
+ * by the navigation, by the page starting when no navigation was asked about, or by a move within the page's own
+ * document; a page in cleartext outside the server ends it as unencrypted; the page shown is told for the bar; a
+ * renderer that dies closes the page.
  */
 @RunWith(RobolectricTestRunner::class)
 class ProviderPageClientTest {
 
-    private val view = WebView(ApplicationProvider.getApplicationContext())
+    /** A WebView that counts the times it was told to load no further. */
+    private class Watched(context: Context) : WebView(context) {
+        var stops = 0
+            private set
+
+        override fun stopLoading() {
+            stops++
+        }
+    }
+
+    private val view = Watched(ApplicationProvider.getApplicationContext())
     private val outcomes = mutableListOf<ProviderPageOutcome>()
     private val pages = mutableListOf<String>()
     private var gone = 0
@@ -61,6 +73,77 @@ class ProviderPageClientTest {
 
         sessionCookie = true
         assertThat(kavita.shouldOverrideUrlLoading(view, request("$Server/"))).isTrue()
+        assertThat(outcomes).containsExactly(ProviderPageOutcome.SignedIn)
+    }
+
+    @Test
+    fun `a Kavita page that starts with the session's cookie held ends the flow, and loads no further`() {
+        val kavita = client(ServerKind.Kavita)
+        sessionCookie = true
+
+        kavita.onPageStarted(view, "$Server/", null)
+
+        assertThat(outcomes).containsExactly(ProviderPageOutcome.SignedIn)
+        assertThat(view.stops).isEqualTo(1)
+    }
+
+    @Test
+    fun `Kavita's login page with an error ends the flow as refused`() {
+        val kavita = client(ServerKind.Kavita)
+        val refused = "$Server/login?skipAutoLogin=true&error=x"
+
+        assertThat(kavita.shouldOverrideUrlLoading(view, request(refused))).isTrue()
+
+        assertThat(outcomes).containsExactly(ProviderPageOutcome.Refused)
+    }
+
+    /**
+     * Kavita's application moves by itself, within its document, from the page the server sent the WebView to: no
+     * navigation is asked about and no page starts. Such a move ends the flow too, once the cookie is held.
+     */
+    @Test
+    fun `a move within Kavita's application ends the flow once the session's cookie is held`() {
+        val kavita = client(ServerKind.Kavita)
+
+        kavita.onPageStarted(view, "$Server/", null)
+        kavita.doUpdateVisitedHistory(view, "$Server/", false)
+        kavita.doUpdateVisitedHistory(view, "$Server/login", false)
+        assertThat(outcomes).isEmpty()
+        assertThat(view.stops).isEqualTo(0)
+
+        sessionCookie = true
+        kavita.doUpdateVisitedHistory(view, "$Server/home", false)
+
+        assertThat(outcomes).containsExactly(ProviderPageOutcome.SignedIn)
+        assertThat(view.stops).isEqualTo(1)
+    }
+
+    @Test
+    fun `a move within Kavita's application to its login page with an error ends the flow as refused`() {
+        val kavita = client(ServerKind.Kavita)
+
+        kavita.doUpdateVisitedHistory(view, "$Server/login?skipAutoLogin=true&error=x", false)
+
+        assertThat(outcomes).containsExactly(ProviderPageOutcome.Refused)
+    }
+
+    /** Komga's end is the page its server redirects to, `server_redirect=Y`: a page visited without it ends nothing. */
+    @Test
+    fun `a page visited on a Komga server ends nothing without the server's redirect`() {
+        client.doUpdateVisitedHistory(view, "$Server/", false)
+        client.doUpdateVisitedHistory(view, "$Server/login", true)
+        client.doUpdateVisitedHistory(view, "https://auth.example.com/if/flow/", false)
+
+        assertThat(outcomes).isEmpty()
+        assertThat(pages).isEmpty()
+        assertThat(view.stops).isEqualTo(0)
+    }
+
+    @Test
+    fun `the flow ends once, whether a page starts or is visited`() {
+        client.onPageStarted(view, SignedIn, null)
+        client.doUpdateVisitedHistory(view, SignedIn, false)
+
         assertThat(outcomes).containsExactly(ProviderPageOutcome.SignedIn)
     }
 

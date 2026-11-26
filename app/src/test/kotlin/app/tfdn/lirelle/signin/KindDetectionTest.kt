@@ -82,9 +82,10 @@ class KindDetectionTest {
 
     /**
      * A Kavita server: it knows nothing of the other kinds' routes, says its health in plain text and what it has
-     * of an identity provider, and signs an account in to make it a key.
+     * of an identity provider, and signs an account in to make it a key — which it takes from then on, unless the
+     * key is among the [refused]: deleted in its web interface, or expired.
      */
-    private fun kavita() = serve { request ->
+    private fun kavita(refused: Set<String> = emptySet()) = serve { request ->
         when (request.url.encodedPath) {
             HealthRoute -> MockResponse(code = 200, headers = headersOf("Content-Type", "text/plain"), body = "Ok")
             OidcSettingsRoute -> json(
@@ -93,7 +94,7 @@ class KindDetectionTest {
             )
             "/api/Account/login" -> json("""{"id":7,"username":"ann","kavitaVersion":"0.9.1.4","token":"t0k3n"}""")
             "/api/Account/create-auth-key" -> json("""{"id":42,"key":"k4v1t4k3y","name":"Lirelle"}""")
-            "/api/Account" -> if (request.headers["x-api-key"] == "k4v1t4k3y") {
+            "/api/Account" -> if (request.headers["x-api-key"] == "k4v1t4k3y" && "k4v1t4k3y" !in refused) {
                 json("""{"id":7,"username":"ann","kavitaVersion":"0.9.1.4"}""")
             } else {
                 MockResponse(code = 401, headers = headersOf("WWW-Authenticate", "Bearer"))
@@ -163,6 +164,36 @@ class KindDetectionTest {
             // The open profile reads its account again with its key: how a key the server refuses is noticed.
             until("the account is read with the profile's key") { "/api/Account" in asked }
         }
+
+    /**
+     * A Kavita key is never renewed, and nothing tells the device it was deleted: the open profile reads its
+     * account, the server refuses the key, and the profile is kept, marked.
+     */
+    @Test
+    fun `a Kavita profile whose key the server refuses is kept, and waits for a sign-in`(): Unit = runBlocking {
+        val address = kavita(refused = setOf("k4v1t4k3y"))
+
+        assertThat(auth.signInWithPassword(address, ServerKind.Kavita, "ann", "secret"))
+            .isEqualTo(ApiResult.Success(Unit))
+        val profile = checkNotNull(device.data.sessions().current.value)
+        assertThat(profile.signInNeeded).isFalse()
+
+        until("the refused key marks the profile") { device.data.sessions().current.value?.signInNeeded == true }
+        val marked = checkNotNull(device.data.sessions().current.value)
+        assertThat(marked.id).isEqualTo(profile.id)
+        assertThat(marked.session.credential).isEqualTo(Credential.ApiKey("k4v1t4k3y", "42"))
+        assertThat(synchronized(asked) { asked.count { it == "/api/Account" } }).isEqualTo(1)
+    }
+
+    @Test
+    fun `a Kavita profile whose key the server takes waits for no sign-in`(): Unit = runBlocking {
+        val address = kavita()
+
+        auth.signInWithPassword(address, ServerKind.Kavita, "ann", "secret")
+        until("the account is read with the profile's key") { "/api/Account" in asked }
+
+        assertThat(device.data.sessions().current.value?.signInNeeded).isFalse()
+    }
 
     @Test
     fun `a Komga account signed in by its password becomes a Komga profile, opened with its key`(): Unit =

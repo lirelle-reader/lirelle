@@ -199,8 +199,9 @@ internal fun providerUserAgent(default: String, userAgent: UserAgent): String = 
  * Watches where the provider's flow leads: the page that ends it for a server of [kind] ([hasSessionCookie] tells
  * whether the WebView holds its session, for a kind that needs it) — or a page in cleartext outside the
  * server, which ends it as unencrypted ([providerPageOutcome]) — is not loaded: the WebView stops there, and
- * [onOutcome] is told what it says, once. Each page of the main frame that starts is told to [onPage], for the
- * bar. A renderer that dies ends the page as closed ([onGone]): the app would otherwise be killed with it.
+ * [onOutcome] is told what it says, once — whether the WebView asks about going there, starts the page, or comes to
+ * show it without either. Each page of the main frame that starts is told to [onPage], for the bar. A renderer that
+ * dies ends the page as closed ([onGone]): the app would otherwise be killed with it.
  */
 internal class ProviderPageClient(
     private val kind: ServerKind,
@@ -219,6 +220,15 @@ internal class ProviderPageClient(
     /** Asked for the main frame only, also when no navigation was asked about first: a first load, some redirects. */
     override fun onPageStarted(view: WebView, url: String, favicon: Bitmap?) {
         onPage(url)
+        if (arrived(url)) view.stopLoading()
+    }
+
+    /**
+     * Asked for every address the WebView comes to show, a move within the page's own document included, which
+     * neither asks about a navigation nor starts a page: an application that moves by itself once the server sent
+     * the WebView to it — Kavita's — ends the flow here when the session was not yet held as its page started.
+     */
+    override fun doUpdateVisitedHistory(view: WebView, url: String, isReload: Boolean) {
         if (arrived(url)) view.stopLoading()
     }
 

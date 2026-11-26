@@ -77,23 +77,50 @@ class ProviderPageCookiesTest {
     }
 
     @Test
-    fun `a cookie is named with a prefix when its name begins with it, whatever its value`() {
-        assertThat(hasCookieNamed(".AspNetCore.Cookies=chunks-2", ".AspNetCore.Cookies")).isTrue()
-        val inParts = "theme=dark; .AspNetCore.CookiesC1=a; .AspNetCore.CookiesC2=b"
-        assertThat(hasCookieNamed(inParts, ".AspNetCore.Cookies")).isTrue()
-        assertThat(hasCookieNamed("theme=dark;.AspNetCore.Cookies=a==", ".AspNetCore.Cookies")).isTrue()
-        assertThat(hasCookieNamed("KOMGA-SESSION=s1", "KOMGA-SESSION")).isTrue()
+    fun `a session's cookie is told by its name, whatever its value and whatever is beside it`() {
+        assertThat(hasSessionCookie(".AspNetCore.Cookies=chunks-2", ServerKind.Kavita)).isTrue()
+        assertThat(hasSessionCookie("theme=dark;.AspNetCore.Cookies=a==", ServerKind.Kavita)).isTrue()
+        assertThat(hasSessionCookie("KOMGA-SESSION=s1", ServerKind.Komga)).isTrue()
+        assertThat(hasSessionCookie("theme=dark; KOMGA-SESSION=s1", ServerKind.Komga)).isTrue()
+    }
+
+    /** ASP.NET splits a long cookie into parts named after it: `C1`, `C2`… */
+    @Test
+    fun `the parts of a Kavita session's cookie are the session's`() {
+        assertThat(hasSessionCookie(".AspNetCore.CookiesC1=a", ServerKind.Kavita)).isTrue()
+        assertThat(hasSessionCookie("theme=dark; .AspNetCore.CookiesC1=a; .AspNetCore.CookiesC2=b", ServerKind.Kavita))
+            .isTrue()
+        assertThat(hasSessionCookie(".AspNetCore.CookiesC12=l", ServerKind.Kavita)).isTrue()
+    }
+
+    @Test
+    fun `a name that only begins as the session's is not the session's`() {
+        assertThat(hasSessionCookie(".AspNetCore.CookiesFoo=a", ServerKind.Kavita)).isFalse()
+        assertThat(hasSessionCookie(".AspNetCore.CookiesC=a", ServerKind.Kavita)).isFalse()
+        assertThat(hasSessionCookie(".AspNetCore.CookiesC1x=a", ServerKind.Kavita)).isFalse()
+        assertThat(hasSessionCookie(".AspNetCore.Cookies.x=a", ServerKind.Kavita)).isFalse()
     }
 
     @Test
     fun `the cookies of a sign-in in progress, or another's value, are not the session's`() {
-        val inProgress = ".AspNetCore.Correlation.abc=N; .AspNetCore.OpenIdConnect.Nonce.def=N"
+        assertThat(hasSessionCookie(".AspNetCore.Correlation.x=N", ServerKind.Kavita)).isFalse()
+        assertThat(hasSessionCookie(".AspNetCore.OpenIdConnect.Nonce.x=N", ServerKind.Kavita)).isFalse()
+        assertThat(hasSessionCookie("theme=.AspNetCore.Cookies", ServerKind.Kavita)).isFalse()
+        assertThat(hasSessionCookie("x.AspNetCore.Cookies=a", ServerKind.Kavita)).isFalse()
+        assertThat(hasSessionCookie("", ServerKind.Kavita)).isFalse()
+        assertThat(hasSessionCookie(null, ServerKind.Kavita)).isFalse()
+    }
 
-        assertThat(hasCookieNamed(inProgress, ".AspNetCore.Cookies")).isFalse()
-        assertThat(hasCookieNamed("theme=.AspNetCore.Cookies", ".AspNetCore.Cookies")).isFalse()
-        assertThat(hasCookieNamed("x.AspNetCore.Cookies=a", ".AspNetCore.Cookies")).isFalse()
-        assertThat(hasCookieNamed("", ".AspNetCore.Cookies")).isFalse()
-        assertThat(hasCookieNamed(null, ".AspNetCore.Cookies")).isFalse()
+    @Test
+    fun `an entry without a value is no cookie`() {
+        assertThat(hasSessionCookie(".AspNetCore.Cookies", ServerKind.Kavita)).isFalse()
+        assertThat(hasSessionCookie("theme=dark; .AspNetCore.CookiesC1", ServerKind.Kavita)).isFalse()
+        assertThat(hasSessionCookie("KOMGA-SESSION", ServerKind.Komga)).isFalse()
+    }
+
+    @Test
+    fun `a kind whose session is no cookie has none`() {
+        assertThat(hasSessionCookie(".AspNetCore.Cookies=a; KOMGA-SESSION=s1", ServerKind.BookOrbit)).isFalse()
     }
 
     @Test
