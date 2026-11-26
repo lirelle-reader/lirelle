@@ -57,7 +57,8 @@ fun NavGraphBuilder.homeDestinations(
         val onBack = entry.ifResumed { navController.popBackStack() }
         val onOpenBook = entry.ifResumedWith<BookId> { navController.navigate(BookDestination(it.value)) }
         val asRow = hiltViewModel<HomeListViewModel>().seesAllAsRow(kind)
-        // Null when the row opens its own screen, whatever its kind: the source has no list of all its books.
+        // Null whenever the row opens its own screen: always for Continue and Up next, for every row when the
+        // source cannot list all its books.
         when (kind.takeUnless { asRow }) {
             null, HomeRowKind.Continue, HomeRowKind.UpNext -> HomeRowScreen(kind, onBack, onOpenBook)
             HomeRowKind.WantToRead -> BookListDetailScreen(
