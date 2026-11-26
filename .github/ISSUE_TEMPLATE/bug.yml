@@ -1,6 +1,6 @@
 name: Bug report
 description: Something in Lirelle does not work as it should.
-labels: [bug]
+type: Bug
 body:
   - type: markdown
     attributes:
