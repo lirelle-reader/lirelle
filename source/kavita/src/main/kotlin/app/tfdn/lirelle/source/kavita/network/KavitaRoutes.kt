@@ -70,3 +70,9 @@ internal interface KavitaPublicApi {
     @DELETE("$AccountRoute/auth-key")
     suspend fun deleteKey(@Header(ApiKeyHeader) key: String, @Query("authKeyId") keyId: String): Response<Unit>
 }
+
+/** What a Kavita profile asks of its server about its own account, with its key (the authenticated client's). */
+internal interface KavitaAccountApi {
+    @GET(AccountRoute)
+    suspend fun account(): Response<KavitaUserDto>
+}

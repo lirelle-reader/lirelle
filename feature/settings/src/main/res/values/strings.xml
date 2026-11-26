@@ -27,7 +27,7 @@
     <string name="about_title">About</string>
     <!-- The app's name, under its mark -->
     <string name="about_app_name" translatable="false">Lirelle</string>
-    <string name="about_what">Read and listen to the books of your BookOrbit or Komga server</string>
+    <string name="about_what">Read and listen to the books of your BookOrbit, Komga or Kavita server</string>
     <!-- Under the line saying what the app is -->
     <string name="about_copyright">© 2026 François-Xavier Payet and contributors</string>
     <string name="about_version">Version</string>
