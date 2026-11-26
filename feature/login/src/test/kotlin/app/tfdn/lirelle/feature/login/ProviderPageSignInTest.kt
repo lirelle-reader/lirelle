@@ -9,6 +9,7 @@ import app.tfdn.lirelle.core.network.ProviderFlow
 import app.tfdn.lirelle.core.session.ServerKind
 import app.tfdn.lirelle.core.testing.FakeAuthRepository
 import app.tfdn.lirelle.core.testing.MainDispatcherRule
+import app.tfdn.lirelle.core.testing.TestUserAgent
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.test.runTest
@@ -35,7 +36,7 @@ class ProviderPageSignInTest {
     }
     private val provider = OidcProvider("authentik", "Authentik", "", "", ProviderFlow.WebView)
 
-    private fun viewModel() = SignInViewModel(auth, OidcRedirectRelay(), server = null, kind = null)
+    private fun viewModel() = SignInViewModel(auth, OidcRedirectRelay(), TestUserAgent, server = null, kind = null)
 
     private val handedOver get() = auth.calls.filter { it.startsWith("completeWithSession") }
 

@@ -6,6 +6,7 @@ import app.tfdn.lirelle.core.network.OidcProvider
 import app.tfdn.lirelle.core.network.OidcRedirectRelay
 import app.tfdn.lirelle.core.testing.FakeAuthRepository
 import app.tfdn.lirelle.core.testing.MainDispatcherRule
+import app.tfdn.lirelle.core.testing.TestUserAgent
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.launch
@@ -32,7 +33,7 @@ class ForeignRedirectTest {
     private val relay = OidcRedirectRelay()
     private val provider = OidcProvider("authentik", "Authentik", "client-id-1", "openid profile email")
 
-    private fun waitingForItsAnswer() = SignInViewModel(auth, relay, server = null, kind = null).also {
+    private fun waitingForItsAnswer() = SignInViewModel(auth, relay, TestUserAgent, server = null, kind = null).also {
         it.onOidc(provider)
         it.onBrowserOpened(authTab = false)
         auth.calls.clear()

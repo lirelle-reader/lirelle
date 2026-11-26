@@ -11,6 +11,7 @@ import app.tfdn.lirelle.core.network.OidcProvider
 import app.tfdn.lirelle.core.network.OidcRedirectRelay
 import app.tfdn.lirelle.core.session.ServerKind
 import app.tfdn.lirelle.core.testing.FakeAuthRepository
+import app.tfdn.lirelle.core.testing.TestUserAgent
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.CompletableDeferred
 import org.junit.Rule
@@ -34,7 +35,7 @@ class SignInLeftTest {
     /** Camille is current; the address typed last, to add a profile, is another server's. */
     private val auth = FakeAuthRepository().apply { serverUrl.value = SachaServer }
     private val relay = OidcRedirectRelay()
-    private val step = SignInViewModel(auth, relay, server = CamilleServer, kind = ServerKind.BookOrbit)
+    private val step = SignInViewModel(auth, relay, TestUserAgent, server = CamilleServer, kind = ServerKind.BookOrbit)
     private var left = 0
     private var toldSignedIn = 0
 

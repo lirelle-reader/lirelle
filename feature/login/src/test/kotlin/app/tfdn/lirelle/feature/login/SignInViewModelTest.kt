@@ -9,6 +9,7 @@ import app.tfdn.lirelle.core.network.OidcRedirectRelay
 import app.tfdn.lirelle.core.session.ServerKind
 import app.tfdn.lirelle.core.testing.FakeAuthRepository
 import app.tfdn.lirelle.core.testing.MainDispatcherRule
+import app.tfdn.lirelle.core.testing.TestUserAgent
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -31,7 +32,7 @@ class SignInViewModelTest {
     private val provider = OidcProvider("authentik", "Authentik", "client-id-1", "openid profile email")
     private val redirect = "bookorbit://oauth2-callback?code=code-1&state=state-1"
 
-    private fun viewModel() = SignInViewModel(auth, relay, server = null, kind = null)
+    private fun viewModel() = SignInViewModel(auth, relay, TestUserAgent, server = null, kind = null)
 
     @Test
     fun `the sign-in goes to the kind remembered with the address`() = runTest(mainRule.dispatcher) {
@@ -64,8 +65,13 @@ class SignInViewModelTest {
         runTest(mainRule.dispatcher) {
             auth.serverKind.value = null
 
-            val state = SignInViewModel(auth, relay, server = "https://own.example.com", ServerKind.BookOrbit)
-                .state.value
+            val state = SignInViewModel(
+                auth,
+                relay,
+                TestUserAgent,
+                server = "https://own.example.com",
+                ServerKind.BookOrbit,
+            ).state.value
 
             assertThat(state.needsServer).isFalse()
             assertThat(auth.calls).containsExactly("loginOptions https://own.example.com")

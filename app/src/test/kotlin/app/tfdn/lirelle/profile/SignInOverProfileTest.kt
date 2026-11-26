@@ -12,6 +12,7 @@ import app.tfdn.lirelle.core.session.SignOutReason
 import app.tfdn.lirelle.core.session.Tokens
 import app.tfdn.lirelle.core.session.UserProfile
 import app.tfdn.lirelle.core.session.profile.ProfileGraph
+import app.tfdn.lirelle.core.testing.TestUserAgent
 import app.tfdn.lirelle.core.testing.bookOrbitSession
 import app.tfdn.lirelle.core.testing.save
 import app.tfdn.lirelle.core.testing.tokens
@@ -168,7 +169,13 @@ class SignInOverProfileTest {
     /** The sign-in step on [server], or on the remembered one, once it offers the password. */
     private suspend fun signInStep(server: String? = null): SignInViewModel {
         val viewModel =
-            SignInViewModel(auth, device.data.oidcRedirects(), server, ServerKind.BookOrbit.takeIf { server != null })
+            SignInViewModel(
+                auth,
+                device.data.oidcRedirects(),
+                TestUserAgent,
+                server,
+                ServerKind.BookOrbit.takeIf { server != null },
+            )
         until("the server's sign-in methods are offered") { viewModel.state.value.options != null }
         return viewModel
     }
