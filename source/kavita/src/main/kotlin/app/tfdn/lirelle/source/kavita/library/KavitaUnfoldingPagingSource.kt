@@ -14,7 +14,8 @@ internal data class UnfoldedPage(val books: List<BookSummary>, val isLast: Boole
  * Books that come by pages of series, each series unfolded into its books ([unfold], given a page of series, the
  * first being 1). The list is only ever read from its top down: it has no page before, and a refresh starts again
  * at the top. A page of series whose books are all left out goes on to the next one, so that the list does not
- * stop on an empty page. How many books there are in all is not known.
+ * stop on an empty page; after [MaxSkipped] such pages the load ends empty and names the next page, which the list
+ * asks for in turn, so that no load runs long. How many books there are in all is not known.
  *
  * [unfold] fails with an [IOException] when the server cannot be reached, and with an [ApiErrorException] naming
  * what the server answered otherwise: either is a load error, which the list can retry.
@@ -24,12 +25,13 @@ internal class KavitaUnfoldingPagingSource(
 ) : PagingSource<Int, BookSummary>() {
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, BookSummary> = try {
-        var page = params.key ?: FirstPage
+        val first = params.key ?: FirstPage
+        var page = first
         var unfolded: UnfoldedPage
         do {
             unfolded = unfold(page)
             page++
-        } while (unfolded.books.isEmpty() && !unfolded.isLast)
+        } while (unfolded.books.isEmpty() && !unfolded.isLast && page < first + MaxSkipped)
         LoadResult.Page(data = unfolded.books, prevKey = null, nextKey = page.takeUnless { unfolded.isLast })
     } catch (exception: IOException) {
         LoadResult.Error(exception)
@@ -41,3 +43,6 @@ internal class KavitaUnfoldingPagingSource(
 
     override fun getRefreshKey(state: PagingState<Int, BookSummary>): Int? = null
 }
+
+/** The most pages of series one load asks for when all their books are left out. */
+private const val MaxSkipped = 5

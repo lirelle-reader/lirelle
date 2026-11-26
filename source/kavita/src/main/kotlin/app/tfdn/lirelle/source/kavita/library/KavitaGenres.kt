@@ -12,11 +12,11 @@ import app.tfdn.lirelle.core.library.model.SortDirection
 import app.tfdn.lirelle.core.network.ApiResult
 import app.tfdn.lirelle.source.kavita.library.dto.GenreDto
 import app.tfdn.lirelle.source.kavita.library.dto.SeriesDto
+import app.tfdn.lirelle.source.kavita.network.answer
 import java.text.Collator
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
-import app.tfdn.lirelle.source.kavita.network.answer
 import kotlinx.coroutines.flow.MutableStateFlow
 
 /**
@@ -49,8 +49,11 @@ internal class KavitaGenres(private val server: KavitaProfileServer) {
             KavitaUnfoldingPagingSource { page ->
                 server.loaded { remote ->
                     val ids = genreIds ?: genreIds(remote, request).also { genreIds = it }
-                    if (ids.isEmpty()) UnfoldedPage(emptyList(), isLast = true) else
+                    if (ids.isEmpty()) {
+                        UnfoldedPage(emptyList(), isLast = true)
+                    } else {
                         unfold(remote, request, ids, page, SeriesPageSize)
+                    }
                 }
             }
         }
@@ -60,7 +63,8 @@ internal class KavitaGenres(private val server: KavitaProfileServer) {
     /**
      * Page [page] (from 0) of [size] series of [request]'s genre, unfolded into their books: as many books as they
      * hold, which may be more or fewer than [size]. Kavita does not count a genre's books: a full page of series
-     * says that there may be any number more, a shorter one that these are the last.
+     * says that there may be any number more ([Int.MAX_VALUE]); a shorter one is the last, and its total counts the
+     * books of that page only, not those of the pages before it.
      */
     suspend fun bookPage(request: BookListRequest, page: Int, size: Int): ApiResult<PageResult<BookSummary>> =
         server.call { remote ->
@@ -89,8 +93,11 @@ internal class KavitaGenres(private val server: KavitaProfileServer) {
     ): UnfoldedPage {
         val filters = request.filters
         val formats = filters.formats.flatMap { it.kavitaFormats }.toSortedSet()
-        // Only formats Kavita does not have (audio): no series is of them.
-        if (filters.formats.isNotEmpty() && formats.isEmpty()) return UnfoldedPage(emptyList(), isLast = true)
+        val states = filters.statuses.mapNotNull { it.readState }.toSet()
+        // Only formats Kavita does not have (audio), or reading states it does not keep: nothing is of them.
+        val noFormat = filters.formats.isNotEmpty() && formats.isEmpty()
+        val noState = filters.statuses.isNotEmpty() && states.isEmpty()
+        if (noFormat || noState) return UnfoldedPage(emptyList(), isLast = true)
         val statements = listOfNotNull(
             Statement(SeriesField.Genres, Comparison.Contains, genreIds),
             formats.takeIf { it.isNotEmpty() }?.let {
@@ -103,7 +110,6 @@ internal class KavitaGenres(private val server: KavitaProfileServer) {
             ascending = request.direction == SortDirection.Ascending,
         )
         val series = calls.limited { remote.api.series(filter, page, size) }.answer()
-        val states = filters.statuses.mapNotNull { it.readState }.toSet()
         val books = coroutineScope { series.map { async { booksOf(remote, it) } }.awaitAll() }.flatten()
             .filter { filters.statuses.isEmpty() || it.readState in states }
         return UnfoldedPage(books, isLast = series.size < size)

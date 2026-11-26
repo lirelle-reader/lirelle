@@ -205,6 +205,42 @@ class KavitaGenresTest {
     }
 
     @Test
+    fun `many pages narrowed out are skipped in short steps, and the books after them still come`() =
+        runBlocking<Unit> {
+            routes.answerFixture(Genres, "genres")
+            // Pages 1 to 8 hold ten unread series each, page 9 Dune, read.
+            routes.answer(AllSeries) { request ->
+                val page = request.url.queryParameter("PageNumber")!!.toInt()
+                json(if (page <= 8) seriesList(page * 10 - 9, page * 10) else TwoSeries)
+            }
+            routes.answer(Detail) { request ->
+                when (val id = request.url.queryParameter("seriesId")) {
+                    "261" -> json(fixtureBody("detail-dune"))
+                    else -> json("""{"storylineChapters":[{"id":$id,"number":"1","range":"1","pages":10}]}""")
+                }
+            }
+            val read = BookFilters(statuses = setOf(StatusFilter.Read))
+
+            val books = library.books(BookListSource.AllBooks, genre(filters = read)).items.asSnapshot()
+
+            assertThat(books.map { it.id }).containsExactly(BookId("v407"), BookId("v406"), BookId("v405")).inOrder()
+            val pages = routes.requests().filter { it.route() == AllSeries }.map { it.url.queryParameter("PageNumber") }
+            assertThat(pages).containsExactlyElementsIn((1..9).map { "$it" }).inOrder()
+        }
+
+    @Test
+    fun `reading states Kavita does not keep leave the genre's books empty, without asking its series`() =
+        runBlocking<Unit> {
+            answerTwoSeries()
+            val kept = BookFilters(statuses = setOf(StatusFilter.WantToRead, StatusFilter.Abandoned))
+
+            val books = library.books(BookListSource.AllBooks, genre(filters = kept)).items.asSnapshot()
+
+            assertThat(books).isEmpty()
+            assertThat(routes.requests().map { it.route() }).doesNotContain(AllSeries)
+        }
+
+    @Test
     fun `a genre the server does not know is empty, after one look at the genres`() = runBlocking<Unit> {
         routes.answerFixture(Genres, "genres")
 
