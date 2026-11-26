@@ -340,12 +340,12 @@ class BookSession(
      *
      * What is already held, ready and neither at its end nor in error, is not loaded again (unless asked from
      * its start, or at a place): it plays on from where it is, as the play button would have it; a narration
-     * asked at a sentence goes there.
+     * asked at a sentence, or at a page marker that names one, goes there.
      */
     fun load(request: LoadRequest, play: Boolean, playing: () -> Boolean = { play }): Job {
         if (request.mayPlayOn && current.canPlayOn(request, loading, extras.value, engine)) {
             // The sentence first: a place chosen while paused is where play starts.
-            request.sentence?.let { narrationMap?.timeOf(it) }?.let(navigator::seekBookTime)
+            narrationMap?.let(request::placeOn)?.let(navigator::seekBookTime)
             if (playing() && !engine.playWhenReady) play()
             // Played on: no failure stands for it any more.
             mutableExtras.update { it.copy(loadFailed = false) }
