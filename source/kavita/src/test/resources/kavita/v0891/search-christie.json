@@ -1,0 +1,30 @@
+{
+ "libraries": [],
+ "series": [],
+ "collections": [],
+ "readingLists": [],
+ "persons": [
+  {
+   "id": 2389,
+   "name": "Agatha Christie",
+   "coverImageLocked": false,
+   "primaryColor": null,
+   "secondaryColor": null,
+   "coverImage": null,
+   "aliases": [],
+   "description": null,
+   "asin": null,
+   "aniListId": 0,
+   "malId": 0,
+   "hardcoverId": null,
+   "webLinks": [],
+   "roles": []
+  }
+ ],
+ "genres": [],
+ "tags": [],
+ "files": [],
+ "chapters": [],
+ "bookmarks": [],
+ "annotations": []
+}

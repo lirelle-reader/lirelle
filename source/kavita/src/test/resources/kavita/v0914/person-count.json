@@ -1,0 +1,23 @@
+{
+ "pagination": "{\"currentPage\":1,\"itemsPerPage\":2,\"totalItems\":1,\"totalPages\":1}",
+ "body": [
+  {
+   "seriesCount": 3,
+   "chapterCount": 47,
+   "id": 43,
+   "name": "René Goscinny",
+   "coverImageLocked": false,
+   "primaryColor": null,
+   "secondaryColor": null,
+   "coverImage": null,
+   "aliases": [],
+   "description": null,
+   "asin": null,
+   "aniListId": 0,
+   "malId": 0,
+   "hardcoverId": null,
+   "webLinks": [],
+   "roles": []
+  }
+ ]
+}

@@ -1,0 +1,67 @@
+[
+ {
+  "seriesName": "Bellatrix",
+  "localizedSeriesName": "",
+  "seriesId": 29,
+  "libraryId": 1,
+  "libraryType": 1,
+  "created": "2026-11-26T09:43:41.0296954",
+  "chapterId": 0,
+  "volumeId": 0,
+  "id": 0,
+  "format": 1,
+  "count": 1
+ },
+ {
+  "seriesName": "XIII",
+  "localizedSeriesName": "",
+  "seriesId": 52,
+  "libraryId": 1,
+  "libraryType": 1,
+  "created": "2026-11-26T09:43:40.8494616",
+  "chapterId": 0,
+  "volumeId": 0,
+  "id": 1,
+  "format": 1,
+  "count": 1
+ },
+ {
+  "seriesName": "Le Maître du Haut Château",
+  "localizedSeriesName": "",
+  "seriesId": 453,
+  "libraryId": 3,
+  "libraryType": 2,
+  "created": "2026-11-26T09:03:41.2361427",
+  "chapterId": 0,
+  "volumeId": 0,
+  "id": 2,
+  "format": 3,
+  "count": 1
+ },
+ {
+  "seriesName": "L'Île de la fée",
+  "localizedSeriesName": "",
+  "seriesId": 452,
+  "libraryId": 3,
+  "libraryType": 2,
+  "created": "2026-11-26T09:03:41.1741814",
+  "chapterId": 0,
+  "volumeId": 0,
+  "id": 3,
+  "format": 3,
+  "count": 1
+ },
+ {
+  "seriesName": "Colony Mars",
+  "localizedSeriesName": "",
+  "seriesId": 451,
+  "libraryId": 3,
+  "libraryType": 2,
+  "created": "2026-11-26T09:03:40.9817917",
+  "chapterId": 0,
+  "volumeId": 0,
+  "id": 4,
+  "format": 3,
+  "count": 1
+ }
+]

@@ -1,0 +1,94 @@
+[
+ {
+  "lastScanned": "2026-11-26T09:53:22.3712975",
+  "coverImage": null,
+  "folderWatching": false,
+  "includeInDashboard": true,
+  "includeInRecommended": true,
+  "manageCollections": true,
+  "manageReadingLists": true,
+  "includeInSearch": true,
+  "allowScrobbling": false,
+  "folders": [
+   "/library/redacted"
+  ],
+  "collapseSeriesRelationships": false,
+  "libraryFileTypes": [
+   1,
+   3,
+   4
+  ],
+  "excludePatterns": [],
+  "allowMetadataMatching": false,
+  "enableMetadata": true,
+  "removePrefixForSortName": false,
+  "inheritWebLinksFromFirstChapter": false,
+  "defaultLanguage": "",
+  "metadataProvider": 4,
+  "id": 1,
+  "name": "BD",
+  "type": 1
+ },
+ {
+  "lastScanned": "2026-11-26T09:54:30.7457495",
+  "coverImage": null,
+  "folderWatching": false,
+  "includeInDashboard": true,
+  "includeInRecommended": true,
+  "manageCollections": true,
+  "manageReadingLists": true,
+  "includeInSearch": true,
+  "allowScrobbling": false,
+  "folders": [
+   "/library/redacted"
+  ],
+  "collapseSeriesRelationships": false,
+  "libraryFileTypes": [
+   1,
+   2,
+   3
+  ],
+  "excludePatterns": [
+   "**/*.readaloud.epub"
+  ],
+  "allowMetadataMatching": false,
+  "enableMetadata": true,
+  "removePrefixForSortName": false,
+  "inheritWebLinksFromFirstChapter": false,
+  "defaultLanguage": null,
+  "metadataProvider": 2,
+  "id": 3,
+  "name": "Livres",
+  "type": 2
+ },
+ {
+  "lastScanned": "2026-11-26T09:53:37.2777707",
+  "coverImage": null,
+  "folderWatching": false,
+  "includeInDashboard": true,
+  "includeInRecommended": true,
+  "manageCollections": true,
+  "manageReadingLists": true,
+  "includeInSearch": true,
+  "allowScrobbling": false,
+  "folders": [
+   "/library/redacted"
+  ],
+  "collapseSeriesRelationships": false,
+  "libraryFileTypes": [
+   1,
+   3,
+   4
+  ],
+  "excludePatterns": [],
+  "allowMetadataMatching": false,
+  "enableMetadata": true,
+  "removePrefixForSortName": false,
+  "inheritWebLinksFromFirstChapter": false,
+  "defaultLanguage": "",
+  "metadataProvider": 3,
+  "id": 2,
+  "name": "Mangas",
+  "type": 0
+ }
+]

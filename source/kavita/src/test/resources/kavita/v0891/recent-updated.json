@@ -1,0 +1,62 @@
+[
+ {
+  "seriesName": "Christine",
+  "seriesId": 453,
+  "libraryId": 3,
+  "libraryType": 2,
+  "created": "2026-11-26T09:35:03.5990362",
+  "chapterId": 0,
+  "volumeId": 0,
+  "id": 0,
+  "format": 3,
+  "count": 1
+ },
+ {
+  "seriesName": "Hier et demain",
+  "seriesId": 452,
+  "libraryId": 3,
+  "libraryType": 2,
+  "created": "2026-11-26T09:35:03.5243485",
+  "chapterId": 0,
+  "volumeId": 0,
+  "id": 1,
+  "format": 3,
+  "count": 1
+ },
+ {
+  "seriesName": "La Seconde",
+  "seriesId": 451,
+  "libraryId": 3,
+  "libraryType": 2,
+  "created": "2026-11-26T09:35:03.3983253",
+  "chapterId": 0,
+  "volumeId": 0,
+  "id": 2,
+  "format": 3,
+  "count": 1
+ },
+ {
+  "seriesName": "Ils étaient dix",
+  "seriesId": 450,
+  "libraryId": 3,
+  "libraryType": 2,
+  "created": "2026-11-26T09:35:03.3566758",
+  "chapterId": 0,
+  "volumeId": 0,
+  "id": 3,
+  "format": 3,
+  "count": 1
+ },
+ {
+  "seriesName": "Fire and Blood",
+  "seriesId": 449,
+  "libraryId": 3,
+  "libraryType": 2,
+  "created": "2026-11-26T09:35:03.3096147",
+  "chapterId": 0,
+  "volumeId": 0,
+  "id": 4,
+  "format": 3,
+  "count": 1
+ }
+]
