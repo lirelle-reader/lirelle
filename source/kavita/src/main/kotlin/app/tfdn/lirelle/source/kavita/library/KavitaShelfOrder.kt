@@ -11,9 +11,10 @@ import app.tfdn.lirelle.source.kavita.library.dto.ReadingListItemDto
 import java.text.Collator
 
 // How a reading list's books are sorted and narrowed on the device: Kavita gives a list whole, in its own order.
+// The formats and the reading states are read the same for a genre's books.
 
 /** Kavita's formats each group of formats stands for: comics are images and archives of them. No audio. */
-private val FormatFilter.kavitaFormats: Set<Int>
+internal val FormatFilter.kavitaFormats: Set<Int>
     get() = when (this) {
         FormatFilter.Epub -> setOf(EpubFormat)
         FormatFilter.Pdf -> setOf(PdfFormat)
@@ -22,7 +23,7 @@ private val FormatFilter.kavitaFormats: Set<Int>
     }
 
 /** The read state a reading state stands for; none for those Kavita does not keep. */
-private val StatusFilter.readState: ReadState?
+internal val StatusFilter.readState: ReadState?
     get() = when (this) {
         StatusFilter.Unread -> ReadState.Unread
         StatusFilter.Reading -> ReadState.Reading

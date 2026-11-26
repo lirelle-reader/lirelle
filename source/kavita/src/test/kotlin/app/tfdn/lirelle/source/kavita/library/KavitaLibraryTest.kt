@@ -345,9 +345,7 @@ class KavitaLibraryTest {
     }
 
     @Test
-    fun `Search, the genres and the authors are not asked yet`() = runBlocking {
-        assertThat((library.search("dune") as ApiResult.Success).value.isEmpty).isTrue()
-        assertThat(library.genres()).isEqualTo(ApiResult.Success(emptyList<Any>()))
+    fun `the authors are not asked yet`() = runBlocking {
         assertThat(library.authors(AuthorSort.Name, SortDirection.Ascending).items.asSnapshot()).isEmpty()
         assertThat(library.authorBooks(AuthorId("René Goscinny"))).isEqualTo(ApiResult.Success(emptyList<Any>()))
         assertThat(library.author(AuthorId("René Goscinny"))).isEqualTo(ApiResult.Failure(ApiError.NotFound))

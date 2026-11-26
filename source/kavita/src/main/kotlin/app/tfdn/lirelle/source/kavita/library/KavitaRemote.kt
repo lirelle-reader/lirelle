@@ -8,6 +8,8 @@ import app.tfdn.lirelle.source.kavita.network.KavitaApis
 import app.tfdn.lirelle.source.kavita.network.KavitaCall
 import app.tfdn.lirelle.source.kavita.network.KavitaErrors
 import app.tfdn.lirelle.source.kavita.network.answer
+import kotlinx.coroutines.sync.Semaphore
+import kotlinx.coroutines.sync.withPermit
 import retrofit2.HttpException
 import retrofit2.Response
 
@@ -54,6 +56,30 @@ internal class KavitaProfileServer(
     /** The error to show for a list that failed to load. */
     fun errorOf(throwable: Throwable): ApiError = errors.map(throwable, KavitaCall.Authenticated)
 }
+
+/**
+ * At most [max] calls to the server under way at once, for what asks many of them together (Home's rows, a
+ * search, a genre's series unfolded). A call waiting for its turn is cancelled with what waits for it.
+ */
+internal class KavitaCallLimit(max: Int = MaxCalls) {
+
+    private val turns = Semaphore(max)
+
+    /** What [block] answers, made when fewer than the limit's calls are under way. */
+    suspend fun <T> limited(block: suspend () -> T): T = turns.withPermit { block() }
+
+    /** What [block] answers, in its turn; null when what it asks is not there (404), gone between two calls. */
+    suspend fun <T> orGone(block: suspend () -> T): T? = limited {
+        try {
+            block()
+        } catch (exception: HttpException) {
+            if (exception.code() == KavitaErrors.NotFound) null else throw exception
+        }
+    }
+}
+
+/** The most calls made at once by what asks many together. */
+private const val MaxCalls = 6
 
 /** Nothing of that id: what is asked of the server is not there. */
 internal fun notFound(): Nothing = throw ApiErrorException(ApiError.NotFound)

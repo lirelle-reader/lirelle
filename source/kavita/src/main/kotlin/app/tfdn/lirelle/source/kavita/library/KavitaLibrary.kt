@@ -3,6 +3,7 @@ package app.tfdn.lirelle.source.kavita.library
 import app.tfdn.lirelle.core.ids.AuthorId
 import app.tfdn.lirelle.core.ids.BookId
 import app.tfdn.lirelle.core.ids.SeriesId
+import app.tfdn.lirelle.core.library.PageResult
 import app.tfdn.lirelle.core.library.PagedList
 import app.tfdn.lirelle.core.library.model.AuthorDetail
 import app.tfdn.lirelle.core.library.model.BookDetail
@@ -10,10 +11,12 @@ import app.tfdn.lirelle.core.library.model.BookListRequest
 import app.tfdn.lirelle.core.library.model.BookListSource
 import app.tfdn.lirelle.core.library.model.BookReading
 import app.tfdn.lirelle.core.library.model.BookSummary
+import app.tfdn.lirelle.core.library.model.Genre
 import app.tfdn.lirelle.core.library.model.HomeRow
 import app.tfdn.lirelle.core.library.model.HomeRowExtent
 import app.tfdn.lirelle.core.library.model.HomeRowKind
 import app.tfdn.lirelle.core.library.model.RelatedBooks
+import app.tfdn.lirelle.core.library.model.SearchResults
 import app.tfdn.lirelle.core.library.model.Series
 import app.tfdn.lirelle.core.library.model.SeriesBooks
 import app.tfdn.lirelle.core.library.model.ServerLibrary
@@ -25,13 +28,15 @@ import app.tfdn.lirelle.source.kavita.network.KavitaApis
 import app.tfdn.lirelle.source.kavita.network.KavitaErrors
 
 /**
- * The lists of a Kavita profile's library asked of its [server]: its libraries, its series and its reading lists
- * with their books. Those not asked yet stay empty ([EmptyKavitaLists]); [KavitaLibrary] answers the pages.
+ * The lists of a Kavita profile's library asked of its [server]: its libraries, its series, its reading lists with
+ * their books, and its genres with theirs. There is no list of all the library's books: only a genre's. Those not
+ * asked yet stay empty ([EmptyKavitaLists]); [KavitaLibrary] answers the pages.
  */
 internal abstract class KavitaLibraryLists(protected val server: KavitaProfileServer) : EmptyKavitaLists() {
 
     private val seriesPages = KavitaSeriesPages(server)
     private val shelves = KavitaShelves(server)
+    private val genres = KavitaGenres(server)
 
     override suspend fun libraries(): ApiResult<List<ServerLibrary>> = seriesPages.libraries()
 
@@ -43,15 +48,31 @@ internal abstract class KavitaLibraryLists(protected val server: KavitaProfileSe
     override suspend fun shelves(): ApiResult<Shelves> = shelves.shelves()
 
     override fun books(source: BookListSource, request: BookListRequest): PagedList<BookSummary> =
-        shelves.books(source, request)
+        if (source == BookListSource.AllBooks && request.isOfGenre) {
+            genres.books(request)
+        } else {
+            shelves.books(source, request)
+        }
+
+    override suspend fun bookPage(
+        request: BookListRequest,
+        page: Int,
+        size: Int,
+    ): ApiResult<PageResult<BookSummary>> =
+        if (request.isOfGenre) genres.bookPage(request, page, size) else super.bookPage(request, page, size)
+
+    override suspend fun genres(): ApiResult<List<Genre>> = genres.genres()
 }
+
+/** The request is for a genre's books, the only books Kavita lists outside a series, a shelf or an author. */
+private val BookListRequest.isOfGenre: Boolean get() = genre.orNullIfBlank() != null
 
 /**
  * A Kavita profile's library, asked of its server with its key: Kavita's series, volumes and chapters brought to
  * the app's books by one rule (`KavitaBooks.kt`), their pages, readings and reading lists ([KavitaLibraryLists]),
- * and Home's rows ([KavitaHome], whose time [clock] tells, in milliseconds). The search, the genres and the authors
- * are not asked yet: they are empty, and an author is not found. Reads the profile's server on every call, through
- * [session].
+ * Home's rows ([KavitaHome], whose time [clock] tells, in milliseconds) and the search ([KavitaSearch]). The
+ * authors are not asked yet: they are empty, and an author is not found. Reads the profile's server on every call,
+ * through [session].
  */
 internal class KavitaLibrary(
     session: ProfileSession,
@@ -63,9 +84,12 @@ internal class KavitaLibrary(
 
     private val bookPages = KavitaBookPages(server)
     private val home = KavitaHome(server, clock)
+    private val search = KavitaSearch(server)
 
     override suspend fun homeRow(kind: HomeRowKind, extent: HomeRowExtent): ApiResult<HomeRow> =
         home.homeRow(kind, extent)
+
+    override suspend fun search(text: String): ApiResult<SearchResults> = search.search(text)
 
     override suspend fun author(authorId: AuthorId): ApiResult<AuthorDetail> = NotFound
 

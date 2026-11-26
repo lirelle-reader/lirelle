@@ -8,15 +8,11 @@ import app.tfdn.lirelle.core.network.ApiResult
 import app.tfdn.lirelle.source.kavita.library.dto.ChapterDto
 import app.tfdn.lirelle.source.kavita.library.dto.RecentlyUpdatedDto
 import app.tfdn.lirelle.source.kavita.library.dto.SeriesDto
-import app.tfdn.lirelle.source.kavita.network.KavitaErrors
 import app.tfdn.lirelle.source.kavita.network.answer
 import java.time.Instant
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.sync.Semaphore
-import kotlinx.coroutines.sync.withPermit
-import retrofit2.HttpException
 import retrofit2.Response
 
 /** How many series a Home row asks for: 20 for the row, 50 for its "See all" screen. */
@@ -31,12 +27,12 @@ internal val HomeRowExtent.size: Int
  * resume in each, its continue point, which Home asks for both rows at once: they are shared for a few seconds
  * ([KavitaOnDeck], whose time [clock] tells). Want to read reads the want-to-read series the same way, and keeps a
  * series read to the end with its last book. Recently added reads each group's series detail, Kavita naming no book
- * in a group. At most [MaxCalls] calls are made at once, all rows together. A series or a volume gone between two
- * calls (404) leaves its book out; any other failure fails the row.
+ * in a group. At most six calls are made at once ([KavitaCallLimit]), all rows together. A series or a volume gone
+ * between two calls (404) leaves its book out; any other failure fails the row.
  */
 internal class KavitaHome(private val server: KavitaProfileServer, clock: () -> Long) {
 
-    private val calls = Semaphore(MaxCalls)
+    private val calls = KavitaCallLimit()
     private val onDeck = KavitaOnDeck(clock)
 
     /** The [kind] row, as long as [extent] asks. */
@@ -65,11 +61,11 @@ internal class KavitaHome(private val server: KavitaProfileServer, clock: () -> 
         size: Int,
         fetch: suspend () -> Response<List<SeriesDto>>,
     ): SeriesPoints {
-        val response = limited(fetch)
+        val response = calls.limited(fetch)
         val series = response.answer()
         val points = coroutineScope {
             series.map { one ->
-                async { orGone { remote.api.continuePoint(one.id) }?.let { SeriesPoint(one, it) } }
+                async { calls.orGone { remote.api.continuePoint(one.id) }?.let { SeriesPoint(one, it) } }
             }.awaitAll()
         }
         return SeriesPoints(points.filterNotNull(), response.holdsMoreThan(size))
@@ -89,7 +85,7 @@ internal class KavitaHome(private val server: KavitaProfileServer, clock: () -> 
     private suspend fun book(remote: KavitaRemote, at: SeriesPoint): BookSummary? {
         val point = at.point
         val volumeIndex = if (point.isDefault) {
-            (orGone { remote.api.volume(point.volumeId) } ?: return null).index
+            (calls.orGone { remote.api.volume(point.volumeId) } ?: return null).index
         } else {
             null
         }
@@ -99,7 +95,7 @@ internal class KavitaHome(private val server: KavitaProfileServer, clock: () -> 
 
     /** The groups of the recently updated series, each its series' newest book. */
     private suspend fun recentlyAdded(kind: HomeRowKind, remote: KavitaRemote, size: Int): HomeRow {
-        val response = limited { remote.api.recentlyUpdated(FirstPage, size) }
+        val response = calls.limited { remote.api.recentlyUpdated(FirstPage, size) }
         val groups = response.answer()
         val books = coroutineScope { groups.map { async { newest(remote, it) } }.awaitAll() }
         return HomeRow(kind, books.filterNotNull().distinctBy { it.id }, response.holdsMoreThan(size))
@@ -110,22 +106,10 @@ internal class KavitaHome(private val server: KavitaProfileServer, clock: () -> 
      * a series.
      */
     private suspend fun newest(remote: KavitaRemote, group: RecentlyUpdatedDto): BookSummary? {
-        val detail = orGone { remote.api.detail(group.seriesId) } ?: return null
+        val detail = calls.orGone { remote.api.detail(group.seriesId) } ?: return null
         val book = detail.books().maxByOrNull { utcInstant(it.chapter.createdUtc) ?: Instant.MIN } ?: return null
         val series = SeriesRefInfo(group.seriesId, group.seriesName.orEmpty()).takeUnless { detail.isLoneBook }
         return remote.mapper.summary(book, series, group.format)
-    }
-
-    /** What [block] answers, made when fewer than [MaxCalls] calls are under way. */
-    private suspend fun <T> limited(block: suspend () -> T): T = calls.withPermit { block() }
-
-    /** What [block] answers; null when what it asks is not there (404). */
-    private suspend fun <T> orGone(block: suspend () -> T): T? = limited {
-        try {
-            block()
-        } catch (exception: HttpException) {
-            if (exception.code() == KavitaErrors.NotFound) null else throw exception
-        }
     }
 }
 
@@ -140,6 +124,3 @@ private fun Response<*>.holdsMoreThan(size: Int): Boolean = (totalItems() ?: 0) 
 
 private const val RowSize = 20
 private const val SeeAllSize = 50
-
-/** The most calls Home makes at once. */
-private const val MaxCalls = 6
