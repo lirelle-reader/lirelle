@@ -27,8 +27,8 @@ What a server does with these data is up to whoever runs it, under their own pri
 server, they stay with you.
 
 **Signing in to Komga through its identity provider (OIDC):** the sign-in happens in a web view inside the app, on the
-server's own sign-in page and the identity provider it uses. The app keeps only what the server gives it back to stay
-signed in.
+server's own sign-in page and the identity provider it uses. The web view names itself as a browser does, with the
+app's name and version added. The app keeps only what the server gives it back to stay signed in.
 
 ## What stays on your device
 

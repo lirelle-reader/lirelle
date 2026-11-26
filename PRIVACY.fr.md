@@ -29,8 +29,9 @@ Ce qu’un serveur fait de ces données relève de celui qui le gère, selon sa 
 vous gérez votre propre serveur, elles restent chez vous.
 
 **Connexion à Komga par son fournisseur d’identité (OIDC) :** la connexion se fait dans une vue web, dans
-l’application, sur la page de connexion du serveur et du fournisseur d’identité qu’il utilise. L’application ne garde
-que ce que le serveur lui rend pour rester connectée.
+l’application, sur la page de connexion du serveur et du fournisseur d’identité qu’il utilise. La vue web se présente
+comme un navigateur, avec en plus le nom et la version de l’application. L’application ne garde que ce que le serveur
+lui rend pour rester connectée.
 
 ## Ce qui reste sur votre appareil
 

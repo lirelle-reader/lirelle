@@ -15,9 +15,9 @@ class UserAgentTest {
     }
 
     @Test
-    fun `keeps a debug version as the build wrote it`() {
-        assertThat(formatUserAgent("0.7.0-5-gabc1234", "16", "Pixel 9").value)
-            .isEqualTo("Lirelle/0.7.0-5-gabc1234 (Android 16; Pixel 9)")
+    fun `keeps a version between releases as the build wrote it`() {
+        assertThat(formatUserAgent("0.8.0.12", "16", "Pixel 9").value)
+            .isEqualTo("Lirelle/0.8.0.12 (Android 16; Pixel 9)")
     }
 
     @Test

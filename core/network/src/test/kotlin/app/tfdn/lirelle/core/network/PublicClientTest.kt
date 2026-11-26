@@ -3,6 +3,7 @@ package app.tfdn.lirelle.core.network
 import com.google.common.truth.Truth.assertThat
 import mockwebserver3.MockResponse
 import mockwebserver3.MockWebServer
+import okhttp3.Headers.Companion.headersOf
 import okhttp3.HttpUrl
 import okhttp3.OkHttpClient
 import okhttp3.Request
@@ -59,7 +60,21 @@ class PublicClientTest {
         assertThat(sentAgent(newAuthenticatedClient(newPublicClient(agent), NoAuthorizer))).isEqualTo(agent.value)
     }
 
+    @Test
+    fun `a request sent on to another server still names Lirelle`() {
+        MockWebServer().use { first ->
+            first.start()
+            first.enqueue(MockResponse(code = Redirect, headers = headersOf("Location", server.url("/b").toString())))
+
+            newPublicClient(agent).newCall(Request.Builder().url(first.url("/a")).build()).execute().close()
+
+            assertThat(first.takeRequest().headers["User-Agent"]).isEqualTo(agent.value)
+            assertThat(server.takeRequest().headers["User-Agent"]).isEqualTo(agent.value)
+        }
+    }
+
     private companion object {
         const val Ok = 200
+        const val Redirect = 307
     }
 }
