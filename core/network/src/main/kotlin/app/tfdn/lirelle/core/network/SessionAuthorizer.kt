@@ -44,6 +44,13 @@ interface SessionAuthorizer {
      * a sign-in ([app.tfdn.lirelle.core.session.profile.ProfileSession.expire] with the refused credential).
      */
     suspend fun rejected(sent: String, target: HttpUrl): AuthHeader?
+
+    /**
+     * The address to send a request for [target] to: [target] itself, unless the source's server takes the
+     * credential in the address on some routes. What this returns is as secret as the credential: it is sent, and
+     * neither logged nor kept.
+     */
+    fun address(target: HttpUrl): HttpUrl = target
 }
 
 /** Same scheme, host and port as [serverUrl]: what proves the account must never leave the profile's server. */

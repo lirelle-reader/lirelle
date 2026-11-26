@@ -50,7 +50,17 @@ private class ScriptedAuthorizer(
     /** What it was asked, in order: the value refused, if any, and where the header goes. */
     val asked = mutableListOf<Pair<String?, HttpUrl>>()
 
+    /**
+     * A query parameter it puts in the address of every request, as a source whose server takes the credential
+     * there; null to leave addresses as the contract's default does.
+     */
+    var inAddress: Pair<String, String>? = null
+
     override suspend fun header(target: HttpUrl): AuthHeader? = answer(sent = null, target, held)
+
+    override fun address(target: HttpUrl): HttpUrl = inAddress
+        ?.let { (name, value) -> target.newBuilder().setQueryParameter(name, value).build() }
+        ?: super.address(target)
 
     override suspend fun rejected(sent: String, target: HttpUrl): AuthHeader? {
         if (refusing) {
@@ -268,6 +278,29 @@ class AuthenticatedClientTest {
         assertThat(authorizer.signInNeeded).isTrue()
         assertThat(authorizer.asked).containsExactly(null to server.url("/me"), "the-key" to server.url("/me"))
             .inOrder()
+    }
+
+    @Test
+    fun `a request goes to the address the authorizer gives, and still carries its header`() {
+        authorizer.inAddress = "k" to "v"
+        server.enqueue(MockResponse(code = Ok))
+
+        assertThat(get(path = "/image?id=7")).isEqualTo(Ok)
+
+        val sent = server.takeRequest()
+        assertThat(sent.url.queryParameter("k")).isEqualTo("v")
+        assertThat(sent.url.queryParameter("id")).isEqualTo("7")
+        assertThat(sent.headers["Authorization"]).isEqualTo("Bearer access-1")
+        assertThat(authorizer.asked).containsExactly(null to server.url("/image?id=7"))
+    }
+
+    @Test
+    fun `by default a request goes to its own address`() {
+        server.enqueue(MockResponse(code = Ok))
+
+        assertThat(get(path = "/image?id=7")).isEqualTo(Ok)
+
+        assertThat(server.takeRequest().url).isEqualTo(server.url("/image?id=7"))
     }
 
     private companion object {

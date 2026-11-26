@@ -54,13 +54,18 @@ private fun SessionAuthorizer.blocking(ask: suspend SessionAuthorizer.() -> Auth
 
 /**
  * Adds the header the profile's source gives to requests for the profile's server, renewed first when it is about
- * to expire. Requests for any other host go out untouched. OkHttp calls interceptors on its own threads, so
- * blocking here is expected.
+ * to expire, and sends each request to the address the source gives for it ([SessionAuthorizer.address]): its own,
+ * or one with the credential in it on the routes that take it there. That address is made here, after the
+ * interceptors before this one, so that what the app keeps and logs never holds the credential. Requests for any
+ * other host go out untouched. OkHttp calls interceptors on its own threads, so blocking here is expected.
  */
 class AuthInterceptor(private val authorizer: SessionAuthorizer) : Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
-        val header = authorizer.blocking { header(chain.request().url) }
-        val request = header?.let { chain.request().carrying(it) } ?: chain.request()
+        val asked = chain.request()
+        val header = authorizer.blocking { header(asked.url) }
+        val url = authorizer.address(asked.url)
+        val addressed = if (url == asked.url) asked else asked.newBuilder().url(url).build()
+        val request = header?.let { addressed.carrying(it) } ?: addressed
         return chain.proceed(request)
     }
 }
