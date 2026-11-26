@@ -3,7 +3,6 @@ package app.tfdn.lirelle.source.kavita.library
 import app.tfdn.lirelle.core.ids.AuthorId
 import app.tfdn.lirelle.core.ids.BookId
 import app.tfdn.lirelle.core.ids.SeriesId
-import app.tfdn.lirelle.core.library.PageResult
 import app.tfdn.lirelle.core.library.PagedList
 import app.tfdn.lirelle.core.library.model.Author
 import app.tfdn.lirelle.core.library.model.AuthorDetail
@@ -58,13 +57,6 @@ internal abstract class KavitaLibraryLists(protected val server: KavitaProfileSe
         } else {
             shelves.books(source, request)
         }
-
-    override suspend fun bookPage(
-        request: BookListRequest,
-        page: Int,
-        size: Int,
-    ): ApiResult<PageResult<BookSummary>> =
-        if (request.isOfGenre) genres.bookPage(request, page, size) else super.bookPage(request, page, size)
 
     override suspend fun genres(): ApiResult<List<Genre>> = genres.genres()
 

@@ -19,7 +19,6 @@ internal data class ReadingListChapterDto(
  */
 @Serializable
 internal data class ReadingListItemDto(
-    val order: Int = 0,
     val chapterId: Int,
     val seriesId: Int = 0,
     val seriesName: String? = null,
@@ -46,13 +45,11 @@ internal data class RecentlyUpdatedDto(
     val seriesId: Int,
     val seriesName: String? = null,
     val format: Int? = null,
-    val created: String? = null,
-    val count: Int = 1,
 )
 
 /** A series the search found. */
 @Serializable
-internal data class SearchSeriesDto(val seriesId: Int, val name: String = "", val libraryId: Int = 0)
+internal data class SearchSeriesDto(val seriesId: Int, val name: String = "")
 
 /** What the search found, of which the series, the chapters and the people are read; up to 15 in each group. */
 @Serializable

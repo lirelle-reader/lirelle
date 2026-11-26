@@ -295,15 +295,11 @@ class KavitaGenresTest {
     }
 
     @Test
-    fun `a page of a genre's books is a page of its series, unfolded`() = runBlocking<Unit> {
-        answerTwoSeries()
-
+    fun `a page of a genre's books read without a screen is empty, and nothing is asked`() = runBlocking<Unit> {
         val page = (library.bookPage(genre(), page = 1, size = 2) as ApiResult.Success).value
 
-        assertThat(page.items.map { it.id }).containsExactlyElementsIn(TwoSeriesBooks).inOrder()
-        // A full page of series may be followed by more: Kavita does not count a genre's books.
-        assertThat(page.total).isEqualTo(Int.MAX_VALUE)
-        assertThat(routes.requests().single { it.route() == AllSeries }.url.encodedQuery)
-            .isEqualTo("PageNumber=2&PageSize=2")
+        assertThat(page.items).isEmpty()
+        assertThat(page.total).isEqualTo(0)
+        assertThat(server.requestCount).isEqualTo(0)
     }
 }

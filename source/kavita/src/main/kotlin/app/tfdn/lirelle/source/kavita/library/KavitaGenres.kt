@@ -2,7 +2,6 @@ package app.tfdn.lirelle.source.kavita.library
 
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
-import app.tfdn.lirelle.core.library.PageResult
 import app.tfdn.lirelle.core.library.PagedList
 import app.tfdn.lirelle.core.library.model.BookListRequest
 import app.tfdn.lirelle.core.library.model.BookSort
@@ -55,23 +54,6 @@ internal class KavitaGenres(private val server: KavitaProfileServer) {
         }
         return PagedList(pager.flow, MutableStateFlow(null))
     }
-
-    /**
-     * Page [page] (from 0) of [size] series of [request]'s genre, unfolded into their books: as many books as they
-     * hold, which may be more or fewer than [size]. Kavita does not count a genre's books: a full page of series
-     * says that there may be any number more ([Int.MAX_VALUE]); a shorter one is the last, and its total counts the
-     * books of that page only, not those of the pages before it.
-     */
-    suspend fun bookPage(request: BookListRequest, page: Int, size: Int): ApiResult<PageResult<BookSummary>> =
-        server.call { remote ->
-            val ids = genreIds(remote, request)
-            val unfolded = if (ids.isEmpty()) {
-                UnfoldedPage(emptyList(), isLast = true)
-            } else {
-                unfold(remote, request, ids, page + FirstPage, size)
-            }
-            PageResult(unfolded.books, if (unfolded.isLast) unfolded.books.size else Int.MAX_VALUE)
-        }
 
     /** The ids of the genres named as [request]'s, joined with commas; empty when the server knows none. */
     private suspend fun genreIds(remote: KavitaRemote, request: BookListRequest): String {

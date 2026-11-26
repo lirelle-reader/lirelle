@@ -7,27 +7,22 @@ import kotlinx.serialization.Serializable
 
 /** A library of the server, as `GET api/Library/libraries` lists it. */
 @Serializable
-internal data class LibraryDto(val id: Int, val name: String = "", val type: Int = 0)
+internal data class LibraryDto(val id: Int, val name: String = "")
 
 /**
- * A series, as a list of series and `GET api/Series/{id}` give it. Its pages are those of all its chapters.
+ * A series, as a list of series and `GET api/Series/{id}` give it.
  *
  * @property format what its files are: 0 images, 1 an archive, 2 unknown, 3 EPUB, 4 PDF.
- * @property createdUtc absent from the lists: when the series was last added to, [lastChapterAddedUtc] says.
+ * @property lastChapterAddedUtc when the series was last added to.
  */
 @Serializable
 internal data class SeriesDto(
     val id: Int,
     val name: String = "",
     val sortName: String? = null,
-    val pages: Int = 0,
-    val pagesRead: Int = 0,
     val format: Int = 2,
-    val libraryId: Int = 0,
     val libraryName: String? = null,
-    val createdUtc: String? = null,
     val lastChapterAddedUtc: String? = null,
-    val latestReadDate: String? = null,
 )
 
 /** A person named on a chapter or a series: a writer, a penciller, a publisher. */
@@ -40,7 +35,7 @@ internal data class GenreDto(val id: Int, val title: String = "")
 
 /** A file of a chapter, of which neither the path nor the size is read. */
 @Serializable
-internal data class FileDto(val id: Int = 0, val format: Int = 2, val extension: String? = null)
+internal data class FileDto(val format: Int = 2)
 
 /**
  * A chapter, as `GET api/Chapter`, a series detail, a volume and the search give it. Its number is `-100000` for
@@ -82,9 +77,6 @@ internal data class VolumeDto(
     val number: Int = 0,
     val minNumber: Float = 0f,
     val maxNumber: Float = 0f,
-    val name: String? = null,
-    val pages: Int = 0,
-    val pagesRead: Int = 0,
     val seriesId: Int = 0,
     val chapters: List<ChapterDto> = emptyList(),
 )
@@ -111,7 +103,6 @@ internal data class SeriesMetadataDto(
     val pencillers: List<PersonRefDto> = emptyList(),
     val publishers: List<PersonRefDto> = emptyList(),
     val language: String? = null,
-    val releaseYear: Int = 0,
 )
 
 /** A person as `GET api/Person` and the search give it. */
