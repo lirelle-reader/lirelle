@@ -76,6 +76,36 @@ class ProviderPageSignInTest {
         }
 
     @Test
+    fun `a provider's sign-in that succeeds forgets a password and a key typed beside it`() =
+        runTest(mainRule.dispatcher) {
+            val viewModel = viewModel()
+            viewModel.onUsernameChange("ann")
+            viewModel.onPasswordChange("s3cr3t")
+            viewModel.pastedKey.onChange("p4st3d-k3y")
+            viewModel.onOidc(provider)
+
+            viewModel.providerPage.end(ProviderPageEnd.SignedIn("KOMGA-SESSION=s1"))
+
+            assertThat(viewModel.state.value.password).isEmpty()
+            assertThat(viewModel.state.value.key).isEmpty()
+            assertThat(viewModel.state.value.isBusy).isTrue()
+        }
+
+    @Test
+    fun `a provider's sign-in that fails keeps what was typed`() = runTest(mainRule.dispatcher) {
+        auth.completeWithSessionResult = ApiResult.Failure(ApiError.SignInRefused)
+        val viewModel = viewModel()
+        viewModel.onPasswordChange("s3cr3t")
+        viewModel.pastedKey.onChange("p4st3d-k3y")
+        viewModel.onOidc(provider)
+
+        viewModel.providerPage.end(ProviderPageEnd.SignedIn("KOMGA-SESSION=s1"))
+
+        assertThat(viewModel.state.value.password).isEqualTo("s3cr3t")
+        assertThat(viewModel.state.value.key).isEqualTo("p4st3d-k3y")
+    }
+
+    @Test
     fun `the form is busy while the session is being turned into the device's own key`() =
         runTest(mainRule.dispatcher) {
             val viewModel = viewModel()

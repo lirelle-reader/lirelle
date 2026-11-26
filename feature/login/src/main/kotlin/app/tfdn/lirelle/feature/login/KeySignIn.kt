@@ -10,13 +10,15 @@ import kotlinx.coroutines.launch
 
 /**
  * The sign-in with a key the user made on the server and pasted ([LoginOptions.keyEntry]), of the sign-in step
- * whose [state] it shares: the same progress, the same place for what went wrong, the same end as a password
- * sign-in — to the server and the kind the step signs in to.
+ * whose [state] it shares: the same progress and the same end as a password sign-in — to the server and the kind
+ * the step signs in to. What went wrong with it has its own place ([SignInUiState.keyError]), on the key's field:
+ * the key's block is last on the screen, far from where the other sign-ins say it.
  *
  * The key is held in [state] only, in memory, as the password is: it is not saved with the screen, a process
  * stopped loses it, and it is forgotten once the server took it.
  *
- * @param signedIn told once the sign-in has succeeded and its session is saved.
+ * @param signedIn told once the sign-in has succeeded and its session is saved: it forgets the secrets
+ *   ([SignInUiState.signedIn]).
  */
 class KeySignIn internal constructor(
     private val auth: AuthRepository,
@@ -25,7 +27,7 @@ class KeySignIn internal constructor(
     private val signedIn: suspend () -> Unit,
 ) {
     fun onChange(key: String) {
-        state.update { it.copy(key = key, error = null) }
+        state.update { it.copy(key = key, error = null, keyError = null) }
     }
 
     /** Sends the key as typed: the server's kind tidies what was pasted, and refuses a key it cannot be. */
@@ -33,19 +35,13 @@ class KeySignIn internal constructor(
         val kind = state.value.kind
         // Also reached from the keyboard, which does not know the button is disabled.
         if (!state.value.canSubmitKey || kind == null) return
-        state.update { it.copy(isBusy = true, error = null) }
+        state.update { it.starting() }
         scope.launch {
             val current = state.value
-            val result = auth.signInWithKey(current.serverUrl, kind, current.key)
-            state.update {
-                when (result) {
-                    // Neither the key nor a password typed beside it is needed any more. The form stays busy
-                    // until the screen leaves, as after a password ([SignInViewModel.onSignIn]).
-                    is ApiResult.Success -> it.copy(password = "", key = "")
-                    is ApiResult.Failure -> it.copy(isBusy = false, error = result.error)
-                }
+            when (val result = auth.signInWithKey(current.serverUrl, kind, current.key)) {
+                is ApiResult.Success -> signedIn()
+                is ApiResult.Failure -> state.update { it.copy(isBusy = false, keyError = result.error) }
             }
-            if (result is ApiResult.Success) signedIn()
         }
     }
 }

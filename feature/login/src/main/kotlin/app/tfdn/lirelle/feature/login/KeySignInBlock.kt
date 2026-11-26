@@ -15,11 +15,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.LiveRegionMode
+import androidx.compose.ui.semantics.liveRegion
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import app.tfdn.lirelle.core.designsystem.WrappingLabel
+import app.tfdn.lirelle.core.network.SignInIdentifier
 import app.tfdn.lirelle.core.session.ServerKind
 
 /**
@@ -50,6 +54,9 @@ internal val KeyKeyboard = KeyboardOptions(
  * something stands above ([underOthers]) — the password, a provider —, the key's field with, under it, where to
  * make a key on a server of the state's kind, and the key's button.
  *
+ * What went wrong with the key ([SignInUiState.keyError]) is said on the field, in error, in place of where to make
+ * one: beside what the user has to correct, not at the top of a column the key ends.
+ *
  * The key is shown as typed, so that what was pasted can be checked, and asked of [KeyKeyboard].
  */
 @Composable
@@ -61,12 +68,19 @@ internal fun KeySignInBlock(
 ) {
     if (underOthers) OrLine()
     val where = state.kind?.whereToMakeKey
+    val identifier = state.options?.identifier ?: SignInIdentifier.Username
+    val under: (@Composable () -> Unit)? = when {
+        state.keyError != null -> { { KeyError(state.keyError.message(identifier)) } }
+        where != null -> { { Text(stringResource(where)) } }
+        else -> null
+    }
     OutlinedTextField(
         value = state.key,
         onValueChange = onKeyChange,
         modifier = Modifier.fillMaxWidth(),
         label = { Text(stringResource(R.string.sign_in_key)) },
-        supportingText = where?.let { sentence -> { Text(stringResource(sentence)) } },
+        supportingText = under,
+        isError = state.keyError != null,
         singleLine = true,
         keyboardOptions = KeyKeyboard,
         keyboardActions = KeyboardActions(onDone = { onKeySignIn() }),
@@ -75,6 +89,13 @@ internal fun KeySignInBlock(
         // Longer than its neighbours: on a second line rather than cut short, at a large text size.
         WrappingLabel(stringResource(R.string.sign_in_with_key))
     }
+}
+
+/** What went wrong with the key, in the field's own colour of an error. */
+@Composable
+private fun KeyError(message: String) {
+    // Announced when it appears: nothing else tells a screen reader user.
+    Text(text = message, modifier = Modifier.semantics { liveRegion = LiveRegionMode.Polite })
 }
 
 /** "or", in the middle of a thin line across the column. */

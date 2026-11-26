@@ -25,6 +25,9 @@ import okhttp3.HttpUrl.Companion.toHttpUrl
 /** What Kavita's one identity provider is called by the app: the server names none. */
 private const val ProviderSlug = "oidc"
 
+/** What Kavita's own sign-in page calls a provider the server gives no name. */
+private const val UnnamedProvider = "OpenID Connect"
+
 /**
  * Signing in to a Kavita server, and out of a Kavita profile, in three ways. By username and password, or through
  * the server's identity provider in a WebView — its address begun here, its pages shown by the app's screen, which
@@ -53,14 +56,15 @@ internal class KavitaSignIn(
 
     /**
      * A username and a password unless the server takes none, its identity provider through a WebView when it has
-     * one — Kavita's flow ends in a session cookie — and a key the user pasted, always.
+     * one — Kavita's flow ends in a session cookie —, named as the server names it or, without a name, as Kavita's
+     * own page does, and a key the user pasted, always.
      */
     override suspend fun loginOptions(serverUrl: String): ApiResult<LoginOptions> = errors.call(KavitaCall.Other) {
         val said = api.forServer(serverUrl).oidcSettings().answer().textUpTo(MaxSettingsBytes)
             ?: throw SerializationException("Longer than what Kavita says of its identity provider")
         val settings = KavitaJson.decodeFromString(OidcSettingsDto.serializer(), said)
-        val provider =
-            OidcProvider(ProviderSlug, settings.providerName, clientId = "", scopes = "", ProviderFlow.WebView)
+        val name = settings.providerName.ifBlank { UnnamedProvider }
+        val provider = OidcProvider(ProviderSlug, name, clientId = "", scopes = "", ProviderFlow.WebView)
         LoginOptions(
             passwordEnabled = !settings.disablePasswordAuthentication,
             oidcProviders = listOfNotNull(provider.takeIf { settings.enabled }),

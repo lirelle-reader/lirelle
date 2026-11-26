@@ -1,5 +1,6 @@
 package app.tfdn.lirelle.source.kavita.network
 
+import app.tfdn.lirelle.core.network.ApiResult
 import app.tfdn.lirelle.core.network.NetworkLog
 import app.tfdn.lirelle.core.session.Credential
 import app.tfdn.lirelle.core.session.Profile
@@ -48,8 +49,8 @@ private val UsersKey = Credential.ApiKey("p45t3d-k3y-0f-th3-us3r", "9", ownedByA
 
 /**
  * A Kavita key lasts until it is deleted: whenever the app lets go of one it made, it deletes it on the server —
- * signing out of the current profile (after it is removed), the key of an account added again (unless the server
- * had refused it), and the key of a profile removed while it slept (no profile is open: the key is handed over).
+ * signing out of the current profile (after it is removed), the key of an account added again (even one the server
+ * had refused), and the key of a profile removed while it slept (no profile is open: the key is handed over).
  * At best: a server that does not answer is given up soon, and the profile is gone all the same. A key the user
  * pasted is theirs: it is forgotten, and nothing is ever sent for it.
  */
@@ -237,17 +238,35 @@ class KavitaKeyEndingTest {
         assertThat(server.requestCount).isEqualTo(2)
     }
 
-    /** The server refused that key: it is deleted already, or nothing can be done with it. */
+    /**
+     * The refusal may not have been the server's — a reverse proxy's, for a while — and the key would then stay
+     * valid for ever: the deletion is tried all the same, at best.
+     */
     @Test
-    fun `the key of an account added again is not sent when the server had refused it`() = runBlocking {
+    fun `the key the app had made is deleted with the new one even when the server had refused it`() = runBlocking {
         store.replaced = ReplacedSession(OldKey, refused = true)
         enqueuePasswordSignIn()
+        server.enqueueRefusal()
 
-        signIn.signInWithPassword(url, "ann", "s3cr3t")
+        assertThat(signIn.signInWithPassword(url, "ann", "s3cr3t")).isEqualTo(ApiResult.Success(Unit))
 
         assertThat(store.saved).hasSize(1)
-        assertThat(server.requestCount).isEqualTo(2)
+        repeat(2) { nextRequest() }
+        nextRequest().assertDeletes(OldKey, with = TheKey)
+        assertThat(server.requestCount).isEqualTo(3)
     }
+
+    @Test
+    fun `the user's own key of an account added again is not sent when the server had refused it either`() =
+        runBlocking {
+            store.replaced = ReplacedSession(UsersKey, refused = true)
+            enqueuePasswordSignIn()
+
+            signIn.signInWithPassword(url, "ann", "s3cr3t")
+
+            assertThat(store.saved).hasSize(1)
+            assertThat(server.requestCount).isEqualTo(2)
+        }
 
     /** Kavita lists every key in clear: the user may paste the very key the app made for this profile. */
     @Test

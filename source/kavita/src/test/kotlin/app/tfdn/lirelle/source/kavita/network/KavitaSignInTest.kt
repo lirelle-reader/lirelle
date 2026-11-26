@@ -48,6 +48,7 @@ import java.util.concurrent.TimeUnit
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import kotlinx.serialization.encoding.CompositeDecoder
 import mockwebserver3.Dispatcher
 import mockwebserver3.MockResponse
 import mockwebserver3.MockWebServer
@@ -416,6 +417,18 @@ class KavitaSignInTest {
         assertThat(signIn.loginOptions(url)).isEqualTo(options(passwordEnabled = true, providers = listOf(provider)))
     }
 
+    /** Kavita's own page names it so when the server gives no name. */
+    @Test
+    fun `a provider the server gives no name is called OpenID Connect`() = runBlocking {
+        listOf("", "   ").forEach { name ->
+            server.enqueueJson(oidcOnJson(name))
+
+            val options = (signIn.loginOptions(url) as ApiResult.Success).value
+
+            assertThat(options.oidcProviders.single().displayName).isEqualTo("OpenID Connect")
+        }
+    }
+
     @Test
     fun `with a provider and passwords no longer taken, the options take no password`() = runBlocking {
         server.enqueueJson(oidcOnJson("Authentik", passwordsDisabled = true))
@@ -489,7 +502,7 @@ class KavitaSignInTest {
         val api = KavitaApis(OkHttpClient(), KavitaJson, KavitaPublicApi::class.java).forServer(url)
         val printed = listOf(
             LoginRequest(Username, Password, apiKey = TheKey),
-            KavitaUserDto(7, Username, token = TheToken, refreshToken = TheRefreshToken),
+            KavitaUserDto(7, Username, token = TheToken),
             AuthKeyDto(42, TheKey),
             KavitaSessionProof.byPassword(api, Username, Password),
             KavitaSessionProof.ofSession(api, ".AspNetCore.Cookies=$TheToken"),
@@ -498,6 +511,16 @@ class KavitaSignInTest {
         printed.forEach { text ->
             listOf(Password, TheToken, TheRefreshToken, TheKey).forEach { assertThat(text).doesNotContain(it) }
         }
+    }
+
+    /** The refresh token of the session a password opened is not even read: it is held nowhere. */
+    @Test
+    fun `the session's refresh token is not read`() {
+        val account = KavitaJson.decodeFromString(KavitaUserDto.serializer(), annJson(withTokens = true))
+
+        assertThat(account.token).isEqualTo(TheToken)
+        assertThat(KavitaUserDto.serializer().descriptor.getElementIndex("refreshToken"))
+            .isEqualTo(CompositeDecoder.UNKNOWN_NAME)
     }
 
     private fun json(body: String): MockResponse =

@@ -341,6 +341,20 @@ class SignInViewModelTest {
     }
 
     @Test
+    fun `a redirect that signs in forgets a password and a key typed beside it`() = runTest(mainRule.dispatcher) {
+        val viewModel = viewModel()
+        viewModel.onPasswordChange("s3cr3t")
+        viewModel.pastedKey.onChange("p4st3d-k3y")
+        viewModel.onOidc(provider)
+
+        relay.deliver(redirect)
+
+        assertThat(viewModel.state.value.password).isEmpty()
+        assertThat(viewModel.state.value.key).isEmpty()
+        assertThat(viewModel.state.value.isBusy).isTrue()
+    }
+
+    @Test
     fun `a redirect delivered before the screen existed is still used`() = runTest(mainRule.dispatcher) {
         // The app was killed while the browser was in front: the request is still on disk.
         auth.oidcPending = true

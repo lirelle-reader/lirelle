@@ -72,7 +72,8 @@ fun ProviderPageRoute(
  *
  * Every cookie and the pages' storage are removed ([cookies]) before the page opens — an attempt the process lost
  * may have left some — and whenever it ends, the server's session taken first once its page is reached, and handed
- * over with [onEnd]. The provider's own session goes too: kept, it would sign the next account added on that
+ * over with [onEnd]; then once more when the WebView is let go of, however the page ended
+ * ([releaseProviderWebView]). The provider's own session goes too: kept, it would sign the next account added on that
  * server in as the same one, without asking, and stay on the device.
  *
  * The WebView names itself as a browser does, Lirelle's name and version added at the end ([userAgent]): the
@@ -114,10 +115,7 @@ internal fun ProviderPageScreen(
                 }
             },
             modifier = Modifier.fillMaxWidth().weight(1f),
-            onRelease = { webView ->
-                webView.stopLoading()
-                webView.destroy()
-            },
+            onRelease = { webView -> releaseProviderWebView(webView, cookies) },
         )
     }
 }
@@ -194,6 +192,18 @@ internal fun configureProviderWebView(webView: WebView, userAgent: UserAgent) {
  * the app's name and version added: `… Chrome/142.0 Mobile Safari/537.36 Lirelle/0.7.0`.
  */
 internal fun providerUserAgent(default: String, userAgent: UserAgent): String = "$default ${userAgent.app}"
+
+/**
+ * Lets go of the WebView of a provider's page, then removes every cookie and the pages' storage once more
+ * ([cookies]). The page may have ended while the server's application ran in it, and the WebView outlives that end
+ * until here: a response still on its way, or the page's script, may have written again after everything was
+ * removed. Destroyed first: nothing of it can write after that, and what it wrote last goes too.
+ */
+internal fun releaseProviderWebView(webView: WebView, cookies: ProviderPageCookies) {
+    webView.stopLoading()
+    webView.destroy()
+    cookies.forgetAll()
+}
 
 /**
  * Watches where the provider's flow leads: the page that ends it for a server of [kind] ([hasSessionCookie] tells

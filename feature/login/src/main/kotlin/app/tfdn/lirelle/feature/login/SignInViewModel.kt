@@ -42,6 +42,11 @@ data class SignInUiState(
     /** A sign-in is being sent, or the browser or a provider's page is open for OIDC. */
     val isBusy: Boolean = false,
     val error: ApiError? = null,
+    /**
+     * What went wrong with the last sign-in with the pasted key, shown on the key's field rather than with
+     * [error]; gone once the key changes or another sign-in starts.
+     */
+    val keyError: ApiError? = null,
 ) {
     /** True when a password sign-in can be sent. */
     val canSubmit: Boolean get() = !isBusy && username.isNotBlank() && password.isNotEmpty()
@@ -55,11 +60,23 @@ data class SignInUiState(
      */
     val needsServer: Boolean get() = serverUrl.isBlank()
 
+    /** As a sign-in starts: busy, with nothing left to say of the one before, whichever it was. */
+    fun starting(): SignInUiState = copy(isBusy = true, error = null, keyError = null)
+
+    /**
+     * Once a sign-in has succeeded, whichever it was: neither the password nor the key is needed any more, and
+     * they must not stay in memory. The form stays busy until the screen leaves: the signed-in level comes only
+     * once the profile before has closed and this one's objects are built, which may take seconds after a sign-out
+     * during playback, and an idle form would invite a second sign-in meanwhile.
+     */
+    fun signedIn(): SignInUiState = copy(password = "", key = "")
+
     /** Never prints the password nor the key: this text ends up in logs and in failed assertions. */
     override fun toString(): String =
         "SignInUiState(serverUrl=$serverUrl, kind=$kind, isCleartext=$isCleartext, " +
             "isLoadingOptions=$isLoadingOptions, options=$options, username=$username, " +
-            "password=${password.redacted()}, key=${key.redacted()}, isBusy=$isBusy, error=$error)"
+            "password=${password.redacted()}, key=${key.redacted()}, isBusy=$isBusy, error=$error, " +
+            "keyError=$keyError)"
 }
 
 /** What is printed in place of a secret: only whether there is one. */
@@ -132,6 +149,12 @@ class SignInViewModel @AssistedInject constructor(
      */
     val signedIn: Flow<Unit> = signedInChannel.receiveAsFlow()
 
+    /** A sign-in has succeeded and its session is saved, whichever it was: the secrets go, and [signedIn] is told. */
+    private val onSignedIn: suspend () -> Unit = {
+        mutableState.update { it.signedIn() }
+        signedInChannel.send(Unit)
+    }
+
     /**
      * The page of a provider that signs in through a WebView of the app ([ProviderFlow.WebView]), while it is
      * open. The form stays busy meanwhile; closed by the user, it is as it was, with nothing to say.
@@ -139,9 +162,8 @@ class SignInViewModel @AssistedInject constructor(
     val providerPage = ProviderPageTurn(
         scope = viewModelScope,
         finish = { page, cookies ->
-            // Signed in, the form stays busy until the screen leaves, as after a password ([onSignIn]).
             when (val result = auth.completeWithSession(page.serverUrl, page.kind, cookies)) {
-                is ApiResult.Success -> signedInChannel.send(Unit)
+                is ApiResult.Success -> onSignedIn()
                 is ApiResult.Failure -> mutableState.update { it.copy(isBusy = false, error = result.error) }
             }
         },
@@ -163,7 +185,7 @@ class SignInViewModel @AssistedInject constructor(
             ),
         )
         state = mutableState.asStateFlow()
-        pastedKey = KeySignIn(auth, mutableState, viewModelScope, signedIn = { signedInChannel.send(Unit) })
+        pastedKey = KeySignIn(auth, mutableState, viewModelScope, signedIn = onSignedIn)
         loadOptions()
         viewModelScope.launch {
             // The activity accepts this link from any app or page. One that is not the answer of the sign-in
@@ -204,29 +226,21 @@ class SignInViewModel @AssistedInject constructor(
         val kind = kind
         // Also reached from the keyboard, which does not know the button is disabled.
         if (!state.value.canSubmit || kind == null) return
-        mutableState.update { it.copy(isBusy = true, error = null) }
+        mutableState.update { it.starting() }
         viewModelScope.launch {
             val current = state.value
             val result = auth.signInWithPassword(current.serverUrl, kind, current.username.trim(), current.password)
-            mutableState.update {
-                when (result) {
-                    // The password is not needed any more, nor a key typed beside it: they must not stay in
-                    // memory. The form stays busy
-                    // until the screen leaves: the signed-in level comes only once the profile before has
-                    // closed and this one's objects are built, which may take seconds after a sign-out
-                    // during playback, and an idle form would invite a second sign-in meanwhile.
-                    is ApiResult.Success -> it.copy(password = "", key = "")
-                    is ApiResult.Failure -> it.copy(isBusy = false, error = result.error)
-                }
+            when (result) {
+                is ApiResult.Success -> onSignedIn()
+                is ApiResult.Failure -> mutableState.update { it.copy(isBusy = false, error = result.error) }
             }
-            if (result is ApiResult.Success) signedInChannel.send(Unit)
         }
     }
 
     fun onOidc(provider: OidcProvider) {
         val kind = kind
         if (state.value.isBusy || kind == null) return
-        mutableState.update { it.copy(isBusy = true, error = null) }
+        mutableState.update { it.starting() }
         viewModelScope.launch {
             when (val result = auth.beginOidc(state.value.serverUrl, kind, provider)) {
                 is ApiResult.Success -> when (provider.signsInBy) {
@@ -315,11 +329,9 @@ class SignInViewModel @AssistedInject constructor(
         // The relay keeps the last redirect: it is acted on only when a sign-in waits for it.
         oidc.settle {
             cancellation?.cancel()
-            mutableState.update { it.copy(isBusy = true, error = null) }
-            val result = auth.completeOidc(redirectUri)
-            // Signed in, the form stays busy until the screen leaves, as after a password ([onSignIn]).
-            when (result) {
-                is ApiResult.Success -> signedInChannel.send(Unit)
+            mutableState.update { it.starting() }
+            when (val result = auth.completeOidc(redirectUri)) {
+                is ApiResult.Success -> onSignedIn()
                 is ApiResult.Failure -> mutableState.update { it.copy(isBusy = false, error = result.error) }
             }
         }

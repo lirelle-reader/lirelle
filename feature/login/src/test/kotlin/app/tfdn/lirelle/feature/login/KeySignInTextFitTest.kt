@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.test.core.app.ApplicationProvider
 import app.tfdn.lirelle.core.designsystem.LirelleTheme
+import app.tfdn.lirelle.core.network.ApiError
 import app.tfdn.lirelle.core.network.LoginOptions
 import app.tfdn.lirelle.core.network.OidcProvider
 import app.tfdn.lirelle.core.network.ProviderFlow
@@ -29,7 +30,7 @@ private const val KavitaServer = "https://livres.bibliotheque-numerique.example-
 @RunWith(ParameterizedRobolectricTestRunner::class)
 @GraphicsMode(GraphicsMode.Mode.NATIVE) // Real font metrics: the default mode counts one pixel per character.
 class KeySignInTextFitTest(
-    screen: String,
+    private val screen: String,
     language: String,
     fontScale: Float,
 ) {
@@ -47,7 +48,7 @@ class KeySignInTextFitTest(
 
     private val provider = OidcProvider("oidc", "Authentik", "", "", ProviderFlow.WebView)
 
-    private fun show(passwords: Boolean, providers: List<OidcProvider>) {
+    private fun show(passwords: Boolean, providers: List<OidcProvider>, keyError: ApiError? = null) {
         compose.setContent {
             LirelleTheme {
                 SignInScreen(
@@ -56,6 +57,7 @@ class KeySignInTextFitTest(
                         kind = ServerKind.Kavita,
                         isLoadingOptions = false,
                         options = LoginOptions(passwordEnabled = passwords, oidcProviders = providers, keyEntry = true),
+                        keyError = keyError,
                     ),
                     onUsernameChange = {},
                     onPasswordChange = {},
@@ -110,6 +112,23 @@ class KeySignInTextFitTest(
         show(passwords = false, providers = emptyList())
 
         assertKeyFits(or = false)
+    }
+
+    /** The longest thing the key's field says: whole under it, on as many lines as it needs. */
+    @Test
+    fun `what went wrong with the key fits under its field`() {
+        show(
+            passwords = true,
+            providers = listOf(provider),
+            keyError = ApiError.ServerTooOld(version = "0.8.8.3-beta", minimum = "0.8.10.12"),
+        )
+
+        val keyButton = text(R.string.sign_in_with_key)
+        val texts = compose.assertAllTextFits(unbreakable = setOf(KavitaServer), wrappingLabels = setOf(keyButton))
+
+        val said = texts.single { it.text == text(R.string.error_server_too_old, "0.8.8.3-beta", "0.8.10.12") }
+        if (screen.startsWith("w320dp")) assertThat(said.lineCount).isGreaterThan(1)
+        assertThat(texts.map { it.text }).doesNotContain(text(R.string.sign_in_key_where_kavita))
     }
 
     companion object {

@@ -13,9 +13,9 @@ import app.tfdn.lirelle.source.kavita.network.dto.KavitaUserDto
  *
  * A key the app made that no profile could be saved with is deleted at once — a key no profile holds would stay
  * valid on the server for ever. For the same reason, the key of the profile an account added again replaces is
- * deleted once the new one is saved, when the app had made it. And a key the app made stays the app's when the
- * user pastes it into the profile that holds it: Kavita lists every key in clear, and the key must still be
- * deleted when the profile goes.
+ * deleted once the new one is saved, when the app had made it — even one the server had refused. And a key the
+ * app made stays the app's when the user pastes it into the profile that holds it: Kavita lists every key in
+ * clear, and the key must still be deleted when the profile goes.
  */
 internal class KavitaProfiles(
     private val store: SessionStore,
@@ -53,13 +53,14 @@ internal class KavitaProfiles(
 
     /**
      * Deletes the key of the profile that [saved] replaced, with the new key: the same account, added again. Only
-     * a key the app made ([KavitaRevocation.revoke]): one the user pasted is theirs. Not when the server had
-     * refused it (the profile waited for a sign-in): it is deleted there already, or nothing can be done with it.
-     * Nor when it is the very key saved.
+     * a key the app made ([KavitaRevocation.revoke]): one the user pasted is theirs. Also when the server had
+     * refused it (the profile waited for a sign-in): the refusal may have been a reverse proxy's, for a while, and
+     * the key would stay valid for ever; deleted there already, the deletion fails and nothing is lost. Not when
+     * it is the very key saved.
      */
     private suspend fun endReplaced(serverUrl: String, replaced: ReplacedSession?, saved: Credential.ApiKey) {
         val old = replaced?.credential as? Credential.ApiKey ?: return
-        if (replaced.refused || old.isSameSignIn(saved) || old.key == saved.key) return
+        if (old.isSameSignIn(saved) || old.key == saved.key) return
         revocation.revoke(serverUrl, old, with = saved.key)
     }
 }

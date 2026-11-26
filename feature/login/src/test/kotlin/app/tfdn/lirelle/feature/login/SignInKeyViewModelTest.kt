@@ -174,7 +174,9 @@ class SignInKeyViewModelTest {
             expectNoEvents()
         }
 
-        assertThat(viewModel.state.value.error).isEqualTo(ApiError.KeyRefused)
+        assertThat(viewModel.state.value.keyError).isEqualTo(ApiError.KeyRefused)
+        // On the key's field only: not also where the other sign-ins say what went wrong.
+        assertThat(viewModel.state.value.error).isNull()
         assertThat(viewModel.state.value.isBusy).isFalse()
         assertThat(viewModel.state.value.key).isEqualTo(Pasted)
     }
@@ -187,11 +189,12 @@ class SignInKeyViewModelTest {
         viewModel.pastedKey.onChange(Pasted)
 
         viewModel.pastedKey.signIn()
-        assertThat(viewModel.state.value.error).isEqualTo(tooOld)
+        assertThat(viewModel.state.value.keyError).isEqualTo(tooOld)
 
         auth.signInWithKeyResult = ApiResult.Failure(ApiError.ServerUnreachable)
         viewModel.pastedKey.signIn()
-        assertThat(viewModel.state.value.error).isEqualTo(ApiError.ServerUnreachable)
+        assertThat(viewModel.state.value.keyError).isEqualTo(ApiError.ServerUnreachable)
+        assertThat(viewModel.state.value.error).isNull()
         assertThat(viewModel.state.value.isBusy).isFalse()
     }
 
@@ -202,9 +205,72 @@ class SignInKeyViewModelTest {
         viewModel.pastedKey.onChange(Pasted)
         viewModel.pastedKey.signIn()
 
+        assertThat(viewModel.state.value.keyError).isEqualTo(ApiError.KeyRefused)
+
         viewModel.pastedKey.onChange("another")
 
+        assertThat(viewModel.state.value.keyError).isNull()
         assertThat(viewModel.state.value.error).isNull()
+    }
+
+    @Test
+    fun `a key sent again clears its error while it is sent`() = runTest(mainRule.dispatcher) {
+        auth.signInWithKeyResult = ApiResult.Failure(ApiError.KeyRefused)
+        val viewModel = viewModel()
+        viewModel.pastedKey.onChange(Pasted)
+        viewModel.pastedKey.signIn()
+        auth.gate = CompletableDeferred()
+
+        viewModel.pastedKey.signIn()
+
+        assertThat(viewModel.state.value.keyError).isNull()
+        auth.gate?.complete(Unit)
+        assertThat(viewModel.state.value.keyError).isEqualTo(ApiError.KeyRefused)
+    }
+
+    @Test
+    fun `a password sign-in that starts clears the key's error, and says its own where it always did`() =
+        runTest(mainRule.dispatcher) {
+            auth.signInWithKeyResult = ApiResult.Failure(ApiError.KeyRefused)
+            auth.signInResult = ApiResult.Failure(ApiError.InvalidCredentials)
+            val viewModel = viewModel()
+            viewModel.onUsernameChange("ann")
+            viewModel.onPasswordChange("secret")
+            viewModel.pastedKey.onChange(Pasted)
+            viewModel.pastedKey.signIn()
+
+            viewModel.onSignIn()
+
+            assertThat(viewModel.state.value.keyError).isNull()
+            assertThat(viewModel.state.value.error).isEqualTo(ApiError.InvalidCredentials)
+        }
+
+    @Test
+    fun `a provider's sign-in that starts clears the key's error`() = runTest(mainRule.dispatcher) {
+        auth.signInWithKeyResult = ApiResult.Failure(ApiError.KeyRefused)
+        val viewModel = viewModel()
+        viewModel.pastedKey.onChange(Pasted)
+        viewModel.pastedKey.signIn()
+
+        viewModel.onOidc(provider)
+
+        assertThat(viewModel.state.value.keyError).isNull()
+    }
+
+    @Test
+    fun `a key sign-in that starts clears what another sign-in said`() = runTest(mainRule.dispatcher) {
+        auth.signInResult = ApiResult.Failure(ApiError.InvalidCredentials)
+        val viewModel = viewModel()
+        viewModel.onUsernameChange("ann")
+        viewModel.onPasswordChange("secret")
+        viewModel.onSignIn()
+        viewModel.pastedKey.onChange(Pasted)
+        auth.gate = CompletableDeferred()
+
+        viewModel.pastedKey.signIn()
+
+        assertThat(viewModel.state.value.error).isNull()
+        auth.gate?.complete(Unit)
     }
 
     @Test

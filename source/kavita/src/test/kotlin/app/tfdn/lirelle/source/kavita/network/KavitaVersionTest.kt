@@ -68,6 +68,29 @@ class KavitaVersionTest {
         assertThat(refused.error).isEqualTo(ApiError.ServerTooOld("0.8.8.3-beta", "0.8.9"))
     }
 
+    /** What follows the numbers is the server's to say, and may be anything: only its beginning is told. */
+    @Test
+    fun `a version too old is told by its numbers and the beginning of what follows them only`() {
+        val refused = assertThrows(ApiErrorException::class.java) {
+            KavitaUserDto(7, "ann", kavitaVersion = " 0.8.8.3-0123456789abcdefghij" + "x".repeat(1_000_000))
+                .onRecentEnoughServer()
+        }
+
+        assertThat(refused.error).isEqualTo(ApiError.ServerTooOld("0.8.8.3-0123456789abcde", "0.8.9"))
+    }
+
+    /** Read without a pattern's recursion, which so many numbers would have overflowed. */
+    @Test
+    fun `numbers that never end are told by their beginning only`() {
+        val refused = assertThrows(ApiErrorException::class.java) {
+            KavitaUserDto(7, "ann", kavitaVersion = "0" + ".0".repeat(500_000)).onRecentEnoughServer()
+        }
+
+        val told = (refused.error as ApiError.ServerTooOld).version
+        assertThat(told.length).isAtMost(48)
+        assertThat(told).startsWith("0.0.0.0")
+    }
+
     @Test
     fun `an account on a server too old is refused with the version it runs and the one needed`() {
         val refused = assertThrows(ApiErrorException::class.java) {

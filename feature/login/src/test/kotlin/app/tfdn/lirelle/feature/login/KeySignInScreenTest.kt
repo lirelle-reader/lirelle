@@ -1,17 +1,21 @@
 package app.tfdn.lirelle.feature.login
 
 import android.content.Context
+import androidx.compose.ui.semantics.LiveRegionMode
 import androidx.compose.ui.semantics.SemanticsProperties
 import androidx.compose.ui.semantics.getOrNull
 import androidx.compose.ui.test.SemanticsMatcher
 import androidx.compose.ui.test.SemanticsNodeInteraction
 import androidx.compose.ui.test.assert
+import androidx.compose.ui.test.assertCountEquals
 import androidx.compose.ui.test.assertIsEnabled
 import androidx.compose.ui.test.assertIsNotEnabled
 import androidx.compose.ui.test.hasClickAction
 import androidx.compose.ui.test.hasSetTextAction
 import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.junit4.createComposeRule
+import androidx.compose.ui.test.onAllNodesWithText
+import androidx.compose.ui.test.onFirst
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performImeAction
@@ -23,11 +27,15 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.test.core.app.ApplicationProvider
 import app.tfdn.lirelle.core.designsystem.LirelleTheme
 import app.tfdn.lirelle.core.network.ApiError
+import app.tfdn.lirelle.core.network.ApiResult
 import app.tfdn.lirelle.core.network.LoginOptions
 import app.tfdn.lirelle.core.network.OidcProvider
+import app.tfdn.lirelle.core.network.OidcRedirectRelay
 import app.tfdn.lirelle.core.network.ProviderFlow
 import app.tfdn.lirelle.core.network.SignInIdentifier
 import app.tfdn.lirelle.core.session.ServerKind
+import app.tfdn.lirelle.core.testing.FakeAuthRepository
+import app.tfdn.lirelle.core.testing.TestUserAgent
 import com.google.common.truth.Truth.assertThat
 import org.junit.Rule
 import org.junit.Test
@@ -38,7 +46,8 @@ import org.robolectric.annotation.Config
 /**
  * The key a server lets the user paste to sign in, under what the sign-in screen already offers, which does not
  * move: the identifier, the password and their button, then the provider's; then "or", the key's field, where to
- * make one on a server of that kind, and the key's button. Nothing of it on a server that takes no pasted key.
+ * make one on a server of that kind, and the key's button. Nothing of it on a server that takes no pasted key. What
+ * went wrong with the key is said on its field, where the user looks, and not also above the form.
  */
 @RunWith(RobolectricTestRunner::class)
 class KeySignInScreenTest {
@@ -258,32 +267,84 @@ class KeySignInScreenTest {
         compose.onNodeWithText("Se connecter avec la clé").assertExists()
     }
 
+    /** Every text that says [message], wherever it is on the screen. */
+    private fun saying(message: String) = compose.onAllNodesWithText(message, useUnmergedTree = true)
+
+    private val inError = SemanticsMatcher.keyIsDefined(SemanticsProperties.Error)
+
     @Test
-    fun `a key the server does not know says so`() {
-        show(kavita().copy(error = ApiError.KeyRefused))
-        compose.onNodeWithText("The server does not know this auth key.").assertExists()
+    fun `what went wrong with the key is said on its field, in place of where to make one, and nowhere else`() {
+        show(kavita(providers = listOf(provider)).copy(key = "k3y", keyError = ApiError.KeyRefused))
+        val message = "The server does not know this auth key."
+
+        saying(message).assertCountEquals(1)
+        val said = saying(message).onFirst()
+        assertThat(listOf(providerButton().top(), keyField().top(), said.top(), keyButton().top())).isInStrictOrder()
+        sentence().assertDoesNotExist()
+        keyField().assert(inError)
+        // Announced when it appears, as the screen's other errors are.
+        said.assert(SemanticsMatcher.expectValue(SemanticsProperties.LiveRegion, LiveRegionMode.Polite))
+    }
+
+    @Test
+    fun `what went wrong with a password or a provider stays above the form, and the key's field is as it was`() {
+        show(kavita().copy(error = ApiError.InvalidCredentials))
+        val message = text(R.string.error_invalid_credentials)
+
+        saying(message).assertCountEquals(1)
+        assertThat(saying(message).onFirst().top()).isLessThan(identifier().top())
+        sentence().assertExists()
+        keyField().assert(!inError)
+    }
+
+    @Test
+    fun `the key's error goes, and where to make one comes back, once the key changes`() {
+        val auth = FakeAuthRepository().apply {
+            serverUrl.value = "https://livres.example.com"
+            serverKind.value = ServerKind.Kavita
+            loginOptionsResult = ApiResult.Success(checkNotNull(kavita().options))
+            signInWithKeyResult = ApiResult.Failure(ApiError.KeyRefused)
+        }
+        val viewModel = SignInViewModel(auth, OidcRedirectRelay(), TestUserAgent, server = null, kind = null)
+        compose.setContent { LirelleTheme { SignInRoute(onChangeServer = {}, viewModel = viewModel) } }
+        val message = text(R.string.error_key_refused)
+
+        keyField().performScrollTo().performTextInput("k3y")
+        keyButton().performScrollTo().performClick()
+        saying(message).assertCountEquals(1)
+        keyField().assert(inError)
+
+        keyField().performScrollTo().performTextInput("4")
+
+        saying(message).assertCountEquals(0)
+        sentence().assertExists()
+        keyField().assert(!inError)
     }
 
     @Test
     fun `a server too old says the version it runs and the one needed`() {
-        show(kavita().copy(error = ApiError.ServerTooOld(version = "0.8.6.25", minimum = "0.8.10.12")))
-        compose.onNodeWithText("This Kavita server runs version 0.8.6.25. Lirelle needs version 0.8.10.12 or later.")
-            .assertExists()
+        show(kavita().copy(keyError = ApiError.ServerTooOld(version = "0.8.6.25", minimum = "0.8.10.12")))
+        compose.onNodeWithText(
+            "This Kavita server runs version 0.8.6.25. Lirelle needs version 0.8.10.12 or later.",
+            useUnmergedTree = true,
+        ).assertExists()
     }
 
     @Test
     @Config(qualifiers = "fr")
     fun `in French, a key the server does not know says so`() {
-        show(kavita().copy(error = ApiError.KeyRefused))
-        compose.onNodeWithText("Cette clé d'accès n'est pas reconnue par le serveur.").assertExists()
+        show(kavita().copy(keyError = ApiError.KeyRefused))
+        compose.onNodeWithText("Cette clé d'accès n'est pas reconnue par le serveur.", useUnmergedTree = true)
+            .assertExists()
     }
 
     @Test
     @Config(qualifiers = "fr")
     fun `in French, a server too old says the version it runs and the one needed`() {
-        show(kavita().copy(error = ApiError.ServerTooOld(version = "0.8.6.25", minimum = "0.8.10.12")))
+        show(kavita().copy(keyError = ApiError.ServerTooOld(version = "0.8.6.25", minimum = "0.8.10.12")))
         compose.onNodeWithText(
             "Ce serveur Kavita est en version 0.8.6.25. Lirelle a besoin de la version 0.8.10.12 ou plus récente.",
+            useUnmergedTree = true,
         ).assertExists()
     }
 }

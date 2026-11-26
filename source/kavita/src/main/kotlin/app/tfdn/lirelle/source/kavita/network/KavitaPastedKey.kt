@@ -24,6 +24,16 @@ internal fun unnamedKeyId(key: String): String {
     return UnnamedKeyPrefix + digest.joinToString("") { "%02x".format(it) }.take(UnnamedKeyDigits)
 }
 
+/** What a key is written with: the visible characters of ASCII, the only ones a header takes without a word. */
+private val KeyCharacters = '\u0021'..'\u007E'
+
+/**
+ * Whether [key] can be a key at all: not empty, and written with [KeyCharacters] only. A line break left inside
+ * a copy that wrapped, a space, an accented letter make it none of Kavita's — and what refuses such a header says
+ * why with the header's value in it, which must never be the key.
+ */
+internal fun canBeKavitaKey(key: String): Boolean = key.isNotEmpty() && key.all { it in KeyCharacters }
+
 /**
  * Signing in to Kavita with a key the user made in its web interface and pasted: the account is read with it, and
  * the profile keeps it as it is. The key stays the user's ([Credential.ApiKey.ownedByApp] is false): the app
@@ -36,10 +46,13 @@ internal class KavitaPastedKey(
     private val profiles: KavitaProfiles,
 ) : PastedKeySignIn {
 
-    /** A key the server does not know is [ApiError.KeyRefused]; no key at all is too, and nothing is sent. */
+    /**
+     * A key the server does not know is [ApiError.KeyRefused]; no key at all is too, and one that cannot be a key
+     * ([canBeKavitaKey]), and nothing is sent for those.
+     */
     override suspend fun signInWithKey(serverUrl: String, key: String): ApiResult<Unit> {
         val pasted = key.trim()
-        if (pasted.isEmpty()) return ApiResult.Failure(ApiError.KeyRefused)
+        if (!canBeKavitaKey(pasted)) return ApiResult.Failure(ApiError.KeyRefused)
         val server = api.forServer(serverUrl)
         return errors.call(KavitaCall.Key) {
             val account = server.account(key = pasted, cookie = null).answer().onRecentEnoughServer()

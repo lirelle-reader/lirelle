@@ -108,6 +108,21 @@ class KavitaKeySignInTest {
         assertThat(store.saved).isEmpty()
     }
 
+    /** A header takes none of these: such a key is none of Kavita's, and what would refuse it would print it. */
+    @Test
+    fun `a key that holds a line break, a space or a letter no key has is a key refused, and nothing is sent`() =
+        runBlocking {
+            val broken =
+                listOf("p45t3d-k3y\n-0f-th3-us3r", "p45t3d-k3y -0f-th3-us3r", "p45t3d-clé", "k3y\u007F", "k\te")
+
+            broken.forEach { key ->
+                assertThat(signIn.signInWithKey(url, key)).isEqualTo(ApiResult.Failure(ApiError.KeyRefused))
+            }
+
+            assertThat(server.requestCount).isEqualTo(0)
+            assertThat(store.saved).isEmpty()
+        }
+
     @Test
     fun `a key the server does not know is a key refused, and nothing is saved`() = runBlocking {
         server.enqueueRefusal()

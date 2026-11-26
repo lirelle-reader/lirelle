@@ -21,8 +21,9 @@ internal data class LoginRequest(val username: String, val password: String, val
 }
 
 /**
- * The account, as a sign-in and `GET api/Account` answer it, of which the app reads only these. The tokens are
- * those of the session a password opened: null when the account was read with a key or a provider's session.
+ * The account, as a sign-in and `GET api/Account` answer it, of which the app reads only these. The token is
+ * that of the session a password opened: null when the account was read with a key or a provider's session. The
+ * refresh token answered beside it is not read: the session is never renewed, and it is held nowhere.
  *
  * @property kavitaVersion the version the server runs, "0.9.1.4"; null when it tells none, or a null.
  */
@@ -33,9 +34,8 @@ internal data class KavitaUserDto(
     val email: String? = null,
     val kavitaVersion: String? = null,
     val token: String? = null,
-    val refreshToken: String? = null,
 ) {
-    /** Never prints the tokens: this text ends up in logs and in failed assertions. */
+    /** Never prints the token: this text ends up in logs and in failed assertions. */
     override fun toString(): String = "KavitaUserDto(id=$id, username=$username, kavitaVersion=$kavitaVersion)"
 }
 
