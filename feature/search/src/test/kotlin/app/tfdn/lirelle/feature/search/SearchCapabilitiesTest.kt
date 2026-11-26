@@ -2,6 +2,7 @@ package app.tfdn.lirelle.feature.search
 
 import android.content.Context
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.ui.test.assert
 import androidx.compose.ui.test.assertCountEquals
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.hasAnyAncestor
@@ -134,8 +135,8 @@ class SearchCapabilitiesTest {
         assertThat(viewModel.state.value.genres).isEmpty()
     }
 
-    private fun showRoute(width: WindowWidthClass) {
-        val viewModel = viewModel()
+    private fun showRoute(width: WindowWidthClass, capabilities: SourceCapabilities = KomgaLikeCapabilities) {
+        val viewModel = viewModel(capabilities)
         compose.setContent {
             LirelleTheme {
                 CompositionLocalProvider(LocalWindowWidthClass provides width) {
@@ -177,6 +178,23 @@ class SearchCapabilitiesTest {
             .assertIsDisplayed()
         compose.onAllNodesWithText(text(R.string.search_authors)).assertCountEquals(0)
         compose.onAllNodesWithText("Marsha Writer").assertCountEquals(0)
+    }
+
+    private fun books(count: Int) = context.resources.getQuantityString(R.plurals.search_book_count, count, count)
+
+    @Test
+    fun `a series found shows its number of books when the source counts them`() {
+        showRoute(WindowWidthClass.Compact)
+
+        compose.onNodeWithTag("result-series-40").assert(hasText(books(3)))
+    }
+
+    @Test
+    fun `without series counts a series found shows no number of books`() {
+        showRoute(WindowWidthClass.Compact, KomgaLikeCapabilities.copy(seriesCounts = false))
+
+        compose.onNodeWithText("A Saga of Mars").assertIsDisplayed()
+        compose.onAllNodesWithText(books(3)).assertCountEquals(0)
     }
 
     @Test

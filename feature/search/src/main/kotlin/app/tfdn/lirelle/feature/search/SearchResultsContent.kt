@@ -36,12 +36,14 @@ private val GridGap = 16.dp
  * @param wide true for the books as a grid of covers next to the series and the authors; false
  *   for one column of rows. On a wide window a zone with nothing leaves its width to the other.
  * @param actions what a result and a "See all" open.
+ * @param showSeriesCounts whether a series found shows its number of books.
  */
 @Composable
 internal fun SearchResultsContent(
     results: SearchResults,
     wide: Boolean,
     actions: SearchActions,
+    showSeriesCounts: Boolean,
     modifier: Modifier = Modifier,
 ) {
     if (wide) {
@@ -54,7 +56,7 @@ internal fun SearchResultsContent(
             }
             if (hasSide) {
                 ScrollingZone(SearchSideTag, Modifier.weight(SideWeight), resultsScroll(results.text)) {
-                    SeriesAndAuthors(results, actions)
+                    SeriesAndAuthors(results, actions, showSeriesCounts)
                 }
             }
         }
@@ -63,7 +65,7 @@ internal fun SearchResultsContent(
             Section(R.string.search_books, results.books, { actions.onSeeAllBooks(results.text) }) { book ->
                 BookResultRow(book, onClick = { actions.onOpenBook(book.id) })
             }
-            SeriesAndAuthors(results, actions)
+            SeriesAndAuthors(results, actions, showSeriesCounts)
         }
     }
 }
@@ -86,9 +88,9 @@ private fun resultsScroll(text: String): ScrollState {
 }
 
 @Composable
-private fun SeriesAndAuthors(results: SearchResults, actions: SearchActions) {
+private fun SeriesAndAuthors(results: SearchResults, actions: SearchActions, showSeriesCounts: Boolean) {
     Section(R.string.search_series, results.series, { actions.onSeeAllSeries(results.text) }) { series ->
-        SeriesResultRow(series, onClick = { actions.onOpenSeries(series.id) })
+        SeriesResultRow(series, showSeriesCounts, onClick = { actions.onOpenSeries(series.id) })
     }
     Section(R.string.search_authors, results.authors, { actions.onSeeAllAuthors(results.text) }) { author ->
         AuthorResultRow(author, onClick = { actions.onOpenAuthor(author.id) })

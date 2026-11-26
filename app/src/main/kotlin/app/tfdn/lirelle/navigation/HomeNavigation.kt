@@ -2,11 +2,13 @@ package app.tfdn.lirelle.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
 import app.tfdn.lirelle.core.ids.BookId
+import app.tfdn.lirelle.core.library.SourceCapabilities
 import app.tfdn.lirelle.core.library.model.HomeRowKind
 import app.tfdn.lirelle.core.library.model.StatusFilter
 import app.tfdn.lirelle.feature.home.HomeRoute
@@ -54,8 +56,10 @@ fun NavGraphBuilder.homeDestinations(
         val kind = HomeRowKind.valueOf(entry.toRoute<HomeListDestination>().kind)
         val onBack = entry.ifResumed { navController.popBackStack() }
         val onOpenBook = entry.ifResumedWith<BookId> { navController.navigate(BookDestination(it.value)) }
-        when (kind) {
-            HomeRowKind.Continue, HomeRowKind.UpNext -> HomeRowScreen(kind, onBack, onOpenBook)
+        val asRow = hiltViewModel<HomeListViewModel>().seesAllAsRow(kind)
+        // Null when the row opens its own screen, whatever its kind: the source has no list of all its books.
+        when (kind.takeUnless { asRow }) {
+            null, HomeRowKind.Continue, HomeRowKind.UpNext -> HomeRowScreen(kind, onBack, onOpenBook)
             HomeRowKind.WantToRead -> BookListDetailScreen(
                 title = stringResource(kind.titleRes()),
                 scope = BookListScope.status(StatusFilter.WantToRead, WantToReadKey),
@@ -74,3 +78,10 @@ fun NavGraphBuilder.homeDestinations(
 }
 
 private const val WantToReadKey = "want-to-read"
+
+/**
+ * Whether "See all" of a Home row opens the row's own screen rather than a list of the library's books: always for
+ * Continue and Up next, and for every row when the source cannot list its books.
+ */
+internal fun HomeRowKind.seeAllAsRow(capabilities: SourceCapabilities): Boolean =
+    this == HomeRowKind.Continue || this == HomeRowKind.UpNext || !capabilities.libraryBooks

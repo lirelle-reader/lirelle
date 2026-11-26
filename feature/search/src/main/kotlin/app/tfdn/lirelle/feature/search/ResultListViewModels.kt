@@ -29,11 +29,15 @@ import kotlinx.coroutines.launch
 class SeriesResultsViewModel @AssistedInject constructor(
     @Assisted private val text: String,
     private val repository: LibraryRepository,
+    capabilities: SourceCapabilities,
 ) : ViewModel() {
     @AssistedFactory
     interface Factory {
         fun create(text: String): SeriesResultsViewModel
     }
+
+    /** Whether a series found shows its number of books: only when the source gives it. */
+    val showCounts: Boolean = capabilities.seriesCounts
 
     private val mutableState = MutableStateFlow<Loadable<List<Series>>>(Loadable.Loading)
     val state: StateFlow<Loadable<List<Series>>> = mutableState.asStateFlow()

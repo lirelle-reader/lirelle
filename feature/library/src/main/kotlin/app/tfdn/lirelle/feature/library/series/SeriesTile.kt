@@ -33,8 +33,14 @@ private const val MaxStackedCovers = 3
 // The corner of a book cover.
 private val BlankCoverCorner = RoundedCornerShape(6.dp)
 
+/**
+ * A series in the Series tab: its covers, its name, its authors and, when [showCounts], how much of it is read.
+ *
+ * @param showCounts false when the source gives no numbers of books for a series in a list: the progress line and
+ *   its bar are left out rather than shown empty.
+ */
 @Composable
-internal fun SeriesTile(series: Series, onClick: () -> Unit) {
+internal fun SeriesTile(series: Series, showCounts: Boolean, onClick: () -> Unit) {
     Column(
         modifier = Modifier
             .testTag("series-${series.id}")
@@ -58,20 +64,26 @@ internal fun SeriesTile(series: Series, onClick: () -> Unit) {
                 overflow = TextOverflow.Ellipsis,
             )
         }
-        Text(
-            text = stringResource(R.string.series_progress, series.readCount, series.bookCount),
-            style = MaterialTheme.typography.bodySmall,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
-            maxLines = 1,
-            overflow = TextOverflow.Ellipsis,
-        )
-        LinearProgressIndicator(
-            progress = { series.progress },
-            modifier = Modifier.fillMaxWidth(),
-            // No dot at the end of the track: on an unread series it reads as progress.
-            drawStopIndicator = {},
-        )
+        if (showCounts) SeriesProgress(series)
     }
+}
+
+/** How many of the series' books are read, in words and as a bar. */
+@Composable
+private fun SeriesProgress(series: Series) {
+    Text(
+        text = stringResource(R.string.series_progress, series.readCount, series.bookCount),
+        style = MaterialTheme.typography.bodySmall,
+        color = MaterialTheme.colorScheme.onSurfaceVariant,
+        maxLines = 1,
+        overflow = TextOverflow.Ellipsis,
+    )
+    LinearProgressIndicator(
+        progress = { series.progress },
+        modifier = Modifier.fillMaxWidth(),
+        // No dot at the end of the track: on an unread series it reads as progress.
+        drawStopIndicator = {},
+    )
 }
 
 /** Up to three covers, the first in front on the left, the others behind and smaller. */

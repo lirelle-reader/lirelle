@@ -52,12 +52,21 @@ internal fun BookResultRow(book: BookSummary, onClick: () -> Unit, modifier: Mod
     BookListRow(book, onClick, modifier.testTag("result-book-${book.id}"))
 }
 
-/** A series found: its first cover, its name and its number of books. */
+/**
+ * A series found: its first cover, its name and its number of books.
+ *
+ * @param showCount false when the source gives no number of books for a series in a list: the name stands alone.
+ */
 @Composable
-internal fun SeriesResultRow(series: Series, onClick: () -> Unit, modifier: Modifier = Modifier) {
+internal fun SeriesResultRow(
+    series: Series,
+    showCount: Boolean,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
     ResultRow(
         name = series.name,
-        bookCount = series.bookCount,
+        bookCount = series.bookCount.takeIf { showCount },
         onClick = onClick,
         modifier = modifier.testTag("result-series-${series.id}"),
     ) {
@@ -86,10 +95,11 @@ internal fun AuthorResultRow(author: Author, onClick: () -> Unit, modifier: Modi
     }
 }
 
+/** @param bookCount the number written under the name; none when null. */
 @Composable
 private fun ResultRow(
     name: String,
-    bookCount: Int,
+    bookCount: Int?,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     leading: @Composable () -> Unit,
@@ -119,13 +129,15 @@ private fun ResultRow(
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
             )
-            Text(
-                text = pluralStringResource(R.plurals.search_book_count, bookCount, bookCount),
-                style = MaterialTheme.typography.run { if (isWide()) bodyLarge else bodyMedium },
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis,
-            )
+            if (bookCount != null) {
+                Text(
+                    text = pluralStringResource(R.plurals.search_book_count, bookCount, bookCount),
+                    style = MaterialTheme.typography.run { if (isWide()) bodyLarge else bodyMedium },
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                )
+            }
         }
     }
 }

@@ -44,9 +44,11 @@ class ResultListScreensTest {
 
     private fun text(id: Int, vararg args: Any) = context.getString(id, *args)
 
-    private fun showSeries() {
+    private fun books(count: Int) = context.resources.getQuantityString(R.plurals.search_book_count, count, count)
+
+    private fun showSeries(capabilities: SourceCapabilities = SourceCapabilities.Everything) {
         // Built outside the composition: a view model is not something a composable constructs.
-        val viewModel = SeriesResultsViewModel("mars", fake)
+        val viewModel = SeriesResultsViewModel("mars", fake, capabilities)
         compose.setContent {
             LirelleTheme {
                 SeriesResultsScreen(
@@ -84,6 +86,23 @@ class ResultListScreensTest {
 
         assertThat(opened).containsExactly(SeriesId("41"))
         assertThat(backs).isEqualTo(1)
+    }
+
+    @Test
+    fun `a series found shows its number of books`() {
+        fake.seriesResult = ApiResult.Success(listOf(sampleSeries("40", "A Saga", books = 7)))
+        showSeries()
+
+        compose.onNodeWithText(books(7)).assertIsDisplayed()
+    }
+
+    @Test
+    fun `without series counts a series found shows no number of books`() {
+        fake.seriesResult = ApiResult.Success(listOf(sampleSeries("40", "A Saga", books = 7)))
+        showSeries(SourceCapabilities.Everything.copy(seriesCounts = false))
+
+        compose.onNodeWithText("A Saga").assertIsDisplayed()
+        compose.onNodeWithText(books(7)).assertDoesNotExist()
     }
 
     @Test

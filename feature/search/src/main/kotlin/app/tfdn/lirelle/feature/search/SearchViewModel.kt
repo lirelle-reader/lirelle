@@ -38,12 +38,14 @@ private const val DebounceMillis = 300L
 /**
  * @property text what the field holds, as typed.
  * @property results null while there is nothing to search for.
+ * @property showSeriesCounts whether a series found shows its number of books: only when the source gives it.
  */
 data class SearchUiState(
     val text: String = "",
     val results: Loadable<SearchResults>? = null,
     val recent: List<String> = emptyList(),
     val genres: List<Genre> = emptyList(),
+    val showSeriesCounts: Boolean = true,
 )
 
 /**
@@ -74,7 +76,9 @@ class SearchViewModel @Inject constructor(
 
     // One flow written in place, not a combination of several: the field reads back what was
     // typed at once, where a combination would answer a moment later and drop fast keystrokes.
-    private val mutableState = MutableStateFlow(SearchUiState(text = saved[TextKey] ?: ""))
+    private val mutableState = MutableStateFlow(
+        SearchUiState(text = saved[TextKey] ?: "", showSeriesCounts = capabilities.seriesCounts),
+    )
     val state: StateFlow<SearchUiState> = mutableState.asStateFlow()
 
     private val freshness = Freshness(clock)

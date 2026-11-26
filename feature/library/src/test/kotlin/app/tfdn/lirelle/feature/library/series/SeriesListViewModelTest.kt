@@ -2,6 +2,7 @@ package app.tfdn.lirelle.feature.library.series
 
 import app.tfdn.lirelle.core.ids.LibraryId
 import app.tfdn.lirelle.core.library.LibraryChoiceState
+import app.tfdn.lirelle.core.library.SourceCapabilities
 import app.tfdn.lirelle.core.library.model.SeriesProgressFilter
 import app.tfdn.lirelle.core.library.model.SeriesSort
 import app.tfdn.lirelle.core.library.model.ServerLibrary
@@ -36,7 +37,10 @@ class SeriesListViewModelTest {
     private val manga = ServerLibrary(LibraryId("2"), "Manga")
     private val choice = FakeLibraryChoice(LibraryChoiceState(listOf(comics, manga)))
 
-    private fun viewModel() = SeriesListViewModel(repository, preferences, choice)
+    private fun viewModel(capabilities: SourceCapabilities = SourceCapabilities.Everything) =
+        SeriesListViewModel(capabilities, repository, preferences, choice)
+
+    private val withoutCounts = SourceCapabilities.Everything.copy(seriesCounts = false)
 
     private fun SeriesListViewModel.names() = (state.value.series as Loadable.Ready).value.map { it.name }
 
@@ -98,6 +102,43 @@ class SeriesListViewModelTest {
         preferences.update("series") { it.copy(sort = "BookCount", descending = true) }
 
         assertThat(viewModel().names()).containsExactly("Alpha", "Gamma", "Beta").inOrder()
+    }
+
+    @Test
+    fun `a source with series counts shows them and offers every sort`() = runTest(mainRule.dispatcher) {
+        val state = viewModel().state.value
+
+        assertThat(state.showCounts).isTrue()
+        assertThat(state.sorts).containsExactlyElementsIn(SeriesSort.entries).inOrder()
+    }
+
+    @Test
+    fun `without series counts the sorts made of them are not offered`() = runTest(mainRule.dispatcher) {
+        val state = viewModel(withoutCounts).state.value
+
+        assertThat(state.showCounts).isFalse()
+        assertThat(state.sorts).containsExactly(SeriesSort.Name, SeriesSort.RecentlyAdded).inOrder()
+    }
+
+    @Test
+    fun `without series counts a stored count sort falls back to the name`() = runTest(mainRule.dispatcher) {
+        preferences.update("series") { it.copy(sort = "BookCount", descending = true) }
+
+        val viewModel = viewModel(withoutCounts)
+
+        assertThat(viewModel.state.value.sort).isEqualTo(SeriesSort.Name)
+        assertThat(viewModel.state.value.direction).isEqualTo(SortDirection.Ascending)
+        assertThat(viewModel.names()).containsExactly("Alpha", "Beta", "Gamma").inOrder()
+    }
+
+    @Test
+    fun `without series counts the progress filter is not applied`() = runTest(mainRule.dispatcher) {
+        val viewModel = viewModel(withoutCounts)
+
+        viewModel.onFilter(SeriesProgressFilter.InProgress)
+
+        assertThat(viewModel.state.value.filter).isNull()
+        assertThat(viewModel.names()).hasSize(3)
     }
 
     @Test
