@@ -11,12 +11,8 @@ import app.tfdn.lirelle.core.library.model.Genre
 import app.tfdn.lirelle.core.library.model.SortDirection
 import app.tfdn.lirelle.core.network.ApiResult
 import app.tfdn.lirelle.source.kavita.library.dto.GenreDto
-import app.tfdn.lirelle.source.kavita.library.dto.SeriesDto
 import app.tfdn.lirelle.source.kavita.network.answer
 import java.text.Collator
-import kotlinx.coroutines.async
-import kotlinx.coroutines.awaitAll
-import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 
 /**
@@ -110,16 +106,8 @@ internal class KavitaGenres(private val server: KavitaProfileServer) {
             ascending = request.direction == SortDirection.Ascending,
         )
         val series = calls.limited { remote.api.series(filter, page, size) }.answer()
-        val books = coroutineScope { series.map { async { booksOf(remote, it) } }.awaitAll() }.flatten()
-            .filter { filters.statuses.isEmpty() || it.readState in states }
+        val books = calls.unfold(remote, series).filter { filters.statuses.isEmpty() || it.readState in states }
         return UnfoldedPage(books, isLast = series.size < size)
-    }
-
-    /** A series' books in its order; none when the series is gone. A lone book is shown without a series. */
-    private suspend fun booksOf(remote: KavitaRemote, series: SeriesDto): List<BookSummary> {
-        val detail = calls.orGone { remote.api.detail(series.id) } ?: return emptyList()
-        val shownIn = SeriesRefInfo(series.id, series.name).takeUnless { detail.isLoneBook }
-        return detail.books().map { remote.mapper.summary(it, shownIn, series.format) }
     }
 }
 

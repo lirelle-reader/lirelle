@@ -1,18 +1,14 @@
 package app.tfdn.lirelle.source.kavita.library
 
-import androidx.paging.testing.asSnapshot
-import app.tfdn.lirelle.core.ids.AuthorId
 import app.tfdn.lirelle.core.ids.BookId
 import app.tfdn.lirelle.core.ids.LibraryId
 import app.tfdn.lirelle.core.ids.SeriesId
-import app.tfdn.lirelle.core.library.model.AuthorSort
 import app.tfdn.lirelle.core.library.model.BookListRequest
 import app.tfdn.lirelle.core.library.model.BookListSource
 import app.tfdn.lirelle.core.library.model.BookReading
 import app.tfdn.lirelle.core.library.model.RelatedBooks
 import app.tfdn.lirelle.core.library.model.SeriesRef
 import app.tfdn.lirelle.core.library.model.ServerLibrary
-import app.tfdn.lirelle.core.library.model.SortDirection
 import app.tfdn.lirelle.core.network.ApiError
 import app.tfdn.lirelle.core.network.ApiResult
 import app.tfdn.lirelle.source.kavita.library.dto.ChapterDto
@@ -40,8 +36,8 @@ private val Bd = ServerLibrary(LibraryId("1"), "BD")
 
 /**
  * A Kavita profile's library: its libraries, its series and their pages, its books' pages and readings, each
- * brought to Lirelle's books by the rule of Kavita's books, asked with the profile's key. What Search, the genres
- * and the authors show is not asked yet; Home's rows are [KavitaHomeTest]'s.
+ * brought to Lirelle's books by the rule of Kavita's books, asked with the profile's key. Home's rows are
+ * [KavitaHomeTest]'s, Search [KavitaSearchTest]'s, the genres [KavitaGenresTest]'s, the authors [KavitaAuthorsTest]'s.
  */
 class KavitaLibraryTest {
 
@@ -342,13 +338,5 @@ class KavitaLibraryTest {
         routes.answer("GET /api/Library/libraries") { json("System.Exception at API.Controllers", code = 500) }
 
         assertThat(library.libraries()).isEqualTo(ApiResult.Failure(ApiError.ServerFailed))
-    }
-
-    @Test
-    fun `the authors are not asked yet`() = runBlocking {
-        assertThat(library.authors(AuthorSort.Name, SortDirection.Ascending).items.asSnapshot()).isEmpty()
-        assertThat(library.authorBooks(AuthorId("René Goscinny"))).isEqualTo(ApiResult.Success(emptyList<Any>()))
-        assertThat(library.author(AuthorId("René Goscinny"))).isEqualTo(ApiResult.Failure(ApiError.NotFound))
-        assertThat(server.requestCount).isEqualTo(0)
     }
 }
