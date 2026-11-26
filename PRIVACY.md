@@ -1,6 +1,6 @@
 # Privacy policy
 
-*Last updated: 24 November 2026.* [Version française](PRIVACY.fr.md)
+*Last updated: 26 November 2026.* [Version française](PRIVACY.fr.md)
 
 Lirelle is an Android app that reads, shows and plays the books, comics and audiobooks of a BookOrbit or Komga server
 that you add to it. This policy says what the app does with your data.
@@ -19,7 +19,9 @@ Lirelle talks only to the servers you add, and to each of them it sends only wha
   session or the API key it creates for it;
 - **while you read and listen:** your reading and listening progress, your reading and listening sessions (when they
   started and ended, and how far they went), your bookmarks, highlights and notes, your audio bookmarks, and the rating
-  you choose to give a book you finished.
+  you choose to give a book you finished;
+- **with every request:** the app's name and version, the Android version and the device's model (its "user agent",
+  for example `Lirelle/0.8.0 (Android 16; SM-S931B)`), so that the server can tell which app it talks to.
 
 What a server does with these data is up to whoever runs it, under their own privacy policy. If you run your own
 server, they stay with you.
