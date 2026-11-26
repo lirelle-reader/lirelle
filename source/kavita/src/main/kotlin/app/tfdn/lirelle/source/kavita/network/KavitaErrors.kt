@@ -92,11 +92,13 @@ internal class KavitaErrors(private val log: () -> NetworkLog = { NetworkDiagnos
         else -> ApiError.Unexpected
     }
 
-    private companion object {
-        const val Unauthorized = 401
+    internal companion object {
+        private const val Unauthorized = 401
+
+        /** What Kavita answers for something it does not have. */
         const val NotFound = 404
-        const val TooManyRequests = 429
-        val ClientErrors = 400..499
-        val ServerErrors = 500..599
+        private const val TooManyRequests = 429
+        private val ClientErrors = 400..499
+        private val ServerErrors = 500..599
     }
 }

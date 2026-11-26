@@ -16,11 +16,14 @@ import app.tfdn.lirelle.source.kavita.testing.json
 import app.tfdn.lirelle.source.kavita.testing.jsonBody
 import app.tfdn.lirelle.source.kavita.testing.route
 import com.google.common.truth.Truth.assertThat
+import java.util.concurrent.CountDownLatch
+import java.util.concurrent.TimeUnit
 import java.util.concurrent.atomic.AtomicInteger
 import java.util.concurrent.atomic.AtomicLong
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withTimeout
 import kotlinx.serialization.json.Json
 import mockwebserver3.MockResponse
 import mockwebserver3.MockWebServer
@@ -159,14 +162,72 @@ class KavitaHomeTest {
         answerOnDeck()
 
         row(HomeRowKind.Continue)
-        now.set(9_999)
-        row(HomeRowKind.UpNext)
-        now.set(20_000)
+        now.set(10_000)
         row(HomeRowKind.UpNext)
         row(HomeRowKind.Continue, HomeRowExtent.SeeAll)
 
         assertThat(asked(OnDeck).map { it.url.queryParameter("PageSize") }).containsExactly("20", "20", "50")
             .inOrder()
+    }
+
+    @Test
+    fun `the on-deck series serve the other row once, so that a second refresh within 10 seconds asks again`() {
+        answerOnDeck()
+
+        row(HomeRowKind.Continue)
+        now.set(4_000)
+        row(HomeRowKind.UpNext)
+        now.set(8_000)
+        row(HomeRowKind.Continue)
+
+        assertThat(asked(OnDeck)).hasSize(2)
+    }
+
+    @Test
+    fun `the same row asked twice asks the on-deck series twice`() {
+        answerOnDeck()
+
+        row(HomeRowKind.Continue)
+        row(HomeRowKind.Continue)
+
+        assertThat(asked(OnDeck)).hasSize(2)
+    }
+
+    @Test
+    fun `a "See all" loading does not hold Home's rows back`() = runBlocking {
+        answerOnDeck()
+        val seeAllAsked = CountDownLatch(1)
+        val release = CountDownLatch(1)
+        routes.answer(OnDeck) { request ->
+            if (request.url.queryParameter("PageSize") == "50") {
+                seeAllAsked.countDown()
+                release.await(5, TimeUnit.SECONDS)
+            }
+            json(fixtureBody("ondeck"))
+        }
+
+        val seeAll = async(Dispatchers.IO) { library.homeRow(HomeRowKind.Continue, HomeRowExtent.SeeAll) }
+        assertThat(seeAllAsked.await(5, TimeUnit.SECONDS)).isTrue()
+        val continuing = withTimeout(2_000) { library.homeRow(HomeRowKind.Continue) }
+        release.countDown()
+
+        assertThat((continuing as ApiResult.Success).value.books).hasSize(2)
+        assertThat((seeAll.await() as ApiResult.Success).value.books).hasSize(2)
+    }
+
+    @Test
+    fun `a "See all" asks 50 series of Want to read and of Recently added`() {
+        routes.answerFixture("POST /api/want-to-read/v2", "wanttoread")
+        answerRecent()
+
+        row(HomeRowKind.WantToRead, HomeRowExtent.SeeAll)
+        row(HomeRowKind.RecentlyAdded, HomeRowExtent.SeeAll)
+
+        val requests = routes.requests()
+        val wanted = requests.single { it.route() == "POST /api/want-to-read/v2" }
+        val recent = requests.single { it.route() == "POST /api/Series/recently-updated-series" }
+        assertThat(wanted.url.encodedQuery).isEqualTo("PageNumber=1&PageSize=50")
+        assertThat(recent.url.encodedQuery).isEqualTo("PageNumber=1&PageSize=50")
     }
 
     @Test

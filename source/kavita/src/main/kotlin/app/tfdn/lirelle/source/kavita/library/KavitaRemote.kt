@@ -80,7 +80,7 @@ internal suspend fun <T> wholeList(fetch: suspend (page: Int, size: Int) -> Resp
 internal const val BatchSize = 100
 
 /** Kavita numbers its pages from 1. */
-private const val FirstPage = 1
+internal const val FirstPage = 1
 
 /** Safety stop for whole-list loads: 5 000 items. */
 private const val MaxBatches = 50

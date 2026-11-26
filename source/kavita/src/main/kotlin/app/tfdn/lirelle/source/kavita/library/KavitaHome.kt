@@ -8,6 +8,7 @@ import app.tfdn.lirelle.core.network.ApiResult
 import app.tfdn.lirelle.source.kavita.library.dto.ChapterDto
 import app.tfdn.lirelle.source.kavita.library.dto.RecentlyUpdatedDto
 import app.tfdn.lirelle.source.kavita.library.dto.SeriesDto
+import app.tfdn.lirelle.source.kavita.network.KavitaErrors
 import app.tfdn.lirelle.source.kavita.network.answer
 import java.time.Instant
 import kotlinx.coroutines.async
@@ -41,16 +42,16 @@ internal class KavitaHome(private val server: KavitaProfileServer, clock: () -> 
     /** The [kind] row, as long as [extent] asks. */
     suspend fun homeRow(kind: HomeRowKind, extent: HomeRowExtent): ApiResult<HomeRow> = server.call { remote ->
         when (kind) {
-            HomeRowKind.Continue -> onDeck(remote, extent).row(kind, remote) { it.pagesRead in 1 until it.pages }
-            HomeRowKind.UpNext -> onDeck(remote, extent).row(kind, remote) { it.pagesRead == 0 }
+            HomeRowKind.Continue -> onDeck(kind, remote, extent).row(kind, remote) { it.pagesRead in 1 until it.pages }
+            HomeRowKind.UpNext -> onDeck(kind, remote, extent).row(kind, remote) { it.pagesRead == 0 }
             HomeRowKind.WantToRead -> wantToRead(remote, extent.size).row(kind, remote) { true }
             HomeRowKind.RecentlyAdded -> recentlyAdded(kind, remote, extent.size)
         }
     }
 
     /** The on-deck series and their continue points, shared between Continue and Up next. */
-    private suspend fun onDeck(remote: KavitaRemote, extent: HomeRowExtent): SeriesPoints =
-        onDeck.points(extent) {
+    private suspend fun onDeck(kind: HomeRowKind, remote: KavitaRemote, extent: HomeRowExtent): SeriesPoints =
+        onDeck.points(kind, extent) {
             points(remote, extent.size) { remote.api.onDeck(FirstPage, extent.size) }
         }
 
@@ -123,7 +124,7 @@ internal class KavitaHome(private val server: KavitaProfileServer, clock: () -> 
         try {
             block()
         } catch (exception: HttpException) {
-            if (exception.code() == NotFoundStatus) null else throw exception
+            if (exception.code() == KavitaErrors.NotFound) null else throw exception
         }
     }
 }
@@ -142,8 +143,3 @@ private const val SeeAllSize = 50
 
 /** The most calls Home makes at once. */
 private const val MaxCalls = 6
-
-/** Kavita numbers its pages from 1. */
-private const val FirstPage = 1
-
-private const val NotFoundStatus = 404
