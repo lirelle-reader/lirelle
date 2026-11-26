@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.8.0](https://github.com/lirelle-reader/lirelle/compare/v0.7.0...v0.8.0) (2026-11-26)
+
+
+### Features
+
+* audiobooks and read-aloud books in the car, with Android Auto ([#45](https://github.com/lirelle-reader/lirelle/issues/45)) ([6750b71](https://github.com/lirelle-reader/lirelle/commit/6750b71aa91aaf91770d6fdebf2c4fc845092035))
+
 ## [0.7.0](https://github.com/lirelle-reader/lirelle/compare/v0.6.1...v0.7.0) (2026-11-25)
 
 
