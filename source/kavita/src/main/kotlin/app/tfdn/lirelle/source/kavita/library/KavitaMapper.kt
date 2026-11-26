@@ -31,8 +31,8 @@ internal class KavitaMapper(private val serverUrl: String, private val titles: K
 
     /**
      * Kavita's title of the book, else one of the app's: a special's own title, a volume's "Tome N", a chapter's
-     * "Chapitre N". A special has no file name to stand for its title: the server's paths are not read. A book
-     * without a number goes by Kavita's other title when it says more than a number, else is untitled.
+     * "Chapitre N". A special has no file name to stand for its title: the server's paths are not read. Another
+     * book's Kavita `title` is a number or English words ("Book Dune"), never shown: without a number it is untitled.
      */
     fun title(book: KavitaBook): String {
         val chapter = book.chapter
@@ -42,7 +42,7 @@ internal class KavitaMapper(private val serverUrl: String, private val titles: K
                 ?: titles.numbered(chapter.range.orIndex() ?: chapter.number.orIndex(), titles::chapter)
         }
         val numbered = if (book.item is KavitaItem.Volume) titles::volume else titles::chapter
-        return book.index.orNullIfBlank()?.let(numbered) ?: chapter.title.saysMoreThanANumber() ?: titles.untitled()
+        return titles.numbered(book.index, numbered)
     }
 
     /**
@@ -201,10 +201,3 @@ private fun seriesRefOf(book: KavitaBook, title: String, series: SeriesRefInfo?)
 /** The title [numbered] gives a book of this [index]; untitled for a book without one. */
 private fun KavitaTitles.numbered(index: String?, numbered: (String) -> String): String =
     index.orNullIfBlank()?.let(numbered) ?: untitled()
-
-/**
- * Kavita's other title of a chapter, when it says more than a number: not "12", nor "Book -100000", which Kavita
- * 0.8.9 writes for a default chapter.
- */
-private fun String?.saysMoreThanANumber(): String? =
-    orNullIfBlank()?.takeUnless { it.contains(DefaultChapter) || it.toDoubleOrNull() != null }

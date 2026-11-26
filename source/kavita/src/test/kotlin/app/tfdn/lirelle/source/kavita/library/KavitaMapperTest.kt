@@ -50,7 +50,7 @@ class KavitaMapperTest {
     }
 
     @Test
-    fun `a book without a number is untitled, unless Kavita's title says something`() {
+    fun `a book without a number is untitled, whatever Kavita's other title says`() {
         val volume = ChapterDto(id = 6, number = DefaultChapter, range = DefaultChapter, volumeId = 3)
         val chapter = ChapterDto(id = 5, number = "", range = " ")
         val special = ChapterDto(id = 7, number = DefaultChapter, range = "", isSpecial = true)
@@ -58,7 +58,7 @@ class KavitaMapperTest {
         assertThat(mapper.title(volume.book(volumeIndex = null))).isEqualTo("Sans titre")
         assertThat(mapper.title(volume.copy(title = "Book -100000").book(volumeIndex = " "))).isEqualTo("Sans titre")
         assertThat(mapper.title(volume.copy(title = "12").book(volumeIndex = null))).isEqualTo("Sans titre")
-        assertThat(mapper.title(volume.copy(title = "Prologue").book(volumeIndex = null))).isEqualTo("Prologue")
+        assertThat(mapper.title(volume.copy(title = "Book Dune").book(volumeIndex = null))).isEqualTo("Sans titre")
         assertThat(mapper.title(book(chapter))).isEqualTo("Sans titre")
         assertThat(mapper.title(book(special))).isEqualTo("Sans titre")
     }

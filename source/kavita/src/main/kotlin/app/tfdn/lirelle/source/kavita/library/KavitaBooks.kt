@@ -5,6 +5,7 @@ import app.tfdn.lirelle.source.kavita.library.dto.ChapterDto
 import app.tfdn.lirelle.source.kavita.library.dto.SeriesDetailDto
 import app.tfdn.lirelle.source.kavita.library.dto.VolumeDto
 import java.math.BigDecimal
+import kotlin.math.abs
 
 /** The number Kavita gives the default chapter: the one of a volume that is a single file. */
 internal const val DefaultChapter = "-100000"
@@ -74,10 +75,12 @@ internal fun VolumeDto.books(): List<KavitaBook> = chapters.sortedBy { it.sortOr
 
 /**
  * The volume's place in its series: "3", "10.5", or "1-3" for a volume that spans several numbers; its whole
- * [VolumeDto.number] from a server that gives no other, and none for 0.
+ * [VolumeDto.number] from a server that gives no other. None for 0, nor for the volumes Kavita numbers ±100000:
+ * the loose-leaf volume of the chapters outside a volume, and that of the specials.
  */
 internal val VolumeDto.index: String?
     get() = when {
+        minNumber.isSentinel() || maxNumber.isSentinel() || number.toFloat().isSentinel() -> null
         maxNumber > minNumber -> "${minNumber.plain()}-${maxNumber.plain()}"
         minNumber != 0f -> minNumber.plain()
         number != 0 -> number.toString()
@@ -86,6 +89,9 @@ internal val VolumeDto.index: String?
 
 /** The volume's number to order it by, a decimal kept. */
 private val VolumeDto.order: Float get() = if (minNumber != 0f || maxNumber != 0f) minNumber else number.toFloat()
+
+/** Kavita's number of the loose-leaf volume (-100000) or of the specials' (100000), which is no number. */
+private fun Float.isSentinel(): Boolean = abs(this) == SentinelVolume
 
 /** The number as written, without a trailing ".0": "10", "10.5". */
 private fun Float.plain(): String = BigDecimal(toString()).stripTrailingZeros().toPlainString()
@@ -114,5 +120,6 @@ internal val SeriesDetailDto.isLoneBook: Boolean
 /** A chapter's range as its place in the series; the default chapter's number is none. */
 internal fun String?.orIndex(): String? = this?.trim()?.takeIf { it.isNotEmpty() && it != DefaultChapter }
 
+private const val SentinelVolume = 100_000f
 private const val VolumePrefix = "v"
 private const val ChapterPrefix = "c"

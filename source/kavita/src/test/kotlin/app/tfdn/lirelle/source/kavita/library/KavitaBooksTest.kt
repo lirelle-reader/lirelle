@@ -96,6 +96,13 @@ class KavitaBooksTest {
     }
 
     @Test
+    fun `the loose-leaf and specials volumes have no number`() {
+        assertThat(VolumeDto(id = 1, number = -100000, minNumber = -100000f, maxNumber = -100000f).index).isNull()
+        assertThat(VolumeDto(id = 2, number = 100000, minNumber = 100000f, maxNumber = 100000f).index).isNull()
+        assertThat(VolumeDto(id = 3, number = -100000).index).isNull()
+    }
+
+    @Test
     fun `a chapter seen alone is the book it belongs to`() {
         assertThat(chapter("chapter-asterix").item()).isEqualTo(KavitaItem.Chapter(44))
         assertThat(chapter("continue-dune").item()).isEqualTo(KavitaItem.Volume(407))
