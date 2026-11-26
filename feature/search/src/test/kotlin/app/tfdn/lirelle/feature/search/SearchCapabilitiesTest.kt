@@ -197,6 +197,32 @@ class SearchCapabilitiesTest {
         compose.onAllNodesWithText(books(3)).assertCountEquals(0)
     }
 
+    private fun findSixBooks() {
+        repository.searchAnswer = { text ->
+            ApiResult.Success(
+                SearchResults(text, books = SearchSection((1..6).map { sampleBook("$it", "Book $it of Mars") }, 6)),
+            )
+        }
+    }
+
+    @Test
+    fun `on a phone the books found offer their full list when the source lists all books`() {
+        findSixBooks()
+        showRoute(WindowWidthClass.Compact)
+
+        compose.onNodeWithTag("result-book-6").assertDoesNotExist()
+        compose.onNodeWithText(text(R.string.search_see_all_count, 6)).assertIsDisplayed()
+    }
+
+    @Test
+    fun `on a phone every book found shows, with no full list, when the source lists no books`() {
+        findSixBooks()
+        showRoute(WindowWidthClass.Compact, KomgaLikeCapabilities.copy(libraryBooks = false))
+
+        compose.onNodeWithTag("result-book-6").assertExists()
+        compose.onAllNodesWithText(text(R.string.search_see_all_count, 6)).assertCountEquals(0)
+    }
+
     @Test
     fun `the full list of authors found goes back without authors, asking nothing`() {
         val viewModel = AuthorResultsViewModel("writer", repository, KomgaLikeCapabilities)

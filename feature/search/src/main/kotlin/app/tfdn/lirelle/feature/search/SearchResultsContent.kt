@@ -37,6 +37,8 @@ private val GridGap = 16.dp
  *   for one column of rows. On a wide window a zone with nothing leaves its width to the other.
  * @param actions what a result and a "See all" open.
  * @param showSeriesCounts whether a series found shows its number of books.
+ * @param seeAllBooks whether the books found open a full list of them. Without it every book found shows, and
+ *   no "See all" opens a list the source cannot fill.
  */
 @Composable
 internal fun SearchResultsContent(
@@ -44,14 +46,16 @@ internal fun SearchResultsContent(
     wide: Boolean,
     actions: SearchActions,
     showSeriesCounts: Boolean,
+    seeAllBooks: Boolean,
     modifier: Modifier = Modifier,
 ) {
+    val onSeeAllBooks = { actions.onSeeAllBooks(results.text) }.takeIf { seeAllBooks }
     if (wide) {
         val hasSide = results.series.items.isNotEmpty() || results.authors.items.isNotEmpty()
         Row(modifier = modifier.fillMaxSize()) {
             if (results.books.items.isNotEmpty()) {
                 ScrollingZone(SearchMainTag, Modifier.weight(MainWeight), resultsScroll(results.text)) {
-                    BookGrid(results.books, actions.onOpenBook) { actions.onSeeAllBooks(results.text) }
+                    BookGrid(results.books, actions.onOpenBook, onSeeAllBooks)
                 }
             }
             if (hasSide) {
@@ -62,7 +66,7 @@ internal fun SearchResultsContent(
         }
     } else {
         ScrollingZone(SearchMainTag, modifier.fillMaxSize(), resultsScroll(results.text)) {
-            Section(R.string.search_books, results.books, { actions.onSeeAllBooks(results.text) }) { book ->
+            Section(R.string.search_books, results.books, onSeeAllBooks) { book ->
                 BookResultRow(book, onClick = { actions.onOpenBook(book.id) })
             }
             SeriesAndAuthors(results, actions, showSeriesCounts)
@@ -97,20 +101,24 @@ private fun SeriesAndAuthors(results: SearchResults, actions: SearchActions, sho
     }
 }
 
-/** The first rows of a section under its title, with "See all" when the server has more. */
+/**
+ * The first rows of a section under its title, with "See all" when the server has more.
+ *
+ * @param onSeeAll null when there is no full list to open: then every row found shows.
+ */
 @Composable
 private fun <T> Section(
     @StringRes title: Int,
     section: SearchSection<T>,
-    onSeeAll: () -> Unit,
+    onSeeAll: (() -> Unit)?,
     row: @Composable (T) -> Unit,
 ) {
     if (section.items.isEmpty()) return
-    val visible = section.items.take(SectionRows)
+    val visible = if (onSeeAll == null) section.items else section.items.take(SectionRows)
     SectionHeading(
         title = stringResource(title),
         seeAllLabel = stringResource(R.string.search_see_all_count, section.total),
-        onSeeAll = onSeeAll.takeIf { section.total > visible.size },
+        onSeeAll = onSeeAll?.takeIf { section.total > visible.size },
     )
     visible.forEach { row(it) }
 }
@@ -118,11 +126,11 @@ private fun <T> Section(
 /** Every book the search returned, as covers. */
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
-private fun BookGrid(books: SearchSection<BookSummary>, onOpenBook: (BookId) -> Unit, onSeeAll: () -> Unit) {
+private fun BookGrid(books: SearchSection<BookSummary>, onOpenBook: (BookId) -> Unit, onSeeAll: (() -> Unit)?) {
     SectionHeading(
         title = stringResource(R.string.search_books),
         seeAllLabel = stringResource(R.string.search_see_all_count, books.total),
-        onSeeAll = onSeeAll.takeIf { books.total > books.items.size },
+        onSeeAll = onSeeAll?.takeIf { books.total > books.items.size },
     )
     FlowRow(
         horizontalArrangement = Arrangement.spacedBy(GridGap),

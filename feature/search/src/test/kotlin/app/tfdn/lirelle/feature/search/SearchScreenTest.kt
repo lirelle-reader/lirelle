@@ -209,6 +209,29 @@ class SearchScreenTest {
         }
     }
 
+    /** Six books found, all of them come: what a source without a list of all books answers. */
+    private val sixOfSix = found.copy(
+        results = Loadable.Ready(results.copy(books = results.books.copy(total = 6))),
+    )
+
+    @Test
+    fun `on a phone six books found of six still show five rows and see all where there is a list of all books`() {
+        show(sixOfSix)
+
+        compose.onNodeWithTag("result-book-6").assertDoesNotExist()
+        compose.onNodeWithText(text(R.string.search_see_all_count, 6)).performScrollTo().performClick()
+
+        assertThat(events).containsExactly("recorded", "all books mars").inOrder()
+    }
+
+    @Test
+    fun `on a phone every book found shows, with no see all, where there is no list of all books`() {
+        show(sixOfSix.copy(seeAllBooks = false))
+
+        compose.onNodeWithTag("result-book-6").performScrollTo().assertIsDisplayed()
+        compose.onAllNodesWithTag(SeeAllTag).assertCountEquals(0)
+    }
+
     @Test
     fun `a book found opens its page`() {
         show(found)
