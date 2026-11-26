@@ -22,6 +22,8 @@ import app.tfdn.lirelle.core.audio.settings.PlayerSettings
 import app.tfdn.lirelle.core.audio.timer.SleepChoice
 import app.tfdn.lirelle.core.audio.timer.SleepState
 import app.tfdn.lirelle.feature.player.R
+import app.tfdn.lirelle.feature.player.car.CarTexts
+import app.tfdn.lirelle.feature.player.car.speedButton
 import kotlin.math.ceil
 
 private const val MillisPerMinute = 60_000.0
@@ -46,6 +48,9 @@ internal fun offerToContinue(context: Context, title: String, open: PendingInten
 class PlayerTexts(private val resources: Resources) {
     /** The words of a narration's notification. */
     val narration = NarrationTexts(resources)
+
+    /** The words of the speed button, and of what a car browses. */
+    val car = CarTexts(resources)
 
     fun back(seconds: Int): String = resources.getString(R.string.player_button_back, seconds)
 
@@ -82,6 +87,10 @@ class PlayerTexts(private val resources: Resources) {
  * of which back, play/pause and forward in the compact view; the sleep timer's time left after the chapter's
  * title; "*Title* — finished" with "Listen to the next one" at the end of the book.
  *
+ * A sixth button, the speed, is for the car: Android Auto reads the platform's session, whose buttons are
+ * these, the same for every controller. It comes last, so that the notification and the system's media
+ * controls, which have five places, keep the five above and never show it.
+ *
  * A narration shows its section's title ("Section 12" for one without), and at its end the book's title over
  * "Narration finished", without buttons.
  *
@@ -92,12 +101,17 @@ class PlayerTexts(private val resources: Resources) {
 object PlayerNotification {
     private const val ChannelId = "playback"
 
-    /** The session's media button preferences for this moment. */
+    /**
+     * The session's media button preferences for this moment, for every controller. The last one names the
+     * [speed] and goes to the next one: it must stay last, after the four others (see the class). At the end of
+     * a book the next volume is offered alone.
+     */
     fun buttons(
         texts: PlayerTexts,
         settings: PlayerSettings,
         finished: FinishedBook?,
         narrationFinished: Boolean = false,
+        speed: Float = 1f,
     ): List<CommandButton> {
         if (narrationFinished) return emptyList()
         if (finished != null) {
@@ -113,6 +127,7 @@ object PlayerNotification {
             button(backIcon(back), PlayerCommand.Back, texts.back(back), CommandButton.SLOT_BACK),
             button(forwardIcon(forward), PlayerCommand.Forward, texts.forward(forward), SLOT_FORWARD),
             button(CommandButton.ICON_NEXT, PlayerCommand.NextChapter, texts.nextChapter(), SLOT_OVERFLOW),
+            speedButton(texts.car, speed),
         )
     }
 

@@ -64,16 +64,17 @@ class FakeDownloads : Downloads {
     private val kept = MutableStateFlow<Map<BookId, DownloadedBook>>(emptyMap())
     val opened = mutableListOf<BookId>()
 
-    /** The book has [format] in [state]; [removing] while it is being deleted. */
+    /** The book has [format] in [state]; [removing] while it is being deleted; last opened at [openedAt]. */
     fun has(
         bookId: BookId,
         format: DownloadFormat,
         state: FormatState = FormatState.Complete(1_000),
         removing: Boolean = false,
+        openedAt: Instant? = null,
     ) {
         val record = FormatRecord(format, state, emptyList(), null, null, Asked, removing = removing)
         val formats = kept.value[bookId]?.formats.orEmpty().filter { it.format != format } + record
-        kept.update { it + (bookId to DownloadedBook(bookId, formats, Asked, lastOpenedAt = null)) }
+        kept.update { it + (bookId to DownloadedBook(bookId, formats, Asked, lastOpenedAt = openedAt)) }
     }
 
     /** The book goes when it closes ([deleteAtClose]), or stays after all; null takes it off the device. */
@@ -82,7 +83,7 @@ class FakeDownloads : Downloads {
         if (book == null) books - bookId else books + (bookId to book.copy(deleteAtClose = deleteAtClose == true))
     }
 
-    override val books: Flow<List<DownloadedBook>> = flowOf(emptyList())
+    override val books: Flow<List<DownloadedBook>> = kept.map { it.values.toList() }
     override val queue: Flow<QueueState> = flowOf(QueueState(null, emptyList(), null, null))
 
     override fun book(bookId: BookId): Flow<DownloadedBook?> = kept.map { it[bookId] }

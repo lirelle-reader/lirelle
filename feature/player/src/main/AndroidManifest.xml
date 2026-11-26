@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -13,7 +14,17 @@
     <!-- Only for the rare "tap to continue" notification; the player notification itself needs none. -->
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 
+    <!-- Android Auto is known by who signed it (AndroidAuto.kt): its package must be one the app may look up. -->
+    <queries>
+        <package android:name="com.google.android.projection.gearhead" />
+    </queries>
+
     <application>
+        <!-- Android Auto lists the app among its media apps, and browses it through the playback service. -->
+        <meta-data
+            android:name="com.google.android.gms.car.application"
+            android:resource="@xml/automotive_app_desc" />
+
         <service
             android:name=".service.PlaybackService"
             android:exported="true"
@@ -25,6 +36,18 @@
                 <action android:name="android.media.browse.MediaBrowserService" />
             </intent-filter>
         </service>
+
+        <!--
+            The covers of the open profile, for the car, which loads pictures by itself and cannot sign in to
+            the server. Exported without a permission: Android Auto could not be granted one. The provider
+            itself answers Android Auto and the app only, and only the open profile's covers, to be read:
+            that is what lint's warning about exported providers is answered with.
+        -->
+        <provider
+            android:name=".car.CarCoverProvider"
+            android:authorities="${applicationId}.covers"
+            android:exported="true"
+            tools:ignore="ExportedContentProvider" />
 
         <!-- A headset's or a car's play button restarts the last book after the service ended. -->
         <receiver

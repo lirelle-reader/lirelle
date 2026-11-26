@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- The tabs of what a car browses -->
+    <string name="car_tab_home">Accueil</string>
+    <string name="car_tab_downloaded">Téléchargés</string>
+    <string name="car_tab_audiobooks">Livres audio</string>
+    <string name="car_tab_series">Séries</string>
+    <!-- The groups of the car's Home tab: the phone's Home rows of the same names -->
+    <string name="car_section_continue">Reprendre</string>
+    <string name="car_section_up_next">À suivre</string>
+    <string name="car_section_recently_added">Ajoutés récemment</string>
+    <!-- Under a book to continue: the listening time left, as "9 h 12" -->
+    <string name="car_line_left">Reste %1$s</string>
+    <!-- Under a series: how many of its books can be listened to -->
+    <plurals name="car_series_books">
+        <item quantity="one">%d livre</item>
+        <item quantity="many">%d livres</item>
+        <item quantity="other">%d livres</item>
+    </plurals>
+    <!-- Why a tab lists nothing -->
+    <string name="car_notice_nothing">Ce profil n’a rien à écouter.</string>
+    <string name="car_notice_sign_in">Ouvrez Lirelle sur le téléphone pour vous reconnecter.</string>
+    <string name="car_notice_unreachable">Le serveur est injoignable.</string>
+
+    <!-- Said by the car when a voice request finds no book to listen to; %1$s is what was asked. -->
+    <string name="car_search_nothing">Rien à écouter pour « %1$s ».</string>
+    <!-- Said by the car when asked to play with nothing named, and no book was begun. -->
+    <string name="car_nothing_to_resume">Aucun livre à reprendre.</string>
+</resources>

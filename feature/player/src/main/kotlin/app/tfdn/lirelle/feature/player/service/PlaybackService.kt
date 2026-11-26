@@ -2,8 +2,10 @@
 
 package app.tfdn.lirelle.feature.player.service
 
+import android.content.Context
 import android.content.Intent
 import androidx.annotation.OptIn
+import androidx.media3.common.PlaybackParameters
 import androidx.media3.common.Player
 import androidx.media3.common.util.UnstableApi
 import androidx.media3.exoplayer.ExoPlayer
@@ -35,6 +37,17 @@ import app.tfdn.lirelle.core.network.di.AuthenticatedClient
 import app.tfdn.lirelle.core.session.profile.CurrentProfile
 import app.tfdn.lirelle.core.session.profile.OpenEntry
 import app.tfdn.lirelle.core.session.profile.openEntryOrNull
+import app.tfdn.lirelle.feature.player.car.CarAsks
+import app.tfdn.lirelle.feature.player.car.CarBrowser
+import app.tfdn.lirelle.feature.player.car.CarControllers
+import app.tfdn.lirelle.feature.player.car.CarCovers
+import app.tfdn.lirelle.feature.player.car.CarIds
+import app.tfdn.lirelle.feature.player.car.CarItems
+import app.tfdn.lirelle.feature.player.car.CarLibrary
+import app.tfdn.lirelle.feature.player.car.CarStart
+import app.tfdn.lirelle.feature.player.car.NoticeAsLine
+import app.tfdn.lirelle.feature.player.car.PlayingCover
+import app.tfdn.lirelle.feature.player.car.refreshCars
 import app.tfdn.lirelle.feature.player.di.MediaClient
 import app.tfdn.lirelle.feature.player.di.PlayerProfileEntry
 import dagger.hilt.android.AndroidEntryPoint
@@ -75,7 +88,10 @@ class MediaStreams @Inject constructor(
 /** Where listening goes: the position (stored, sent every 5 s) and the listening sessions, both queued. */
 class ListeningOutput @Inject constructor(val writer: PositionWriter, val sessions: ListeningSessionSender)
 
-/** Where books come from: the server, the device's positions, the settings and the downloads. */
+/**
+ * Where books come from: the server, the device's positions, the settings and the downloads, and the word that
+ * a book's files changed on its server.
+ */
 class BookSources @Inject constructor(
     val audio: AudioRepository,
     val library: LibraryRepository,
@@ -87,6 +103,7 @@ class BookSources @Inject constructor(
     private val conflicts: ListeningConflicts,
     /** What the device keeps of the books: a downloaded one plays without the server. */
     val kept: KeptBooks,
+    val syncEvents: PlaybackSyncEvents,
 ) {
     /** Whether a position of [bookId] still waits to be sent. */
     suspend fun waiting(bookId: BookId): Boolean = outbox.pending().any { it.bookId == bookId }
@@ -107,17 +124,25 @@ class NarrationOutput @Inject constructor(
     val cursor: NarrationCursor,
 )
 
+/**
+ * What the car is given of a profile.
+ *
+ * @property library what it browses.
+ * @property start what a book started from it plays, and from where.
+ */
+class CarParts @Inject constructor(val library: CarLibrary, val start: CarStart)
+
 /** What the playback service is made of, from the objects of the profile it plays for. */
 class PlaybackParts @Inject constructor(
     val sources: BookSources,
     val listening: ListeningOutput,
     val clocks: PlaybackClocks,
-    val syncEvents: PlaybackSyncEvents,
     val streams: MediaStreams,
     val shutdown: PlaybackShutdown,
     val lastBooks: LastBookStore,
     val narration: NarrationOutput,
     val network: ProfileNetwork,
+    val car: CarParts,
 )
 
 /**
@@ -206,14 +231,23 @@ class PlaybackService : MediaLibraryService() {
             engine, navigator, loader, sleep, timer, sources.settings, sources::nextVolume,
             parts.clocks.monotonic, main,
         )
-        val chapters = ChapterPlayer(engine, navigator, book)
+        // Once its profile closed, a car that still asks is listed nothing of it, and starts nothing.
+        val carItems = CarItems(resources, CarCovers.authority(packageName), open.profileId)
+        val browser = CarBrowser(parts.car.library, carItems, NoticeAsLine(texts.car), main) { left }
+        val asks = CarAsks(parts.car.library, texts.car, main, browser::listedBook, { left }) { parts.lastBooks.get() }
+        val carStart = CarBookStart(book, main, whileOpen({ left }, parts.car.start::requestFor), asks::failed)
+        // The cover's address is said as one the car can open; the app's own picture comes from where it did.
+        val cover = PlayingCover(CarCovers.authority(packageName), open.profileId)
+        val chapters = ChapterPlayer(engine, navigator, book, carStart) {
+            cover.said(it.manifest.bookId, it.artworkUrl)
+        }
         val commands =
-            PlayerCommands(packageName, ::handle, { publisher.buttons() }) {
+            PlayerCommands(packageName, ::handle, { publisher.buttons() }, androidAuto(), browser, asks) {
                 // Its profile closed: there is no book of it to resume.
                 resumption(parts.lastBooks.takeUnless { left }, main)
             }
         val mediaSession = MediaLibrarySession.Builder(this, chapters, commands)
-            .setBitmapLoader(parts.streams.sessionCovers(this))
+            .setBitmapLoader(cover.loader(parts.streams.sessionCovers(this)))
             .apply { sessionActivity(null, open.profileId)?.let(::setSessionActivity) }
             .build()
         session = SessionHold(this, mediaSession)
@@ -235,6 +269,11 @@ class PlaybackService : MediaLibraryService() {
         engine.addListener(object : Player.Listener {
             override fun onIsPlayingChanged(isPlaying: Boolean) {
                 if (isPlaying) PlayerNotification.dismissContinue(this@PlaybackService)
+            }
+
+            // The speed button names the speed.
+            override fun onPlaybackParametersChanged(playbackParameters: PlaybackParameters) {
+                publisher.speed = playbackParameters.speed
             }
         })
         setMediaNotificationProvider(PlayerNotification.provider(this))
@@ -387,9 +426,13 @@ class PlaybackService : MediaLibraryService() {
             }.collect(publisher::publish)
         }
         main.launch { parts.sources.settings.settings.collect { publisher.settings = it } }
+        // A car subscribed to a tab asks for it again when told: nothing is said once the session was let go.
+        main.refreshCars(parts.network.waitsForSignIn, parts.network.online, parts.car.library.keptAudio) {
+            session.held?.notifyChildrenChanged(CarIds.of(it), Int.MAX_VALUE, null)
+        }
         main.launch {
             // The book's files changed on the server: the same place in the book, in the new files.
-            parts.syncEvents.manifestChanges.collect { id ->
+            parts.sources.syncEvents.manifestChanges.collect { id ->
                 // An audiobook's files: a narration of the same book plays on as it is.
                 val extras = book.extras.value
                 if (extras.book?.id != id || extras.narrationFileId != null) return@collect
@@ -430,3 +473,6 @@ class PlaybackService : MediaLibraryService() {
  * whoever closes the profile lets end before the profile's stores go.
  */
 internal suspend fun CoroutineScope.joinLaunched() = coroutineContext.job.children.toList().joinAll()
+
+/** The one car there is: Android Auto as Google signed it, asked of the system at each request. */
+private fun Context.androidAuto() = CarControllers.androidAuto(packageManager)

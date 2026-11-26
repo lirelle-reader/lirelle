@@ -3,6 +3,7 @@ package app.tfdn.lirelle.feature.player.service
 import androidx.media3.common.C
 import android.net.Uri
 import android.os.Looper
+import androidx.media3.common.MediaItem
 import androidx.media3.common.Player
 import androidx.media3.common.Timeline
 import androidx.test.ext.junit.runners.AndroidJUnit4
@@ -33,7 +34,16 @@ class ChapterPlayerTest {
     }
     private var playsOnceLoaded: (() -> Boolean)? = null
     private var resumed: (() -> Unit)? = null
-    private val player = ChapterPlayer(engine, navigator, actions)
+    private val player = ChapterPlayer(
+        engine,
+        navigator,
+        actions,
+        starts = { bookId, play, done ->
+            asked += "start $bookId"
+            resumed = done
+            playsOnceLoaded = play
+        },
+    )
     private val playlist =
         BookPlaylist.of(Manifests.twoFiles(), "https://b/cover", { "Part $it" }) { "https://b/$it" }!!
 
@@ -72,6 +82,24 @@ class ChapterPlayerTest {
         assertThat(PlayerSessionContract.chapterStartMs(metadata)).isEqualTo(60_000)
         assertThat(metadata.extras!!.getLong(PlayerSessionContract.EXTRA_CHAPTER_END_MS)).isEqualTo(100_000)
         assertThat(metadata.extras!!.getString(PlayerSessionContract.EXTRA_CHAPTER_ID)).isEqualTo("c2")
+    }
+
+    @Test
+    fun `the cover's address is said as the service tells, for every chapter`() {
+        val said = Uri.parse("content://app.tfdn.lirelle.covers/profile-1/b1")
+        val told = mutableListOf<BookPlaylist>()
+        val player = ChapterPlayer(engine, navigator, actions, artwork = { said.also { _ -> told += it } })
+        navigator.open(playlist, 0)
+        engine.engineState = Player.STATE_READY
+        engine.durationsMs = listOf(100_000, 60_000)
+        engine.update()
+        player.refresh()
+        idle()
+
+        val covers = (0 until player.mediaItemCount).map { player.getMediaItemAt(it).mediaMetadata.artworkUri }
+        assertThat(covers.distinct()).containsExactly(said)
+        assertThat(player.mediaMetadata.artworkUri).isEqualTo(said)
+        assertThat(told.distinct()).containsExactly(playlist)
     }
 
     @Test
@@ -329,5 +357,64 @@ class ChapterPlayerTest {
         player.play()
         idle()
         assertThat(playsOnceLoaded!!.invoke()).isTrue()
+    }
+
+    @Test
+    fun `a book the car starts shows as starting, and is loaded by the car's start, not as a last book`() {
+        val item = PlayerSessionContract.startItem(BookId("7"), "The Long Road")
+
+        player.setMediaItem(item)
+        idle()
+        assertThat(asked).containsExactly("start 7")
+        assertThat(player.currentMediaItem?.mediaMetadata?.title.toString()).isEqualTo("The Long Road")
+        assertThat(player.playbackState).isEqualTo(Player.STATE_BUFFERING)
+        assertThat(player.playWhenReady).isTrue()
+        assertThat(playsOnceLoaded!!.invoke()).isTrue()
+
+        load()
+        resumed!!.invoke()
+        idle()
+        assertThat(player.mediaItemCount).isEqualTo(3)
+    }
+
+    @Test
+    fun `a book the car starts that cannot be loaded leaves the player as it was`() {
+        player.setMediaItem(PlayerSessionContract.startItem(BookId("7"), null))
+        idle()
+
+        resumed!!.invoke()
+        idle()
+
+        assertThat(player.currentTimeline.isEmpty).isTrue()
+        assertThat(player.playWhenReady).isFalse()
+    }
+
+    @Test
+    fun `a second book asked while the first loads keeps its placeholder and its pause when the first ends`() {
+        player.setMediaItem(PlayerSessionContract.startItem(BookId("7"), "The Long Road"))
+        idle()
+        val firstDone = resumed!!
+        player.setMediaItem(PlayerSessionContract.startItem(BookId("8"), "The Wide River"))
+        idle()
+        player.pause()
+        idle()
+
+        firstDone()
+        idle()
+
+        assertThat(asked).containsExactly("start 7", "start 8").inOrder()
+        assertThat(player.currentMediaItem?.mediaMetadata?.title.toString()).isEqualTo("The Wide River")
+        assertThat(player.playbackState).isEqualTo(Player.STATE_BUFFERING)
+        assertThat(playsOnceLoaded!!.invoke()).isFalse()
+    }
+
+    @Test
+    fun `any other item is still set to nothing`() {
+        player.setMediaItem(MediaItem.Builder().setMediaId("book/7").build())
+        player.setMediaItem(MediaItem.Builder().setMediaId("elsewhere").build())
+        idle()
+
+        assertThat(asked).isEmpty()
+        assertThat(player.currentTimeline.isEmpty).isTrue()
     }
 }

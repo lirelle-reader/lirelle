@@ -56,8 +56,8 @@ class SessionPublisherTest {
         publisher.publish(PlayerSessionExtras(book = book, finished = FinishedBook(null)))
 
         assertThat(buttons.map { list -> list.map { it.displayName.toString() } }).containsExactly(
-            listOf("Previous chapter", "Back 15 seconds", "Forward 30 seconds", "Next chapter"),
-            listOf("Previous chapter", "Back 10 seconds", "Forward 30 seconds", "Next chapter"),
+            listOf("Previous chapter", "Back 15 seconds", "Forward 30 seconds", "Next chapter", "Speed: 1×"),
+            listOf("Previous chapter", "Back 10 seconds", "Forward 30 seconds", "Next chapter", "Speed: 1×"),
             emptyList<String>(),
         ).inOrder()
     }
@@ -112,5 +112,23 @@ class SessionPublisherTest {
         assertThat(chapters.mediaMetadata.artist.toString()).isEqualTo("Narration finished")
         assertThat(buttons.last()).isEmpty()
         assertThat(PlayerSessionExtras.from(extras.last()).narrationFinished).isTrue()
+    }
+
+    private fun List<List<CommandButton>>.names() = map { list -> list.map { it.displayName.toString() } }
+
+    @Test
+    fun `the buttons follow the speed, and nothing is sent while it stays`() {
+        val chapterButtons = listOf("Previous chapter", "Back 15 seconds", "Forward 30 seconds", "Next chapter")
+        publisher.publish(PlayerSessionExtras(book = book))
+        publisher.speed = 1.5f
+        publisher.speed = 1.5f
+        publisher.publish(sleeping(10_000))
+
+        assertThat(buttons.names()).containsExactly(
+            chapterButtons + "Speed: 1×",
+            chapterButtons + "Speed: 1.5×",
+        ).inOrder()
+        // What a controller that connects now is given.
+        assertThat(listOf(publisher.buttons()).names()).containsExactly(chapterButtons + "Speed: 1.5×")
     }
 }

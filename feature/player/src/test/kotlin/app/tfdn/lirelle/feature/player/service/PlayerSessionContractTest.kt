@@ -21,6 +21,7 @@ class PlayerSessionContractTest {
         PlayerCommand.PreviousChapter,
         PlayerCommand.NextChapter,
         PlayerCommand.SetSpeed(1.25f),
+        PlayerCommand.NextSpeed,
         PlayerCommand.StartSleep(SleepChoice.Minutes(15)),
         PlayerCommand.StartSleep(SleepChoice.EndOfChapter),
         PlayerCommand.ExtendSleep,

@@ -26,10 +26,12 @@ internal fun bearerFromServer(userId: Long) = "Bearer access-from-server-$userId
  * @param signsIn it can be signed in to with a password, as the sign-in screens do it: it says it is a
  *   BookOrbit server, offers the password, and opens a session for whoever asks — the account `user<N>` is
  *   the account N. Still unavailable for everything a profile asks afterwards.
+ * @param has what it has for a profile all the same: its answer to a request, or null for one it has nothing for.
  */
 internal class RecordingServer(
     private val refusesRenewals: Boolean = false,
     private val signsIn: Boolean = false,
+    private val has: (RecordedRequest) -> MockResponse? = { null },
 ) : Closeable {
 
     private val server = MockWebServer()
@@ -42,7 +44,7 @@ internal class RecordingServer(
                 asked += path to request.headers["Authorization"]
                 val refused = refusesRenewals && path == RenewalPath
                 val signIn = if (signsIn) signInAnswer(path, request.body?.utf8().orEmpty()) else null
-                return signIn ?: MockResponse(code = if (refused) Unauthorized else Unavailable)
+                return signIn ?: has(request) ?: MockResponse(code = if (refused) Unauthorized else Unavailable)
             }
         }
         server.start()

@@ -177,6 +177,35 @@ class DefaultLibraryRepositoryTest {
         assertThat((authors as ApiErrorException).error).isEqualTo(ApiError.ServerFailed)
     }
 
+    @Test
+    fun `one page of the books is asked as the list asks its pages, with the page and the size given`() =
+        runBlocking {
+            server.enqueueJson(cards(1..2, 7))
+            val request = BookListRequest(filters = BookFilters(readAlongOnly = true), text = "road")
+
+            val page = (repository.bookPage(request, page = 2, size = 25) as ApiResult.Success).value
+
+            assertThat(page.items.map { it.id }).containsExactly(BookId("1"), BookId("2")).inOrder()
+            assertThat(page.total).isEqualTo(7)
+            val asked = server.takeRequest()
+            assertThat(asked.target()).isEqualTo("/api/v1/books/query")
+            assertThat(asked.bodyText()).contains(""""pagination":{"page":2,"size":25}""")
+            assertThat(asked.bodyText()).contains("epub:readalong")
+            assertThat(asked.bodyText()).contains(""""q":"road"""")
+        }
+
+    @Test
+    fun `one page of the books that fails says why, and signed out asks nothing`() = runBlocking {
+        server.enqueueJson("""{"statusCode":500}""", code = 500)
+
+        assertThat(repository.bookPage(BookListRequest(), page = 0, size = 60))
+            .isEqualTo(ApiResult.Failure(ApiError.ServerFailed))
+        signedIn = false
+        assertThat(repository.bookPage(BookListRequest(), page = 0, size = 60))
+            .isEqualTo(ApiResult.Failure(ApiError.SessionExpired))
+        assertThat(server.requestCount).isEqualTo(1)
+    }
+
     // --- series
 
     @Test

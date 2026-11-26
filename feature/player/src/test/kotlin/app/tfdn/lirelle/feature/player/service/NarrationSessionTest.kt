@@ -396,6 +396,37 @@ class NarrationSessionTest {
     }
 
     @Test
+    fun `the narration held, asked at a page marker, goes to its sentence without being loaded again`() = runTest {
+        val session = narrating()
+        at(session, 1_000)
+        val asked = maps.asked.size
+
+        // What the car asks of a book read further in text than it was heard.
+        val marker = NarrationStart.AtMarker("epubcfi(/6/4!/4/2[p1]/4[s3]/1:12)")
+        session.load(LoadRequest.Narration(BookId("42"), FileId("1"), marker), play = true)
+        settle()
+
+        assertThat(navigator.bookTimeMs()).isEqualTo(9_000)
+        assertThat(maps.asked).hasSize(asked)
+        assertThat(engine.wantsToPlay).isTrue()
+    }
+
+    @Test
+    fun `the narration held, asked at a page marker that names no sentence, plays on where it is`() = runTest {
+        val session = narrating()
+        at(session, 6_000)
+        engine.wantsToPlay = false
+        engine.update()
+
+        val marker = NarrationStart.AtMarker("epubcfi(/6/4!/4/8/1:0)")
+        session.load(LoadRequest.Narration(BookId("42"), FileId("1"), marker), play = true)
+        settle()
+
+        assertThat(navigator.bookTimeMs()).isEqualTo(6_000)
+        assertThat(engine.wantsToPlay).isTrue()
+    }
+
+    @Test
     fun `a narration asked at a section without a sentence opens at the section's first`() = runTest {
         val session = session()
 

@@ -1,5 +1,6 @@
 package app.tfdn.lirelle.feature.player.service
 
+import app.tfdn.lirelle.core.audio.narration.ReadAlongMap
 import app.tfdn.lirelle.core.ids.BookId
 import app.tfdn.lirelle.core.ids.FileId
 
@@ -20,9 +21,16 @@ val LoadRequest.fromStart: Boolean get() = this is LoadRequest.Audiobook && from
 /** Whether what is held may play on where it is: not when asked from the start, or at a place. */
 val LoadRequest.mayPlayOn: Boolean get() = this !is LoadRequest.Audiobook || (!fromStart && at == null)
 
-/** The sentence a narration is asked at; null for a narration taken up where it was, or an audiobook. */
-val LoadRequest.sentence: NarrationStart.AtSentence?
-    get() = (this as? LoadRequest.Narration)?.start as? NarrationStart.AtSentence
+/**
+ * Where on [map], the map of the narration held, this asks to go: the sentence it names, or the one its page
+ * marker is in. Null for a narration taken up where it was — a marker that names no sentence too — and for an
+ * audiobook.
+ */
+fun LoadRequest.placeOn(map: ReadAlongMap): Long? = when (val start = (this as? LoadRequest.Narration)?.start) {
+    is NarrationStart.AtSentence -> map.timeOf(start)
+    is NarrationStart.AtMarker -> map.sentenceAtMarker(start.cfi)?.startMs
+    NarrationStart.Resume, null -> null
+}
 
 /** Whether what is held as [source] is what this asks for: the audiobook, or the narration of the same file. */
 fun LoadRequest.isFor(source: BookSource): Boolean = when (this) {

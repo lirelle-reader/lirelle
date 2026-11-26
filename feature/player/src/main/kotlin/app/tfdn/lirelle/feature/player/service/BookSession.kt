@@ -15,6 +15,7 @@ import app.tfdn.lirelle.core.ids.BookId
 import app.tfdn.lirelle.core.ids.SeriesId
 import app.tfdn.lirelle.core.library.MonotonicClock
 import app.tfdn.lirelle.core.library.model.NextVolume
+import app.tfdn.lirelle.feature.player.nextSpeedShortcut
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
@@ -196,6 +197,7 @@ class BookSession(
         PlayerCommand.CancelSleep to sleep::cancel,
         PlayerCommand.ListenToNext to { extras.value.finished?.nextVolume?.let { load(it.bookId, false, true) } },
         PlayerCommand.CloseBook to ::close,
+        PlayerCommand.NextSpeed to { setSpeed(nextSpeedShortcut(engine.playbackParameters.speed)) },
     )
 
     init {
@@ -224,6 +226,7 @@ class BookSession(
             PlayerCommand.Back, PlayerCommand.Forward, PlayerCommand.PreviousChapter, PlayerCommand.NextChapter,
             PlayerCommand.PreviousSentence, PlayerCommand.NextSentence, PlayerCommand.ExtendSleep,
             PlayerCommand.CancelSleep, PlayerCommand.ListenToNext, PlayerCommand.CloseBook,
+            PlayerCommand.NextSpeed,
             -> plainCommands.getValue(command)()
             is PlayerCommand.SetSpeed -> setSpeed(command.speed)
             is PlayerCommand.StartSleep -> {
@@ -337,12 +340,12 @@ class BookSession(
      *
      * What is already held, ready and neither at its end nor in error, is not loaded again (unless asked from
      * its start, or at a place): it plays on from where it is, as the play button would have it; a narration
-     * asked at a sentence goes there.
+     * asked at a sentence, or at a page marker that names one, goes there.
      */
     fun load(request: LoadRequest, play: Boolean, playing: () -> Boolean = { play }): Job {
         if (request.mayPlayOn && current.canPlayOn(request, loading, extras.value, engine)) {
             // The sentence first: a place chosen while paused is where play starts.
-            request.sentence?.let { narrationMap?.timeOf(it) }?.let(navigator::seekBookTime)
+            narrationMap?.let(request::placeOn)?.let(navigator::seekBookTime)
             if (playing() && !engine.playWhenReady) play()
             // Played on: no failure stands for it any more.
             mutableExtras.update { it.copy(loadFailed = false) }
@@ -374,7 +377,14 @@ class BookSession(
             engine.playWhenReady = playNow
             mutableExtras.value = extrasOf(book)
             opened(book)
-        }.also { loading = it }
+        }.also { load ->
+            loading = load
+            // Given up with no other load in its place (a car that asked for another book, still looked up):
+            // nothing is loading any more.
+            load.invokeOnCompletion { cause ->
+                if (cause != null && loading === load) mutableExtras.update { it.copy(loading = false) }
+            }
+        }
     }
 
     private fun close() {

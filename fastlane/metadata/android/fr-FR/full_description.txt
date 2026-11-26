@@ -7,6 +7,7 @@ Lirelle lit, affiche et fait écouter les livres, BD et livres audio de votre pr
 
 <b>Lire et écouter</b>
 • Livres audio avec chapitres, vitesse de lecture, minuterie de mise en veille et signets audio
+• Android Auto : parcourez et écoutez vos livres audio en voiture
 • Lecture synchronisée : la phrase lue est surlignée dans le livre, pour les livres qui la proposent
 
 <b>BD et mangas</b>

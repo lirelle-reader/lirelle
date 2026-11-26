@@ -36,6 +36,9 @@ Books and audiobooks from Standard Ebooks and LibriVox, in the public domain. Se
 - **Comics panel by panel**: the panels are found on the device, with no server work and no editing by hand, and are
   shown one after the other; a page that does not cut well is shown whole.
 - **Audiobooks**, with read-along for the books that carry it, audio bookmarks, playback speed and a sleep timer.
+- **In the car, with Android Auto**: the audiobooks and read-along books of the open profile — the Home rows, the
+  downloaded books, the audio library and its series, and search. A build installed outside Google Play shows in
+  Android Auto once "Unknown sources" is turned on in Android Auto's developer settings.
 - **Offline**: download books, comics and audiobooks to read and listen without a network; your progress is sent to
   the server when the network is back.
 - **Reading history**, and the progress made on your other devices.
@@ -52,7 +55,8 @@ Books and audiobooks from Standard Ebooks and LibriVox, in the public domain. Se
 - It does not manage the library (metadata, imports): that is the server's job.
 - It does not mix several servers in one library: each profile shows its own.
 - With Komga, it reads comics only: Komga's EPUBs and PDFs are not opened yet.
-- Not yet: Android Auto.
+- In the car, it does not switch profiles: Android Auto shows the profile open on the phone. Cars with Android
+  built in (Android Automotive) are not supported.
 - It runs on Android 14 or later only.
 
 ## Built with AI

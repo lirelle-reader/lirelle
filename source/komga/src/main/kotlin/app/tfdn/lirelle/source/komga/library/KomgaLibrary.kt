@@ -76,13 +76,7 @@ internal class KomgaLibrary(
                             val seriesIds = request.genre?.let { genre ->
                                 genreSeries ?: seriesOfGenre(remote, genre, request.library).also { genreSeries = it }
                             }
-                            val sorts = bookSorts(request.sort, request.direction)
-                            // A genre no series has: no book to ask for.
-                            if (seriesIds?.isEmpty() == true) {
-                                PageDto()
-                            } else {
-                                remote.api.books(bookSearch(request, seriesIds), page, size, sorts)
-                            }
+                            libraryBooks(remote, request, seriesIds, page, size)
                         }
                         is BookListSource.Collection -> remote.api.books(
                             readListBookSearch(source.id.value, request),
@@ -98,6 +92,31 @@ internal class KomgaLibrary(
         }
         return PagedList(pager.flow, total)
     }
+
+    override suspend fun bookPage(
+        request: BookListRequest,
+        page: Int,
+        size: Int,
+    ): ApiResult<PageResult<BookSummary>> = call { remote ->
+        val seriesIds = request.genre?.let { seriesOfGenre(remote, it, request.library) }
+        val dto = libraryBooks(remote, request, seriesIds, page, size)
+        PageResult(dto.content.map(remote.mapper::summary), dto.totalElements)
+    }
+
+    /** A page of the whole library's books; of the series [seriesIds] only, when a genre is asked. */
+    private suspend fun libraryBooks(
+        remote: Remote,
+        request: BookListRequest,
+        seriesIds: List<String>?,
+        page: Int,
+        size: Int,
+    ): PageDto<BookDto> =
+        // A genre no series has: no book to ask for.
+        if (seriesIds?.isEmpty() == true) {
+            PageDto()
+        } else {
+            remote.api.books(bookSearch(request, seriesIds), page, size, bookSorts(request.sort, request.direction))
+        }
 
     /** In [library] only when one is chosen: the books asked next are its own, and the list read is no longer. */
     private suspend fun seriesOfGenre(remote: Remote, genre: String, library: ServerLibrary?): List<String> {

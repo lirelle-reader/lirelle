@@ -1,6 +1,9 @@
 package app.tfdn.lirelle.feature.player.service
 
+import androidx.media3.common.Player
 import androidx.media3.session.CommandButton
+import androidx.media3.session.DefaultMediaNotificationProvider
+import androidx.media3.session.MediaSession
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import app.tfdn.lirelle.core.audio.settings.PlayerSettings
@@ -9,6 +12,7 @@ import app.tfdn.lirelle.core.ids.FileId
 import app.tfdn.lirelle.core.audio.timer.SleepChoice
 import app.tfdn.lirelle.core.audio.timer.SleepState
 import app.tfdn.lirelle.core.library.model.NextVolume
+import com.google.common.collect.ImmutableList
 import com.google.common.truth.Truth.assertThat
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -23,7 +27,7 @@ class PlayerNotificationTest {
     private fun CommandButton.action() = sessionCommand?.customAction
 
     @Test
-    fun `five buttons - previous chapter, back, play-pause from the player, forward, next chapter`() {
+    fun `previous chapter, back, play-pause from the player, forward, next chapter, then the speed`() {
         val buttons = PlayerNotification.buttons(texts, PlayerSettings(), finished = null)
 
         assertThat(buttons.map { it.action() }).containsExactly(
@@ -31,9 +35,44 @@ class PlayerNotificationTest {
             PlayerSessionContract.ACTION_BACK,
             PlayerSessionContract.ACTION_FORWARD,
             PlayerSessionContract.ACTION_NEXT_CHAPTER,
+            PlayerSessionContract.ACTION_NEXT_SPEED,
         ).inOrder()
-        assertThat(buttons.map { it.displayName.toString() })
-            .containsExactly("Previous chapter", "Back 15 seconds", "Forward 30 seconds", "Next chapter").inOrder()
+        assertThat(buttons.map { it.displayName.toString() }).containsExactly(
+            "Previous chapter", "Back 15 seconds", "Forward 30 seconds", "Next chapter", "Speed: 1×",
+        ).inOrder()
+    }
+
+    /** Media3's notification, asked which buttons it shows, in its order. */
+    private class Shown(context: android.content.Context) : DefaultMediaNotificationProvider(context) {
+        fun of(session: MediaSession, buttons: List<CommandButton>): List<CommandButton> = getMediaButtons(
+            session,
+            MediaSession.ConnectionResult.DEFAULT_PLAYER_COMMANDS,
+            ImmutableList.copyOf(buttons),
+            true,
+        )
+    }
+
+    @Test
+    fun `the notification keeps its five buttons, the speed comes after them where it has no room`() {
+        val context = ApplicationProvider.getApplicationContext<android.content.Context>()
+        val session = MediaSession.Builder(context, FakeEngine()).setId("notification-test").build()
+        try {
+            val shown = Shown(context)
+                .of(session, PlayerNotification.buttons(texts, PlayerSettings(), finished = null, speed = 1.5f))
+
+            // A media notification and the system's media controls show five buttons: the sixth has no place.
+            assertThat(shown.map { it.action() ?: "play-pause" }).containsExactly(
+                PlayerSessionContract.ACTION_BACK,
+                "play-pause",
+                PlayerSessionContract.ACTION_FORWARD,
+                PlayerSessionContract.ACTION_PREVIOUS_CHAPTER,
+                PlayerSessionContract.ACTION_NEXT_CHAPTER,
+                PlayerSessionContract.ACTION_NEXT_SPEED,
+            ).inOrder()
+            assertThat(shown[1].playerCommand).isEqualTo(Player.COMMAND_PLAY_PAUSE)
+        } finally {
+            session.release()
+        }
     }
 
     @Test
@@ -148,8 +187,72 @@ class PlayerNotificationTest {
                 "Reculer de 15 secondes",
                 "Avancer de 30 secondes",
                 "Chapitre suivant",
+                "Vitesse\u00A0: 1×",
             )
         assertThat(frenchTexts.part(3)).isEqualTo("Partie 3")
+    }
+
+    @Test
+    fun `the speed comes last, after the four others, in the overflow`() {
+        val buttons = PlayerNotification.buttons(texts, PlayerSettings(), finished = null, speed = 1.25f)
+
+        assertThat(buttons.map { it.action() }).containsExactly(
+            PlayerSessionContract.ACTION_PREVIOUS_CHAPTER,
+            PlayerSessionContract.ACTION_BACK,
+            PlayerSessionContract.ACTION_FORWARD,
+            PlayerSessionContract.ACTION_NEXT_CHAPTER,
+            PlayerSessionContract.ACTION_NEXT_SPEED,
+        ).inOrder()
+        assertThat(buttons.dropLast(1))
+            .isEqualTo(PlayerNotification.buttons(texts, PlayerSettings(), null, speed = 2f).dropLast(1))
+        assertThat(buttons.last().slots.get(0)).isEqualTo(CommandButton.SLOT_OVERFLOW)
+    }
+
+    @Test
+    fun `the speed button says the speed, without a needless zero`() {
+        fun name(speed: Float) =
+            PlayerNotification.buttons(texts, PlayerSettings(), null, speed = speed).last().displayName.toString()
+
+        assertThat(name(1f)).isEqualTo("Speed: 1×")
+        assertThat(name(1.25f)).isEqualTo("Speed: 1.25×")
+        assertThat(name(2f)).isEqualTo("Speed: 2×")
+    }
+
+    @Test
+    @Config(qualifiers = "fr")
+    fun `the speed button in French`() {
+        val frenchTexts = PlayerTexts(ApplicationProvider.getApplicationContext<android.content.Context>().resources)
+        fun name(speed: Float) = PlayerNotification.buttons(frenchTexts, PlayerSettings(), null, speed = speed)
+            .last().displayName.toString()
+
+        // A non-breaking space before the colon.
+        assertThat(name(1f)).isEqualTo("Vitesse\u00A0: 1×")
+        assertThat(name(1.25f)).isEqualTo("Vitesse\u00A0: 1,25×")
+        assertThat(name(2f)).isEqualTo("Vitesse\u00A0: 2×")
+    }
+
+    @Test
+    fun `the speed's icon is the nearest one drawn, else the plain one`() {
+        fun icon(speed: Float) = PlayerNotification.buttons(texts, PlayerSettings(), null, speed = speed).last().icon
+
+        assertThat(icon(1f)).isEqualTo(CommandButton.ICON_PLAYBACK_SPEED_1_0)
+        assertThat(icon(1.25f)).isEqualTo(CommandButton.ICON_PLAYBACK_SPEED_1_2)
+        assertThat(icon(1.5f)).isEqualTo(CommandButton.ICON_PLAYBACK_SPEED_1_5)
+        assertThat(icon(2f)).isEqualTo(CommandButton.ICON_PLAYBACK_SPEED_2_0)
+        assertThat(icon(0.75f)).isEqualTo(CommandButton.ICON_PLAYBACK_SPEED_0_8)
+        assertThat(icon(1.1f)).isEqualTo(CommandButton.ICON_PLAYBACK_SPEED)
+        assertThat(icon(3f)).isEqualTo(CommandButton.ICON_PLAYBACK_SPEED)
+    }
+
+    @Test
+    fun `at the end the next one is offered alone, without the speed, and nothing at a narration's end`() {
+        val next = FinishedBook(NextVolume(BookId("43"), "Next", "2"))
+
+        assertThat(PlayerNotification.buttons(texts, PlayerSettings(), next, speed = 1.5f).map { it.action() })
+            .containsExactly(PlayerSessionContract.ACTION_LISTEN_TO_NEXT)
+        assertThat(PlayerNotification.buttons(texts, PlayerSettings(), FinishedBook(null), speed = 1.5f)).isEmpty()
+        assertThat(PlayerNotification.buttons(texts, PlayerSettings(), null, narrationFinished = true, speed = 1.5f))
+            .isEmpty()
     }
 
     @Test

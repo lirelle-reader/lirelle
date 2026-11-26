@@ -28,6 +28,13 @@ sealed interface NarrationStart {
 
     /** The device's or the server's narration place, newest first; else the first sentence. */
     data object Resume : NarrationStart
+
+    /**
+     * The sentence the book's page marker [cfi] is in ([sentenceAtMarker]): a book read further in text than it
+     * was heard, started without its reader. As [Resume] when the marker names no sentence. Asked inside the
+     * service only: the session's commands do not carry it.
+     */
+    data class AtMarker(val cfi: String) : NarrationStart
 }
 
 /**

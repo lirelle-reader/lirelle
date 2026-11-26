@@ -296,6 +296,43 @@ class KomgaLibraryTest {
     }
 
     @Test
+    fun `one page of the books is asked as the list asks its pages, with the page and the size given`() =
+        runBlocking<Unit> {
+            answer("POST /api/v1/books/list", pageJson(ReadingBookJson, total = 7, number = 2))
+            val request = BookListRequest(sort = BookSort.Title, direction = SortDirection.Ascending, text = "tide")
+
+            val page = (library.bookPage(request, page = 2, size = 25) as ApiResult.Success).value
+
+            assertThat(page.items.map { it.id }).containsExactly(BookId("0BK1A"))
+            assertThat(page.total).isEqualTo(7)
+            val asked = requests().single()
+            assertThat(asked.url.queryParameter("page")).isEqualTo("2")
+            assertThat(asked.url.queryParameter("size")).isEqualTo("25")
+            assertThat(asked.body()).isEqualTo(bookSearch(request))
+        }
+
+    @Test
+    fun `one page of the books of a genre asks the series of that genre first`() = runBlocking<Unit> {
+        answer("POST /api/v1/series/list", pageJson(SeriesJson))
+        answer("POST /api/v1/books/list", pageJson(ReadingBookJson))
+        val request = BookListRequest(genre = "Drama")
+
+        library.bookPage(request, page = 0, size = 60)
+
+        val (series, booksAsked) = requests()
+        assertThat(series.body()).isEqualTo(seriesSearch(text = null, genre = "Drama"))
+        assertThat(booksAsked.body()).isEqualTo(bookSearch(request, seriesIds = listOf("0SR1A")))
+    }
+
+    @Test
+    fun `one page of the books the server refuses says what it refused`() = runBlocking<Unit> {
+        fail("POST /api/v1/books/list", 401)
+
+        assertThat(library.bookPage(BookListRequest(), page = 0, size = 60))
+            .isEqualTo(ApiResult.Failure(ApiError.SessionExpired))
+    }
+
+    @Test
     fun `a page the server refuses is a paging error naming what it refused`() {
         fail("POST /api/v1/books/list", 401)
 

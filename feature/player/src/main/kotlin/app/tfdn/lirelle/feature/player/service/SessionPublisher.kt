@@ -32,6 +32,13 @@ class SessionPublisher(
             publishButtons()
         }
 
+    /** The speed playback has now: the speed button names it. */
+    var speed = 1f
+        set(value) {
+            field = value
+            publishButtons()
+        }
+
     fun publish(next: PlayerSessionExtras) {
         extras = next.copy(sleep = next.sleep?.let { it.copy(remainingMs = it.remainingMs?.roundedUpToSecond()) })
         if (extras != sentExtras) {
@@ -57,7 +64,7 @@ class SessionPublisher(
 
     /** The media buttons for this moment, for a controller that connects. */
     fun buttons(): List<CommandButton> =
-        PlayerNotification.buttons(texts, settings, extras.finished, extras.narrationFinished)
+        PlayerNotification.buttons(texts, settings, extras.finished, extras.narrationFinished, speed)
 
     private fun publishButtons() {
         val buttons = buttons()

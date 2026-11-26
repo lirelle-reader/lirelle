@@ -11,6 +11,8 @@ import app.tfdn.lirelle.core.session.profile.ProfileComponent
 import app.tfdn.lirelle.core.session.profile.ProfileFolders
 import app.tfdn.lirelle.core.session.profile.ProfileLife
 import app.tfdn.lirelle.core.session.profile.ProfileScoped
+import app.tfdn.lirelle.feature.player.car.CarPlaces
+import app.tfdn.lirelle.feature.player.car.StoredCarPlaces
 import app.tfdn.lirelle.feature.player.controller.PlayerControllerScope
 import app.tfdn.lirelle.feature.player.service.DataStoreLastBookStore
 import app.tfdn.lirelle.feature.player.service.LastBookFiles
@@ -97,6 +99,10 @@ internal object PlayerServiceModule {
         @ProfileLife life: CoroutineScope,
         mark: LastBookMark,
     ): LastBookStore = DataStoreLastBookStore(folders.newDataStore(LastBookFiles.Store, life), mark)
+
+    /** Where a book stands, for the car's start: the profile's stores and its server. */
+    @Provides
+    fun carPlaces(stored: StoredCarPlaces): CarPlaces = stored
 
     @Provides
     @ProfileScoped
