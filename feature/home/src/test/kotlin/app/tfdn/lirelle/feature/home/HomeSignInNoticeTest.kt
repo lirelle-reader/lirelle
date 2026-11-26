@@ -172,6 +172,16 @@ class HomeSignInNoticeTest {
     }
 
     @Test
+    fun `for a Kavita profile it says its sign-in is no longer valid, as for Komga`() {
+        show(Loaded.copy(expired = ExpiredSession("p9", "camille", ServerKind.Kavita)))
+
+        body.assertTextEquals(
+            "The sign-in of camille · Kavita is no longer valid. Your downloaded books stay readable; " +
+                "what you read will be sent once you sign in again.",
+        )
+    }
+
+    @Test
     fun `its button asks to sign in again to the profile Home is shown for`() {
         show(Loaded.copy(expired = Camille))
 

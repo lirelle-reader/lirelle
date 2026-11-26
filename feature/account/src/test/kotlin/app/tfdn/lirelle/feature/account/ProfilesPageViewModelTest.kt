@@ -75,6 +75,20 @@ class ProfilesPageViewModelTest {
     }
 
     @Test
+    fun `a profile is told to sign in with the user's own key only when its key was pasted`() = runTest {
+        val made = komga.copy(id = "p4", kind = ServerKind.Kavita)
+        val key = made.session.credential as Credential.ApiKey
+        val pasted = made.copy(id = "p5", session = made.session.copy(credential = key.copy(ownedByApp = false)))
+
+        val state = followed(FakeProfiles(camille, komga, made, pasted)).state.value
+
+        assertThat(state.others.map { it.line })
+            .containsExactly("ann@example.com · Komga", "ann@example.com · Kavita", "ann@example.com · Kavita")
+        assertThat(state.others.map { it.usersOwnKey }).containsExactly(false, false, true).inOrder()
+        assertThat(state.current?.row?.usersOwnKey).isFalse()
+    }
+
+    @Test
     fun `the profiles are there at once, before anything follows them`() {
         val store = FakeProfiles(camille, sacha)
         val state = ProfilesPageViewModel(store, auth, FileProfileAvatars(folder.newFolder()), context).state.value

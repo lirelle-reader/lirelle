@@ -129,6 +129,8 @@ fun SignInRoute(
         onRetry = viewModel::loadOptions,
         purpose = purpose,
         again = again,
+        onKeyChange = viewModel.pastedKey::onChange,
+        onKeySignIn = viewModel.pastedKey::signIn,
     )
 }
 
@@ -152,6 +154,9 @@ internal fun signInViewModel(
     },
 )
 
+/**
+ * @param onKeyChange and [onKeySignIn]: the key the user pastes and its button, on a server that takes one.
+ */
 @Composable
 fun SignInScreen(
     state: SignInUiState,
@@ -164,6 +169,8 @@ fun SignInScreen(
     modifier: Modifier = Modifier,
     purpose: SignInPurpose = SignInPurpose.First,
     again: ProfileLabel? = null,
+    onKeyChange: (String) -> Unit = {},
+    onKeySignIn: () -> Unit = {},
 ) {
     Box(
         modifier = modifier
@@ -213,6 +220,8 @@ fun SignInScreen(
                     onPasswordChange = onPasswordChange,
                     onSignIn = onSignIn,
                     onOidc = onOidc,
+                    onKeyChange = onKeyChange,
+                    onKeySignIn = onKeySignIn,
                 )
             }
         }
@@ -241,6 +250,10 @@ private fun ServerLine(serverUrl: String, canChange: Boolean, onChangeServer: ()
     }
 }
 
+/**
+ * What the server offers, in an order that does not change: the identifier, the password and their button; each
+ * provider's button; then, on a server that takes one, the key the user pastes ([KeySignInBlock]).
+ */
 @Composable
 private fun SignInMethods(
     state: SignInUiState,
@@ -249,44 +262,15 @@ private fun SignInMethods(
     onPasswordChange: (String) -> Unit,
     onSignIn: () -> Unit,
     onOidc: (OidcProvider) -> Unit,
+    onKeyChange: (String) -> Unit,
+    onKeySignIn: () -> Unit,
 ) {
-    if (!options.passwordEnabled && options.oidcProviders.isEmpty()) {
+    val othersOffered = options.passwordEnabled || options.oidcProviders.isNotEmpty()
+    if (!othersOffered && !options.keyEntry) {
         Text(stringResource(R.string.sign_in_no_method))
         return
     }
-    if (options.passwordEnabled) {
-        val byEmail = options.identifier == SignInIdentifier.Email
-        OutlinedTextField(
-            value = state.username,
-            onValueChange = onUsernameChange,
-            modifier = Modifier
-                .fillMaxWidth()
-                .semantics { contentType = if (byEmail) ContentType.EmailAddress else ContentType.Username },
-            label = { Text(stringResource(if (byEmail) R.string.sign_in_email else R.string.sign_in_username)) },
-            singleLine = true,
-            keyboardOptions = KeyboardOptions(
-                capitalization = KeyboardCapitalization.None,
-                autoCorrectEnabled = false,
-                keyboardType = if (byEmail) KeyboardType.Email else KeyboardType.Unspecified,
-                imeAction = ImeAction.Next,
-            ),
-        )
-        OutlinedTextField(
-            value = state.password,
-            onValueChange = onPasswordChange,
-            modifier = Modifier
-                .fillMaxWidth()
-                .semantics { contentType = ContentType.Password },
-            label = { Text(stringResource(R.string.sign_in_password)) },
-            singleLine = true,
-            visualTransformation = PasswordVisualTransformation(),
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password, imeAction = ImeAction.Done),
-            keyboardActions = KeyboardActions(onDone = { onSignIn() }),
-        )
-        Button(onClick = onSignIn, enabled = state.canSubmit, modifier = Modifier.fillMaxWidth()) {
-            SingleLineLabel(stringResource(R.string.sign_in_submit))
-        }
-    }
+    if (options.passwordEnabled) PasswordForm(state, options.identifier, onUsernameChange, onPasswordChange, onSignIn)
     options.oidcProviders.forEach { provider ->
         OutlinedButton(
             onClick = { onOidc(provider) },
@@ -295,6 +279,49 @@ private fun SignInMethods(
         ) {
             SingleLineLabel(stringResource(R.string.sign_in_with_provider, provider.displayName))
         }
+    }
+    if (options.keyEntry) KeySignInBlock(state, underOthers = othersOffered, onKeyChange, onKeySignIn)
+}
+
+/** The identifier the server takes — a username or an email address —, the password, and the button that sends them. */
+@Composable
+private fun PasswordForm(
+    state: SignInUiState,
+    identifier: SignInIdentifier,
+    onUsernameChange: (String) -> Unit,
+    onPasswordChange: (String) -> Unit,
+    onSignIn: () -> Unit,
+) {
+    val byEmail = identifier == SignInIdentifier.Email
+    OutlinedTextField(
+        value = state.username,
+        onValueChange = onUsernameChange,
+        modifier = Modifier
+            .fillMaxWidth()
+            .semantics { contentType = if (byEmail) ContentType.EmailAddress else ContentType.Username },
+        label = { Text(stringResource(if (byEmail) R.string.sign_in_email else R.string.sign_in_username)) },
+        singleLine = true,
+        keyboardOptions = KeyboardOptions(
+            capitalization = KeyboardCapitalization.None,
+            autoCorrectEnabled = false,
+            keyboardType = if (byEmail) KeyboardType.Email else KeyboardType.Unspecified,
+            imeAction = ImeAction.Next,
+        ),
+    )
+    OutlinedTextField(
+        value = state.password,
+        onValueChange = onPasswordChange,
+        modifier = Modifier
+            .fillMaxWidth()
+            .semantics { contentType = ContentType.Password },
+        label = { Text(stringResource(R.string.sign_in_password)) },
+        singleLine = true,
+        visualTransformation = PasswordVisualTransformation(),
+        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password, imeAction = ImeAction.Done),
+        keyboardActions = KeyboardActions(onDone = { onSignIn() }),
+    )
+    Button(onClick = onSignIn, enabled = state.canSubmit, modifier = Modifier.fillMaxWidth()) {
+        SingleLineLabel(stringResource(R.string.sign_in_submit))
     }
 }
 

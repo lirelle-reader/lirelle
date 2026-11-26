@@ -38,6 +38,7 @@ import androidx.compose.ui.viewinterop.AndroidView
 import androidx.lifecycle.ViewModelStoreOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import app.tfdn.lirelle.core.network.UserAgent
+import app.tfdn.lirelle.core.session.ServerKind
 
 /**
  * The page of a provider that signs in through a WebView of the app, over the sign-in step whose view model holds
@@ -71,7 +72,8 @@ fun ProviderPageRoute(
  *
  * Every cookie and the pages' storage are removed ([cookies]) before the page opens — an attempt the process lost
  * may have left some — and whenever it ends, the server's session taken first once its page is reached, and handed
- * over with [onEnd]. The provider's own session goes too: kept, it would sign the next account added on that
+ * over with [onEnd]; then once more when the WebView is let go of, however the page ended
+ * ([releaseProviderWebView]). The provider's own session goes too: kept, it would sign the next account added on that
  * server in as the same one, without asking, and stay on the device.
  *
  * The WebView names itself as a browser does, Lirelle's name and version added at the end ([userAgent]): the
@@ -102,7 +104,9 @@ internal fun ProviderPageScreen(
                 WebView(context).apply {
                     configureProviderWebView(this, userAgent)
                     webViewClient = ProviderPageClient(
+                        kind = page.kind,
                         serverUrl = page.serverUrl,
+                        hasSessionCookie = { cookies.hasSessionCookie(page.kind, page.serverUrl) },
                         onOutcome = { outcome -> end(cookies.endOn(outcome, page.serverUrl)) },
                         onGone = close,
                         onPage = { url -> pageHost(url)?.let { host = it } },
@@ -111,10 +115,7 @@ internal fun ProviderPageScreen(
                 }
             },
             modifier = Modifier.fillMaxWidth().weight(1f),
-            onRelease = { webView ->
-                webView.stopLoading()
-                webView.destroy()
-            },
+            onRelease = { webView -> releaseProviderWebView(webView, cookies) },
         )
     }
 }
@@ -193,13 +194,29 @@ internal fun configureProviderWebView(webView: WebView, userAgent: UserAgent) {
 internal fun providerUserAgent(default: String, userAgent: UserAgent): String = "$default ${userAgent.app}"
 
 /**
- * Watches where the provider's flow leads: the server's page that ends it — or a page in cleartext outside the
+ * Lets go of the WebView of a provider's page, then removes every cookie and the pages' storage once more
+ * ([cookies]). The page may have ended while the server's application ran in it, and the WebView outlives that end
+ * until here: a response still on its way, or the page's script, may have written again after everything was
+ * removed. Destroyed first: nothing of it can write after that, and what it wrote last goes too.
+ */
+internal fun releaseProviderWebView(webView: WebView, cookies: ProviderPageCookies) {
+    webView.stopLoading()
+    webView.destroy()
+    cookies.forgetAll()
+}
+
+/**
+ * Watches where the provider's flow leads: the page that ends it for a server of [kind] ([hasSessionCookie] tells
+ * whether the WebView holds its session, for a kind that needs it) — or a page in cleartext outside the
  * server, which ends it as unencrypted ([providerPageOutcome]) — is not loaded: the WebView stops there, and
- * [onOutcome] is told what it says, once. Each page of the main frame that starts is told to [onPage], for the
- * bar. A renderer that dies ends the page as closed ([onGone]): the app would otherwise be killed with it.
+ * [onOutcome] is told what it says, once — whether the WebView asks about going there, starts the page, or comes to
+ * show it without either. Each page of the main frame that starts is told to [onPage], for the bar. A renderer that
+ * dies ends the page as closed ([onGone]): the app would otherwise be killed with it.
  */
 internal class ProviderPageClient(
+    private val kind: ServerKind,
     private val serverUrl: String,
+    private val hasSessionCookie: () -> Boolean,
     private val onOutcome: (ProviderPageOutcome) -> Unit,
     private val onGone: () -> Unit,
     private val onPage: (String) -> Unit,
@@ -216,6 +233,15 @@ internal class ProviderPageClient(
         if (arrived(url)) view.stopLoading()
     }
 
+    /**
+     * Asked for every address the WebView comes to show, a move within the page's own document included, which
+     * neither asks about a navigation nor starts a page: an application that moves by itself once the server sent
+     * the WebView to it — Kavita's — ends the flow here when the session was not yet held as its page started.
+     */
+    override fun doUpdateVisitedHistory(view: WebView, url: String, isReload: Boolean) {
+        if (arrived(url)) view.stopLoading()
+    }
+
     override fun onRenderProcessGone(view: WebView, detail: RenderProcessGoneDetail?): Boolean {
         if (!ended) {
             ended = true
@@ -225,7 +251,7 @@ internal class ProviderPageClient(
     }
 
     private fun arrived(url: String): Boolean {
-        val outcome = providerPageOutcome(serverUrl, url) ?: return false
+        val outcome = providerPageOutcome(kind, serverUrl, url, hasSessionCookie) ?: return false
         if (!ended) {
             ended = true
             onOutcome(outcome)

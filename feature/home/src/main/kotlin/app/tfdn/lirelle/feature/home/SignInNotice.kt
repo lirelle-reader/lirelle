@@ -57,7 +57,7 @@ private val NoticeButtonHeight = 48.dp
 private val ServerKind.noticeBody: Int
     get() = when (this) {
         ServerKind.BookOrbit -> R.string.home_sign_in_notice_body
-        ServerKind.Komga -> R.string.home_sign_in_notice_key_body
+        ServerKind.Komga, ServerKind.Kavita -> R.string.home_sign_in_notice_key_body
     }
 
 /**

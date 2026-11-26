@@ -39,33 +39,50 @@ import okhttp3.Interceptor
  * server adds its source's module, a branch here, and its object as a parameter of each provider below.
  * Only the chosen source's object is made, and it keeps the scope its source gave it.
  */
-internal fun <T> ProfileSession.chosen(bookOrbit: Provider<T>, komga: Provider<T>): T = when (kind) {
-    ServerKind.BookOrbit -> bookOrbit.get()
-    ServerKind.Komga -> komga.get()
-}
+internal fun <T> ProfileSession.chosen(bookOrbit: Provider<T>, komga: Provider<T>, kavita: Provider<T>): T =
+    when (kind) {
+        ServerKind.BookOrbit -> bookOrbit.get()
+        ServerKind.Komga -> komga.get()
+        ServerKind.Kavita -> kavita.get()
+    }
+
+/** Each kind's probe, in the order the kinds are asked of an address. */
+internal class KindProbes(val inOrder: List<Pair<ServerKind, ServerProbe>>)
+
+/** Each kind's sign-in. */
+internal class KindSignIns(val byKind: Map<ServerKind, SourceSignIn>)
 
 /**
  * Signing in, before any profile is open: each kind's probe, in the order the kinds are asked — BookOrbit's
- * first, as before Komga — and each kind's sign-in, under the one entry the screens are given. A kind of server
- * adds its probe and its sign-in here.
+ * first, as before Komga, then Komga's, then Kavita's — and each kind's sign-in, under the one entry the screens are
+ * given. A kind of server adds its probe and its sign-in here.
  */
 @Module
 @InstallIn(SingletonComponent::class)
 internal object ChosenSignInModule {
 
     @Provides
-    @Singleton
-    fun auth(
-        store: SessionStore,
-        @SourceOf(ServerKind.BookOrbit) bookOrbitProbe: ServerProbe,
-        @SourceOf(ServerKind.BookOrbit) bookOrbit: SourceSignIn,
-        @SourceOf(ServerKind.Komga) komgaProbe: ServerProbe,
-        @SourceOf(ServerKind.Komga) komga: SourceSignIn,
-    ): AuthRepository = AuthByKind(
-        store,
-        probes = listOf(ServerKind.BookOrbit to bookOrbitProbe, ServerKind.Komga to komgaProbe),
-        signIns = mapOf(ServerKind.BookOrbit to bookOrbit, ServerKind.Komga to komga),
+    fun probes(
+        @SourceOf(ServerKind.BookOrbit) bookOrbit: ServerProbe,
+        @SourceOf(ServerKind.Komga) komga: ServerProbe,
+        @SourceOf(ServerKind.Kavita) kavita: ServerProbe,
+    ): KindProbes = KindProbes(
+        listOf(ServerKind.BookOrbit to bookOrbit, ServerKind.Komga to komga, ServerKind.Kavita to kavita),
     )
+
+    @Provides
+    fun signIns(
+        @SourceOf(ServerKind.BookOrbit) bookOrbit: SourceSignIn,
+        @SourceOf(ServerKind.Komga) komga: SourceSignIn,
+        @SourceOf(ServerKind.Kavita) kavita: SourceSignIn,
+    ): KindSignIns = KindSignIns(
+        mapOf(ServerKind.BookOrbit to bookOrbit, ServerKind.Komga to komga, ServerKind.Kavita to kavita),
+    )
+
+    @Provides
+    @Singleton
+    fun auth(store: SessionStore, probes: KindProbes, signIns: KindSignIns): AuthRepository =
+        AuthByKind(store, probes = probes.inOrder, signIns = signIns.byKind)
 }
 
 /**
@@ -81,56 +98,64 @@ internal object ChosenLibraryModule {
         session: ProfileSession,
         @SourceOf(ServerKind.BookOrbit) bookOrbit: Provider<LibraryRepository>,
         @SourceOf(ServerKind.Komga) komga: Provider<LibraryRepository>,
-    ): LibraryRepository = session.chosen(bookOrbit, komga)
+        @SourceOf(ServerKind.Kavita) kavita: Provider<LibraryRepository>,
+    ): LibraryRepository = session.chosen(bookOrbit, komga, kavita)
 
     @Provides
     fun reader(
         session: ProfileSession,
         @SourceOf(ServerKind.BookOrbit) bookOrbit: Provider<ReaderRepository>,
         @SourceOf(ServerKind.Komga) komga: Provider<ReaderRepository>,
-    ): ReaderRepository = session.chosen(bookOrbit, komga)
+        @SourceOf(ServerKind.Kavita) kavita: Provider<ReaderRepository>,
+    ): ReaderRepository = session.chosen(bookOrbit, komga, kavita)
 
     @Provides
     fun audio(
         session: ProfileSession,
         @SourceOf(ServerKind.BookOrbit) bookOrbit: Provider<AudioRepository>,
         @SourceOf(ServerKind.Komga) komga: Provider<AudioRepository>,
-    ): AudioRepository = session.chosen(bookOrbit, komga)
+        @SourceOf(ServerKind.Kavita) kavita: Provider<AudioRepository>,
+    ): AudioRepository = session.chosen(bookOrbit, komga, kavita)
 
     @Provides
     fun audioBookmarks(
         session: ProfileSession,
         @SourceOf(ServerKind.BookOrbit) bookOrbit: Provider<AudioBookmarkRepository>,
         @SourceOf(ServerKind.Komga) komga: Provider<AudioBookmarkRepository>,
-    ): AudioBookmarkRepository = session.chosen(bookOrbit, komga)
+        @SourceOf(ServerKind.Kavita) kavita: Provider<AudioBookmarkRepository>,
+    ): AudioBookmarkRepository = session.chosen(bookOrbit, komga, kavita)
 
     @Provides
     fun marks(
         session: ProfileSession,
         @SourceOf(ServerKind.BookOrbit) bookOrbit: Provider<MarksRepository>,
         @SourceOf(ServerKind.Komga) komga: Provider<MarksRepository>,
-    ): MarksRepository = session.chosen(bookOrbit, komga)
+        @SourceOf(ServerKind.Kavita) kavita: Provider<MarksRepository>,
+    ): MarksRepository = session.chosen(bookOrbit, komga, kavita)
 
     @Provides
     fun readAlong(
         session: ProfileSession,
         @SourceOf(ServerKind.BookOrbit) bookOrbit: Provider<ReadAlongRepository>,
         @SourceOf(ServerKind.Komga) komga: Provider<ReadAlongRepository>,
-    ): ReadAlongRepository = session.chosen(bookOrbit, komga)
+        @SourceOf(ServerKind.Kavita) kavita: Provider<ReadAlongRepository>,
+    ): ReadAlongRepository = session.chosen(bookOrbit, komga, kavita)
 
     @Provides
     fun history(
         session: ProfileSession,
         @SourceOf(ServerKind.BookOrbit) bookOrbit: Provider<HistoryRepository>,
         @SourceOf(ServerKind.Komga) komga: Provider<HistoryRepository>,
-    ): HistoryRepository = session.chosen(bookOrbit, komga)
+        @SourceOf(ServerKind.Kavita) kavita: Provider<HistoryRepository>,
+    ): HistoryRepository = session.chosen(bookOrbit, komga, kavita)
 
     @Provides
     fun capabilities(
         session: ProfileSession,
         @SourceOf(ServerKind.BookOrbit) bookOrbit: Provider<SourceCapabilities>,
         @SourceOf(ServerKind.Komga) komga: Provider<SourceCapabilities>,
-    ): SourceCapabilities = session.chosen(bookOrbit, komga)
+        @SourceOf(ServerKind.Kavita) kavita: Provider<SourceCapabilities>,
+    ): SourceCapabilities = session.chosen(bookOrbit, komga, kavita)
 }
 
 /**
@@ -147,42 +172,48 @@ internal object ChosenConnectionModule {
         session: ProfileSession,
         @SourceOf(ServerKind.BookOrbit) bookOrbit: Provider<PageSource>,
         @SourceOf(ServerKind.Komga) komga: Provider<PageSource>,
-    ): PageSource = session.chosen(bookOrbit, komga)
+        @SourceOf(ServerKind.Kavita) kavita: Provider<PageSource>,
+    ): PageSource = session.chosen(bookOrbit, komga, kavita)
 
     @Provides
     fun downloadLocations(
         session: ProfileSession,
         @SourceOf(ServerKind.BookOrbit) bookOrbit: Provider<DownloadLocations>,
         @SourceOf(ServerKind.Komga) komga: Provider<DownloadLocations>,
-    ): DownloadLocations = session.chosen(bookOrbit, komga)
+        @SourceOf(ServerKind.Kavita) kavita: Provider<DownloadLocations>,
+    ): DownloadLocations = session.chosen(bookOrbit, komga, kavita)
 
     @Provides
     fun downloadRefusals(
         session: ProfileSession,
         @SourceOf(ServerKind.BookOrbit) bookOrbit: Provider<DownloadRefusals>,
         @SourceOf(ServerKind.Komga) komga: Provider<DownloadRefusals>,
-    ): DownloadRefusals = session.chosen(bookOrbit, komga)
+        @SourceOf(ServerKind.Kavita) kavita: Provider<DownloadRefusals>,
+    ): DownloadRefusals = session.chosen(bookOrbit, komga, kavita)
 
     @Provides
     fun account(
         session: ProfileSession,
         @SourceOf(ServerKind.BookOrbit) bookOrbit: Provider<AccountRepository>,
         @SourceOf(ServerKind.Komga) komga: Provider<AccountRepository>,
-    ): AccountRepository = session.chosen(bookOrbit, komga)
+        @SourceOf(ServerKind.Kavita) kavita: Provider<AccountRepository>,
+    ): AccountRepository = session.chosen(bookOrbit, komga, kavita)
 
     @Provides
     fun authorizer(
         session: ProfileSession,
         @SourceOf(ServerKind.BookOrbit) bookOrbit: Provider<SessionAuthorizer>,
         @SourceOf(ServerKind.Komga) komga: Provider<SessionAuthorizer>,
-    ): SessionAuthorizer = session.chosen(bookOrbit, komga)
+        @SourceOf(ServerKind.Kavita) kavita: Provider<SessionAuthorizer>,
+    ): SessionAuthorizer = session.chosen(bookOrbit, komga, kavita)
 
     @Provides
     fun accountPictures(
         session: ProfileSession,
         @SourceOf(ServerKind.BookOrbit) bookOrbit: Provider<AccountPictures>,
         @SourceOf(ServerKind.Komga) komga: Provider<AccountPictures>,
-    ): AccountPictures = session.chosen(bookOrbit, komga)
+        @SourceOf(ServerKind.Kavita) kavita: Provider<AccountPictures>,
+    ): AccountPictures = session.chosen(bookOrbit, komga, kavita)
 
     @Provides
     @LongTransfer
@@ -190,7 +221,8 @@ internal object ChosenConnectionModule {
         session: ProfileSession,
         @LongTransferOf(ServerKind.BookOrbit) bookOrbit: Provider<Interceptor>,
         @LongTransferOf(ServerKind.Komga) komga: Provider<Interceptor>,
-    ): Interceptor = session.chosen(bookOrbit, komga)
+        @LongTransferOf(ServerKind.Kavita) kavita: Provider<Interceptor>,
+    ): Interceptor = session.chosen(bookOrbit, komga, kavita)
 }
 
 /**

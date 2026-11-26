@@ -25,7 +25,8 @@ private const val LongServer = "https://bandes-dessinees.bibliotheque-numerique.
  * What signing in to a server of any kind added fits on a narrow phone and a tablet in landscape, in both
  * languages, at the default and the largest text size: the Server screen's title and its unknown server; the
  * sign-in screen that asks for an email address, with each message a Komga sign-in can end on — wrong email or
- * password, a sign-in the server would not finish, a provider's page in cleartext, an unknown server. Every text is
+ * password, a sign-in the server would not finish, a provider's page in cleartext, an unknown server — and those of a
+ * pasted key the server does not know and of a server too old. Every text is
  * whole and breaks between words; only the server's address has no place to break.
  */
 @RunWith(ParameterizedRobolectricTestRunner::class)
@@ -130,6 +131,20 @@ class KomgaSignInTextFitTest(
         showSignIn(ApiError.UnknownServer)
 
         assertSignInFits(text(R.string.error_unknown_server))
+    }
+
+    @Test
+    fun `the email field fits with a pasted key the server does not know`() {
+        showSignIn(ApiError.KeyRefused)
+
+        assertSignInFits(text(R.string.error_key_refused))
+    }
+
+    @Test
+    fun `the email field fits with a server too old`() {
+        showSignIn(ApiError.ServerTooOld(version = "0.8.6.25", minimum = "0.8.10.12"))
+
+        assertSignInFits(text(R.string.error_server_too_old, "0.8.6.25", "0.8.10.12"))
     }
 
     companion object {

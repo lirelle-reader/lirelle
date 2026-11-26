@@ -27,11 +27,13 @@ import org.robolectric.RobolectricTestRunner
 private const val IdentityRoute = "/api/v1/server-identity"
 private const val ProvidersRoute = "/api/v1/oauth2/providers"
 private const val AccountRoute = "/api/v2/users/me"
+private const val HealthRoute = "/api/Health"
+private const val OidcSettingsRoute = "/api/Settings/oidc"
 
 /**
- * The app's own sign-in, on its real graph: an address is asked of BookOrbit first, then of Komga, the kind found
- * remembered with it; a Komga account signed in by its password becomes a Komga profile, opened with Komga's
- * objects.
+ * The app's own sign-in, on its real graph: an address is asked of BookOrbit first, then of Komga, then of Kavita,
+ * the kind found remembered with it; a Komga account signed in by its password becomes a Komga profile, opened with
+ * Komga's objects, and a Kavita account a Kavita profile, opened with Kavita's.
  */
 @RunWith(RobolectricTestRunner::class)
 class KindDetectionTest {
@@ -78,6 +80,29 @@ class KindDetectionTest {
         }
     }
 
+    /**
+     * A Kavita server: it knows nothing of the other kinds' routes, says its health in plain text and what it has
+     * of an identity provider, and signs an account in to make it a key — which it takes from then on, unless the
+     * key is among the [refused]: deleted in its web interface, or expired.
+     */
+    private fun kavita(refused: Set<String> = emptySet()) = serve { request ->
+        when (request.url.encodedPath) {
+            HealthRoute -> MockResponse(code = 200, headers = headersOf("Content-Type", "text/plain"), body = "Ok")
+            OidcSettingsRoute -> json(
+                """{"autoLogin":false,"disablePasswordAuthentication":false,"providerName":"OpenID Connect",""" +
+                    """"enabled":false}""",
+            )
+            "/api/Account/login" -> json("""{"id":7,"username":"ann","kavitaVersion":"0.9.1.4","token":"t0k3n"}""")
+            "/api/Account/create-auth-key" -> json("""{"id":42,"key":"k4v1t4k3y","name":"Lirelle"}""")
+            "/api/Account" -> if (request.headers["x-api-key"] == "k4v1t4k3y" && "k4v1t4k3y" !in refused) {
+                json("""{"id":7,"username":"ann","kavitaVersion":"0.9.1.4"}""")
+            } else {
+                MockResponse(code = 401, headers = headersOf("WWW-Authenticate", "Bearer"))
+            }
+            else -> MockResponse(code = 404)
+        }
+    }
+
     private fun serve(answer: (RecordedRequest) -> MockResponse): String {
         server.dispatcher = object : Dispatcher() {
             override fun dispatch(request: RecordedRequest): MockResponse {
@@ -102,13 +127,72 @@ class KindDetectionTest {
         }
 
     @Test
-    fun `a BookOrbit server is found by BookOrbit, and Komga is not asked`(): Unit = runBlocking {
+    fun `a BookOrbit server is found by BookOrbit, and neither Komga nor Kavita is asked`(): Unit = runBlocking {
         val address = serve { json("""{"product":"bookorbit","protocolVersion":1,"instanceId":"i"}""") }
 
         assertThat(auth.connectToServer(address)).isEqualTo(ApiResult.Success(Unit))
 
         assertThat(asked).containsExactly(IdentityRoute)
         assertThat(auth.serverKind.value).isEqualTo(ServerKind.BookOrbit)
+    }
+
+    @Test
+    fun `a Kavita server is asked of BookOrbit, then of Komga, then found to be Kavita's and remembered so`(): Unit =
+        runBlocking {
+            val address = kavita()
+
+            assertThat(auth.connectToServer(address)).isEqualTo(ApiResult.Success(Unit))
+
+            assertThat(asked).containsExactly(IdentityRoute, ProvidersRoute, HealthRoute, OidcSettingsRoute).inOrder()
+            assertThat(auth.serverUrl.value).isEqualTo(address)
+            assertThat(auth.serverKind.value).isEqualTo(ServerKind.Kavita)
+        }
+
+    @Test
+    fun `a Kavita account signed in by its password becomes a Kavita profile, opened with its key`(): Unit =
+        runBlocking {
+            val address = kavita()
+
+            val result = auth.signInWithPassword(address, ServerKind.Kavita, "ann", "secret")
+
+            assertThat(result).isEqualTo(ApiResult.Success(Unit))
+            val profile = checkNotNull(device.data.sessions().current.value)
+            assertThat(profile.kind).isEqualTo(ServerKind.Kavita)
+            assertThat(profile.session.credential).isEqualTo(Credential.ApiKey("k4v1t4k3y", "42"))
+            assertThat(profile.session.user.username).isEqualTo("ann")
+            until("the Kavita profile is open") { device.data.openProfiles().current.value?.profileId == profile.id }
+            // The open profile reads its account again with its key: how a key the server refuses is noticed.
+            until("the account is read with the profile's key") { "/api/Account" in asked }
+        }
+
+    /**
+     * A Kavita key is never renewed, and nothing tells the device it was deleted: the open profile reads its
+     * account, the server refuses the key, and the profile is kept, marked.
+     */
+    @Test
+    fun `a Kavita profile whose key the server refuses is kept, and waits for a sign-in`(): Unit = runBlocking {
+        val address = kavita(refused = setOf("k4v1t4k3y"))
+
+        assertThat(auth.signInWithPassword(address, ServerKind.Kavita, "ann", "secret"))
+            .isEqualTo(ApiResult.Success(Unit))
+        val profile = checkNotNull(device.data.sessions().current.value)
+        assertThat(profile.signInNeeded).isFalse()
+
+        until("the refused key marks the profile") { device.data.sessions().current.value?.signInNeeded == true }
+        val marked = checkNotNull(device.data.sessions().current.value)
+        assertThat(marked.id).isEqualTo(profile.id)
+        assertThat(marked.session.credential).isEqualTo(Credential.ApiKey("k4v1t4k3y", "42"))
+        assertThat(synchronized(asked) { asked.count { it == "/api/Account" } }).isEqualTo(1)
+    }
+
+    @Test
+    fun `a Kavita profile whose key the server takes waits for no sign-in`(): Unit = runBlocking {
+        val address = kavita()
+
+        auth.signInWithPassword(address, ServerKind.Kavita, "ann", "secret")
+        until("the account is read with the profile's key") { "/api/Account" in asked }
+
+        assertThat(device.data.sessions().current.value?.signInNeeded).isFalse()
     }
 
     @Test

@@ -26,11 +26,26 @@ fun interface ServerProbe {
 }
 
 /**
+ * Signing in with a key the user pasted: the part of [SourceSignIn] that a kind which takes none leaves to
+ * [NoPastedKey].
+ */
+interface PastedKeySignIn {
+    /** As [AuthRepository.signInWithKey]: refused, nothing sent, by a kind that takes no pasted key. */
+    suspend fun signInWithKey(serverUrl: String, key: String): ApiResult<Unit>
+}
+
+/** What a kind that takes no pasted key answers: refused, as a flow that is not its own, and nothing sent. */
+object NoPastedKey : PastedKeySignIn {
+    override suspend fun signInWithKey(serverUrl: String, key: String): ApiResult<Unit> =
+        ApiResult.Failure(ApiError.OidcRefused)
+}
+
+/**
  * Signing in to a server of one kind, and signing out of a profile of that kind: what [AuthRepository] sends
  * there. Bound for each kind of server (`@SourceOf(kind)`, in the singleton component). A new profile is saved
  * with this kind.
  */
-interface SourceSignIn {
+interface SourceSignIn : PastedKeySignIn {
     suspend fun loginOptions(serverUrl: String): ApiResult<LoginOptions>
 
     suspend fun signInWithPassword(serverUrl: String, identifier: String, password: String): ApiResult<Unit>

@@ -8,6 +8,7 @@ import app.tfdn.lirelle.core.designsystem.LirelleTheme
 import app.tfdn.lirelle.core.testing.DeviceRule
 import app.tfdn.lirelle.core.testing.assertAllTextFits
 import app.tfdn.lirelle.feature.account.switcher.ProfileRow
+import app.tfdn.lirelle.feature.account.switcher.kavitaRow
 import app.tfdn.lirelle.feature.account.switcher.komgaRow
 import app.tfdn.lirelle.feature.account.switcher.row
 import com.google.common.truth.Truth.assertThat
@@ -79,6 +80,13 @@ class RemovalTextFitTest(
         assertFits(RemovalCost.NotCounted, komga.copy(current = false))
 
         compose.onNodeWithText(context.getString(R.string.profiles_remove_body_sleeping_key)).assertExists()
+    }
+
+    @Test
+    fun `the question about a Kavita profile whose key the user pasted, which stays valid, fits`() {
+        assertFits(RemovalCost.Counted(), kavitaRow("p1", LongUsername, LongServer, usersOwnKey = true, current = true))
+
+        compose.onNodeWithText(context.getString(R.string.profiles_remove_body_own_key)).assertExists()
     }
 
     @Test

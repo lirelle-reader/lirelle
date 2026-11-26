@@ -67,8 +67,8 @@ internal fun pageState(rows: List<ProfileRow>, current: Profile?): ProfilesPageS
  *
  * A profile that sleeps is removed from the registry, none of its objects existing; then its credential is handed
  * to its kind ([AuthRepository.endCredential]), which ends it on its server as it must: BookOrbit sends nothing
- * (its session expires, its tokens go with its folders), Komga revokes the key. The removal does not wait for the
- * server: it is done first.
+ * (its session expires, its tokens go with its folders), Komga revokes the key, as will Kavita one the app
+ * made. The removal does not wait for the server: it is done first.
  */
 @HiltViewModel
 class ProfilesPageViewModel @Inject constructor(

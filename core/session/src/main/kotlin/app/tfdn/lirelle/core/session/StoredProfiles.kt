@@ -93,7 +93,7 @@ internal enum class CredentialFormat { SessionTokens, ApiKey }
 internal val ServerKind.credentialFormat: CredentialFormat
     get() = when (this) {
         ServerKind.BookOrbit -> CredentialFormat.SessionTokens
-        ServerKind.Komga -> CredentialFormat.ApiKey
+        ServerKind.Komga, ServerKind.Kavita -> CredentialFormat.ApiKey
     }
 
 internal val Credential.format: CredentialFormat
@@ -148,9 +148,14 @@ internal fun StoredTokens.toTokens() = Tokens(
     refreshTokenExpiresAt = Instant.parse(refreshTokenExpiresAt),
 )
 
-/** Only ever written encrypted: as it is, it holds the key in clear. */
+/**
+ * Only ever written encrypted: as it is, it holds the key in clear.
+ *
+ * @property own [Credential.ApiKey.ownedByApp]. Absent from what was stored before it existed, when every key was
+ *   one the app had made, and from every key that is the app's own: it reads as true.
+ */
 @Serializable
-internal data class StoredApiKey(val key: String, val keyId: String) {
+internal data class StoredApiKey(val key: String, val keyId: String, val own: Boolean = true) {
     /** Never prints the key: this text ends up in logs and in failed assertions. */
     override fun toString(): String = "StoredApiKey(<redacted>)"
 }
@@ -162,7 +167,8 @@ internal class ProfileCodec(private val cipher: TokenCipher) {
         val credential = session.credential
         val plain = when (credential) {
             is Credential.SessionTokens -> json.encodeToString(credential.tokens.toStored())
-            is Credential.ApiKey -> json.encodeToString(StoredApiKey(credential.key, credential.keyId))
+            is Credential.ApiKey ->
+                json.encodeToString(StoredApiKey(credential.key, credential.keyId, credential.ownedByApp))
         }
         return StoredSession(
             serverUrl = session.serverUrl,
@@ -294,7 +300,7 @@ private fun StoredSession.read(plain: String, format: CredentialFormat): Session
             Credential.SessionTokens(it, json.decodeFromString<StoredTokens>(plain).toTokens())
         }
         CredentialFormat.ApiKey ->
-            json.decodeFromString<StoredApiKey>(plain).let { Credential.ApiKey(it.key, it.keyId) }
+            json.decodeFromString<StoredApiKey>(plain).let { Credential.ApiKey(it.key, it.keyId, it.own) }
     }
     credential?.let { Session(serverUrl, it, user.toProfile()) }
 } catch (_: IllegalArgumentException) {

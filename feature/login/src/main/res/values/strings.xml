@@ -19,6 +19,13 @@
     <string name="sign_in_password">Password</string>
     <string name="sign_in_submit">Sign in</string>
     <string name="sign_in_with_provider">Continue with %1$s</string>
+    <!-- In the line that parts the key from what stands above it: "password, or a key". -->
+    <string name="sign_in_or">or</string>
+    <!-- The field for a key the user made on the server and pastes here. -->
+    <string name="sign_in_key">Auth key</string>
+    <!-- Where a Kavita account makes a key: the names are those of Kavita's own web interface. -->
+    <string name="sign_in_key_where_kavita">Make one in Kavita: Settings, then “Auth Keys / OPDS”.</string>
+    <string name="sign_in_with_key">Sign in with the key</string>
     <string name="sign_in_no_method">This server offers no sign-in method that Lirelle can use.</string>
     <string name="sign_in_retry">Try again</string>
     <!-- Read by a screen reader: the button that closes the identity provider's page. -->
@@ -32,7 +39,7 @@
     <string name="sign_in_back">Back</string>
 
     <string name="error_server_unreachable">Could not reach the server. Check the address and your connection.</string>
-    <string name="error_unknown_server">This address is not a BookOrbit or Komga server.</string>
+    <string name="error_unknown_server">This address is not a BookOrbit, Komga or Kavita server.</string>
     <string name="error_invalid_credentials">Wrong username or password.</string>
     <!-- The same, for a server whose accounts are named by their email address. -->
     <string name="error_invalid_email_credentials">Wrong email address or password.</string>
@@ -48,6 +55,10 @@
     <string name="error_sign_in_refused">The sign-in did not succeed.</string>
     <!-- The identity provider's flow led to a sign-in page without encryption, which the app did not show. -->
     <string name="error_unencrypted_sign_in_page">This sign-in page is not encrypted (http). Lirelle only opens encrypted sign-in pages.</string>
+    <!-- The key the user pasted to sign in is not one of the server's. -->
+    <string name="error_key_refused">The server does not know this auth key.</string>
+    <!-- The version the server runs, then the oldest one the app works with. -->
+    <string name="error_server_too_old">This Kavita server runs version %1$s. Lirelle needs version %2$s or later.</string>
     <string name="error_browser_unavailable">No browser is available to sign in.</string>
     <string name="error_session_expired">Your session has expired. Sign in again.</string>
     <string name="error_server_failed">The server has a problem. Try again later.</string>

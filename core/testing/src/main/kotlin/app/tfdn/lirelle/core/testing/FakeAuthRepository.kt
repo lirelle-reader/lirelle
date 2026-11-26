@@ -28,13 +28,17 @@ class FakeAuthRepository : AuthRepository {
     /** The kind [connectToServer] detects at the address. */
     var connectKind: ServerKind = ServerKind.BookOrbit
 
-    /** The kind each sign-in call was sent to, in order: options, password, OIDC begun, a provider's page ended. */
+    /**
+     * The kind each sign-in call was sent to, in order: options, password, pasted key, OIDC begun, a provider's
+     * page ended.
+     */
     val kinds = mutableListOf<ServerKind>()
 
     var connectResult: ApiResult<Unit> = ApiResult.Success(Unit)
     var loginOptionsResult: ApiResult<LoginOptions> =
         ApiResult.Success(LoginOptions(passwordEnabled = true, oidcProviders = emptyList()))
     var signInResult: ApiResult<Unit> = ApiResult.Success(Unit)
+    var signInWithKeyResult: ApiResult<Unit> = ApiResult.Success(Unit)
     var beginOidcResult: ApiResult<String> = ApiResult.Success("https://auth.example.com/authorize?state=state-1")
     var completeOidcResult: ApiResult<Unit> = ApiResult.Success(Unit)
     var completeWithSessionResult: ApiResult<Unit> = ApiResult.Success(Unit)
@@ -87,6 +91,15 @@ class FakeAuthRepository : AuthRepository {
         gate?.await()
         if (signInResult is ApiResult.Success) signedIn(serverUrl, kind)
         return signInResult
+    }
+
+    /** Recorded with the key pasted, which a test reads back: it is a test's own. */
+    override suspend fun signInWithKey(serverUrl: String, kind: ServerKind, key: String): ApiResult<Unit> {
+        calls += "signInWithKey $serverUrl $key"
+        kinds += kind
+        gate?.await()
+        if (signInWithKeyResult is ApiResult.Success) signedIn(serverUrl, kind)
+        return signInWithKeyResult
     }
 
     override suspend fun beginOidc(serverUrl: String, kind: ServerKind, provider: OidcProvider): ApiResult<String> {

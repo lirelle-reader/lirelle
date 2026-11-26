@@ -4,7 +4,9 @@ import app.tfdn.lirelle.core.network.ApiError
 import app.tfdn.lirelle.core.network.ApiResult
 import app.tfdn.lirelle.core.network.DeviceLabelProvider
 import app.tfdn.lirelle.core.network.LoginOptions
+import app.tfdn.lirelle.core.network.NoPastedKey
 import app.tfdn.lirelle.core.network.OidcProvider
+import app.tfdn.lirelle.core.network.PastedKeySignIn
 import app.tfdn.lirelle.core.network.ProviderFlow
 import app.tfdn.lirelle.core.network.SignInIdentifier
 import app.tfdn.lirelle.core.network.SourceSignIn
@@ -43,7 +45,8 @@ private val CommentTime: DateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-M
  * screen, which hands over the session cookie the flow ended with.
  *
  * A key the app lets go of is revoked ([revocation]): the current profile's when it is signed out of, the key of
- * an account added again ([KomgaKeys]), and the key of a profile removed while it slept ([endCredential]).
+ * an account added again ([KomgaKeys]), and the key of a profile removed while it slept ([endCredential]). The
+ * key is always the app's own: one the user pasted is not taken ([NoPastedKey]).
  *
  * @param now and [zone] say when a key is made, in its comment.
  */
@@ -55,7 +58,8 @@ internal class KomgaSignIn(
     private val revocation: KomgaRevocation,
     now: () -> Instant = Instant::now,
     zone: () -> ZoneId = ZoneId::systemDefault,
-) : SourceSignIn {
+) : SourceSignIn,
+    PastedKeySignIn by NoPastedKey {
 
     private val keys = KomgaKeys(store, revocation, errors, deviceLabel, now, zone)
 

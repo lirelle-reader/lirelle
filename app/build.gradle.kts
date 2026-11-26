@@ -184,6 +184,8 @@ dependencies {
     implementation(project(":source:bookorbit"))
     // The Komga source: the implementations of the contracts for a Komga profile.
     implementation(project(":source:komga"))
+    // The Kavita source: its probe and its sign-in, until its profiles have the implementations of the contracts.
+    implementation(project(":source:kavita"))
     implementation(project(":feature:library"))
     implementation(project(":feature:book"))
     implementation(project(":feature:home"))

@@ -9,4 +9,6 @@ regexes = [
     '''^4f1c0b6e9d8a4c2f$''',
     '''^4f1c0b6e9d8a4c2f8e7d6c5b4a392817$''',
     '''^0123456789abcdef-secret$''',
+    '''^k4v1t4d3v1c3k3y0123456789abcdefgh$''',
+    '''^eyJhbGciOiJIUzI1NiJ9\.eyJuYW1laWQiOiI3In0\.s1gn4tur3$''',
 ]

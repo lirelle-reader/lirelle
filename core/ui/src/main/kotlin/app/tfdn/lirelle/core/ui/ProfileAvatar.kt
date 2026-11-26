@@ -48,6 +48,9 @@ enum class ProfileAvatarSize(val diameter: Dp) { Small(28.dp), Button(36.dp), Ro
  * @property seed the profile's id: chooses the colour under the initial, the same at every start.
  * @property initial the first letter of the username, upper case.
  * @property kindLetter the letter of the profile's kind of server, "B" for BookOrbit.
+ * @property badgeGround the colour of the badge [kindLetter] is written on: its kind's own, the same in the light
+ *   and in the dark theme.
+ * @property badgeContent the colour of [kindLetter] on [badgeGround].
  * @property picture the account's picture as the device keeps it, or null. A picture that replaced another
  *   must be a file that does not equal the one before, even at the same path: an equal file is not loaded
  *   again.
@@ -57,6 +60,8 @@ data class ProfileAvatarModel(
     val seed: String,
     val initial: String,
     val kindLetter: String,
+    val badgeGround: Color,
+    val badgeContent: Color,
     val picture: File?,
     val signInNeeded: Boolean,
 )
@@ -112,8 +117,8 @@ internal fun avatarColorIndex(seed: String, count: Int): Int {
 /**
  * The avatar of a profile: the account's picture when the device keeps one, otherwise its initial on a colour
  * of its own; over it, at the bottom end, the letter of its kind of server and, at the top end, a mark when
- * the profile waits for a sign-in. The one place a profile is drawn, so that a logo can replace the letter
- * later here alone.
+ * the profile waits for a sign-in. The badge of the kind has the kind's own colours, whatever the theme. The one
+ * place a profile is drawn, so that a logo can replace the letter later here alone.
  *
  * The badge and the mark stand a little out of the avatar's square, as on the canvas: its size is the
  * diameter, whatever stands out.
@@ -137,7 +142,7 @@ fun ProfileAvatar(
         Disc(model, size.diameter)
         AvatarBadge(
             letter = model.kindLetter,
-            colors = AvatarColors(scheme.secondaryContainer, scheme.onSecondaryContainer),
+            colors = AvatarColors(model.badgeGround, model.badgeContent),
             ringColor = ringColor,
             modifier = Modifier.align(Alignment.BottomEnd).offset(x = overhang, y = overhang),
             diameter = size.diameter * BadgeOverDiameter,

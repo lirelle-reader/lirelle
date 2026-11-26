@@ -20,9 +20,11 @@
     <string name="profiles_remove_body">This profile will be signed out and everything the device keeps for it will be erased. Nothing changes on the server.</string>
     <!-- Of a profile that is not the current one: its server is not told, so nothing says that it is signed out. -->
     <string name="profiles_remove_body_sleeping">Everything the device keeps for this profile will be erased. Nothing changes on the server.</string>
-    <!-- The same two, for a profile whose server gave the device a key (Komga's): the key is revoked there, the profile current or not. -->
+    <!-- The same two, for a profile whose server gave the device a key (Komga's, Kavita's when the app made it): the key is revoked there, the profile current or not. -->
     <string name="profiles_remove_body_key">This profile will be signed out and everything the device keeps for it will be erased. Its key will be revoked on the server.</string>
     <string name="profiles_remove_body_sleeping_key">Everything the device keeps for this profile will be erased. Its key will be revoked on the server.</string>
+    <!-- For a profile signed in with a key the user pasted (Kavita's), current or not: the app only forgets the key, nothing is revoked. -->
+    <string name="profiles_remove_body_own_key">Everything the device keeps for this profile will be erased. The key you provided stays valid on the server.</string>
     <string name="profiles_remove_cancel">Cancel</string>
     <string name="profiles_remove_confirm">Remove</string>
     <!-- Of a profile that is not the current one: it is not opened to be counted. -->

@@ -23,7 +23,7 @@
     <string name="appearance_dark_meaning">Sombre : l’application reste sombre, quel que soit le mode de l’appareil.</string>
     <string name="appearance_reading_note">Le thème de lecture « Auto » suit ce choix. Les autres thèmes de lecture (clair, sépia, sombre, noir) ne changent pas.</string>
     <string name="about_title">À propos</string>
-    <string name="about_what">Lire et écouter les livres de votre serveur BookOrbit ou Komga</string>
+    <string name="about_what">Lire et écouter les livres de votre serveur BookOrbit, Komga ou Kavita</string>
     <string name="about_copyright">© 2026 François-Xavier Payet et contributeurs</string>
     <string name="about_version">Version</string>
     <string name="about_app_licence">Licence</string>

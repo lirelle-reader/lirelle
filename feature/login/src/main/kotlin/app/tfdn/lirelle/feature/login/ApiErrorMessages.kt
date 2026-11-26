@@ -33,6 +33,7 @@ fun ApiError.message(identifier: SignInIdentifier = SignInIdentifier.Username): 
         val minutes = lockedMinutes(retryAfterSeconds)
         pluralStringResource(R.plurals.error_account_locked, minutes, minutes)
     }
+    is ApiError.ServerTooOld -> stringResource(R.string.error_server_too_old, version, minimum)
     else -> stringResource(plainMessage)
 }
 
@@ -48,10 +49,11 @@ private val ApiError.plainMessage: Int
         ApiError.OidcRefused -> R.string.error_oidc_refused
         ApiError.SignInRefused -> R.string.error_sign_in_refused
         ApiError.UnencryptedSignInPage -> R.string.error_unencrypted_sign_in_page
+        ApiError.KeyRefused -> R.string.error_key_refused
         ApiError.BrowserUnavailable -> R.string.error_browser_unavailable
         ApiError.SessionExpired -> R.string.error_session_expired
         ApiError.ServerFailed -> R.string.error_server_failed
-        // Wrong credentials and a locked account are worded by [message], with what they carry.
+        // Wrong credentials, a locked account and a server too old are worded by [message], with what they carry.
         ApiError.NotFound, is ApiError.Moved, ApiError.Unexpected, ApiError.InvalidCredentials,
-        is ApiError.AccountLocked -> R.string.error_unexpected
+        is ApiError.AccountLocked, is ApiError.ServerTooOld -> R.string.error_unexpected
     }

@@ -114,7 +114,7 @@ class ServerScreenTest {
         show(ServerUiState(address = "example.com", error = ServerError.Api(ApiError.UnknownServer)))
 
         compose.onNodeWithText("Connect to your server").assertIsDisplayed()
-        compose.onNodeWithText("This address is not a BookOrbit or Komga server.").assertIsDisplayed()
+        compose.onNodeWithText("This address is not a BookOrbit, Komga or Kavita server.").assertIsDisplayed()
     }
 
     @Test
@@ -123,7 +123,42 @@ class ServerScreenTest {
         show(ServerUiState(address = "example.com", error = ServerError.Api(ApiError.UnknownServer)))
 
         compose.onNodeWithText("Connexion à votre serveur").assertIsDisplayed()
-        compose.onNodeWithText("Cette adresse n'est ni un serveur BookOrbit ni un serveur Komga.").assertIsDisplayed()
+        compose.onNodeWithText(
+            "Cette adresse n'est ni un serveur BookOrbit, ni un serveur Komga, ni un serveur Kavita.",
+        ).assertIsDisplayed()
+    }
+
+    @Test
+    fun `a server too old is told with its version and the one needed`() {
+        show(ServerUiState(address = "example.com", error = ServerError.Api(ApiError.ServerTooOld("0.8.6.2", "0.8.7"))))
+
+        compose.onNodeWithText("This Kavita server runs version 0.8.6.2. Lirelle needs version 0.8.7 or later.")
+            .assertIsDisplayed()
+    }
+
+    @Test
+    @Config(qualifiers = "fr")
+    fun `in French, a server too old is told with its version and the one needed`() {
+        show(ServerUiState(address = "example.com", error = ServerError.Api(ApiError.ServerTooOld("0.8.6.2", "0.8.7"))))
+
+        compose.onNodeWithText(
+            "Ce serveur Kavita est en version 0.8.6.2. Lirelle a besoin de la version 0.8.7 ou plus récente.",
+        ).assertIsDisplayed()
+    }
+
+    @Test
+    fun `a pasted key the server does not know is told as such`() {
+        show(ServerUiState(address = "example.com", error = ServerError.Api(ApiError.KeyRefused)))
+
+        compose.onNodeWithText("The server does not know this auth key.").assertIsDisplayed()
+    }
+
+    @Test
+    @Config(qualifiers = "fr")
+    fun `in French, a pasted key the server does not know is told as such`() {
+        show(ServerUiState(address = "example.com", error = ServerError.Api(ApiError.KeyRefused)))
+
+        compose.onNodeWithText("Cette clé d'accès n'est pas reconnue par le serveur.").assertIsDisplayed()
     }
 
     @Test

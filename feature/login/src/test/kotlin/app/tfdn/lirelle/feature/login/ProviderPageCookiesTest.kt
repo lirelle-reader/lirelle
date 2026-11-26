@@ -1,5 +1,6 @@
 package app.tfdn.lirelle.feature.login
 
+import app.tfdn.lirelle.core.session.ServerKind
 import com.google.common.truth.Truth.assertThat
 import org.junit.Test
 
@@ -73,6 +74,71 @@ class ProviderPageCookiesTest {
             .isEqualTo(ProviderPageEnd.Unencrypted)
         assertThat(store.isEmpty).isTrue()
         assertThat(store.clearings).isEqualTo(2)
+    }
+
+    @Test
+    fun `a session's cookie is told by its name, whatever its value and whatever is beside it`() {
+        assertThat(hasSessionCookie(".AspNetCore.Cookies=chunks-2", ServerKind.Kavita)).isTrue()
+        assertThat(hasSessionCookie("theme=dark;.AspNetCore.Cookies=a==", ServerKind.Kavita)).isTrue()
+        assertThat(hasSessionCookie("KOMGA-SESSION=s1", ServerKind.Komga)).isTrue()
+        assertThat(hasSessionCookie("theme=dark; KOMGA-SESSION=s1", ServerKind.Komga)).isTrue()
+    }
+
+    /** ASP.NET splits a long cookie into parts named after it: `C1`, `C2`… */
+    @Test
+    fun `the parts of a Kavita session's cookie are the session's`() {
+        assertThat(hasSessionCookie(".AspNetCore.CookiesC1=a", ServerKind.Kavita)).isTrue()
+        assertThat(hasSessionCookie("theme=dark; .AspNetCore.CookiesC1=a; .AspNetCore.CookiesC2=b", ServerKind.Kavita))
+            .isTrue()
+        assertThat(hasSessionCookie(".AspNetCore.CookiesC12=l", ServerKind.Kavita)).isTrue()
+    }
+
+    @Test
+    fun `a name that only begins as the session's is not the session's`() {
+        assertThat(hasSessionCookie(".AspNetCore.CookiesFoo=a", ServerKind.Kavita)).isFalse()
+        assertThat(hasSessionCookie(".AspNetCore.CookiesC=a", ServerKind.Kavita)).isFalse()
+        assertThat(hasSessionCookie(".AspNetCore.CookiesC1x=a", ServerKind.Kavita)).isFalse()
+        assertThat(hasSessionCookie(".AspNetCore.Cookies.x=a", ServerKind.Kavita)).isFalse()
+    }
+
+    @Test
+    fun `the cookies of a sign-in in progress, or another's value, are not the session's`() {
+        assertThat(hasSessionCookie(".AspNetCore.Correlation.x=N", ServerKind.Kavita)).isFalse()
+        assertThat(hasSessionCookie(".AspNetCore.OpenIdConnect.Nonce.x=N", ServerKind.Kavita)).isFalse()
+        assertThat(hasSessionCookie("theme=.AspNetCore.Cookies", ServerKind.Kavita)).isFalse()
+        assertThat(hasSessionCookie("x.AspNetCore.Cookies=a", ServerKind.Kavita)).isFalse()
+        assertThat(hasSessionCookie("", ServerKind.Kavita)).isFalse()
+        assertThat(hasSessionCookie(null, ServerKind.Kavita)).isFalse()
+    }
+
+    @Test
+    fun `an entry without a value is no cookie`() {
+        assertThat(hasSessionCookie(".AspNetCore.Cookies", ServerKind.Kavita)).isFalse()
+        assertThat(hasSessionCookie("theme=dark; .AspNetCore.CookiesC1", ServerKind.Kavita)).isFalse()
+        assertThat(hasSessionCookie("KOMGA-SESSION", ServerKind.Komga)).isFalse()
+    }
+
+    @Test
+    fun `a kind whose session is no cookie has none`() {
+        assertThat(hasSessionCookie(".AspNetCore.Cookies=a; KOMGA-SESSION=s1", ServerKind.BookOrbit)).isFalse()
+    }
+
+    @Test
+    fun `the session's cookie is looked for among those sent to the server, by its kind's name, and stays`() {
+        store.add("livres.example.com", "/", ".AspNetCore.Correlation.abc", "N")
+        store.add("auth.example.com", "/", ".AspNetCore.Cookies", "another-server")
+        assertThat(cookies.hasSessionCookie(ServerKind.Kavita, "https://livres.example.com")).isFalse()
+
+        store.add("livres.example.com", "/", ".AspNetCore.CookiesC1", "c1")
+        assertThat(cookies.hasSessionCookie(ServerKind.Kavita, "https://livres.example.com")).isTrue()
+        assertThat(cookies.hasSessionCookie(ServerKind.Komga, "https://livres.example.com")).isFalse()
+        assertThat(cookies.hasSessionCookie(ServerKind.BookOrbit, "https://livres.example.com")).isFalse()
+
+        store.add("bd.example.com", "/komga/", "KOMGA-SESSION", "s1")
+        assertThat(cookies.hasSessionCookie(ServerKind.Komga, "https://bd.example.com/komga")).isTrue()
+        assertThat(cookies.hasSessionCookie(ServerKind.Komga, "https://bd.example.com")).isFalse()
+
+        assertThat(store.clearings).isEqualTo(0)
     }
 
     @Test

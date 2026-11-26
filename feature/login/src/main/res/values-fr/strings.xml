@@ -20,6 +20,13 @@
     <string name="sign_in_password">Mot de passe</string>
     <string name="sign_in_submit">Se connecter</string>
     <string name="sign_in_with_provider">Continuer avec %1$s</string>
+    <!-- In the line that parts the key from what stands above it: "password, or a key". -->
+    <string name="sign_in_or">ou</string>
+    <!-- The field for a key the user made on the server and pastes here. -->
+    <string name="sign_in_key">Clé d\'accès</string>
+    <!-- Where a Kavita account makes a key: the names are those of Kavita's own web interface, in French. -->
+    <string name="sign_in_key_where_kavita">À créer dans Kavita : Paramètres, puis « Clé d\'authentification / OPDS ».</string>
+    <string name="sign_in_with_key">Se connecter avec la clé</string>
     <string name="sign_in_no_method">Ce serveur ne propose aucun mode de connexion utilisable par Lirelle.</string>
     <string name="sign_in_retry">Réessayer</string>
     <!-- Read by a screen reader: the button that closes the identity provider's page. -->
@@ -33,7 +40,7 @@
     <string name="sign_in_back">Retour</string>
 
     <string name="error_server_unreachable">Serveur injoignable. Vérifiez l\'adresse et votre connexion.</string>
-    <string name="error_unknown_server">Cette adresse n\'est ni un serveur BookOrbit ni un serveur Komga.</string>
+    <string name="error_unknown_server">Cette adresse n\'est ni un serveur BookOrbit, ni un serveur Komga, ni un serveur Kavita.</string>
     <string name="error_invalid_credentials">Identifiant ou mot de passe incorrect.</string>
     <!-- The same, for a server whose accounts are named by their email address. -->
     <string name="error_invalid_email_credentials">Adresse e-mail ou mot de passe incorrect.</string>
@@ -50,6 +57,10 @@
     <string name="error_sign_in_refused">La connexion n\'a pas abouti.</string>
     <!-- The identity provider's flow led to a sign-in page without encryption, which the app did not show. -->
     <string name="error_unencrypted_sign_in_page">Cette page de connexion n\'est pas chiffrée (http). Lirelle n\'ouvre que des pages de connexion chiffrées.</string>
+    <!-- The key the user pasted to sign in is not one of the server's. -->
+    <string name="error_key_refused">Cette clé d\'accès n\'est pas reconnue par le serveur.</string>
+    <!-- The version the server runs, then the oldest one the app works with. -->
+    <string name="error_server_too_old">Ce serveur Kavita est en version %1$s. Lirelle a besoin de la version %2$s ou plus récente.</string>
     <string name="error_browser_unavailable">Aucun navigateur n\'est disponible pour se connecter.</string>
     <string name="error_session_expired">Votre session a expiré. Reconnectez-vous.</string>
     <string name="error_server_failed">Le serveur rencontre un problème. Réessayez plus tard.</string>

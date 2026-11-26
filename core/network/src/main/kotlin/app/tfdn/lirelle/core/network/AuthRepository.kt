@@ -32,11 +32,13 @@ enum class SignInIdentifier { Username, Email }
 
 /**
  * @property identifier what the server takes with the password.
+ * @property keyEntry the user may paste a key they made on the server.
  */
 data class LoginOptions(
     val passwordEnabled: Boolean,
     val oidcProviders: List<OidcProvider>,
     val identifier: SignInIdentifier = SignInIdentifier.Username,
+    val keyEntry: Boolean = false,
 )
 
 /**
@@ -80,6 +82,12 @@ interface AuthRepository {
         identifier: String,
         password: String,
     ): ApiResult<Unit>
+
+    /**
+     * Signs in with [key], a key the user made on the server and pasted ([LoginOptions.keyEntry]): the profile
+     * keeps it as its credential. [ApiError.KeyRefused] when the server does not know it.
+     */
+    suspend fun signInWithKey(serverUrl: String, kind: ServerKind, key: String): ApiResult<Unit>
 
     /**
      * Prepares an OIDC sign-in and returns the URL to open: in the browser, or in a WebView of the app for a
