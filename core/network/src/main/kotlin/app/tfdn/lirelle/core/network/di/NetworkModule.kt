@@ -1,8 +1,12 @@
 package app.tfdn.lirelle.core.network.di
 
 import android.content.Context
+import android.os.Build
 import app.tfdn.lirelle.core.network.AndroidDeviceLabelProvider
 import app.tfdn.lirelle.core.network.DeviceLabelProvider
+import app.tfdn.lirelle.core.network.UserAgent
+import app.tfdn.lirelle.core.network.formatUserAgent
+import app.tfdn.lirelle.core.network.newPublicClient
 import app.tfdn.lirelle.core.session.ServerKind
 import dagger.Module
 import dagger.Provides
@@ -13,10 +17,18 @@ import javax.inject.Qualifier
 import javax.inject.Singleton
 import okhttp3.OkHttpClient
 
-/** OkHttp client without credentials: sign-in, renewal, and anything public. */
+/**
+ * OkHttp client without credentials: sign-in, renewal, and anything public. Every other client is made from it, so
+ * that each request names Lirelle ([app.tfdn.lirelle.core.network.UserAgent]).
+ */
 @Qualifier
 @Retention(AnnotationRetention.BINARY)
 annotation class PublicClient
+
+/** The app's version name (`BuildConfig.VERSION_NAME`), which the `app` module binds: the [UserAgent] names it. */
+@Qualifier
+@Retention(AnnotationRetention.BINARY)
+annotation class AppVersion
 
 /**
  * OkHttp client that adds the access token of one profile and renews it; book files, audio streams and covers
@@ -56,8 +68,13 @@ internal object NetworkModule {
 
     @Provides
     @Singleton
+    fun userAgent(@AppVersion version: String): UserAgent =
+        formatUserAgent(version = version, androidRelease = Build.VERSION.RELEASE, model = Build.MODEL)
+
+    @Provides
+    @Singleton
     @PublicClient
-    fun publicClient(): OkHttpClient = OkHttpClient.Builder().build()
+    fun publicClient(agent: UserAgent): OkHttpClient = newPublicClient(agent)
 
     @Provides
     @Singleton
