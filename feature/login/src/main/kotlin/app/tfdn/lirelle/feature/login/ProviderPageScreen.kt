@@ -37,6 +37,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.lifecycle.ViewModelStoreOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import app.tfdn.lirelle.core.network.UserAgent
 
 /**
  * The page of a provider that signs in through a WebView of the app, over the sign-in step whose view model holds
@@ -60,7 +61,7 @@ fun ProviderPageRoute(
         if (page == null) close()
     }
     val cookies = remember { ProviderPageCookies(AndroidWebCookies) }
-    page?.let { ProviderPageScreen(it, cookies, onEnd = viewModel.providerPage::end) }
+    page?.let { ProviderPageScreen(it, cookies, viewModel.userAgent, onEnd = viewModel.providerPage::end) }
 }
 
 /**
@@ -72,11 +73,15 @@ fun ProviderPageRoute(
  * may have left some — and whenever it ends, the server's session taken first once its page is reached, and handed
  * over with [onEnd]. The provider's own session goes too: kept, it would sign the next account added on that
  * server in as the same one, without asking, and stay on the device.
+ *
+ * The WebView names itself as a browser does, Lirelle's name and version added at the end ([userAgent]): the
+ * provider's pages are served as to a browser, and the server's and the provider's logs say which app signed in.
  */
 @Composable
 internal fun ProviderPageScreen(
     page: ProviderPage,
     cookies: ProviderPageCookies,
+    userAgent: UserAgent,
     onEnd: (ProviderPageEnd) -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -95,7 +100,7 @@ internal fun ProviderPageScreen(
             factory = { context ->
                 cookies.forgetAll()
                 WebView(context).apply {
-                    configureProviderWebView(this)
+                    configureProviderWebView(this, userAgent)
                     webViewClient = ProviderPageClient(
                         serverUrl = page.serverUrl,
                         onOutcome = { outcome -> end(cookies.endOn(outcome, page.serverUrl)) },
@@ -157,11 +162,12 @@ private val BarHeight = 56.dp
 /**
  * The settings of a WebView that shows a provider's sign-in pages: scripts, which those pages need (Authentik's
  * are an application), and nothing more — no file, no content of the device, no bridge to the app, no window of
- * its own, no cleartext part in a secure page. It says what it is: the WebView's own user agent.
+ * its own, no cleartext part in a secure page. It says what it is: the WebView's own user agent, followed by
+ * Lirelle's name and version ([providerUserAgent]).
  */
 // Scripts run only in the provider's and the server's pages; no bridge to the app is added to them.
 @SuppressLint("SetJavaScriptEnabled")
-internal fun configureProviderWebView(webView: WebView) {
+internal fun configureProviderWebView(webView: WebView, userAgent: UserAgent) {
     webView.layoutParams = ViewGroup.LayoutParams(
         ViewGroup.LayoutParams.MATCH_PARENT,
         ViewGroup.LayoutParams.MATCH_PARENT,
@@ -176,8 +182,15 @@ internal fun configureProviderWebView(webView: WebView) {
         setSupportMultipleWindows(false)
         javaScriptCanOpenWindowsAutomatically = false
         setGeolocationEnabled(false)
+        userAgentString = providerUserAgent(userAgentString, userAgent)
     }
 }
+
+/**
+ * The agent of the provider's WebView: its own ([default]), which pages and providers expect from a browser, with
+ * the app's name and version added: `… Chrome/142.0 Mobile Safari/537.36 Lirelle/0.7.0`.
+ */
+internal fun providerUserAgent(default: String, userAgent: UserAgent): String = "$default ${userAgent.app}"
 
 /**
  * Watches where the provider's flow leads: the server's page that ends it — or a page in cleartext outside the
