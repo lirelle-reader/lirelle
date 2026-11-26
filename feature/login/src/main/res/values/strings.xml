@@ -19,6 +19,13 @@
     <string name="sign_in_password">Password</string>
     <string name="sign_in_submit">Sign in</string>
     <string name="sign_in_with_provider">Continue with %1$s</string>
+    <!-- In the line that parts the key from what stands above it: "password, or a key". -->
+    <string name="sign_in_or">or</string>
+    <!-- The field for a key the user made on the server and pastes here. -->
+    <string name="sign_in_key">Auth key</string>
+    <!-- Where a Kavita account makes a key: the names are those of Kavita's own web interface. -->
+    <string name="sign_in_key_where_kavita">Make one in Kavita: Settings, then “Auth Keys / OPDS”.</string>
+    <string name="sign_in_with_key">Sign in with the key</string>
     <string name="sign_in_no_method">This server offers no sign-in method that Lirelle can use.</string>
     <string name="sign_in_retry">Try again</string>
     <!-- Read by a screen reader: the button that closes the identity provider's page. -->

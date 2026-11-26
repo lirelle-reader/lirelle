@@ -29,12 +29,16 @@ import kotlinx.coroutines.launch
 
 data class SignInUiState(
     val serverUrl: String = "",
+    /** The kind of the server signed in to; null only when there is no server to sign in to. */
+    val kind: ServerKind? = null,
     val isCleartext: Boolean = false,
     val isLoadingOptions: Boolean = true,
     val options: LoginOptions? = null,
     /** What the account is named by: a username or an email address, as the server takes it. */
     val username: String = "",
     val password: String = "",
+    /** The key the user pasted, on a server that takes one ([LoginOptions.keyEntry]): a secret, as the password. */
+    val key: String = "",
     /** A sign-in is being sent, or the browser or a provider's page is open for OIDC. */
     val isBusy: Boolean = false,
     val error: ApiError? = null,
@@ -42,18 +46,24 @@ data class SignInUiState(
     /** True when a password sign-in can be sent. */
     val canSubmit: Boolean get() = !isBusy && username.isNotBlank() && password.isNotEmpty()
 
+    /** True when a sign-in with the pasted key can be sent. */
+    val canSubmitKey: Boolean get() = !isBusy && key.isNotBlank()
+
     /**
      * True when there is no server to sign in to: none is remembered, and the user must go through the Server
      * screen first — or the profile that was to sign in again is no longer on the device.
      */
     val needsServer: Boolean get() = serverUrl.isBlank()
 
-    /** Never prints the password: this text ends up in logs and in failed assertions. */
+    /** Never prints the password nor the key: this text ends up in logs and in failed assertions. */
     override fun toString(): String =
-        "SignInUiState(serverUrl=$serverUrl, isCleartext=$isCleartext, isLoadingOptions=$isLoadingOptions, " +
-            "options=$options, username=$username, password=${if (password.isEmpty()) "<empty>" else "<redacted>"}, " +
-            "isBusy=$isBusy, error=$error)"
+        "SignInUiState(serverUrl=$serverUrl, kind=$kind, isCleartext=$isCleartext, " +
+            "isLoadingOptions=$isLoadingOptions, options=$options, username=$username, " +
+            "password=${password.redacted()}, key=${key.redacted()}, isBusy=$isBusy, error=$error)"
 }
+
+/** What is printed in place of a secret: only whether there is one. */
+private fun String.redacted(): String = if (isEmpty()) "<empty>" else "<redacted>"
 
 /** What an Auth Tab answered, free of Android types. */
 sealed interface AuthTabResult {
@@ -68,8 +78,8 @@ sealed interface AuthTabResult {
 }
 
 /**
- * The sign-in step: the methods the server offers, then a password or OIDC sign-in, which ends in the session
- * saved — its account's profile is then the current one.
+ * The sign-in step: the methods the server offers, then a password, OIDC or pasted key ([pastedKey]) sign-in, which
+ * ends in the session saved — its account's profile is then the current one.
  *
  * About no profile: it reads the server from what the device remembers, or is given it, and never from who is
  * signed in. It is the same whether nobody is, or the sign-in is shown over a profile — which may change under
@@ -104,6 +114,9 @@ class SignInViewModel @AssistedInject constructor(
 
     private val mutableState: MutableStateFlow<SignInUiState>
     val state: StateFlow<SignInUiState>
+
+    /** The sign-in with a key the user pasted, on a server that takes one. */
+    val pastedKey: KeySignIn
 
     private val browserChannel = Channel<String>(Channel.BUFFERED)
 
@@ -145,10 +158,12 @@ class SignInViewModel @AssistedInject constructor(
         mutableState = MutableStateFlow(
             SignInUiState(
                 serverUrl = serverUrl,
+                kind = this.kind,
                 isCleartext = serverUrl.startsWith("http://"),
             ),
         )
         state = mutableState.asStateFlow()
+        pastedKey = KeySignIn(auth, mutableState, viewModelScope, signedIn = { signedInChannel.send(Unit) })
         loadOptions()
         viewModelScope.launch {
             // The activity accepts this link from any app or page. One that is not the answer of the sign-in
@@ -195,11 +210,12 @@ class SignInViewModel @AssistedInject constructor(
             val result = auth.signInWithPassword(current.serverUrl, kind, current.username.trim(), current.password)
             mutableState.update {
                 when (result) {
-                    // The password is not needed any more: it must not stay in memory. The form stays busy
+                    // The password is not needed any more, nor a key typed beside it: they must not stay in
+                    // memory. The form stays busy
                     // until the screen leaves: the signed-in level comes only once the profile before has
                     // closed and this one's objects are built, which may take seconds after a sign-out
                     // during playback, and an idle form would invite a second sign-in meanwhile.
-                    is ApiResult.Success -> it.copy(password = "")
+                    is ApiResult.Success -> it.copy(password = "", key = "")
                     is ApiResult.Failure -> it.copy(isBusy = false, error = result.error)
                 }
             }

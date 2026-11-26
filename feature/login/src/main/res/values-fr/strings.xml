@@ -20,6 +20,13 @@
     <string name="sign_in_password">Mot de passe</string>
     <string name="sign_in_submit">Se connecter</string>
     <string name="sign_in_with_provider">Continuer avec %1$s</string>
+    <!-- In the line that parts the key from what stands above it: "password, or a key". -->
+    <string name="sign_in_or">ou</string>
+    <!-- The field for a key the user made on the server and pastes here. -->
+    <string name="sign_in_key">Clé d\'accès</string>
+    <!-- Where a Kavita account makes a key: the names are those of Kavita's own web interface, in French. -->
+    <string name="sign_in_key_where_kavita">À créer dans Kavita : Paramètres, puis « Clé d\'authentification / OPDS ».</string>
+    <string name="sign_in_with_key">Se connecter avec la clé</string>
     <string name="sign_in_no_method">Ce serveur ne propose aucun mode de connexion utilisable par Lirelle.</string>
     <string name="sign_in_retry">Réessayer</string>
     <!-- Read by a screen reader: the button that closes the identity provider's page. -->
