@@ -185,6 +185,6 @@ class ProfileRegistryEntriesTest {
         const val KindStored = "\"kind\":\"BookOrbit\""
 
         /** What a later version, that knows another server and keeps more about a profile, would write. */
-        const val KindOfLater = "\"kind\":\"Kavita\",\"library\":{\"pinned\":[3,5]}"
+        const val KindOfLater = "\"kind\":\"Audiobookshelf\",\"library\":{\"pinned\":[3,5]}"
     }
 }

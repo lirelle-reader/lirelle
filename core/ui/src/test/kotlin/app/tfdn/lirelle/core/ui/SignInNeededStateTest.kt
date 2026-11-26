@@ -202,6 +202,21 @@ class SignInNeededStateTest {
     }
 
     @Test
+    fun `a Kavita profile is named Kavita, and its refused key is no longer valid, as Komga's`() {
+        show(needed = SignInNeeded(profileId = "p4", username = "camille", kind = ServerKind.Kavita))
+
+        compose.onNodeWithText("The sign-in of camille · Kavita is no longer valid.").assertIsDisplayed()
+    }
+
+    @Test
+    @Config(qualifiers = "fr")
+    fun `in French, a Kavita profile's refused key is no longer valid`() {
+        show(needed = SignInNeeded(profileId = "p4", username = "camille", kind = ServerKind.Kavita))
+
+        compose.onNodeWithText("La connexion de camille · Kavita n'est plus valable.").assertIsDisplayed()
+    }
+
+    @Test
     fun `without a network on the device the bar is as before`() {
         show(needed = null) { ServerFailureBar(ApiError.ServerUnreachable, onRetry = { retries++ }) }
 

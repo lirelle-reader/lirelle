@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.res.Resources
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import app.tfdn.lirelle.core.session.Credential
 import app.tfdn.lirelle.core.session.Profile
 import app.tfdn.lirelle.core.session.ProfileStore
 import app.tfdn.lirelle.core.session.ServerKind
@@ -39,6 +40,8 @@ private val Scheme = Regex("^[a-z][a-z0-9+.-]*://", RegexOption.IGNORE_CASE)
  * @property username the account's, on its own: the button says it apart from the kind.
  * @property kindName the kind of its server, in words.
  * @property kind the kind of its server: what its removal does on the server depends on it.
+ * @property usersOwnKey it signs in with a key the user pasted, which the app only forgets
+ *   ([Credential.ApiKey.ownedByApp] is false): its removal revokes nothing on the server.
  * @property server the server's address without its scheme, which says nothing to who reads it.
  * @property current it is the profile the app is on.
  * @property signInNeeded it waits for its account to sign in again.
@@ -49,6 +52,7 @@ data class ProfileRow(
     val username: String,
     val kindName: String,
     val kind: ServerKind,
+    val usersOwnKey: Boolean,
     val server: String,
     val avatar: ProfileAvatarModel,
     val current: Boolean,
@@ -78,6 +82,7 @@ internal fun Profile.row(resources: Resources, picture: File?, current: Boolean)
     username = session.user.username,
     kindName = resources.getString(kind.nameRes),
     kind = kind,
+    usersOwnKey = (session.credential as? Credential.ApiKey)?.ownedByApp == false,
     server = serverShown(session.serverUrl),
     avatar = avatarModel(picture),
     current = current,

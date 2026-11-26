@@ -65,6 +65,10 @@ private val Around = 16.dp
 private val Under = Color(0xFF0000FF)
 private val Ring = Color(0xFF00FF00)
 
+/** No colour of either palette either: the badge's own, as the model gives them. */
+private val Badge = Color(0xFFFFFF00)
+private val BadgeLetter = Color(0xFF400040)
+
 private val PictureColor = Color(0xFFFF00FF)
 private val NewPictureColor = Color(0xFF00FFFF)
 
@@ -88,7 +92,7 @@ class ProfileAvatarTest {
     private lateinit var scheme: ColorScheme
 
     private fun model(seed: String, picture: File? = null, signInNeeded: Boolean = false) =
-        ProfileAvatarModel(seed, initial = "C", kindLetter = "B", picture = picture, signInNeeded = signInNeeded)
+        ProfileAvatarModel(seed, initial = "C", kindLetter = "B", Badge, BadgeLetter, picture, signInNeeded)
 
     /** A profile id that gets the colour [colour] of the six. */
     private fun seedOf(colour: Int) = (0..200).map { "p$it" }.first { avatarColorIndex(it, 6) == colour }
@@ -199,7 +203,6 @@ class ProfileAvatarTest {
                 assertWithMessage("dark $theme, colour $at")
                     .that(contrast(pair.ground, pair.content)).isAtLeast(Readable)
             }
-            assertThat(contrast(scheme.secondaryContainer, scheme.onSecondaryContainer)).isAtLeast(Readable)
             assertThat(contrast(scheme.error, scheme.onError)).isAtLeast(Readable)
         }
     }
@@ -224,7 +227,7 @@ class ProfileAvatarTest {
         assertThat(pixels.placesOf(scheme.primary)).isEmpty()
         // Cropped to the circle, and the badge still over it.
         assertThat(pixels[pixels.width * 3 / 16, pixels.height * 3 / 16].near(Under)).isTrue()
-        assertThat(pixels.placesOf(scheme.secondaryContainer)).isNotEmpty()
+        assertThat(pixels.placesOf(Badge)).isNotEmpty()
     }
 
     @Test
@@ -261,13 +264,26 @@ class ProfileAvatarTest {
             size = shown
 
             val pixels = drawn()
-            val badge = pixels.placesOf(scheme.secondaryContainer)
+            val badge = pixels.placesOf(Badge)
 
             assertWithMessage("$size: the badge").that(badge).isNotEmpty()
             assertWithMessage("$size: at the end").that(badge.all { (x, _) -> x > 0.5f }).isTrue()
             assertWithMessage("$size: at the bottom").that(badge.all { (_, y) -> y > 0.5f }).isTrue()
             assertWithMessage("$size: its ring").that(pixels.placesOf(Ring)).isNotEmpty()
             assertWithMessage("$size: no mark").that(pixels.placesOf(scheme.error)).isEmpty()
+        }
+    }
+
+    @Test
+    fun `the badge has the colours of the model, the same in both themes`() {
+        show()
+        listOf(false, true).forEach { theme ->
+            dark = theme
+
+            val pixels = drawn()
+
+            assertWithMessage("dark $theme: its ground").that(pixels.placesOf(Badge)).isNotEmpty()
+            assertWithMessage("dark $theme: its letter").that(pixels.placesOf(BadgeLetter)).isNotEmpty()
         }
     }
 
@@ -280,7 +296,7 @@ class ProfileAvatarTest {
             size = shown
 
             val pixels = drawn()
-            val badge = pixels.placesOf(scheme.secondaryContainer)
+            val badge = pixels.placesOf(Badge)
             val mark = pixels.placesOf(scheme.error)
 
             assertWithMessage("$size: the badge").that(badge).isNotEmpty()
@@ -329,7 +345,7 @@ class ProfileAvatarTest {
         assertThat(ProfileAvatarSize.entries.minBy { it.diameter }).isEqualTo(ProfileAvatarSize.Small)
         assertWithMessage("the disc").that(pixels.discGround().near(scheme.primary)).isTrue()
         assertWithMessage("the initial").that(pixels.placesOf(scheme.onPrimary)).isNotEmpty()
-        assertWithMessage("the badge").that(pixels.placesOf(scheme.secondaryContainer)).isNotEmpty()
+        assertWithMessage("the badge").that(pixels.placesOf(Badge)).isNotEmpty()
         assertWithMessage("the mark").that(pixels.placesOf(scheme.error)).isNotEmpty()
     }
 

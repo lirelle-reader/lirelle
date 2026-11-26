@@ -160,6 +160,55 @@ class ProfileCredentialTest {
     }
 
     @Test
+    fun `a key stored before keys could be the user's own reads as one the app made`() {
+        val codec = ProfileCodec(FakeTokenCipher())
+        val stored = codec.encode(session.copy(credential = Key)).copy(encryptedTokens = MismatchedKey.content)
+
+        val read = codec.decode(stored, CredentialFormat.ApiKey)!!
+
+        assertThat(read.credential).isEqualTo(Credential.ApiKey(key = "secret", keyId = "0K3Y1D", ownedByApp = true))
+    }
+
+    @Test
+    fun `a key the app made is stored as it was before keys could be the user's own`() {
+        val cipher = FakeTokenCipher()
+
+        val stored = ProfileCodec(cipher).encode(session.copy(credential = Key))
+
+        assertThat(cipher.decrypt(stored.encryptedTokens)).isEqualTo("""{"key":"${Key.key}","keyId":"0K3Y1D"}""")
+    }
+
+    @Test
+    fun `a key the user pasted is still the user's own once written and read`() {
+        val codec = ProfileCodec(FakeTokenCipher())
+        val pasted = session.copy(credential = Key.copy(ownedByApp = false))
+
+        val read = codec.decode(codec.encode(pasted), CredentialFormat.ApiKey)
+
+        assertThat(read).isEqualTo(pasted)
+        assertThat((read?.credential as Credential.ApiKey).ownedByApp).isFalse()
+    }
+
+    @Test
+    fun `a Kavita profile's key round trips through the registry, the user's own or the app's`() = runTest {
+        val dataStore = dataStore()
+        val pasted = session.copy(credential = Key.copy(ownedByApp = false))
+        val made = session.copy(serverUrl = "https://other.example.com", credential = Key.copy(keyId = "0K3Y2D"))
+
+        loaded(dataStore).apply {
+            save(pasted, ServerKind.Kavita)
+            save(made, ServerKind.Kavita)
+        }
+        val again = loaded(dataStore)
+
+        assertThat(again.profile("p0")?.kind).isEqualTo(ServerKind.Kavita)
+        assertThat(again.profile("p0")?.session).isEqualTo(pasted)
+        assertThat(again.profile("p1")?.session).isEqualTo(made)
+        assertThat(stored(dataStore)).contains("\"kind\":\"Kavita\"")
+        assertThat(stored(dataStore)).doesNotContain(Key.key)
+    }
+
+    @Test
     fun `an account of the same server and id under another kind makes its own profile`() = runTest {
         val dataStore = dataStore()
         val registry = loaded(dataStore)
@@ -197,13 +246,15 @@ class ProfileCredentialTest {
     fun `a key never prints`() {
         assertThat(Key.toString()).doesNotContain(Key.key)
         assertThat(Key.toString()).contains(Key.keyId)
+        assertThat(Key.copy(ownedByApp = false).toString()).doesNotContain(Key.key)
     }
 
     @Test
     fun `a keyed entry of a kind this version does not know stays unread and as it was written`() = runTest {
         val dataStore = dataStore()
         val key = JsonPrimitive(FakeTokenCipher().encrypt("""{"key":"secret","keyId":"0K3Y1D"}"""))
-        val keyed = """{"id":"k1","kind":"Kavita","session":{"serverUrl":"https://comics.example.com",""" +
+        val keyed = """{"id":"k1","kind":"Audiobookshelf","session":{"serverUrl":""" +
+            """"https://comics.example.com",""" +
             """"user":{"id":"0B5Y2S1Z","username":"ann@example.com","name":"ann@example.com"},""" +
             """"encryptedTokens":$key},"dataFormat":2}"""
         dataStore.edit { it[RegistryKeys.Profiles] = RegistryOfBefore.replace("}],", "},$keyed],") }

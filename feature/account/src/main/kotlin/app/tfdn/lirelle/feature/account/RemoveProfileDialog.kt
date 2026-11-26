@@ -33,8 +33,8 @@ import app.tfdn.lirelle.core.designsystem.LirelleTheme
 import app.tfdn.lirelle.core.designsystem.SingleLineLabel
 import app.tfdn.lirelle.core.session.ServerKind
 import app.tfdn.lirelle.core.ui.ProfileAvatar
-import app.tfdn.lirelle.core.ui.ProfileAvatarModel
 import app.tfdn.lirelle.core.ui.ProfileAvatarSize
+import app.tfdn.lirelle.core.ui.profileAvatarModel
 import app.tfdn.lirelle.feature.account.switcher.ProfileRow
 import app.tfdn.lirelle.feature.account.switcher.ProfileTexts
 import app.tfdn.lirelle.feature.account.switcher.said
@@ -53,14 +53,19 @@ private val LineIconSize = 20.dp
 /**
  * What the removal of [profile] does, as its opening sentence says it: what the device keeps for it is erased; of
  * the current one only, that it is signed out; and what its server keeps — for BookOrbit nothing changes there (the
- * session of a profile that sleeps lives until it expires), for Komga the profile's key is revoked, current or not.
+ * session of a profile that sleeps lives until it expires), for Komga and Kavita the profile's key is revoked,
+ * current or not. Except a key the user pasted ([ProfileRow.usersOwnKey]), which is only forgotten: it is said to
+ * stay valid, and the profile, whose server is told nothing, is not said to be signed out.
  */
 @StringRes
 internal fun removalBody(profile: ProfileRow): Int = when (profile.kind) {
     ServerKind.BookOrbit ->
         if (profile.current) R.string.profiles_remove_body else R.string.profiles_remove_body_sleeping
-    ServerKind.Komga ->
-        if (profile.current) R.string.profiles_remove_body_key else R.string.profiles_remove_body_sleeping_key
+    ServerKind.Komga, ServerKind.Kavita -> when {
+        profile.usersOwnKey -> R.string.profiles_remove_body_own_key
+        profile.current -> R.string.profiles_remove_body_key
+        else -> R.string.profiles_remove_body_sleeping_key
+    }
 }
 
 /**
@@ -153,8 +158,9 @@ private fun RemoveProfileDialogPreview() {
                 username = "camille",
                 kindName = "BookOrbit",
                 kind = ServerKind.BookOrbit,
+                usersOwnKey = false,
                 server = "livres.example.org",
-                avatar = ProfileAvatarModel("p0", "C", "B", picture = null, signInNeeded = false),
+                avatar = profileAvatarModel("p0", "C", ServerKind.BookOrbit, picture = null, signInNeeded = false),
                 current = true,
                 signInNeeded = false,
             ),

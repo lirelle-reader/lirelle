@@ -9,7 +9,7 @@ import app.tfdn.lirelle.core.session.SignOutReason
 import app.tfdn.lirelle.core.session.Tokens
 import app.tfdn.lirelle.core.session.UserProfile
 import app.tfdn.lirelle.core.testing.bookOrbitSession
-import app.tfdn.lirelle.core.ui.ProfileAvatarModel
+import app.tfdn.lirelle.core.ui.profileAvatarModel
 import java.time.Instant
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -56,20 +56,32 @@ internal fun row(
     username = username,
     kindName = "BookOrbit",
     kind = ServerKind.BookOrbit,
+    usersOwnKey = false,
     server = server,
-    avatar = ProfileAvatarModel(id, username.take(1).uppercase(), "B", picture = null, signInNeeded = signInNeeded),
+    avatar = profileAvatarModel(id, username.take(1).uppercase(), ServerKind.BookOrbit, null, signInNeeded),
     current = current,
     signInNeeded = signInNeeded,
 )
 
 /** The row of a Komga profile, as the view model makes it. */
 internal fun komgaRow(id: String, username: String, server: String, current: Boolean = false) =
+    keyedRow(ServerKind.Komga, id, username, server, current)
+
+/**
+ * The row of a Kavita profile, as the view model makes it.
+ *
+ * @param usersOwnKey it signs in with a key the user pasted, not one the app made.
+ */
+internal fun kavitaRow(id: String, username: String, server: String, usersOwnKey: Boolean, current: Boolean = false) =
+    keyedRow(ServerKind.Kavita, id, username, server, current).copy(usersOwnKey = usersOwnKey)
+
+private fun keyedRow(kind: ServerKind, id: String, username: String, server: String, current: Boolean) =
     row(id, username, server, current).let {
         it.copy(
-            line = "$username · Komga",
-            kindName = "Komga",
-            kind = ServerKind.Komga,
-            avatar = it.avatar.copy(kindLetter = "K"),
+            line = "$username · ${kind.name}",
+            kindName = kind.name,
+            kind = kind,
+            avatar = profileAvatarModel(id, it.avatar.initial, kind, picture = null, signInNeeded = false),
         )
     }
 

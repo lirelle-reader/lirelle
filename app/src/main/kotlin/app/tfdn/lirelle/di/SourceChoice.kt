@@ -42,6 +42,8 @@ import okhttp3.Interceptor
 internal fun <T> ProfileSession.chosen(bookOrbit: Provider<T>, komga: Provider<T>): T = when (kind) {
     ServerKind.BookOrbit -> bookOrbit.get()
     ServerKind.Komga -> komga.get()
+    // No profile can be Kavita's yet: a later task of #49 adds its source's module, and its object here.
+    ServerKind.Kavita -> error("Kavita has no source yet")
 }
 
 /**

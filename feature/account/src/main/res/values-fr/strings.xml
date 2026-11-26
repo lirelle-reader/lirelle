@@ -20,9 +20,11 @@
     <string name="profiles_remove_body">Ce profil sera déconnecté et tout ce que l\'appareil garde pour lui sera effacé. Rien ne change sur le serveur.</string>
     <!-- Of a profile that is not the current one: its server is not told, so nothing says that it is signed out. -->
     <string name="profiles_remove_body_sleeping">Tout ce que l\'appareil garde pour ce profil sera effacé. Rien ne change sur le serveur.</string>
-    <!-- The same two, for a profile whose server gave the device a key (Komga's): the key is revoked there, the profile current or not. -->
+    <!-- The same two, for a profile whose server gave the device a key (Komga's, Kavita's when the app made it): the key is revoked there, the profile current or not. -->
     <string name="profiles_remove_body_key">Ce profil sera déconnecté et tout ce que l\'appareil garde pour lui sera effacé. Sa clé sera révoquée sur le serveur.</string>
     <string name="profiles_remove_body_sleeping_key">Tout ce que l\'appareil garde pour ce profil sera effacé. Sa clé sera révoquée sur le serveur.</string>
+    <!-- For a profile signed in with a key the user pasted (Kavita's), current or not: the app only forgets the key, nothing is revoked. -->
+    <string name="profiles_remove_body_own_key">Tout ce que l\'appareil garde pour ce profil sera effacé. La clé que vous avez fournie reste valable sur le serveur.</string>
     <string name="profiles_remove_cancel">Annuler</string>
     <string name="profiles_remove_confirm">Supprimer</string>
     <!-- Of a profile that is not the current one: it is not opened to be counted. -->

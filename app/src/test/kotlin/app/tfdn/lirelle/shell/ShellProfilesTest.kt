@@ -36,7 +36,7 @@ import app.tfdn.lirelle.core.designsystem.LocalWindowWidthClass
 import app.tfdn.lirelle.core.designsystem.WindowWidthClass
 import app.tfdn.lirelle.core.session.ServerKind
 import app.tfdn.lirelle.core.testing.assertIsWhollyShown
-import app.tfdn.lirelle.core.ui.ProfileAvatarModel
+import app.tfdn.lirelle.core.ui.profileAvatarModel
 import app.tfdn.lirelle.feature.account.switcher.ProfileButtonTag
 import app.tfdn.lirelle.feature.account.switcher.ProfileRow
 import app.tfdn.lirelle.feature.account.switcher.ProfileRowTagPrefix
@@ -62,8 +62,9 @@ private fun row(id: String, username: String, current: Boolean = false) = Profil
     username = username,
     kindName = "BookOrbit",
     kind = ServerKind.BookOrbit,
+    usersOwnKey = false,
     server = "livres.example.org",
-    avatar = ProfileAvatarModel(id, username.take(1).uppercase(), "B", picture = null, signInNeeded = false),
+    avatar = profileAvatarModel(id, username.take(1).uppercase(), ServerKind.BookOrbit, null, signInNeeded = false),
     current = current,
     signInNeeded = false,
 )

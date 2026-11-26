@@ -13,6 +13,7 @@ import androidx.compose.ui.test.performClick
 import androidx.test.core.app.ApplicationProvider
 import app.tfdn.lirelle.core.designsystem.LirelleTheme
 import app.tfdn.lirelle.feature.account.switcher.ProfileRow
+import app.tfdn.lirelle.feature.account.switcher.kavitaRow
 import app.tfdn.lirelle.feature.account.switcher.komgaRow
 import app.tfdn.lirelle.feature.account.switcher.row
 import com.google.common.truth.Truth.assertThat
@@ -106,6 +107,46 @@ class RemoveProfileDialogTest {
         ).assertIsDisplayed()
         compose.onNodeWithText(string(R.string.profiles_remove_body_sleeping)).assertDoesNotExist()
         compose.onNodeWithText(string(R.string.profiles_remove_sleeping)).assertIsDisplayed()
+    }
+
+    @Test
+    fun `for a Kavita profile whose key the app made it says the key will be revoked, as for Komga`() {
+        show(RemovalCost.NotCounted, kavitaRow("p4", "ann", "bd.example.org", usersOwnKey = false))
+
+        compose.onNodeWithText(string(R.string.profiles_remove_body_sleeping_key)).assertIsDisplayed()
+    }
+
+    @Test
+    fun `for the current Kavita profile whose key the app made it says it is signed out and its key revoked`() {
+        show(RemovalCost.Counted(), kavitaRow("p4", "ann", "bd.example.org", usersOwnKey = false, current = true))
+
+        compose.onNodeWithText(string(R.string.profiles_remove_body_key)).assertIsDisplayed()
+    }
+
+    @Test
+    fun `for a profile whose key the user pasted it never says the key will be revoked, current or not`() {
+        val pasted = kavitaRow("p4", "ann", "bd.example.org", usersOwnKey = true)
+
+        listOf(pasted, pasted.copy(current = true)).forEach { profile ->
+            assertThat(string(removalBody(profile))).isEqualTo(
+                "Everything the device keeps for this profile will be erased. " +
+                    "The key you provided stays valid on the server.",
+            )
+        }
+        show(RemovalCost.NotCounted, pasted)
+        compose.onNodeWithText(string(R.string.profiles_remove_body_own_key)).assertIsDisplayed()
+        compose.onNodeWithText(string(R.string.profiles_remove_body_sleeping_key)).assertDoesNotExist()
+    }
+
+    @Test
+    @Config(qualifiers = "fr-w360dp-h740dp-xhdpi")
+    fun `the key the user pasted is said in French to stay valid`() {
+        show(RemovalCost.NotCounted, kavitaRow("p4", "ann", "bd.example.org", usersOwnKey = true))
+
+        compose.onNodeWithText(
+            "Tout ce que l'appareil garde pour ce profil sera effacé. " +
+                "La clé que vous avez fournie reste valable sur le serveur.",
+        ).assertIsDisplayed()
     }
 
     @Test

@@ -27,11 +27,13 @@ sealed interface Credential {
     }
 
     /**
-     * A key the account made for this device, which never expires and lasts until it is revoked: Komga's.
+     * A key of the account, which never expires and lasts until it is revoked: Komga's, and Kavita's.
      *
      * @property keyId the server's name for the key, by which it is revoked.
+     * @property ownedByApp the app made this key, and removes it from the server when the profile goes. False: the
+     *   user pasted a key of their own, which the app only forgets.
      */
-    data class ApiKey(val key: String, val keyId: String) : Credential {
+    data class ApiKey(val key: String, val keyId: String, val ownedByApp: Boolean = true) : Credential {
         override fun isSameSignIn(other: Credential): Boolean = other is ApiKey && other.keyId == keyId
 
         /** Never prints the key: this text ends up in logs and in failed assertions. */
