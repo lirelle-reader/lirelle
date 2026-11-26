@@ -322,6 +322,7 @@ class KavitaLibraryTest {
         routes.fail("GET /api/Library/libraries", 401)
         routes.fail("POST /api/Series/all-v2", 401)
         routes.fail("GET /api/Chapter", 401)
+        routes.fail("GET /api/Search/series-for-chapter", 401)
         routes.fail("GET /api/Series/261", 401)
         routes.fail("GET /api/Series/series-detail", 401)
 
