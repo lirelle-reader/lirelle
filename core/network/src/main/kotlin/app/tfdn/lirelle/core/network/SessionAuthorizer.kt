@@ -48,7 +48,9 @@ interface SessionAuthorizer {
     /**
      * The address to send a request for [target] to: [target] itself, unless the source's server takes the
      * credential in the address on some routes. What this returns is as secret as the credential: it is sent, and
-     * neither logged nor kept.
+     * neither logged nor kept. Asked again for a request replayed after a 401, with the address it was asked with,
+     * or with the one a redirect on the server took it to, which may hold the credential given before: a credential
+     * already in [target] is replaced, never added beside.
      */
     fun address(target: HttpUrl): HttpUrl = target
 }
