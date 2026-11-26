@@ -47,9 +47,13 @@ internal class KavitaSearch(private val server: KavitaProfileServer) {
         }
     }
 
-    /** The chapters found, each brought to its book once, in the search's order, shown in its series. */
+    /**
+     * The chapters found, each brought to its book once, in the search's order, shown in its series. Two chapters
+     * make one book only once their volumes are known: a default chapter is its volume, unless that is the
+     * loose-leaf one.
+     */
     private suspend fun books(remote: KavitaRemote, found: SearchResultDto): List<BookSummary> = coroutineScope {
-        val chapters = found.chapters.distinctBy { it.item() }
+        val chapters = found.chapters.distinctBy { it.id }
         val volumes = chapters.map { it.volumeId }.distinct()
             .map { id -> async { id to calls.orGone { remote.api.volume(id) } } }
             .awaitAll().toMap()
@@ -61,8 +65,8 @@ internal class KavitaSearch(private val server: KavitaProfileServer) {
             val volume: VolumeDto = volumes[chapter.volumeId] ?: return@mapNotNull null
             val series = asked[volume.seriesId]
             val name = named[volume.seriesId] ?: series?.name ?: return@mapNotNull null
-            remote.mapper.summary(chapter.book(volume.index), SeriesRefInfo(volume.seriesId, name), series?.format)
-        }
+            remote.mapper.summary(chapter.book(volume), SeriesRefInfo(volume.seriesId, name), series?.format)
+        }.distinctBy { it.id }
     }
 
     /**

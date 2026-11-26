@@ -103,10 +103,25 @@ class KavitaBooksTest {
     }
 
     @Test
-    fun `a chapter seen alone is the book it belongs to`() {
-        assertThat(chapter("chapter-asterix").item()).isEqualTo(KavitaItem.Chapter(44))
-        assertThat(chapter("continue-dune").item()).isEqualTo(KavitaItem.Volume(407))
-        assertThat(chapter("chapter-lone").item()).isEqualTo(KavitaItem.Chapter(1857))
+    fun `a chapter seen alone with its volume is the book it belongs to`() {
+        val dune = KavitaJson.decodeFromString<VolumeDto>(fixtureBody("volume-dune"))
+        val asterix = KavitaJson.decodeFromString<VolumeDto>(fixtureBody("volume-asterix"))
+
+        assertThat(chapter("chapter-asterix").book(asterix).item).isEqualTo(KavitaItem.Chapter(44))
+        assertThat(chapter("continue-dune").book(dune).item).isEqualTo(KavitaItem.Volume(407))
+        assertThat(chapter("continue-dune").book(dune).index).isEqualTo("1")
+        assertThat(chapter("chapter-lone").book(asterix).item).isEqualTo(KavitaItem.Chapter(1857))
+    }
+
+    @Test
+    fun `a default chapter in the loose-leaf volume is a book of its own, as on the series page`() {
+        val loose = VolumeDto(id = 407, number = -100000, minNumber = -100000f, maxNumber = -100000f)
+
+        val book = chapter("continue-dune").book(loose)
+
+        assertThat(book.item).isEqualTo(KavitaItem.Chapter(1586))
+        assertThat(book.index).isNull()
+        assertThat(book.special).isFalse()
     }
 
     @Test

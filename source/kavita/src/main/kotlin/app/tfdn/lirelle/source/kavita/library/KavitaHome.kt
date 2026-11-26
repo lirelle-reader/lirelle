@@ -81,16 +81,19 @@ internal class KavitaHome(private val server: KavitaProfileServer, clock: () -> 
         HomeRow(kind, books.filterNotNull().distinctBy { it.id }, hasMore)
     }
 
-    /** The book of a series' continue point: a default chapter is its volume, which is asked for its number. */
+    /**
+     * The book of a series' continue point: a default chapter asks its volume, which is the book unless it is the
+     * loose-leaf one.
+     */
     private suspend fun book(remote: KavitaRemote, at: SeriesPoint): BookSummary? {
         val point = at.point
-        val volumeIndex = if (point.isDefault) {
-            (calls.orGone { remote.api.volume(point.volumeId) } ?: return null).index
+        val book = if (point.isDefault) {
+            point.book(calls.orGone { remote.api.volume(point.volumeId) } ?: return null)
         } else {
-            null
+            point.book(volumeIndex = null)
         }
         val series = SeriesRefInfo(at.series.id, at.series.name)
-        return remote.mapper.summary(point.book(volumeIndex), series, at.series.format)
+        return remote.mapper.summary(book, series, at.series.format)
     }
 
     /** The groups of the recently updated series, each its series' newest book. */

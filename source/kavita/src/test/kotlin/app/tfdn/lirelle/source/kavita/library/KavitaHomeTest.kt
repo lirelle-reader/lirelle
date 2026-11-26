@@ -266,6 +266,26 @@ class KavitaHomeTest {
     }
 
     @Test
+    fun `a default chapter in the loose-leaf volume is its chapter, as on the series page`() {
+        answerOnDeck()
+        routes.answer(
+            Volume,
+            fixtureWith(
+                "volume-harry-potter",
+                "id" to 430,
+                "number" to -100000,
+                "minNumber" to -100000,
+                "maxNumber" to -100000,
+            ),
+        )
+
+        val potter = row(HomeRowKind.Continue).books.first()
+
+        assertThat(potter.id).isEqualTo(BookId("c1609"))
+        assertThat(potter.series).isEqualTo(SeriesRef(SeriesId("264"), "Harry Potter (fr)", null))
+    }
+
+    @Test
     fun `a volume gone before it is read is left out`() {
         answerOnDeck()
         routes.fail(Volume, 404)

@@ -28,7 +28,7 @@ internal sealed interface KavitaItem {
 
     /**
      * A volume read through its default chapter: its only chapter, as a rule. A default chapter beside other
-     * chapters still makes the volume the book, as it does seen alone ([item]).
+     * chapters still makes the volume the book, as it does seen alone ([book]).
      */
     data class Volume(val id: Int) : KavitaItem {
         override val bookId = BookId("$VolumePrefix$id")
@@ -55,22 +55,15 @@ internal fun BookId.kavitaItem(): KavitaItem? {
 internal val ChapterDto.isDefault: Boolean get() = number == DefaultChapter && !isSpecial
 
 /**
- * A chapter seen alone (Home, Search): the book it belongs to. A known limit: a default chapter outside any volume
- * maps here to the loose-leaf volume, which holds every chapter outside a volume, since a chapter seen alone does
- * not tell its volume's number; Kavita normally files such a file as a special, which is a chapter.
- */
-internal fun ChapterDto.item(): KavitaItem = if (isDefault) KavitaItem.Volume(volumeId) else KavitaItem.Chapter(id)
-
-/**
  * One book: its [item], the [chapter] that carries its title, pages and people, its place in the series ([index]:
  * the volume's number, the chapter's range, none for a special) and whether it is a [special].
  */
 internal data class KavitaBook(val item: KavitaItem, val chapter: ChapterDto, val index: String?, val special: Boolean)
 
 /**
- * A chapter seen alone as a book: the default chapter is its volume, whose [volumeIndex] the caller gives (the
- * volume's [index], from `GET api/Volume`); any other chapter is itself, and [volumeIndex] is not read. A special
- * has no number.
+ * A chapter as a book: the default chapter is its volume, whose [volumeIndex] the caller gives (the volume's
+ * [index]); any other chapter is itself, and [volumeIndex] is not read. A special has no number. A chapter seen
+ * alone, whose volume may be the loose-leaf one, is read with [book] and its volume instead.
  */
 internal fun ChapterDto.book(volumeIndex: String?): KavitaBook = when {
     isDefault -> KavitaBook(KavitaItem.Volume(volumeId), this, volumeIndex.orNullIfBlank(), special = false)
@@ -79,8 +72,21 @@ internal fun ChapterDto.book(volumeIndex: String?): KavitaBook = when {
 }
 
 /**
+ * A chapter seen alone (Home, Search) as the book it belongs to, with the [volume] it sits in (from `GET
+ * api/Volume`): the default chapter is that volume, unless the volume is one Kavita makes up. The loose-leaf volume
+ * holds every chapter outside a volume, so there the chapter is a book of its own, with the id the series page and
+ * the reading lists give it.
+ */
+internal fun ChapterDto.book(volume: VolumeDto): KavitaBook = if (isDefault && volume.isMadeUp) {
+    KavitaBook(KavitaItem.Chapter(id), this, index = null, special = false)
+} else {
+    book(volume.index)
+}
+
+/**
  * The volume's books: the volume itself when its only chapter is the default one, else its chapters by sort order.
- * A default chapter beside others still stands for the volume, as it does seen alone ([item]).
+ * A default chapter beside others still stands for the volume, as it does seen alone ([book]) in a volume
+ * that is not made up.
  */
 internal fun VolumeDto.books(): List<KavitaBook> = chapters.sortedBy { it.sortOrder }.map {
     if (it.isDefault) KavitaBook(KavitaItem.Volume(id), it, index, special = false) else it.book(index)
@@ -93,12 +99,16 @@ internal fun VolumeDto.books(): List<KavitaBook> = chapters.sortedBy { it.sortOr
  */
 internal val VolumeDto.index: String?
     get() = when {
-        minNumber.isSentinelVolume() || maxNumber.isSentinelVolume() || number.toFloat().isSentinelVolume() -> null
+        isMadeUp -> null
         maxNumber > minNumber -> "${minNumber.plain()}-${maxNumber.plain()}"
         minNumber != 0f -> minNumber.plain()
         number != 0 -> number.toString()
         else -> null
     }
+
+/** The volume is one Kavita makes up, numbered ±100000: the loose-leaf one or the specials'. */
+private val VolumeDto.isMadeUp: Boolean
+    get() = minNumber.isSentinelVolume() || maxNumber.isSentinelVolume() || number.toFloat().isSentinelVolume()
 
 /** The volume's number to order it by, a decimal kept. */
 private val VolumeDto.order: Float get() = if (minNumber != 0f || maxNumber != 0f) minNumber else number.toFloat()

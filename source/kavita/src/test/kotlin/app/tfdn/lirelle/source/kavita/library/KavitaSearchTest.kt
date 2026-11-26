@@ -21,6 +21,7 @@ import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonArray
 import kotlinx.serialization.json.JsonObject
+import kotlinx.serialization.json.JsonPrimitive
 import mockwebserver3.MockResponse
 import mockwebserver3.MockWebServer
 import mockwebserver3.RecordedRequest
@@ -135,6 +136,40 @@ class KavitaSearchTest {
             .containsExactly("407", "449", "448")
         assertThat(requests.filter { it.route().startsWith("GET /api/Series/") }.map { it.route() })
             .containsExactly("GET /api/Series/500")
+    }
+
+    @Test
+    fun `default chapters in the loose-leaf volume are each a book of its own`() {
+        // Dune Messiah's chapter moved to volume 449, which is series 500's loose-leaf volume.
+        val recorded = Json.parseToJsonElement(fixtureBody("search-dune")) as JsonObject
+        val moved = JsonPrimitive(1627)
+        val chapters = (recorded["chapters"] as JsonArray).map { chapter ->
+            chapter as JsonObject
+            if (chapter["id"] == moved) JsonObject(chapter + ("volumeId" to JsonPrimitive(449))) else chapter
+        }
+        routes.answer(Search, JsonObject(recorded + ("chapters" to JsonArray(chapters))).toString())
+        routes.answer(Volume) { request ->
+            when (request.url.queryParameter("volumeId")) {
+                "407" -> json(fixtureBody("volume-dune"))
+                "449" -> json(
+                    fixtureWith(
+                        "volume-dune",
+                        "id" to 449,
+                        "seriesId" to 500,
+                        "number" to -100000,
+                        "minNumber" to -100000,
+                        "maxNumber" to -100000,
+                    ),
+                )
+                else -> MockResponse(code = 404)
+            }
+        }
+        routes.answer("GET /api/Series/500", """{"id":500,"name":"Dune (en)","format":3}""")
+
+        val books = search("dune").books.items
+
+        assertThat(books.map { it.id }).containsExactly(BookId("v407"), BookId("c1628"), BookId("c1627")).inOrder()
+        assertThat(books.map { it.series?.index }).containsExactly("1", null, null).inOrder()
     }
 
     @Test
