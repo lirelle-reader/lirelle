@@ -6,9 +6,9 @@ import java.io.File
 import org.junit.Test
 
 /**
- * The ways to read an id as a number, or to make one from a number: what only the BookOrbit side may do, the
- * one server whose ids are numbers. Anywhere else, an id is text that means nothing but itself; so is the version of
- * a listening state, which the app compares for equality only (BookOrbit's revisions are numbers).
+ * The ways to read an id as a number, or to make one from a number: what only the BookOrbit and Kavita sides may
+ * do, the servers whose ids are numbers. Anywhere else, an id is text that means nothing but itself; so is the
+ * version of a listening state, which the app compares for equality only (BookOrbit's revisions are numbers).
  */
 private val NumericUses = listOf(
     // An id's text read as a number.
@@ -31,8 +31,8 @@ private val NumericUses = listOf(
 
 /**
  * The files that may convert, by their path from the project's root, and why each may. Each one is a part of the
- * BookOrbit side, which 2b moves behind the source, or a test helper that stands in for a BookOrbit server or its
- * books; nothing else may be added without a reason as good.
+ * BookOrbit side, which 2b moves behind the source, a part of the Kavita side (#50), or a test helper that stands in
+ * for a BookOrbit server or its books; nothing else may be added without a reason as good.
  */
 private val Allowed: Map<String, String> = mapOf(
     "source/bookorbit/src/main/kotlin/app/tfdn/lirelle/source/bookorbit/network/BookOrbitIds.kt" to
@@ -63,6 +63,14 @@ private val Allowed: Map<String, String> = mapOf(
         "asks BookOrbit for a book's read-along by its numbers",
     "source/bookorbit/src/main/kotlin/app/tfdn/lirelle/source/bookorbit/comics/BookOrbitPageSource.kt" to
         "asks BookOrbit for an album's pages, and writes their addresses, by its file's number",
+    "source/kavita/src/main/kotlin/app/tfdn/lirelle/source/kavita/library/KavitaBooks.kt" to
+        "makes a book's id from the number of its Kavita volume or chapter",
+    "source/kavita/src/main/kotlin/app/tfdn/lirelle/source/kavita/library/KavitaMapper.kt" to
+        "maps Kavita's answers, numbered, to the library's models",
+    "source/kavita/src/main/kotlin/app/tfdn/lirelle/source/kavita/library/KavitaSeriesPages.kt" to
+        "maps Kavita's libraries, numbered, and asks for a series by its number",
+    "source/kavita/src/main/kotlin/app/tfdn/lirelle/source/kavita/library/KavitaShelves.kt" to
+        "maps Kavita's reading lists, numbered, to shelves",
     "core/testing/src/main/kotlin/app/tfdn/lirelle/core/testing/FakeMarksRepository.kt" to
         "plays a BookOrbit server in the tests: counts the ids of the marks it makes, as BookOrbit does",
     "core/testing/src/main/kotlin/app/tfdn/lirelle/core/testing/LibrarySamples.kt" to
@@ -91,8 +99,8 @@ private fun mainSources(root: File): List<File> = ModuleGroups.flatMap { group -
 }
 
 /**
- * An id is opaque outside the BookOrbit side: no source reads it as a number, compares it as one or makes one
- * from a number, so that a server whose ids are not numbers (Komga's) breaks nothing there.
+ * An id is opaque outside the BookOrbit and Kavita sides: no source reads it as a number, compares it as one or
+ * makes one from a number, so that a server whose ids are not numbers (Komga's) breaks nothing there.
  *
  * It is a scan of text, no more: it sees the usual ways (the BookOrbit conversions, `.value.toLong()`, an id
  * made from a number or its text), not a number reached by a longer way round; those are for the review.
@@ -103,12 +111,13 @@ class OpaqueIdsTest {
     private val sources = mainSources(root)
 
     @Test
-    fun `no source outside the BookOrbit side reads an id as a number or makes one from a number`() {
+    fun `no source outside the BookOrbit and Kavita sides reads an id as a number or makes one from a number`() {
         assertWithMessage("sources found").that(sources.size).isAtLeast(FewestSources)
         val uses = sources.associate { it.relativeTo(root).invariantSeparatorsPath to numericIdUses(it.readText()) }
             .filter { (path, lines) -> lines.isNotEmpty() && path !in Allowed }
 
-        assertWithMessage("sources that use ids as numbers outside the BookOrbit side").that(uses).isEmpty()
+        assertWithMessage("sources that use ids as numbers outside the BookOrbit and Kavita sides").that(uses)
+            .isEmpty()
     }
 
     @Test

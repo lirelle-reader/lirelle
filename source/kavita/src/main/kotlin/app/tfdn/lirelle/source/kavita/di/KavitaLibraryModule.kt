@@ -1,5 +1,6 @@
 package app.tfdn.lirelle.source.kavita.di
 
+import android.content.Context
 import app.tfdn.lirelle.core.history.HistoryRepository
 import app.tfdn.lirelle.core.library.AudioBookmarkRepository
 import app.tfdn.lirelle.core.library.AudioRepository
@@ -13,17 +14,24 @@ import app.tfdn.lirelle.core.library.model.BookSort
 import app.tfdn.lirelle.core.session.ServerKind
 import app.tfdn.lirelle.core.session.profile.ProfileComponent
 import app.tfdn.lirelle.core.session.profile.ProfileScoped
+import app.tfdn.lirelle.core.session.profile.ProfileSession
 import app.tfdn.lirelle.core.session.profile.SourceOf
 import app.tfdn.lirelle.source.kavita.history.EmptyKavitaHistory
 import app.tfdn.lirelle.source.kavita.library.EmptyKavitaAudio
 import app.tfdn.lirelle.source.kavita.library.EmptyKavitaAudioBookmarks
-import app.tfdn.lirelle.source.kavita.library.EmptyKavitaLibrary
 import app.tfdn.lirelle.source.kavita.library.EmptyKavitaMarks
 import app.tfdn.lirelle.source.kavita.library.EmptyKavitaReadAlong
 import app.tfdn.lirelle.source.kavita.library.EmptyKavitaReader
+import app.tfdn.lirelle.source.kavita.library.KavitaLibrary
+import app.tfdn.lirelle.source.kavita.library.KavitaLibraryApi
+import app.tfdn.lirelle.source.kavita.library.KavitaTitles
+import app.tfdn.lirelle.source.kavita.library.ResourceKavitaTitles
+import app.tfdn.lirelle.source.kavita.network.KavitaApis
+import app.tfdn.lirelle.source.kavita.network.KavitaErrors
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 
 /**
  * What Kavita can do, the same for every Kavita server: nothing yet, but connect. Kavita has no audio at all — no
@@ -54,8 +62,8 @@ private val KavitaCapabilities = SourceCapabilities(
 )
 
 /**
- * What the open profile's Kavita server says of its books, its readings and its history — nothing until the
- * library is browsed (#50) and read (#51) — and what it can do, the same for every Kavita server. Made with the
+ * What the open profile's Kavita server says of its books, its readings and its history — its library as far as
+ * #50 brings it, nothing to read until #51 — and what it can do, the same for every Kavita server. Made with the
  * profile, and gone with it.
  */
 @Module
@@ -65,7 +73,15 @@ internal object KavitaLibraryModule {
     @Provides
     @ProfileScoped
     @SourceOf(ServerKind.Kavita)
-    fun library(): LibraryRepository = EmptyKavitaLibrary()
+    fun library(
+        session: ProfileSession,
+        api: KavitaApis<KavitaLibraryApi>,
+        titles: KavitaTitles,
+    ): LibraryRepository = KavitaLibrary(session, api, titles, KavitaErrors())
+
+    /** The titles of the books Kavita knows no title of, in the language the app is shown in. */
+    @Provides
+    fun titles(@ApplicationContext context: Context): KavitaTitles = ResourceKavitaTitles(context)
 
     @Provides
     @ProfileScoped
