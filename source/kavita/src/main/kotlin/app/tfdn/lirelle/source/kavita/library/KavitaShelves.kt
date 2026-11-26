@@ -2,7 +2,6 @@ package app.tfdn.lirelle.source.kavita.library
 
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
-import app.tfdn.lirelle.core.ids.ShelfId
 import app.tfdn.lirelle.core.library.IndexPagingSource
 import app.tfdn.lirelle.core.library.PageResult
 import app.tfdn.lirelle.core.library.PagedList
@@ -27,7 +26,7 @@ internal class KavitaShelves(private val server: KavitaProfileServer) {
         Shelves(
             smartLists = emptyList(),
             collections = lists.distinctBy { it.id }.map {
-                Shelf(ShelfKind.Collection, ShelfId(it.id.toString()), it.title, it.itemCount)
+                Shelf(ShelfKind.Collection, it.id.asShelfId(), it.title, it.itemCount)
             },
         )
     }
@@ -37,8 +36,7 @@ internal class KavitaShelves(private val server: KavitaProfileServer) {
      * and nothing is asked.
      */
     fun books(source: BookListSource, request: BookListRequest): PagedList<BookSummary> {
-        val id = (source as? BookListSource.Collection)?.id?.value?.toIntOrNull()
-            ?: return emptyPages()
+        val id = (source as? BookListSource.Collection)?.id?.kavitaNumber() ?: return emptyPages()
         val total = MutableStateFlow<Int?>(null)
         val pager = Pager(PagingConfig(PageSize, initialLoadSize = PageSize, enablePlaceholders = true)) {
             // The list is asked once per load of it (a refresh asks again), then paged here.

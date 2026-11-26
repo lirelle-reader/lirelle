@@ -33,9 +33,9 @@ internal sealed interface KavitaItem {
 
 /** What Kavita holds under this book id; null for an id that is not one of a Kavita book. */
 internal fun BookId.kavitaItem(): KavitaItem? {
-    val number = value.drop(1).takeIf { it.isNotEmpty() && it.all { digit -> digit in '0'..'9' } }?.toIntOrNull()
+    val number = value.drop(1).kavitaNumber()
     return when {
-        number == null || number <= 0 -> null
+        number == null -> null
         value.startsWith(VolumePrefix) -> KavitaItem.Volume(number)
         value.startsWith(ChapterPrefix) -> KavitaItem.Chapter(number)
         else -> null
@@ -45,7 +45,11 @@ internal fun BookId.kavitaItem(): KavitaItem? {
 /** The chapter is the default chapter of its volume: the volume is the book. */
 internal val ChapterDto.isDefault: Boolean get() = number == DefaultChapter && !isSpecial
 
-/** A chapter seen alone (Home, Search, a reading list): the book it belongs to. */
+/**
+ * A chapter seen alone (Home, Search): the book it belongs to. A known limit: a default chapter outside any volume
+ * maps here to the loose-leaf volume, which holds every chapter outside a volume, since a chapter seen alone does
+ * not tell its volume's number; Kavita normally files such a file as a special, which is a chapter.
+ */
 internal fun ChapterDto.item(): KavitaItem = if (isDefault) KavitaItem.Volume(volumeId) else KavitaItem.Chapter(id)
 
 /**

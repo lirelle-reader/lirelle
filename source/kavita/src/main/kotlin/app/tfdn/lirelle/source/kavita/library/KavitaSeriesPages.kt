@@ -1,6 +1,5 @@
 package app.tfdn.lirelle.source.kavita.library
 
-import app.tfdn.lirelle.core.ids.LibraryId
 import app.tfdn.lirelle.core.ids.SeriesId
 import app.tfdn.lirelle.core.library.model.Series
 import app.tfdn.lirelle.core.library.model.SeriesBooks
@@ -18,7 +17,7 @@ internal class KavitaSeriesPages(private val server: KavitaProfileServer) {
 
     /** The libraries the account sees, in the server's order: some may be empty for an account kept from some. */
     suspend fun libraries(): ApiResult<List<ServerLibrary>> = server.call { remote ->
-        remote.api.libraries().map { ServerLibrary(LibraryId(it.id.toString()), it.name) }
+        remote.api.libraries().map { ServerLibrary(it.id.asLibraryId(), it.name) }
     }
 
     /**
@@ -43,7 +42,7 @@ internal class KavitaSeriesPages(private val server: KavitaProfileServer) {
      * and nothing else have no series line: that book is shown alone.
      */
     suspend fun seriesBooks(seriesId: SeriesId): ApiResult<SeriesBooks> {
-        val id = seriesId.value.toIntOrNull() ?: return NotFound
+        val id = seriesId.kavitaNumber() ?: return NotFound
         return server.call { remote ->
             coroutineScope {
                 val series = async { remote.api.oneSeries(id) }

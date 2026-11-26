@@ -162,6 +162,16 @@ class KavitaMapperTest {
     }
 
     @Test
+    fun `a reading list's default chapter outside any volume is a chapter, not the loose-leaf volume`() {
+        val item = ReadingListItemDto(chapterId = 3, volumeId = 2, volumeNumber = "1", chapterNumber = DefaultChapter)
+
+        assertThat(mapper.readingListItem(item).id).isEqualTo(BookId("v2"))
+        assertThat(mapper.readingListItem(item.copy(volumeNumber = "-100000")).id).isEqualTo(BookId("c3"))
+        assertThat(mapper.readingListItem(item.copy(volumeNumber = "100000")).id).isEqualTo(BookId("c3"))
+        assertThat(mapper.readingListItem(item.copy(volumeNumber = "-100000")).series?.index).isNull()
+    }
+
+    @Test
     fun `a reading list's item never takes Kavita's English title, but a special does`() {
         val alix = read<List<ReadingListItemDto>>("readinglist-items")[2].copy(chapterTitleName = null)
         val special = alix.copy(isSpecial = true, title = "Hors-série", chapterNumber = DefaultChapter)

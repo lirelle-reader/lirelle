@@ -22,6 +22,7 @@ import app.tfdn.lirelle.source.kavita.testing.FakeTitles
 import app.tfdn.lirelle.source.kavita.testing.KavitaRoutes
 import app.tfdn.lirelle.source.kavita.testing.RecordedOn
 import app.tfdn.lirelle.source.kavita.testing.fixtureBody
+import app.tfdn.lirelle.source.kavita.testing.json
 import app.tfdn.lirelle.source.kavita.testing.route
 import app.tfdn.lirelle.source.kavita.testing.serverUrl
 import com.google.common.truth.Truth.assertThat
@@ -105,6 +106,23 @@ class KavitaShelvesTest {
         val asked = routes.requests().single()
         assertThat(asked.route()).isEqualTo("GET /api/ReadingList/items")
         assertThat(asked.url.queryParameter("readingListId")).isEqualTo("7")
+    }
+
+    @Test
+    fun `a list refreshed is asked again`() = runBlocking<Unit> {
+        var asked = 0
+        routes.answer("GET /api/ReadingList/items") {
+            asked++
+            json(if (asked == 1) fixtureBody("readinglist-items") else """[{"chapterId":9,"chapterNumber":"9"}]""")
+        }
+
+        val books = library.books(WinterList, BookListRequest()).items.asSnapshot { refresh() }
+
+        assertThat(books.map { it.id }).containsExactly(BookId("c9"))
+        assertThat(routes.requests().map { it.route() }).containsExactly(
+            "GET /api/ReadingList/items",
+            "GET /api/ReadingList/items",
+        )
     }
 
     @Test

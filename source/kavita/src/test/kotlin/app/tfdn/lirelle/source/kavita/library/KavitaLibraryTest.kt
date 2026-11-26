@@ -127,6 +127,21 @@ class KavitaLibraryTest {
         }
 
     @Test
+    fun `a full batch that reaches the total is the last`() = runBlocking {
+        routes.answer("POST /api/Series/all-v2") {
+            json(
+                (1..100).joinToString(",", "[", "]") { """{"id":$it,"name":"S$it"}""" },
+                headers = arrayOf("Pagination" to """{"currentPage":1,"itemsPerPage":100,"totalItems":100}"""),
+            )
+        }
+
+        val series = (library.series() as ApiResult.Success).value
+
+        assertThat(series).hasSize(100)
+        assertThat(server.requestCount).isEqualTo(1)
+    }
+
+    @Test
     fun `a series page holds its books in order, which are what it counts`() = runBlocking {
         routes.answerFixture("GET /api/Series/261", "series-dune")
         routes.answerFixture("GET /api/Series/series-detail", "detail-dune")
