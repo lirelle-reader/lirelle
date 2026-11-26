@@ -34,6 +34,12 @@ internal const val ListenableFreshMillis = 2 * 60 * 1_000L
 private const val BatchSize = 60
 
 /**
+ * How many pages a list is read by at most: twice those of [ListenableBound] books in full pages, for a server
+ * whose pages are shorter than asked. Past it the list is cut, as it is at [ListenableBound].
+ */
+private const val PageBound = 2 * ListenableBound / BatchSize
+
+/**
  * The books of the server that can be listened to. Every answer is null when the server could not be had:
  * a list is whole or it is not shown.
  */
@@ -115,8 +121,9 @@ internal class ListenableBooks(
             val batch = (library.bookPage(request, page, BatchSize) as? ApiResult.Success)?.value ?: return null
             all += batch.items
             page++
-            // A page shorter than what was asked for is the last one, whatever the total says.
-        } while (batch.items.size >= BatchSize && all.size < batch.total && all.size < ListenableBound)
+            // A page may hold fewer books than were asked for without being the last one: the total says when
+            // all were read, and an empty page ends a list whose total says more than it has.
+        } while (batch.items.isNotEmpty() && all.size < minOf(batch.total, ListenableBound) && page < PageBound)
         return all.take(ListenableBound)
     }
 }

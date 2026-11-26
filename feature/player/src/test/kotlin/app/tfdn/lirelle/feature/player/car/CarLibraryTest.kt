@@ -327,6 +327,32 @@ class CarLibraryTest {
     }
 
     @Test
+    fun `Audiobooks reads on past a page shorter than asked, until the server's total is read`() = runTest {
+        val books = (100 until 250).map { audiobook("$it") }
+        // A server that gives fifty books a page, whatever size is asked.
+        library.bookPageAnswer = { request, page, _ ->
+            val list = if (request.filters.readAlongOnly) emptyList() else books
+            ApiResult.Success(PageResult(list.drop(page * 50).take(50), list.size))
+        }
+
+        assertThat(car().nodes(CarPlace.Tab.Audiobooks, pageSize = 1_000).bookIds())
+            .isEqualTo((100 until 250).map { "$it" })
+    }
+
+    @Test
+    fun `Audiobooks ends at an empty page when the server's total says more than it lists`() = runTest {
+        val books = (100 until 170).map { audiobook("$it") }
+        library.bookPageAnswer = { request, page, size ->
+            val list = if (request.filters.readAlongOnly) emptyList() else books
+            ApiResult.Success(PageResult(list.drop(page * size).take(size), list.size + 5))
+        }
+
+        assertThat(car().nodes(CarPlace.Tab.Audiobooks, pageSize = 1_000)).hasSize(70)
+        // Two pages of books and the empty one that ends them, and the one page of the other kind.
+        assertThat(library.bookPageRequests).hasSize(4)
+    }
+
+    @Test
     fun `Audiobooks stops at six hundred books of a kind`() = runTest {
         served(audio = (1000 until 1700).map { audiobook("$it") })
 
