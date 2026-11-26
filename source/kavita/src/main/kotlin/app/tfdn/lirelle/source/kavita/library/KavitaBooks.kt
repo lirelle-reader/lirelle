@@ -11,6 +11,15 @@ import kotlin.math.abs
 internal const val DefaultChapter = "-100000"
 
 /**
+ * The number Kavita gives, negative, the loose-leaf volume of the chapters outside a volume and, positive, the
+ * specials' volume: neither is a number of the series.
+ */
+private const val SentinelVolume = 100_000f
+
+/** The number of a volume Kavita makes up: the loose-leaf one (-100000) or the specials' (100000). */
+internal fun Float.isSentinelVolume(): Boolean = abs(this) == SentinelVolume
+
+/**
  * What a Lirelle book is in Kavita: a volume that is one file, or a chapter (a special is a chapter). Its book id
  * says which, `v12` or `c34`, so that the book's page knows what to ask and Kavita's two numberings never mix.
  */
@@ -84,7 +93,7 @@ internal fun VolumeDto.books(): List<KavitaBook> = chapters.sortedBy { it.sortOr
  */
 internal val VolumeDto.index: String?
     get() = when {
-        minNumber.isSentinel() || maxNumber.isSentinel() || number.toFloat().isSentinel() -> null
+        minNumber.isSentinelVolume() || maxNumber.isSentinelVolume() || number.toFloat().isSentinelVolume() -> null
         maxNumber > minNumber -> "${minNumber.plain()}-${maxNumber.plain()}"
         minNumber != 0f -> minNumber.plain()
         number != 0 -> number.toString()
@@ -93,9 +102,6 @@ internal val VolumeDto.index: String?
 
 /** The volume's number to order it by, a decimal kept. */
 private val VolumeDto.order: Float get() = if (minNumber != 0f || maxNumber != 0f) minNumber else number.toFloat()
-
-/** Kavita's number of the loose-leaf volume (-100000) or of the specials' (100000), which is no number. */
-private fun Float.isSentinel(): Boolean = abs(this) == SentinelVolume
 
 /** The number as written, without a trailing ".0": "10", "10.5". */
 private fun Float.plain(): String = BigDecimal(toString()).stripTrailingZeros().toPlainString()
@@ -124,6 +130,5 @@ internal val SeriesDetailDto.isLoneBook: Boolean
 /** A chapter's range as its place in the series; the default chapter's number is none. */
 internal fun String?.orIndex(): String? = this?.trim()?.takeIf { it.isNotEmpty() && it != DefaultChapter }
 
-private const val SentinelVolume = 100_000f
 private const val VolumePrefix = "v"
 private const val ChapterPrefix = "c"

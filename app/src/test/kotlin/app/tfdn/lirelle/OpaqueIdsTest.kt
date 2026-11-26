@@ -14,6 +14,8 @@ import org.junit.Test
 private val NumericUses = listOf(
     // An id's text read as a number.
     Regex("""\.value\.to(Long|Int)(OrNull)?\b"""),
+    // An id read as the Kavita number it stands for (KavitaIds.kt).
+    Regex("""\.value\??\.kavitaNumber\("""),
     // An id turned into the BookOrbit number it stands for (BookOrbitNumbers.kt).
     Regex("""\.bookOrbit\(\)"""),
     // An id made from a BookOrbit number (BookOrbitIds.kt).
@@ -126,6 +128,8 @@ class OpaqueIdsTest {
             val index = file.id.value.toInt()
             val maybe = book.id.value.toLongOrNull()
             val perhaps = file.id.value.toIntOrNull()
+            val kavita = shelf.id.value.kavitaNumber()
+            val maybeKavita = source.id?.value?.kavitaNumber()
             val asked = api.book(bookId.bookOrbit())
             val made = bookIdOf(dto.id)
             val listed = libraryIdOf(dto.id)

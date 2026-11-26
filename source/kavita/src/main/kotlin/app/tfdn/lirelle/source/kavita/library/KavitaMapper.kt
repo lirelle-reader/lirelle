@@ -15,7 +15,6 @@ import app.tfdn.lirelle.source.kavita.library.dto.ChapterDto
 import app.tfdn.lirelle.source.kavita.library.dto.ReadingListItemDto
 import app.tfdn.lirelle.source.kavita.library.dto.SeriesDto
 import app.tfdn.lirelle.source.kavita.library.dto.SeriesMetadataDto
-import kotlin.math.abs
 
 /** The series a book is shown in: its Kavita id and its name. */
 internal data class SeriesRefInfo(val id: Int, val name: String)
@@ -151,7 +150,8 @@ internal class KavitaMapper(private val serverUrl: String, private val titles: K
     fun readingListItem(item: ReadingListItemDto): BookSummary {
         // A default chapter is its volume's book, unless that volume is the loose-leaf one of the chapters outside
         // a volume: its id would stand for all of them.
-        val volume = item.chapterNumber == DefaultChapter && !item.isSpecial && !item.volumeNumber.isLooseLeaf()
+        val looseLeaf = item.volumeNumber?.trim()?.toFloatOrNull()?.isSentinelVolume() == true
+        val volume = item.chapterNumber == DefaultChapter && !item.isSpecial && !looseLeaf
         val kavitaItem = if (volume) KavitaItem.Volume(item.volumeId) else KavitaItem.Chapter(item.chapterId)
         val index = when {
             volume -> item.volumeNumber.orNullIfBlank()
@@ -199,12 +199,6 @@ private fun seriesRefOf(book: KavitaBook, title: String, series: SeriesRefInfo?)
     if (book.special && title.equals(name, ignoreCase = true)) return null
     return SeriesRef(series.id.asSeriesId(), name, book.index)
 }
-
-/** The volume number Kavita gives the loose-leaf volume (-100000) or the specials' (100000), which is no number. */
-private fun String?.isLooseLeaf(): Boolean =
-    this?.trim()?.toFloatOrNull()?.let { abs(it) == LooseLeafVolume } == true
-
-private const val LooseLeafVolume = 100_000f
 
 /** The title [numbered] gives a book of this [index]; untitled for a book without one. */
 private fun KavitaTitles.numbered(index: String?, numbered: (String) -> String): String =
