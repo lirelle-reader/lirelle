@@ -10,8 +10,9 @@ import kotlinx.coroutines.sync.withLock
  * The on-deck series and their continue points, shared by Continue and Up next, which Home asks together: what
  * one row loaded serves the other row once, if it asks less than [SharedFor] milliseconds later, and is then let
  * go. So each refresh makes one on-deck call, and the next refresh asks again. A "See all" screen keeps its own,
- * being longer, and loads without holding Home's rows back. Asked while the other row loads them, they are waited
- * for, never asked twice; a failure is not kept. Made with a profile's library, they never serve another profile.
+ * being longer, and loads without waiting for Home's rows, though both share Home's limit on calls at once. Asked
+ * while the other row loads them, they are waited for, never asked twice; a failure is not kept. Made with a
+ * profile's library, they never serve another profile.
  * [clock] tells the time in milliseconds, from any start.
  */
 internal class KavitaOnDeck(private val clock: () -> Long) {
