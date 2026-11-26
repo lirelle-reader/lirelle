@@ -144,15 +144,6 @@ class KavitaAuthorsTest {
     }
 
     @Test
-    fun `a person without a name is left out`() = runBlocking<Unit> {
-        routes.answer(Persons, """[{"id":1,"name":"  ","chapterCount":3},{"id":2,"name":"Hergé","chapterCount":4}]""")
-
-        val authors = library.authors(AuthorSort.Name, SortDirection.Ascending).items.asSnapshot()
-
-        assertThat(authors).containsExactly(Author(AuthorId("Hergé"), "Hergé", 4, portraitUrl = null))
-    }
-
-    @Test
     fun `a list that fails to load is a load error the screen can tell`() = runBlocking<Unit> {
         routes.fail(Persons, 401)
 
@@ -197,11 +188,12 @@ class KavitaAuthorsTest {
 
     @Test
     fun `an author the server does not know is not found`() = runBlocking<Unit> {
+        // Kavita answers 404 to a name it does not know, or does not show this account.
         routes.fail(Person, 404)
         routes.answerFixture(Persons, "person-count")
         assertThat(library.author(AuthorId("Personne"))).isEqualTo(ApiResult.Failure(ApiError.NotFound))
 
-        // Kavita answers an unknown name with no content.
+        // An answer with no content, which Kavita does not give, is taken the same way: a guard.
         routes.answer(Person) { MockResponse(code = 204) }
         assertThat(library.author(AuthorId("Personne"))).isEqualTo(ApiResult.Failure(ApiError.NotFound))
     }

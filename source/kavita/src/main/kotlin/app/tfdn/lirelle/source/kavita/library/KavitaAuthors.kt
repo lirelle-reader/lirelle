@@ -49,7 +49,7 @@ internal class KavitaAuthors(private val server: KavitaProfileServer) {
                     val people = response.answer()
                     // Without a total, a full page says that there is at least one more.
                     val counted = page * size + people.size + if (people.size >= size) 1 else 0
-                    PageResult(people.mapNotNull { it.author() }, response.totalItems() ?: counted)
+                    PageResult(people.map { it.author() }, response.totalItems() ?: counted)
                 }
             }
         }
@@ -102,16 +102,21 @@ internal class KavitaAuthors(private val server: KavitaProfileServer) {
     }
 }
 
-/** The person of that name; not found when the server knows none, which it answers with no content. */
+/**
+ * The person of that name; not found when the server answers 404 (a name it does not know, or does not show this
+ * account), and, as a guard, when it answers with no content.
+ */
 private suspend fun KavitaRemote.person(name: String): PersonDto {
     val response = api.person(name)
     if (!response.isSuccessful) throw HttpException(response)
     return response.body() ?: notFound()
 }
 
-/** A person as an author, its name standing for its id; none without a name. */
-private fun BrowsePersonDto.author(): Author? =
-    name.orNullIfBlank()?.let { Author(AuthorId(it), it, chapterCount, portraitUrl = null) }
+/** A person as an author, its name standing for its id. Kavita keeps no person without a name. */
+private fun BrowsePersonDto.author(): Author {
+    val shown = name.trim()
+    return Author(AuthorId(shown), shown, chapterCount, portraitUrl = null)
+}
 
 /** How many authors a page of the list holds. */
 private const val PageSize = 60

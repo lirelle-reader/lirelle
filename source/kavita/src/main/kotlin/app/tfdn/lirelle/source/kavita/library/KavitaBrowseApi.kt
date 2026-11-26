@@ -57,7 +57,7 @@ internal interface KavitaBrowseApi {
         @Query("PageSize") size: Int,
     ): Response<List<BrowsePersonDto>>
 
-    /** A person by name; an answer with no content for a name the server does not know. */
+    /** A person by name; 404 for a name the server does not know, or does not show this account. */
     @GET("api/Person")
     suspend fun person(@Query("name") name: String): Response<PersonDto>
 }
