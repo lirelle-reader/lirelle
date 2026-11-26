@@ -8,6 +8,7 @@ import app.tfdn.lirelle.core.network.ProviderFlow
 import app.tfdn.lirelle.core.network.SignInIdentifier
 import app.tfdn.lirelle.core.session.Credential
 import app.tfdn.lirelle.core.session.Profile
+import app.tfdn.lirelle.core.session.ReplacedSession
 import app.tfdn.lirelle.core.session.ServerKind
 import app.tfdn.lirelle.core.session.Session
 import app.tfdn.lirelle.core.session.Tokens
@@ -28,9 +29,12 @@ import app.tfdn.lirelle.source.kavita.testing.TheKeyId
 import app.tfdn.lirelle.source.kavita.testing.TheRefreshToken
 import app.tfdn.lirelle.source.kavita.testing.TheToken
 import app.tfdn.lirelle.source.kavita.testing.annJson
+import app.tfdn.lirelle.source.kavita.testing.annJsonWithNullVersion
+import app.tfdn.lirelle.source.kavita.testing.annJsonWithoutVersion
 import app.tfdn.lirelle.source.kavita.testing.bodyText
 import app.tfdn.lirelle.source.kavita.testing.enqueueDone
 import app.tfdn.lirelle.source.kavita.testing.enqueueJson
+import app.tfdn.lirelle.source.kavita.testing.enqueueRefusal
 import app.tfdn.lirelle.source.kavita.testing.enqueueText
 import app.tfdn.lirelle.source.kavita.testing.kavitaSession
 import app.tfdn.lirelle.source.kavita.testing.kavitaSignIn
@@ -162,14 +166,72 @@ class KavitaSignInTest {
         assertThat(store.saved).isEmpty()
     }
 
+    /** A real Kavita always tells its version in numbers: an answer without one is not trusted to be recent. */
     @Test
-    fun `a server whose version is no number is signed in to`() = runBlocking {
-        enqueueLogin(version = "nightly")
-        server.enqueueJson(KeyJson)
+    fun `a server that tells no version in numbers is refused, and no key is made nor anything saved`() =
+        runBlocking {
+            val untold = listOf(
+                annJsonWithoutVersion(withTokens = true),
+                annJsonWithNullVersion(withTokens = true),
+                annJson(version = "", withTokens = true),
+                annJson(version = "nightly", withTokens = true),
+            )
+            untold.forEach { answer ->
+                server.enqueueJson(answer)
 
+                assertThat(signIn.signInWithPassword(url, Username, Password))
+                    .isEqualTo(ApiResult.Failure(ApiError.SignInRefused))
+            }
+            assertThat(server.requestCount).isEqualTo(untold.size)
+            assertThat(store.saved).isEmpty()
+        }
+
+    @Test
+    fun `a version with a suffix is compared by its numbers, and told as the server said it`() = runBlocking {
+        enqueueLogin(version = "0.8.8.3-beta")
+        assertThat(signIn.signInWithPassword(url, Username, Password))
+            .isEqualTo(ApiResult.Failure(ApiError.ServerTooOld("0.8.8.3-beta", "0.8.9")))
+        assertThat(server.requestCount).isEqualTo(1)
+        assertThat(store.saved).isEmpty()
+
+        enqueueLogin(version = "0.9.1.4-beta")
+        server.enqueueJson(KeyJson)
         assertThat(signIn.signInWithPassword(url, Username, Password)).isEqualTo(ApiResult.Success(Unit))
         assertThat(store.saved).hasSize(1)
     }
+
+    /** The password is in the body of the sign-in, which a 307 and a 308 keep: it goes to no other server. */
+    @Test
+    fun `a sign-in redirected to another server fails as an unreachable server, and nothing is sent there`() =
+        runBlocking {
+            MockWebServer().use { elsewhere ->
+                elsewhere.start()
+                listOf(307, 308).forEach { code ->
+                    val there = elsewhere.url("/api/Account/login").toString()
+                    server.enqueue(MockResponse(code = code, headers = headersOf("Location", there)))
+
+                    val result = signIn.signInWithPassword(url, Username, Password)
+
+                    assertThat(result).isEqualTo(ApiResult.Failure(ApiError.ServerUnreachable))
+                    assertThat(result.toString()).doesNotContain(Password)
+                }
+                assertThat(elsewhere.requestCount).isEqualTo(0)
+            }
+            assertThat(server.requestCount).isEqualTo(2)
+            assertThat(store.saved).isEmpty()
+        }
+
+    @Test
+    fun `a session the server no longer takes when the key is asked for is a sign-in that did not succeed`() =
+        runBlocking {
+            enqueueLogin()
+            server.enqueueRefusal()
+
+            assertThat(signIn.signInWithPassword(url, Username, Password))
+                .isEqualTo(ApiResult.Failure(ApiError.SignInRefused))
+            assertThat(server.requestCount).isEqualTo(2)
+            assertThat(store.saved).isEmpty()
+        }
 
     @Test
     fun `a session answered without its token makes nothing`() = runBlocking {
@@ -285,6 +347,26 @@ class KavitaSignInTest {
         assertThat(store.saved).isEmpty()
     }
 
+    /** The key the account's profile held stays that profile's: only the new one, which nobody holds, goes. */
+    @Test
+    fun `a profile added again that cannot be saved deletes the new key only`() = runBlocking {
+        store.failSaves = true
+        store.replaced = ReplacedSession(Credential.ApiKey("0ld-k3y-0f-th3-d3v1c3", "17"), refused = false)
+        enqueueLogin()
+        server.enqueueJson(KeyJson)
+        server.enqueueDone()
+
+        assertThat(signIn.signInWithPassword(url, Username, Password)).isInstanceOf(ApiResult.Failure::class.java)
+
+        repeat(2) { server.takeRequest() }
+        val delete = checkNotNull(server.takeRequest(5, TimeUnit.SECONDS)) { "The key was not deleted" }
+        assertThat(delete.method).isEqualTo("DELETE")
+        assertThat(delete.url.queryParameter("authKeyId")).isEqualTo(TheKeyId)
+        assertThat(delete.headers["x-api-key"]).isEqualTo(TheKey)
+        assertThat(server.requestCount).isEqualTo(3)
+        assertThat(store.saved).isEmpty()
+    }
+
     /** The key exists on the server from the moment it is asked for: a profile must hold it, or nobody does. */
     @Test
     fun `leaving the screen once the key is asked for still saves the profile`() = runBlocking {
@@ -347,6 +429,13 @@ class KavitaSignInTest {
         assertThat(signIn.loginOptions(url)).isEqualTo(ApiResult.Failure(ApiError.ServerFailed))
 
         server.enqueueJson("[]")
+        assertThat(signIn.loginOptions(url)).isEqualTo(ApiResult.Failure(ApiError.Unexpected))
+    }
+
+    @Test
+    fun `options longer than any of Kavita's are a failure`() = runBlocking {
+        server.enqueueJson(OidcOffJson + " ".repeat(100_000))
+
         assertThat(signIn.loginOptions(url)).isEqualTo(ApiResult.Failure(ApiError.Unexpected))
     }
 

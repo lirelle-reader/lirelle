@@ -12,6 +12,7 @@ import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.POST
 import retrofit2.http.Query
+import retrofit2.http.Streaming
 
 /** The header a key goes in, on every route. */
 internal const val ApiKeyHeader = "x-api-key"
@@ -34,19 +35,31 @@ private const val AccountRoute = "api/Account"
 /**
  * What is asked of a Kavita server without a profile: what tells it from another server, and signing in — the
  * account read, a key made with the session the sign-in opened, the account's keys listed, a key deleted. Answers
- * are read whole ([Response]): their status says as much as their body.
+ * come with their status ([Response]), which says as much as their body; the two public ones are read by whoever
+ * asks, within a bound.
  */
 internal interface KavitaPublicApi {
 
-    /** Public: the plain text `Ok`. */
+    /**
+     * Public: the plain text `Ok`. Not read by Retrofit: whoever asks reads as much as an honest answer is long
+     * ([textUpTo]), and closes it.
+     */
+    @Streaming
     @GET(HealthRoute)
     suspend fun health(): Response<ResponseBody>
 
-    /** Public, answered even when no provider is set up: `{enabled, disablePasswordAuthentication, providerName}`. */
+    /**
+     * Public, answered even when no provider is set up: `{enabled, disablePasswordAuthentication, providerName}`.
+     * Not read by Retrofit either: whoever asks reads it within its bound ([textUpTo]), and closes it.
+     */
+    @Streaming
     @GET("api/Settings/oidc")
     suspend fun oidcSettings(): Response<ResponseBody>
 
-    /** Opens a session with a password: the account, with the session's tokens. */
+    /**
+     * Opens a session with a password: the account, with the session's tokens. The password is in the body: the
+     * sign-in's client sends it to no other server ([kavitaSignInClient]).
+     */
     @POST("$AccountRoute/login")
     suspend fun login(@Body request: LoginRequest): Response<KavitaUserDto>
 

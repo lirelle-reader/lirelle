@@ -9,8 +9,8 @@ import org.junit.Assert.assertThrows
 import org.junit.Test
 
 /**
- * The oldest Kavita the app works with is 0.8.9: a version is compared number by number, a missing one being 0,
- * and a version that is not dotted numbers is let through.
+ * The oldest Kavita the app works with is 0.8.9: a version is compared by the dotted numbers it begins with, number
+ * by number, a missing one being 0; a version that begins with no number is none, and its server is refused.
  */
 class KavitaVersionTest {
 
@@ -29,10 +29,43 @@ class KavitaVersionTest {
     }
 
     @Test
-    fun `a version that is not dotted numbers is let through`() {
-        listOf("nightly", "", "0.8.8-beta", "0..8", "v0.8.1", "0.8.99999999999").forEach {
+    fun `a version is compared by the dotted numbers it begins with`() {
+        listOf("0.8.8.3-beta", "0.8.8-beta", "0.8.8+build.99", "0..9", "0.8.8.nightly", " 0.8.8 ").forEach {
+            assertWithMessage(it).that(isOlderKavita(it)).isTrue()
+        }
+        listOf("0.8.9-beta", "0.9.1.4-nightly", "0.9.", "1 (docker)", "0.8.99999999999", " 0.9.1.4\n").forEach {
             assertWithMessage(it).that(isOlderKavita(it)).isFalse()
         }
+    }
+
+    @Test
+    fun `a version that begins with no number is no version`() {
+        listOf(null, "", " ", "nightly", "v0.8.1", "-1", ".8.9").forEach {
+            assertWithMessage("$it").that(tellsKavitaVersion(it)).isFalse()
+        }
+        listOf("0", "0.8.8.3-beta", "0.9.1.4", " 1.0 ").forEach {
+            assertWithMessage(it).that(tellsKavitaVersion(it)).isTrue()
+        }
+    }
+
+    @Test
+    fun `an account on a server that tells no version in numbers is a sign-in refused`() {
+        listOf(null, "", "nightly").forEach { version ->
+            val refused = assertThrows(ApiErrorException::class.java) {
+                KavitaUserDto(7, "ann", kavitaVersion = version).onRecentEnoughServer()
+            }
+
+            assertWithMessage("$version").that(refused.error).isEqualTo(ApiError.SignInRefused)
+        }
+    }
+
+    @Test
+    fun `a version too old is told as the server said it, suffix included`() {
+        val refused = assertThrows(ApiErrorException::class.java) {
+            KavitaUserDto(7, "ann", kavitaVersion = "0.8.8.3-beta").onRecentEnoughServer()
+        }
+
+        assertThat(refused.error).isEqualTo(ApiError.ServerTooOld("0.8.8.3-beta", "0.8.9"))
     }
 
     @Test

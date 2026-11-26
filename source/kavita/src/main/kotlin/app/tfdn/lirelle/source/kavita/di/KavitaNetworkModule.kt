@@ -46,7 +46,7 @@ internal object KavitaNetworkModule {
 
     /**
      * Signing in and deleting keys: a password, a session or a key goes to the server it is for, and never along
-     * a redirect to another.
+     * a redirect to another — a request with a body, the password's among them, is not sent there at all.
      */
     @Provides
     @Singleton

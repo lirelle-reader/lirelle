@@ -19,6 +19,7 @@ import java.time.Instant
 import java.time.ZoneId
 import kotlinx.coroutines.NonCancellable
 import kotlinx.coroutines.withContext
+import kotlinx.serialization.SerializationException
 import okhttp3.HttpUrl.Companion.toHttpUrl
 
 /** What Kavita's one identity provider is called by the app: the server names none. */
@@ -55,8 +56,9 @@ internal class KavitaSignIn(
      * one — Kavita's flow ends in a session cookie — and a key the user pasted, always.
      */
     override suspend fun loginOptions(serverUrl: String): ApiResult<LoginOptions> = errors.call(KavitaCall.Other) {
-        val settings = api.forServer(serverUrl).oidcSettings().answer()
-            .use { KavitaJson.decodeFromString(OidcSettingsDto.serializer(), it.string()) }
+        val said = api.forServer(serverUrl).oidcSettings().answer().textUpTo(MaxSettingsBytes)
+            ?: throw SerializationException("Longer than what Kavita says of its identity provider")
+        val settings = KavitaJson.decodeFromString(OidcSettingsDto.serializer(), said)
         val provider =
             OidcProvider(ProviderSlug, settings.providerName, clientId = "", scopes = "", ProviderFlow.WebView)
         LoginOptions(

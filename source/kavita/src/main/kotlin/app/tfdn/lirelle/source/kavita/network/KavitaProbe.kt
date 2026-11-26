@@ -9,7 +9,6 @@ import kotlinx.serialization.json.JsonPrimitive
 import kotlinx.serialization.json.booleanOrNull
 import okhttp3.HttpUrl
 import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
-import okhttp3.ResponseBody
 import retrofit2.HttpException
 import retrofit2.Response
 
@@ -23,7 +22,7 @@ private const val Healthy = "Ok"
 private const val MaxHealthBytes = 64L
 
 /** No honest answer about the identity provider is longer; an answer that is, is some web page. */
-private const val MaxSettingsBytes = 64L * 1024
+internal const val MaxSettingsBytes = 64L * 1024
 
 private const val Ok = 200
 private val ServerErrors = 500..599
@@ -53,8 +52,9 @@ internal fun kavitaAnsweringAddress(typed: String, answeredAt: HttpUrl): String?
  * A Kavita server is one whose two public answers are Kavita's: its health route answers the plain text `Ok`, and
  * its identity provider's settings, answered even when none is set up, are an object that says whether there is
  * one, whether passwords are still taken, and the provider's name. Both, strictly: a web page, a health told in
- * other words, or settings of another shape are another server's, which another kind may know. A failing server
- * is a failure: nothing is known of it.
+ * other words, or settings of another shape are another server's, which another kind may know — and so is an
+ * answer longer than any of Kavita's, of which no more than that length is read. A failing server is a failure:
+ * nothing is known of it.
  *
  * The client it is given should time out quickly: the probe comes after the other kinds', and a server that does
  * not answer must not make the user wait as long again.
@@ -66,12 +66,15 @@ internal class KavitaProbe(
 
     override suspend fun probe(address: String): ApiResult<ProbeAnswer> = errors.call(KavitaCall.Probe) {
         val health = api.forServer(address).health().failingOnServerError()
-        val healthy = health.code() == Ok && health.body().text(MaxHealthBytes)?.trim() == Healthy
+        // Read first, whatever the status: reading is what closes an answer that is still on its way.
+        val said = health.body().textUpTo(MaxHealthBytes)
+        val healthy = health.code() == Ok && said?.trim() == Healthy
         health.errorBody()?.close()
         val answering = kavitaAnsweringAddress(address, health.raw().request.url)
         if (answering == null || !healthy) return@call ProbeAnswer.NotMine
         val settings = api.forServer(answering).oidcSettings().failingOnServerError()
-        val told = settings.code() == Ok && isOidcSettings(settings.body().text(MaxSettingsBytes))
+        val settingsSaid = settings.body().textUpTo(MaxSettingsBytes)
+        val told = settings.code() == Ok && isOidcSettings(settingsSaid)
         settings.errorBody()?.close()
         if (told) ProbeAnswer.Mine(answering) else ProbeAnswer.NotMine
     }
@@ -80,12 +83,6 @@ internal class KavitaProbe(
     private fun <T> Response<T>.failingOnServerError(): Response<T> {
         if (code() in ServerErrors) throw HttpException(this)
         return this
-    }
-
-    /** The text of this body, or null when there is none or it is longer than [most] bytes. */
-    private fun ResponseBody?.text(most: Long): String? = this?.use {
-        val source = it.source()
-        if (source.request(most + 1)) null else source.buffer.readUtf8()
     }
 
     /** Whether [body] is a JSON object that says what Kavita says of its identity provider. */

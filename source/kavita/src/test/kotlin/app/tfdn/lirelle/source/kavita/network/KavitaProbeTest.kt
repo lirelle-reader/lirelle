@@ -11,7 +11,9 @@ import app.tfdn.lirelle.source.kavita.testing.oidcOnJson
 import app.tfdn.lirelle.source.kavita.testing.pathText
 import app.tfdn.lirelle.source.kavita.testing.serverUrl
 import com.google.common.truth.Truth.assertThat
+import java.util.concurrent.TimeUnit
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withTimeout
 import mockwebserver3.MockResponse
 import mockwebserver3.MockWebServer
 import okhttp3.Headers.Companion.headersOf
@@ -20,6 +22,13 @@ import okhttp3.OkHttpClient
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
+
+private const val Megabyte = 1024 * 1024
+private const val SlowBytes = 8L * 1024
+private const val SlowPeriodMillis = 100L
+
+/** Long enough to read 64 KB of a slow answer, far too short to read its megabyte. */
+private const val BoundedReadMillis = 5_000L
 
 /**
  * Kavita's servers told from any other by two answers given to anybody: its health, the plain text `Ok`, and what
@@ -47,6 +56,14 @@ class KavitaProbeTest {
     private fun mine(address: String) = ApiResult.Success(ProbeAnswer.Mine(address))
 
     private val notMine = ApiResult.Success(ProbeAnswer.NotMine)
+
+    /** A megabyte that begins as [start] does, sent 8 KB every tenth of a second: thirteen seconds to its end. */
+    private fun slowMegabyte(type: String, start: String) = MockResponse.Builder()
+        .code(200)
+        .addHeader("Content-Type", type)
+        .body(start + " ".repeat(Megabyte))
+        .throttleBody(SlowBytes, SlowPeriodMillis, TimeUnit.MILLISECONDS)
+        .build()
 
     private fun html(code: Int = 200) =
         MockResponse(code = code, headers = headersOf("Content-Type", "text/html"), body = "<html><body></body></html>")
@@ -97,6 +114,27 @@ class KavitaProbeTest {
 
         assertThat(probe.probe(url)).isEqualTo(notMine)
         assertThat(server.requestCount).isEqualTo(1)
+    }
+
+    /**
+     * An answer is read as far as its bound and no further: a megabyte that comes slowly is given up at once, not
+     * waited for to its end.
+     */
+    @Test
+    fun `a megabyte about health is not Kavita's, and is not read whole`() = runBlocking {
+        server.enqueue(slowMegabyte("text/plain", "Ok"))
+
+        assertThat(withTimeout(BoundedReadMillis) { probe.probe(url) }).isEqualTo(notMine)
+        assertThat(server.requestCount).isEqualTo(1)
+    }
+
+    @Test
+    fun `a megabyte about the provider is not Kavita's, and is not read whole`() = runBlocking {
+        server.enqueueHealthy()
+        server.enqueue(slowMegabyte("application/json", OidcOffJson))
+
+        assertThat(withTimeout(BoundedReadMillis) { probe.probe(url) }).isEqualTo(notMine)
+        assertThat(server.requestCount).isEqualTo(2)
     }
 
     /** Komga has no such routes: it answers them with its error, or with its web interface. */

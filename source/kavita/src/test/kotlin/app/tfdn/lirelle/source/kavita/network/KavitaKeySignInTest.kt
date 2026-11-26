@@ -8,6 +8,8 @@ import app.tfdn.lirelle.core.session.Session
 import app.tfdn.lirelle.source.kavita.testing.Ann
 import app.tfdn.lirelle.source.kavita.testing.MemoryStore
 import app.tfdn.lirelle.source.kavita.testing.annJson
+import app.tfdn.lirelle.source.kavita.testing.annJsonWithNullVersion
+import app.tfdn.lirelle.source.kavita.testing.annJsonWithoutVersion
 import app.tfdn.lirelle.source.kavita.testing.enqueueJson
 import app.tfdn.lirelle.source.kavita.testing.enqueueRefusal
 import app.tfdn.lirelle.source.kavita.testing.enqueueText
@@ -15,6 +17,7 @@ import app.tfdn.lirelle.source.kavita.testing.kavitaSignIn
 import app.tfdn.lirelle.source.kavita.testing.pathText
 import app.tfdn.lirelle.source.kavita.testing.serverUrl
 import com.google.common.truth.Truth.assertThat
+import java.security.MessageDigest
 import kotlinx.coroutines.runBlocking
 import mockwebserver3.MockWebServer
 import org.junit.After
@@ -23,6 +26,10 @@ import org.junit.Test
 
 /** A key the user made in Kavita's web interface. */
 private const val Pasted = "p45t3d-k3y-0f-th3-us3r"
+
+/** What names [Pasted] when the server does not: the beginning of its SHA-256, never the key. */
+private val UnnamedId = "pasted-" + MessageDigest.getInstance("SHA-256").digest(Pasted.toByteArray())
+    .joinToString("") { "%02x".format(it) }.take(12)
 
 /** The account's keys as Kavita lists them, each in clear: another one, then the pasted one, named 9. */
 private const val KeysJson = """[{"id":3,"key":"an0th3r-k3y","name":"OPDS","provider":0},""" +
@@ -121,6 +128,50 @@ class KavitaKeySignInTest {
     }
 
     @Test
+    fun `a server that tells no version in numbers is refused, and nothing is saved`() = runBlocking {
+        val untold = listOf(annJsonWithoutVersion(), annJsonWithNullVersion(), annJson(version = "nightly"))
+        untold.forEach { answer ->
+            server.enqueueJson(answer)
+
+            assertThat(signIn.signInWithKey(url, Pasted)).isEqualTo(ApiResult.Failure(ApiError.SignInRefused))
+        }
+        assertThat(server.requestCount).isEqualTo(untold.size)
+        assertThat(store.saved).isEmpty()
+    }
+
+    @Test
+    fun `a version with a suffix is compared by its numbers, and told as the server said it`() = runBlocking {
+        server.enqueueJson(annJson(version = "0.8.8.3-beta"))
+        assertThat(signIn.signInWithKey(url, Pasted))
+            .isEqualTo(ApiResult.Failure(ApiError.ServerTooOld("0.8.8.3-beta", "0.8.9")))
+        assertThat(server.requestCount).isEqualTo(1)
+        assertThat(store.saved).isEmpty()
+
+        server.enqueueJson(annJson(version = "0.9.1.4-beta"))
+        server.enqueueJson(KeysJson)
+        assertThat(signIn.signInWithKey(url, Pasted)).isEqualTo(ApiResult.Success(Unit))
+        assertThat(store.saved).hasSize(1)
+    }
+
+    /** Two keys the server does not name must not pass for one another: each is named after itself, never by itself. */
+    @Test
+    fun `two keys the server does not name are told apart, and the same key is named the same`() = runBlocking<Unit> {
+        listOf(Pasted, "an0th3r-p45t3d-k3y", Pasted).forEach { key ->
+            server.enqueueJson(annJson())
+            server.enqueueRefusal()
+            signIn.signInWithKey(url, key)
+        }
+
+        val ids = store.saved.map { (it.first.credential as Credential.ApiKey).keyId }
+        assertThat(ids[0]).isEqualTo(UnnamedId)
+        assertThat(ids[1]).matches("pasted-[0-9a-f]{12}")
+        assertThat(ids[1]).isNotEqualTo(ids[0])
+        assertThat(ids[2]).isEqualTo(ids[0])
+        assertThat(store.saved[0].first.credential.isSameSignIn(store.saved[1].first.credential)).isFalse()
+        ids.forEach { assertThat(it).doesNotContain(Pasted) }
+    }
+
+    @Test
     fun `a failing server is a failure, and nothing is saved`() = runBlocking {
         server.enqueueText("System.Exception\n   at API.Startup()", code = 500)
 
@@ -134,7 +185,7 @@ class KavitaKeySignInTest {
         server.enqueueText("System.Exception\n   at API.Controllers.Account()", code = 500)
 
         assertThat(signIn.signInWithKey(url, Pasted)).isEqualTo(ApiResult.Success(Unit))
-        assertThat(store.saved).containsExactly(saved(keyId = "pasted"))
+        assertThat(store.saved).containsExactly(saved(keyId = UnnamedId))
     }
 
     @Test
@@ -147,7 +198,7 @@ class KavitaKeySignInTest {
             server.enqueueJson("""{"keys":"none"}""")
             signIn.signInWithKey(url, Pasted)
 
-            assertThat(store.saved).containsExactly(saved(keyId = "pasted"), saved(keyId = "pasted"))
+            assertThat(store.saved).containsExactly(saved(keyId = UnnamedId), saved(keyId = UnnamedId))
         }
 
     @Test
@@ -156,7 +207,7 @@ class KavitaKeySignInTest {
         server.enqueueJson("""[{"id":3,"key":"an0th3r-k3y","name":"OPDS","provider":0}]""")
 
         assertThat(signIn.signInWithKey(url, Pasted)).isEqualTo(ApiResult.Success(Unit))
-        assertThat(store.saved).containsExactly(saved(keyId = "pasted"))
+        assertThat(store.saved).containsExactly(saved(keyId = UnnamedId))
     }
 
     @Test

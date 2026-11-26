@@ -51,10 +51,20 @@ const val TheRefreshToken = "r3fr35h-t0k3n"
  * password opened it ([withTokens]), without when a key or a provider's session read it; and fields the app does
  * not read.
  */
-fun annJson(version: String = "0.9.1.4", withTokens: Boolean = false): String {
+fun annJson(version: String = "0.9.1.4", withTokens: Boolean = false): String =
+    annJsonTelling(""""kavitaVersion":"$version",""", withTokens)
+
+/** [annJson] from a server that tells no version at all. */
+fun annJsonWithoutVersion(withTokens: Boolean = false): String = annJsonTelling("", withTokens)
+
+/** [annJson] from a server whose version is a JSON `null`. */
+fun annJsonWithNullVersion(withTokens: Boolean = false): String =
+    annJsonTelling(""""kavitaVersion":null,""", withTokens)
+
+private fun annJsonTelling(version: String, withTokens: Boolean): String {
     val tokens = if (withTokens) """"token":"$TheToken","refreshToken":"$TheRefreshToken"""" else """"token":null"""
     return """{"id":7,"username":"ann","email":"ann@example.com","roles":["Pleb","Download"],""" +
-        """"kavitaVersion":"$version",$tokens,"authKeys":[],"later":1}"""
+        """$version$tokens,"authKeys":[],"later":1}"""
 }
 
 /** What Kavita answers to the key it made. */

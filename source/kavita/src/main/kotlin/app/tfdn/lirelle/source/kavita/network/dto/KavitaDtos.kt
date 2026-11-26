@@ -24,14 +24,14 @@ internal data class LoginRequest(val username: String, val password: String, val
  * The account, as a sign-in and `GET api/Account` answer it, of which the app reads only these. The tokens are
  * those of the session a password opened: null when the account was read with a key or a provider's session.
  *
- * @property kavitaVersion the version the server runs, "0.9.1.4".
+ * @property kavitaVersion the version the server runs, "0.9.1.4"; null when it tells none, or a null.
  */
 @Serializable
 internal data class KavitaUserDto(
     val id: Int,
     val username: String,
     val email: String? = null,
-    val kavitaVersion: String = "",
+    val kavitaVersion: String? = null,
     val token: String? = null,
     val refreshToken: String? = null,
 ) {

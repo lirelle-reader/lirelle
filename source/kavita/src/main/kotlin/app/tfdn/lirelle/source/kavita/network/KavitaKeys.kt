@@ -75,7 +75,9 @@ internal class KavitaKeys(
 
     /**
      * Whether this answer refuses the key for its name. The text of the refusal is only looked through, for one
-     * word: it goes nowhere.
+     * word, and no further than [RefusalBytesRead]: it goes nowhere. Retrofit has read the body of a refusal whole
+     * already, as it does of every answer that is an error: the bound is on what is looked through, not on what
+     * was received.
      */
     private fun Response<AuthKeyDto>.refusesItsName(): Boolean {
         if (code() != BadRequest) return false

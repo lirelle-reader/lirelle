@@ -23,6 +23,7 @@ import com.google.common.truth.Truth.assertThat
 import java.time.Instant
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.TimeUnit
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineStart
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -77,6 +78,9 @@ class KavitaKeyEndingTest {
     /** The next request, waited for a while only: one that never comes fails the test instead of hanging it. */
     private fun nextRequest(): RecordedRequest =
         checkNotNull(server.takeRequest(TimeoutMillis, TimeUnit.MILLISECONDS)) { "Nothing was sent" }
+
+    /** The key the current profile holds. */
+    private fun held(): Credential.ApiKey = checkNotNull(store.current.value).session.credential as Credential.ApiKey
 
     /** This request deletes [key], proven by [with]. */
     private fun RecordedRequest.assertDeletes(key: Credential.ApiKey, with: String = key.key) {
@@ -247,20 +251,68 @@ class KavitaKeyEndingTest {
 
     /** Kavita lists every key in clear: the user may paste the very key the app made for this profile. */
     @Test
-    fun `pasting the key the app had made keeps it, whether the server names it or not`() = runBlocking {
+    fun `pasting the key the app had made keeps it the app's, whether the server names it or not`() = runBlocking {
         store.replaced = ReplacedSession(OldKey, refused = false)
         server.enqueueJson(annJson())
         server.enqueueJson("""[{"id":17,"key":"${OldKey.key}","name":"Lirelle","provider":0}]""")
         signIn.signInWithKey(url, OldKey.key)
+        assertThat(held()).isEqualTo(OldKey)
+        assertThat(held().ownedByApp).isTrue()
+
         server.enqueueJson(annJson())
         server.enqueueRefusal()
         signIn.signInWithKey(url, OldKey.key)
+        assertThat(held()).isEqualTo(OldKey)
+        assertThat(held().ownedByApp).isTrue()
 
-        assertThat(store.saved.map { it.first.credential }).containsExactly(
-            OldKey.copy(ownedByApp = false),
-            Credential.ApiKey(OldKey.key, "pasted", ownedByApp = false),
-        ).inOrder()
+        // Nothing is deleted: the key pasted is the key held.
         assertThat(server.requestCount).isEqualTo(4)
+    }
+
+    /** It is still the key the app made: it goes with the profile. */
+    @Test
+    fun `the app's own key, pasted again, is deleted when its profile is signed out of`() = runBlocking<Unit> {
+        store.replaced = ReplacedSession(OldKey, refused = false)
+        server.enqueueJson(annJson())
+        server.enqueueRefusal()
+        signIn.signInWithKey(url, OldKey.key)
+        repeat(2) { nextRequest() }
+        server.enqueueDone()
+
+        signIn.signOut(checkNotNull(store.current.value).id)
+
+        nextRequest().assertDeletes(OldKey)
+        assertThat(server.requestCount).isEqualTo(3)
+    }
+
+    @Test
+    fun `the app's own key, pasted again, is deleted when its profile is removed while it sleeps`() =
+        runBlocking<Unit> {
+            store.replaced = ReplacedSession(OldKey, refused = false)
+            server.enqueueJson(annJson())
+            server.enqueueJson("""[{"id":17,"key":"${OldKey.key}","name":"Lirelle","provider":0}]""")
+            signIn.signInWithKey(url, OldKey.key)
+            repeat(2) { nextRequest() }
+            server.enqueueDone()
+
+            signIn.endCredential(url, held())
+
+            nextRequest().assertDeletes(OldKey)
+            assertThat(server.requestCount).isEqualTo(3)
+        }
+
+    /** A key of the user's that the profile already held as theirs stays theirs. */
+    @Test
+    fun `pasting again a key of the user's leaves it the user's`() = runBlocking {
+        store.replaced = ReplacedSession(UsersKey, refused = false)
+        server.enqueueJson(annJson())
+        server.enqueueJson("""[{"id":9,"key":"${UsersKey.key}","name":"Mine","provider":0}]""")
+
+        signIn.signInWithKey(url, UsersKey.key)
+
+        assertThat(store.saved.map { it.first.credential }).containsExactly(UsersKey)
+        assertThat(held().ownedByApp).isFalse()
+        assertThat(server.requestCount).isEqualTo(2)
     }
 
     // --- a profile removed while it slept
@@ -328,6 +380,26 @@ class KavitaKeyEndingTest {
         assertThat(line).doesNotContain(OldKey.key)
         assertThat(line).doesNotContain(server.hostName)
         assertThat(line).doesNotContain(server.port.toString())
+    }
+
+    /** The deletion goes on when its caller goes away, but a cancellation it meets itself is not a key left valid. */
+    @Test
+    fun `a cancellation met while deleting goes on, and is not told as a key left valid`() = runBlocking {
+        val cancelled = CancellationException("cancelled while telling")
+        var first = true
+        val cancelling = kavitaSignIn(
+            store,
+            log = NetworkLog {
+                told += it
+                if (first) throw cancelled.also { first = false }
+            },
+        )
+        server.enqueueText("no such key", code = 400)
+
+        val thrown = runCatching { cancelling.endCredential(url, OldKey) }.exceptionOrNull()
+
+        assertThat(thrown).isInstanceOf(CancellationException::class.java)
+        assertThat(told).hasSize(1)
     }
 
     @Test

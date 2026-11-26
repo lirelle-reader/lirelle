@@ -14,6 +14,8 @@ import app.tfdn.lirelle.source.kavita.testing.PreciseKeyName
 import app.tfdn.lirelle.source.kavita.testing.TheKey
 import app.tfdn.lirelle.source.kavita.testing.TheKeyId
 import app.tfdn.lirelle.source.kavita.testing.annJson
+import app.tfdn.lirelle.source.kavita.testing.annJsonWithNullVersion
+import app.tfdn.lirelle.source.kavita.testing.annJsonWithoutVersion
 import app.tfdn.lirelle.source.kavita.testing.bodyText
 import app.tfdn.lirelle.source.kavita.testing.enqueueDone
 import app.tfdn.lirelle.source.kavita.testing.enqueueJson
@@ -23,6 +25,7 @@ import app.tfdn.lirelle.source.kavita.testing.kavitaSignIn
 import app.tfdn.lirelle.source.kavita.testing.pathText
 import app.tfdn.lirelle.source.kavita.testing.serverUrl
 import com.google.common.truth.Truth.assertThat
+import com.google.common.truth.Truth.assertWithMessage
 import kotlinx.coroutines.runBlocking
 import mockwebserver3.MockWebServer
 import org.junit.After
@@ -142,6 +145,52 @@ class KavitaProviderSignInTest {
             .isEqualTo(ApiResult.Failure(ApiError.ServerTooOld("0.8.8.3", "0.8.9")))
         assertThat(server.requestCount).isEqualTo(1)
         assertThat(store.saved).isEmpty()
+    }
+
+    @Test
+    fun `a server that tells no version in numbers is refused, and no key is made nor anything saved`() =
+        runBlocking {
+            val untold = listOf(annJsonWithoutVersion(), annJsonWithNullVersion(), annJson(version = "nightly"))
+            untold.forEach { answer ->
+                server.enqueueJson(answer)
+
+                assertThat(signIn.completeWithSession(url, Cookies))
+                    .isEqualTo(ApiResult.Failure(ApiError.SignInRefused))
+            }
+            assertThat(server.requestCount).isEqualTo(untold.size)
+            assertThat(store.saved).isEmpty()
+        }
+
+    @Test
+    fun `a version with a suffix is compared by its numbers, and told as the server said it`() = runBlocking {
+        server.enqueueJson(annJson(version = "0.8.8.3-beta"))
+        assertThat(signIn.completeWithSession(url, Cookies))
+            .isEqualTo(ApiResult.Failure(ApiError.ServerTooOld("0.8.8.3-beta", "0.8.9")))
+        assertThat(server.requestCount).isEqualTo(1)
+        assertThat(store.saved).isEmpty()
+
+        server.enqueueJson(annJson(version = "0.9.1.4-beta"))
+        server.enqueueJson(KeyJson)
+        assertThat(signIn.completeWithSession(url, Cookies)).isEqualTo(ApiResult.Success(Unit))
+        assertThat(store.saved).hasSize(1)
+    }
+
+    /** ASP.NET names the pieces of a long cookie `C1`, `C2`…: no other cookie of its own is the session. */
+    @Test
+    fun `only the session cookie and its numbered pieces are the session`() {
+        assertThat(sessionIn(".AspNetCore.Cookies=a; .AspNetCore.CookiesC1=b; .AspNetCore.CookiesC12=c"))
+            .isEqualTo(".AspNetCore.Cookies=a; .AspNetCore.CookiesC1=b; .AspNetCore.CookiesC12=c")
+        val others = listOf(
+            ".AspNetCore.CookiesFoo=x",
+            ".AspNetCore.CookiesC=x",
+            ".AspNetCore.CookiesC1x=x",
+            ".AspNetCore.Correlation.x=x",
+            ".AspNetCore.OpenIdConnect.Nonce.x=x",
+            "x.AspNetCore.Cookies=x",
+        )
+        others.forEach { assertWithMessage(it).that(sessionIn(it)).isNull() }
+        assertThat(sessionIn(others.joinToString("; ") + "; .AspNetCore.CookiesC2=p"))
+            .isEqualTo(".AspNetCore.CookiesC2=p")
     }
 
     @Test

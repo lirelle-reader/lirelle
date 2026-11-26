@@ -5,6 +5,7 @@ import app.tfdn.lirelle.core.network.NetworkLog
 import app.tfdn.lirelle.core.session.Credential
 import app.tfdn.lirelle.core.session.kindAndFrames
 import java.time.Duration
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.NonCancellable
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.json.Json
@@ -54,8 +55,8 @@ internal class KavitaRevocation(
                     log().warn("Kavita key not deleted: ${answer.code()} on ${answer.raw().request.url.encodedPath}")
                 }
             }.exceptionOrNull() ?: return@withContext
-            // Nothing the deletion throws may hide why it was made; what is no exception goes on.
-            if (failure !is Exception) throw failure
+            // Nothing the deletion throws may hide why it was made; a cancellation and what is no exception go on.
+            if (failure is CancellationException || failure !is Exception) throw failure
             // Its kind only: an exception's message may name the server.
             log().warn("Kavita key not deleted: ${failure.kindAndFrames()}")
         }

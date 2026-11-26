@@ -13,7 +13,9 @@ import app.tfdn.lirelle.source.kavita.network.dto.KavitaUserDto
  *
  * A key the app made that no profile could be saved with is deleted at once — a key no profile holds would stay
  * valid on the server for ever. For the same reason, the key of the profile an account added again replaces is
- * deleted once the new one is saved, when the app had made it.
+ * deleted once the new one is saved, when the app had made it. And a key the app made stays the app's when the
+ * user pastes it into the profile that holds it: Kavita lists every key in clear, and the key must still be
+ * deleted when the profile goes.
  */
 internal class KavitaProfiles(
     private val store: SessionStore,
@@ -24,6 +26,11 @@ internal class KavitaProfiles(
      * Saves the profile of [account] on [serverUrl] with [credential], the device's key or one the user pasted,
      * then deletes the key the profile held before, when the account was added again ([endReplaced]). A key of
      * the app's that no profile could be saved with is deleted at once, and the failure goes on as it is.
+     *
+     * The registry tells what the profile held only once it is saved. When that was the app's own key and
+     * [credential] is the same key, pasted, the profile is saved once more with the key as it held it — the app's,
+     * under the name the server gave it — and nothing is deleted. Should that second save fail, the profile holds
+     * the key as the user's, and the failure goes on.
      */
     suspend fun save(serverUrl: String, credential: Credential.ApiKey, account: KavitaUserDto) {
         var saved = false
@@ -32,14 +39,23 @@ internal class KavitaProfiles(
         } finally {
             if (!saved) revocation.revoke(serverUrl, credential)
         }
-        endReplaced(serverUrl, replaced, credential)
+        val held = replaced?.credential as? Credential.ApiKey
+        if (held != null && held.isAppsOwn(pasted = credential)) {
+            store.save(Session(serverUrl, held, account.toProfile()), ServerKind.Kavita)
+        } else {
+            endReplaced(serverUrl, replaced, credential)
+        }
     }
+
+    /** Whether this key, which the app made, is the very key [pasted] by the user. */
+    private fun Credential.ApiKey.isAppsOwn(pasted: Credential.ApiKey): Boolean =
+        ownedByApp && !pasted.ownedByApp && key == pasted.key
 
     /**
      * Deletes the key of the profile that [saved] replaced, with the new key: the same account, added again. Only
      * a key the app made ([KavitaRevocation.revoke]): one the user pasted is theirs. Not when the server had
      * refused it (the profile waited for a sign-in): it is deleted there already, or nothing can be done with it.
-     * Nor when it is the very key saved — the user may paste the key the app once made.
+     * Nor when it is the very key saved.
      */
     private suspend fun endReplaced(serverUrl: String, replaced: ReplacedSession?, saved: Credential.ApiKey) {
         val old = replaced?.credential as? Credential.ApiKey ?: return

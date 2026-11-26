@@ -59,6 +59,12 @@ internal class KavitaSessionProof private constructor(
 }
 
 /**
+ * The names of the session cookie and of its pieces, exactly: ASP.NET numbers the pieces `C1`, `C2`… Its other
+ * cookies begin alike (`.AspNetCore.Correlation.…`, `.AspNetCore.OpenIdConnect.Nonce.…`) and are no session.
+ */
+private val SessionCookieName = Regex(Regex.escape(SessionCookie) + """(C\d+)?""")
+
+/**
  * The session in [cookies] (a `Cookie` header, as a WebView sends it to the server), as a `Cookie` header of its
  * own: Kavita's session cookie and its pieces ([SessionCookie]), nothing of the page — or null when there is none.
  * Of two cookies of one name, the first: the WebView lists the cookie of the most precise path first, the
@@ -66,7 +72,7 @@ internal class KavitaSessionProof private constructor(
  */
 internal fun sessionIn(cookies: String): String? = cookies.split(';')
     .map { it.trim() }
-    .filter { it.startsWith(SessionCookie) && it.substringAfter('=', "").isNotEmpty() }
+    .filter { SessionCookieName.matches(it.substringBefore('=')) && it.substringAfter('=', "").isNotEmpty() }
     .distinctBy { it.substringBefore('=') }
     .joinToString("; ")
     .takeIf { it.isNotEmpty() }

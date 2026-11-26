@@ -29,7 +29,7 @@ internal class KavitaAccountRepository(
             username = user.username,
             email = user.email,
             serverUrl = serverUrl,
-            serverVersion = account.kavitaVersion.ifEmpty { null },
+            serverVersion = account.kavitaVersion?.ifBlank { null },
         )
     }
 
