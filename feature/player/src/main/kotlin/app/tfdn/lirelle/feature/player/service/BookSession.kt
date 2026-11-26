@@ -377,7 +377,14 @@ class BookSession(
             engine.playWhenReady = playNow
             mutableExtras.value = extrasOf(book)
             opened(book)
-        }.also { loading = it }
+        }.also { load ->
+            loading = load
+            // Given up with no other load in its place (a car that asked for another book, still looked up):
+            // nothing is loading any more.
+            load.invokeOnCompletion { cause ->
+                if (cause != null && loading === load) mutableExtras.update { it.copy(loading = false) }
+            }
+        }
     }
 
     private fun close() {

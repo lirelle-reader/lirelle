@@ -143,6 +143,41 @@ class CarBookStartTest {
         }
 
     @Test
+    fun `a second book asked while the first loads gives the first up, which never opens nor plays`() = runTest {
+        // The second book's rules take long to read, and then find nothing to listen to.
+        val slow = CompletableDeferred<Unit>()
+        player()
+        val rules: suspend (BookId) -> LoadRequest? = {
+            if (it == BookId("42")) LoadRequest.Audiobook(it) else null.also { slow.await() }
+        }
+        val start = CarBookStart(book, backgroundScope, rules) { failures++ }
+        val ended = mutableListOf<String>()
+        // The first book is found at once, and its files are still asked of the server.
+        val files = CompletableDeferred<Unit>().also { audio.gate = it }
+
+        start.start(BookId("42"), { true }) { ended += "42" }
+        settle()
+        assertThat(book.extras.value.loading).isTrue()
+        start.start(BookId("43"), { true }) { ended += "43" }
+        settle()
+        files.complete(Unit)
+        settle()
+
+        assertThat(book.extras.value.book).isNull()
+        assertThat(engine.wantsToPlay).isFalse()
+        // Given up, with no load in its place yet: the session is not left loading.
+        assertThat(book.extras.value.loading).isFalse()
+        assertThat(ended).containsExactly("42")
+
+        slow.complete(Unit)
+        settle()
+
+        assertThat(book.extras.value.book).isNull()
+        assertThat(ended).containsExactly("42", "43").inOrder()
+        assertThat(failures).isEqualTo(1)
+    }
+
+    @Test
     fun `rules that break say the failure too, and the player is not left starting`() = runTest {
         request = { error("A store that cannot be read") }
         val player = player()
