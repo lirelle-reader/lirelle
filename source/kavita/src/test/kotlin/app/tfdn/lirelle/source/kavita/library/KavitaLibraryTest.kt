@@ -9,7 +9,6 @@ import app.tfdn.lirelle.core.library.model.AuthorSort
 import app.tfdn.lirelle.core.library.model.BookListRequest
 import app.tfdn.lirelle.core.library.model.BookListSource
 import app.tfdn.lirelle.core.library.model.BookReading
-import app.tfdn.lirelle.core.library.model.HomeRowKind
 import app.tfdn.lirelle.core.library.model.RelatedBooks
 import app.tfdn.lirelle.core.library.model.SeriesRef
 import app.tfdn.lirelle.core.library.model.ServerLibrary
@@ -41,8 +40,8 @@ private val Bd = ServerLibrary(LibraryId("1"), "BD")
 
 /**
  * A Kavita profile's library: its libraries, its series and their pages, its books' pages and readings, each
- * brought to Lirelle's books by the rule of Kavita's books, asked with the profile's key. What Home, Search, the
- * genres and the authors show is not asked yet.
+ * brought to Lirelle's books by the rule of Kavita's books, asked with the profile's key. What Search, the genres
+ * and the authors show is not asked yet; Home's rows are [KavitaHomeTest]'s.
  */
 class KavitaLibraryTest {
 
@@ -346,8 +345,7 @@ class KavitaLibraryTest {
     }
 
     @Test
-    fun `Home, Search, the genres and the authors are not asked yet`() = runBlocking {
-        assertThat((library.homeRow(HomeRowKind.Continue) as ApiResult.Success).value.books).isEmpty()
+    fun `Search, the genres and the authors are not asked yet`() = runBlocking {
         assertThat((library.search("dune") as ApiResult.Success).value.isEmpty).isTrue()
         assertThat(library.genres()).isEqualTo(ApiResult.Success(emptyList<Any>()))
         assertThat(library.authors(AuthorSort.Name, SortDirection.Ascending).items.asSnapshot()).isEmpty()

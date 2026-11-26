@@ -36,11 +36,16 @@ internal data class ReadingListItemDto(
     val chapter: ReadingListChapterDto? = null,
 )
 
-/** One group of `recently-updated-series`: its chapter and volume ids are 0 on 0.8.9 and 0.9 alike. */
+/**
+ * One group of `recently-updated-series`: its chapter and volume ids are 0 on 0.8.9 and 0.9 alike.
+ *
+ * @property format its series' format, as a series' own.
+ */
 @Serializable
 internal data class RecentlyUpdatedDto(
     val seriesId: Int,
     val seriesName: String? = null,
+    val format: Int? = null,
     val created: String? = null,
     val count: Int = 1,
 )

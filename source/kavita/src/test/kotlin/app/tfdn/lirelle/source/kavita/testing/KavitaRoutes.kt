@@ -59,14 +59,29 @@ internal class KavitaRoutes(private val server: MockWebServer) {
     /** Every request the server had, in the order they came. */
     fun requests(): List<RecordedRequest> = List(server.requestCount) { server.takeRequest() }
 
-    /** A Kavita profile's library on this server, asked with the profile's key as the authenticated client is. */
-    fun library(session: FakeProfileSession = FakeProfileSession(kavitaSession(server.serverUrl))): KavitaLibrary {
-        val client = OkHttpClient.Builder().addInterceptor(keyed(KavitaKeyAuthorizer(session))).build()
+    /**
+     * A Kavita profile's library on this server, asked with the profile's key as the authenticated client is, its
+     * time told by [clock]. The client makes up to [ParallelCalls] calls at once, more than the library's own limit,
+     * so that the limit seen is the library's.
+     */
+    fun library(
+        session: FakeProfileSession = FakeProfileSession(kavitaSession(server.serverUrl)),
+        clock: () -> Long = { 0L },
+    ): KavitaLibrary {
+        val calls = okhttp3.Dispatcher().apply {
+            maxRequests = ParallelCalls
+            maxRequestsPerHost = ParallelCalls
+        }
+        val client = OkHttpClient.Builder()
+            .dispatcher(calls)
+            .addInterceptor(keyed(KavitaKeyAuthorizer(session)))
+            .build()
         return KavitaLibrary(
             session,
             KavitaApis(client, KavitaJson, KavitaLibraryApi::class.java),
             FakeTitles,
             KavitaErrors(),
+            clock,
         )
     }
 
@@ -78,6 +93,9 @@ internal class KavitaRoutes(private val server: MockWebServer) {
         chain.proceed(request.build())
     }
 }
+
+/** How many calls the test client makes at once. */
+private const val ParallelCalls = 32
 
 /** A JSON answer. */
 internal fun json(body: String, code: Int = 200, vararg headers: Pair<String, String>): MockResponse {
