@@ -14,11 +14,14 @@ import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.Semaphore
 import java.util.concurrent.TimeUnit
+import java.util.concurrent.atomic.AtomicInteger
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.runTest
+import kotlinx.coroutines.withTimeoutOrNull
+import okhttp3.Call
 import okhttp3.Interceptor
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
@@ -43,6 +46,16 @@ class CoverServer {
     /** What the answer to one address waits for. */
     val holds = ConcurrentHashMap<String, CountDownLatch>()
 
+    /**
+     * The server sends its answer a few bytes at a time, for ever: the thread that reads it is not woken by an
+     * interrupt, as one that waits on a socket is not, and only the call's cancellation ends the request.
+     */
+    @Volatile
+    var drips = false
+
+    /** How many requests ended because their call was cancelled. */
+    val cancelled = AtomicInteger()
+
     /** The answer's code; null fails the connection. */
     var code: Int? = 200
 
@@ -57,6 +70,7 @@ class CoverServer {
                 arrived.release()
                 hold?.await()
                 holds[url]?.await()
+                if (drips) drip(chain.call())
                 if (delayMillis > 0) Thread.sleep(delayMillis)
                 Response.Builder()
                     .request(chain.request())
@@ -68,6 +82,24 @@ class CoverServer {
             },
         )
         .build()
+
+    /** @throws IOException once [call] is cancelled, or after a time no test waits for. */
+    private fun drip(call: Call): Nothing {
+        val end = System.nanoTime() + TimeUnit.SECONDS.toNanos(DripSeconds)
+        while (!call.isCanceled() && System.nanoTime() < end) {
+            try {
+                Thread.sleep(5)
+            } catch (_: InterruptedException) {
+                // A socket's read does not hear it.
+            }
+        }
+        if (call.isCanceled()) cancelled.incrementAndGet()
+        throw IOException("Canceled")
+    }
+
+    private companion object {
+        const val DripSeconds = 20L
+    }
 }
 
 /** Where the covers the car asks come from: the download's, else the server's, kept in a bounded folder. */
@@ -229,6 +261,21 @@ class CarCoverFilesTest {
             assertThat(first.await()).isNotNull()
             // Turned away, not failed: nothing is remembered of it.
             assertThat(files.file(BookId("2"))?.readText()).isEqualTo("https://books.example/c/2")
+        }
+
+    @Test
+    fun `a request given up cancels its call - a server that sends a few bytes at a time holds no thread`() =
+        runBlocking<Unit> {
+            urls.remember(BookId("1"), "https://books.example/c/1")
+            server.drips = true
+            val started = System.nanoTime()
+
+            val cover = withTimeoutOrNull(100) { files().file(BookId("1")) }
+
+            assertThat(cover).isNull()
+            assertThat(server.cancelled.get()).isEqualTo(1)
+            assertThat(TimeUnit.NANOSECONDS.toSeconds(System.nanoTime() - started)).isLessThan(10)
+            assertThat(cache.listFiles().orEmpty()).isEmpty()
         }
 
     @Test

@@ -12,8 +12,13 @@ import java.io.IOException
 import java.security.MessageDigest
 import java.util.concurrent.ConcurrentHashMap
 import javax.inject.Inject
+import kotlinx.coroutines.CoroutineStart
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.awaitCancellation
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.runInterruptible
+import okhttp3.Call
 import okhttp3.OkHttpClient
 import okhttp3.Request
 
@@ -113,7 +118,7 @@ class CarCoverFiles(
     private suspend fun fetched(bookId: BookId, url: String): File? {
         val book = digest(bookId.value)
         val file = fileOf(book, url)
-        return file.takeIf { runInterruptible(Dispatchers.IO) { fetch(url, it) } }?.also {
+        return file.takeIf { fetch(url, it) }?.also {
             if (!urls.knows(bookId) || urls.of(bookId) == url) {
                 stored(book).filter { old -> old != file }.forEach { old -> old.delete() }
             }
@@ -137,12 +142,13 @@ class CarCoverFiles(
      * writes a file of its own: two requests of one cover at once do not write over each other, and the one that
      * ends last finds the cover there.
      */
-    private fun fetch(url: String, target: File): Boolean {
+    private suspend fun fetch(url: String, target: File): Boolean {
         var part: File? = null
         return try {
+            val call = client.newCall(Request.Builder().url(url).build())
             folder.mkdirs()
             part = File.createTempFile("${target.name}-", Part, folder)
-            download(url, part) && (part.renameTo(target) || target.isFile)
+            unlessGivenUp(call) { download(call, part) } && (part.renameTo(target) || target.isFile)
         } catch (_: IOException) {
             false
         } catch (_: IllegalArgumentException) {
@@ -153,8 +159,8 @@ class CarCoverFiles(
         }
     }
 
-    private fun download(url: String, into: File): Boolean =
-        client.newCall(Request.Builder().url(url).build()).execute().use { response ->
+    private fun download(call: Call, into: File): Boolean =
+        call.execute().use { response ->
             if (response.isSuccessful) into.outputStream().use { response.body.byteStream().copyTo(it) }
             response.isSuccessful
         }
@@ -176,5 +182,26 @@ class CarCoverFiles(
             .digest(text.toByteArray())
             .joinToString("") { "%02x".format(it) }
             .take(NameLength)
+    }
+}
+
+/**
+ * What [read] reads of [call], on a thread that may wait for the server. When its caller gives up the call is
+ * cancelled: a thread that waits for a server's bytes is not woken by an interrupt, and one that sends them
+ * a few at a time would hold it, and the caller with it, for as long as it likes.
+ */
+private suspend fun <T> unlessGivenUp(call: Call, read: () -> T): T = coroutineScope {
+    val givenUp = launch(start = CoroutineStart.UNDISPATCHED) {
+        try {
+            awaitCancellation()
+        } finally {
+            call.cancel()
+        }
+    }
+    try {
+        runInterruptible(Dispatchers.IO) { read() }
+    } finally {
+        // Read to its end too: cancelling a call that ended does nothing.
+        givenUp.cancel()
     }
 }
