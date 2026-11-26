@@ -123,6 +123,15 @@ class KomgaProviderSignInTest {
         assertThat(sessionIn("KOMGA-SESSION=YWJjZA==")).isEqualTo("YWJjZA==")
     }
 
+    /** The app makes its own key on Komga: one the user pasted is not taken. */
+    @Test
+    fun `a pasted key is not Komga's, and nothing is sent`() = runBlocking {
+        assertThat(signIn.signInWithKey(url, "pasted-key")).isEqualTo(ApiResult.Failure(ApiError.OidcRefused))
+
+        assertThat(server.requestCount).isEqualTo(0)
+        assertThat(store.saved).isEmpty()
+    }
+
     @Test
     fun `without the server's session, the sign-in did not succeed and nothing is sent`() = runBlocking {
         val refused = ApiResult.Failure(ApiError.SignInRefused)

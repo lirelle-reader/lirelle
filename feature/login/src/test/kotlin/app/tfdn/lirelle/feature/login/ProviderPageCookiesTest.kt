@@ -1,5 +1,6 @@
 package app.tfdn.lirelle.feature.login
 
+import app.tfdn.lirelle.core.session.ServerKind
 import com.google.common.truth.Truth.assertThat
 import org.junit.Test
 
@@ -73,6 +74,44 @@ class ProviderPageCookiesTest {
             .isEqualTo(ProviderPageEnd.Unencrypted)
         assertThat(store.isEmpty).isTrue()
         assertThat(store.clearings).isEqualTo(2)
+    }
+
+    @Test
+    fun `a cookie is named with a prefix when its name begins with it, whatever its value`() {
+        assertThat(hasCookieNamed(".AspNetCore.Cookies=chunks-2", ".AspNetCore.Cookies")).isTrue()
+        val inParts = "theme=dark; .AspNetCore.CookiesC1=a; .AspNetCore.CookiesC2=b"
+        assertThat(hasCookieNamed(inParts, ".AspNetCore.Cookies")).isTrue()
+        assertThat(hasCookieNamed("theme=dark;.AspNetCore.Cookies=a==", ".AspNetCore.Cookies")).isTrue()
+        assertThat(hasCookieNamed("KOMGA-SESSION=s1", "KOMGA-SESSION")).isTrue()
+    }
+
+    @Test
+    fun `the cookies of a sign-in in progress, or another's value, are not the session's`() {
+        val inProgress = ".AspNetCore.Correlation.abc=N; .AspNetCore.OpenIdConnect.Nonce.def=N"
+
+        assertThat(hasCookieNamed(inProgress, ".AspNetCore.Cookies")).isFalse()
+        assertThat(hasCookieNamed("theme=.AspNetCore.Cookies", ".AspNetCore.Cookies")).isFalse()
+        assertThat(hasCookieNamed("x.AspNetCore.Cookies=a", ".AspNetCore.Cookies")).isFalse()
+        assertThat(hasCookieNamed("", ".AspNetCore.Cookies")).isFalse()
+        assertThat(hasCookieNamed(null, ".AspNetCore.Cookies")).isFalse()
+    }
+
+    @Test
+    fun `the session's cookie is looked for among those sent to the server, by its kind's name, and stays`() {
+        store.add("livres.example.com", "/", ".AspNetCore.Correlation.abc", "N")
+        store.add("auth.example.com", "/", ".AspNetCore.Cookies", "another-server")
+        assertThat(cookies.hasSessionCookie(ServerKind.Kavita, "https://livres.example.com")).isFalse()
+
+        store.add("livres.example.com", "/", ".AspNetCore.CookiesC1", "c1")
+        assertThat(cookies.hasSessionCookie(ServerKind.Kavita, "https://livres.example.com")).isTrue()
+        assertThat(cookies.hasSessionCookie(ServerKind.Komga, "https://livres.example.com")).isFalse()
+        assertThat(cookies.hasSessionCookie(ServerKind.BookOrbit, "https://livres.example.com")).isFalse()
+
+        store.add("bd.example.com", "/komga/", "KOMGA-SESSION", "s1")
+        assertThat(cookies.hasSessionCookie(ServerKind.Komga, "https://bd.example.com/komga")).isTrue()
+        assertThat(cookies.hasSessionCookie(ServerKind.Komga, "https://bd.example.com")).isFalse()
+
+        assertThat(store.clearings).isEqualTo(0)
     }
 
     @Test

@@ -123,11 +123,13 @@ class AuthByKindTest {
 
         auth.loginOptions(Typed, ServerKind.BookOrbit)
         auth.signInWithPassword(Typed, ServerKind.BookOrbit, "ann", "secret")
+        auth.signInWithKey(Typed, ServerKind.BookOrbit, "pasted")
         auth.beginOidc(Typed, ServerKind.BookOrbit, provider)
 
         assertThat(asked).containsExactly(
             "bookOrbit options $Typed",
             "bookOrbit password $Typed ann",
+            "bookOrbit key $Typed pasted",
             "bookOrbit begins $Typed authentik",
         ).inOrder()
     }
@@ -139,7 +141,21 @@ class AuthByKindTest {
         assertThat(auth.loginOptions(Typed, ServerKind.BookOrbit)).isEqualTo(ApiResult.Failure(ApiError.UnknownServer))
         assertThat(auth.signInWithPassword(Typed, ServerKind.BookOrbit, "ann", "secret"))
             .isEqualTo(ApiResult.Failure(ApiError.UnknownServer))
+        assertThat(auth.signInWithKey(Typed, ServerKind.BookOrbit, "pasted"))
+            .isEqualTo(ApiResult.Failure(ApiError.UnknownServer))
         assertThat(asked).isEmpty()
+    }
+
+    @Test
+    fun `a pasted key goes to the kind it is for, and to no other`() = runTest {
+        val kavita = RecordingSignIn("kavita", asked)
+        val auth = auth(signIns = mapOf(ServerKind.BookOrbit to bookOrbit, ServerKind.Kavita to kavita))
+
+        assertThat(auth.signInWithKey(Typed, ServerKind.Kavita, "pasted")).isEqualTo(ApiResult.Success(Unit))
+        assertThat(auth.signInWithKey(Typed, ServerKind.Komga, "pasted"))
+            .isEqualTo(ApiResult.Failure(ApiError.UnknownServer))
+
+        assertThat(asked).containsExactly("kavita key $Typed pasted")
     }
 
     @Test
@@ -230,6 +246,11 @@ private class RecordingSignIn(private val name: String, private val asked: Mutab
 
     override suspend fun signInWithPassword(serverUrl: String, identifier: String, password: String): ApiResult<Unit> {
         asked += "$name password $serverUrl $identifier"
+        return ApiResult.Success(Unit)
+    }
+
+    override suspend fun signInWithKey(serverUrl: String, key: String): ApiResult<Unit> {
+        asked += "$name key $serverUrl $key"
         return ApiResult.Success(Unit)
     }
 

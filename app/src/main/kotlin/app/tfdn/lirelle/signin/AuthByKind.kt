@@ -69,6 +69,9 @@ internal class AuthByKind(
         password: String,
     ): ApiResult<Unit> = signIns.on(kind) { it.signInWithPassword(serverUrl, identifier, password) }
 
+    override suspend fun signInWithKey(serverUrl: String, kind: ServerKind, key: String): ApiResult<Unit> =
+        signIns.on(kind) { it.signInWithKey(serverUrl, key) }
+
     override suspend fun beginOidc(serverUrl: String, kind: ServerKind, provider: OidcProvider): ApiResult<String> =
         signIns.on(kind) { it.beginOidc(serverUrl, provider) }
 

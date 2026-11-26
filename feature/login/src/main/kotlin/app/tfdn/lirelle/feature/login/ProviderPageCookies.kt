@@ -2,6 +2,7 @@ package app.tfdn.lirelle.feature.login
 
 import android.webkit.CookieManager
 import android.webkit.WebStorage
+import app.tfdn.lirelle.core.session.ServerKind
 
 /** The WebViews' cookie store and their pages' storage, as far as a sign-in needs them. */
 interface WebCookies {
@@ -29,6 +30,26 @@ internal object AndroidWebCookies : WebCookies {
 }
 
 /**
+ * Whether [cookies], a `Cookie` header (`a=1; b=2`), hold a cookie whose name begins with [prefix]: the name
+ * itself, or the parts a server split a long cookie into, named after it.
+ */
+internal fun hasCookieNamed(cookies: String?, prefix: String): Boolean =
+    cookies.orEmpty().split(';').any { it.substringBefore('=').trim().startsWith(prefix) }
+
+/**
+ * What the cookie of a session on a server of this kind is named, or begins with; null for a kind whose session
+ * is no cookie. Kavita's is ASP.NET's, which splits a long one into parts named after it (`…CookiesC1`, `…C2`):
+ * the cookies of a sign-in in progress (`.AspNetCore.Correlation.…`, `.AspNetCore.OpenIdConnect.Nonce.…`) are not
+ * named so.
+ */
+private val ServerKind.sessionCookiePrefix: String?
+    get() = when (this) {
+        ServerKind.BookOrbit -> null
+        ServerKind.Komga -> "KOMGA-SESSION"
+        ServerKind.Kavita -> ".AspNetCore.Cookies"
+    }
+
+/**
  * What a provider's page leaves in the WebViews: the cookies of the server signed in to, which carry the session
  * its sign-in opened, and those of the provider, which carry the account's session there, with whatever its
  * pages kept in their storage. The server's session is read as a WebView sends it to the server's address — its
@@ -38,9 +59,16 @@ internal object AndroidWebCookies : WebCookies {
  */
 class ProviderPageCookies(private val store: WebCookies) {
 
+    /**
+     * Whether the WebView holds, among the cookies it sends to [serverUrl], the session of a server of [kind]:
+     * what tells a sign-in done on a server whose pages do not say it. Nothing is removed.
+     */
+    fun hasSessionCookie(kind: ServerKind, serverUrl: String): Boolean =
+        kind.sessionCookiePrefix?.let { hasCookieNamed(store.cookies(serverUrl.asCookieAddress()), it) } ?: false
+
     /** The cookies the WebView sends to [serverUrl], as a `Cookie` header, or null; then everything is removed. */
     fun take(serverUrl: String): String? {
-        val cookies = store.cookies("${serverUrl.trimEnd('/')}/")
+        val cookies = store.cookies(serverUrl.asCookieAddress())
         forgetAll()
         return cookies
     }
@@ -55,3 +83,6 @@ class ProviderPageCookies(private val store: WebCookies) {
         ProviderPageOutcome.Unencrypted -> ProviderPageEnd.Unencrypted.also { forgetAll() }
     }
 }
+
+/** The server's address as its cookies are asked for: its base path, as a page under it would be. */
+private fun String.asCookieAddress(): String = "${trimEnd('/')}/"

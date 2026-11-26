@@ -5,7 +5,9 @@ import app.tfdn.lirelle.core.network.ApiErrorException
 import app.tfdn.lirelle.core.network.ApiResult
 import app.tfdn.lirelle.core.network.DeviceLabelProvider
 import app.tfdn.lirelle.core.network.LoginOptions
+import app.tfdn.lirelle.core.network.NoPastedKey
 import app.tfdn.lirelle.core.network.OidcProvider
+import app.tfdn.lirelle.core.network.PastedKeySignIn
 import app.tfdn.lirelle.core.network.Pkce
 import app.tfdn.lirelle.core.network.ProviderFlow
 import app.tfdn.lirelle.core.network.SignInIdentifier
@@ -51,7 +53,7 @@ internal fun PendingOidcRequest.expired(now: Instant): Boolean {
 /**
  * Signing in to a BookOrbit server — a username and a password, or an identity provider through the browser
  * (PKCE, back by the app's `bookorbit://` redirect) — and out of a BookOrbit profile. Each sign-in opens a session
- * of its own for the device, saved as a BookOrbit profile.
+ * of its own for the device, saved as a BookOrbit profile. Never with a key the user pasted ([NoPastedKey]).
  */
 internal class BookOrbitSignIn(
     private val store: SessionStore,
@@ -60,7 +62,8 @@ internal class BookOrbitSignIn(
     private val errors: ErrorMapper,
     private val deviceLabel: DeviceLabelProvider,
     private val now: () -> Instant = Instant::now,
-) : SourceSignIn {
+) : SourceSignIn,
+    PastedKeySignIn by NoPastedKey {
 
     override suspend fun loginOptions(serverUrl: String): ApiResult<LoginOptions> = errors.call(CallKind.Other) {
         val dto = publicApi.forServer(serverUrl).loginOptions()

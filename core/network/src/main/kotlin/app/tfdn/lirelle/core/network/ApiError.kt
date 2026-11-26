@@ -27,6 +27,17 @@ sealed interface ApiError {
      */
     data object UnencryptedSignInPage : ApiError
 
+    /** The server does not know the key the user pasted to sign in. */
+    data object KeyRefused : ApiError
+
+    /**
+     * The server runs a version the app cannot work with.
+     *
+     * @property version the version the server runs.
+     * @property minimum the oldest version the app works with.
+     */
+    data class ServerTooOld(val version: String, val minimum: String) : ApiError
+
     /** No browser on the device can show the identity provider's page. */
     data object BrowserUnavailable : ApiError
     data object SessionExpired : ApiError

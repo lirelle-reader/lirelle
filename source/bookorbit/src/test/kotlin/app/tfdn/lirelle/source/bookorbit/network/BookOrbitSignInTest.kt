@@ -288,6 +288,15 @@ class BookOrbitSignInTest {
         assertThat(pendingOidc.pending).isEqualTo(waiting)
     }
 
+    /** BookOrbit makes the session itself, out of a password or a provider: a key pasted is not its own. */
+    @Test
+    fun `a pasted key is not BookOrbit's, and nothing is sent`() = runBlocking {
+        assertThat(repository.signInWithKey(url, "pasted-key")).isEqualTo(ApiResult.Failure(ApiError.OidcRefused))
+
+        assertThat(server.requestCount).isEqualTo(0)
+        assertThat(store.current.value).isNull()
+    }
+
     @Test
     fun `a malformed redirect is refused instead of failing`() = runBlocking {
         pendingOidc.pending = pending()

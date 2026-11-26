@@ -38,6 +38,7 @@ import androidx.compose.ui.viewinterop.AndroidView
 import androidx.lifecycle.ViewModelStoreOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import app.tfdn.lirelle.core.network.UserAgent
+import app.tfdn.lirelle.core.session.ServerKind
 
 /**
  * The page of a provider that signs in through a WebView of the app, over the sign-in step whose view model holds
@@ -102,7 +103,9 @@ internal fun ProviderPageScreen(
                 WebView(context).apply {
                     configureProviderWebView(this, userAgent)
                     webViewClient = ProviderPageClient(
+                        kind = page.kind,
                         serverUrl = page.serverUrl,
+                        hasSessionCookie = { cookies.hasSessionCookie(page.kind, page.serverUrl) },
                         onOutcome = { outcome -> end(cookies.endOn(outcome, page.serverUrl)) },
                         onGone = close,
                         onPage = { url -> pageHost(url)?.let { host = it } },
@@ -193,13 +196,16 @@ internal fun configureProviderWebView(webView: WebView, userAgent: UserAgent) {
 internal fun providerUserAgent(default: String, userAgent: UserAgent): String = "$default ${userAgent.app}"
 
 /**
- * Watches where the provider's flow leads: the server's page that ends it — or a page in cleartext outside the
+ * Watches where the provider's flow leads: the page that ends it for a server of [kind] ([hasSessionCookie] tells
+ * whether the WebView holds its session, for a kind that needs it) — or a page in cleartext outside the
  * server, which ends it as unencrypted ([providerPageOutcome]) — is not loaded: the WebView stops there, and
  * [onOutcome] is told what it says, once. Each page of the main frame that starts is told to [onPage], for the
  * bar. A renderer that dies ends the page as closed ([onGone]): the app would otherwise be killed with it.
  */
 internal class ProviderPageClient(
+    private val kind: ServerKind,
     private val serverUrl: String,
+    private val hasSessionCookie: () -> Boolean,
     private val onOutcome: (ProviderPageOutcome) -> Unit,
     private val onGone: () -> Unit,
     private val onPage: (String) -> Unit,
@@ -225,7 +231,7 @@ internal class ProviderPageClient(
     }
 
     private fun arrived(url: String): Boolean {
-        val outcome = providerPageOutcome(serverUrl, url) ?: return false
+        val outcome = providerPageOutcome(kind, serverUrl, url, hasSessionCookie) ?: return false
         if (!ended) {
             ended = true
             onOutcome(outcome)

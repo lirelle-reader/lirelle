@@ -4,6 +4,7 @@ import android.net.Uri
 import android.webkit.WebResourceRequest
 import android.webkit.WebView
 import androidx.test.core.app.ApplicationProvider
+import app.tfdn.lirelle.core.session.ServerKind
 import com.google.common.truth.Truth.assertThat
 import org.junit.After
 import org.junit.Test
@@ -25,8 +26,13 @@ class ProviderPageClientTest {
     private val outcomes = mutableListOf<ProviderPageOutcome>()
     private val pages = mutableListOf<String>()
     private var gone = 0
-    private val client = ProviderPageClient(
+    private var sessionCookie = false
+    private val client = client(ServerKind.Komga)
+
+    private fun client(kind: ServerKind) = ProviderPageClient(
+        kind = kind,
         serverUrl = Server,
+        hasSessionCookie = { sessionCookie },
         onOutcome = { outcomes += it },
         onGone = { gone++ },
         onPage = { pages += it },
@@ -41,6 +47,20 @@ class ProviderPageClientTest {
     fun `the main frame reaching the server's page ends the flow there`() {
         assertThat(client.shouldOverrideUrlLoading(view, request(SignedIn))).isTrue()
 
+        assertThat(outcomes).containsExactly(ProviderPageOutcome.SignedIn)
+    }
+
+    /** Kavita's pages say nothing in their address: its own page ends the flow once the session's cookie is held. */
+    @Test
+    fun `a Kavita server's page ends the flow once the session's cookie is held`() {
+        val kavita = client(ServerKind.Kavita)
+
+        assertThat(kavita.shouldOverrideUrlLoading(view, request("$Server/oidc/login"))).isFalse()
+        assertThat(kavita.shouldOverrideUrlLoading(view, request("$Server/"))).isFalse()
+        assertThat(outcomes).isEmpty()
+
+        sessionCookie = true
+        assertThat(kavita.shouldOverrideUrlLoading(view, request("$Server/"))).isTrue()
         assertThat(outcomes).containsExactly(ProviderPageOutcome.SignedIn)
     }
 
