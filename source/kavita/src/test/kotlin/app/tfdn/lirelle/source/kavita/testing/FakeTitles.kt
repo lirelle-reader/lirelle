@@ -7,4 +7,6 @@ internal object FakeTitles : KavitaTitles {
     override fun volume(number: String): String = "Tome $number"
 
     override fun chapter(number: String): String = "Chapitre $number"
+
+    override fun untitled(): String = "Sans titre"
 }

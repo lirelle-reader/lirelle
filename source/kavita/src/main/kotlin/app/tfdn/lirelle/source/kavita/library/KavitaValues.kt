@@ -5,6 +5,7 @@ import app.tfdn.lirelle.core.library.model.ReadState
 import app.tfdn.lirelle.source.kavita.library.dto.ChapterDto
 import java.time.Instant
 import java.time.LocalDateTime
+import java.time.OffsetDateTime
 import java.time.ZoneOffset
 import java.time.format.DateTimeParseException
 
@@ -35,18 +36,22 @@ internal fun percentOf(pagesRead: Int, pages: Int): Int? =
  * A time Kavita writes in UTC without a zone (`2026-11-26T07:53:46.7812659`); null when absent, unreadable, or
  * year 1, which Kavita writes for none.
  */
-internal fun utcInstant(text: String?): Instant? = localTime(text)?.toInstant(ZoneOffset.UTC)
+internal fun utcInstant(text: String?): Instant? = timeOf(text)?.toInstant()
 
 /** The year of a date Kavita writes (`1961-07-31T00:00:00`); null when absent, unreadable or none. */
-internal fun yearOf(text: String?): Int? = localTime(text)?.year
+internal fun yearOf(text: String?): Int? = timeOf(text)?.year
 
-private fun localTime(text: String?): LocalDateTime? {
+/** A time without a zone is UTC, as Kavita's `…Utc` fields are; one with its zone (`Z`, `+01:00`) keeps it. */
+private fun timeOf(text: String?): OffsetDateTime? {
     val time = text?.trim()?.takeIf { it.isNotEmpty() } ?: return null
-    return try {
-        LocalDateTime.parse(time).takeIf { it.year > NoYear }
-    } catch (_: DateTimeParseException) {
-        null
-    }
+    val read = parsed { LocalDateTime.parse(time).atOffset(ZoneOffset.UTC) } ?: parsed { OffsetDateTime.parse(time) }
+    return read?.takeIf { it.year > NoYear }
+}
+
+private inline fun parsed(parse: () -> OffsetDateTime): OffsetDateTime? = try {
+    parse()
+} catch (_: DateTimeParseException) {
+    null
 }
 
 /** What a book of this Kavita format is read in, by pages; null for one that is not read by pages. */

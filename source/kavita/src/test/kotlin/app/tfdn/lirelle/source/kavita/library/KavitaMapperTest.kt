@@ -32,7 +32,7 @@ class KavitaMapperTest {
 
     private inline fun <reified T> read(name: String): T = KavitaJson.decodeFromString<T>(fixtureBody(name))
 
-    private fun book(chapter: ChapterDto) = chapter.book()
+    private fun book(chapter: ChapterDto) = chapter.book(volumeIndex = null)
 
     @Test
     fun `a book takes Kavita's title, else one of its own`() {
@@ -44,9 +44,23 @@ class KavitaMapperTest {
 
         assertThat(mapper.title(book(asterix))).isEqualTo("Astérix le Gaulois")
         assertThat(mapper.title(book(untitled))).isEqualTo("Chapitre 12")
-        assertThat(mapper.title(volume.book(volumeNumber = 3))).isEqualTo("Tome 3")
+        assertThat(mapper.title(volume.book(volumeIndex = "3"))).isEqualTo("Tome 3")
         assertThat(mapper.title(book(special))).isEqualTo("Hors-série")
         assertThat(mapper.title(book(bareSpecial))).isEqualTo("Chapitre HS")
+    }
+
+    @Test
+    fun `a book without a number is untitled, unless Kavita's title says something`() {
+        val volume = ChapterDto(id = 6, number = DefaultChapter, range = DefaultChapter, volumeId = 3)
+        val chapter = ChapterDto(id = 5, number = "", range = " ")
+        val special = ChapterDto(id = 7, number = DefaultChapter, range = "", isSpecial = true)
+
+        assertThat(mapper.title(volume.book(volumeIndex = null))).isEqualTo("Sans titre")
+        assertThat(mapper.title(volume.copy(title = "Book -100000").book(volumeIndex = " "))).isEqualTo("Sans titre")
+        assertThat(mapper.title(volume.copy(title = "12").book(volumeIndex = null))).isEqualTo("Sans titre")
+        assertThat(mapper.title(volume.copy(title = "Prologue").book(volumeIndex = null))).isEqualTo("Prologue")
+        assertThat(mapper.title(book(chapter))).isEqualTo("Sans titre")
+        assertThat(mapper.title(book(special))).isEqualTo("Sans titre")
     }
 
     @Test
@@ -64,7 +78,7 @@ class KavitaMapperTest {
 
     @Test
     fun `the last reading is a time in UTC, and year 1 is none`() {
-        val dune = mapper.summary(read<ChapterDto>("continue-dune").book(volumeNumber = 1), null)
+        val dune = mapper.summary(read<ChapterDto>("continue-dune").book(volumeIndex = "1"), null)
         val asterix = mapper.summary(book(read("chapter-asterix")), null)
 
         assertThat(dune.lastActivityAt).isEqualTo(Instant.parse("2026-11-26T08:27:17.5600054Z"))
@@ -74,7 +88,7 @@ class KavitaMapperTest {
     @Test
     fun `covers are the server's image routes, without a key`() {
         val asterix = mapper.summary(book(read("chapter-asterix")), null)
-        val dune = mapper.summary(read<ChapterDto>("continue-dune").book(volumeNumber = 1), null)
+        val dune = mapper.summary(read<ChapterDto>("continue-dune").book(volumeIndex = "1"), null)
         val series = mapper.series(read("series-dune"))
 
         assertThat(asterix.coverUrl).isEqualTo("$Server/api/Image/chapter-cover?chapterId=44")
@@ -144,6 +158,18 @@ class KavitaMapperTest {
 
         assertThat(mapper.readingListItem(item).title).isEqualTo("Tome 5")
         assertThat(mapper.readingListItem(item.copy(chapterNumber = "7")).title).isEqualTo("Chapitre 7")
+        assertThat(mapper.readingListItem(item.copy(volumeNumber = null)).title).isEqualTo("Sans titre")
+    }
+
+    @Test
+    fun `a reading list's item never takes Kavita's English title, but a special does`() {
+        val alix = read<List<ReadingListItemDto>>("readinglist-items")[2].copy(chapterTitleName = null)
+        val special = alix.copy(isSpecial = true, title = "Hors-série", chapterNumber = DefaultChapter)
+
+        assertThat(alix.title).isEqualTo("Issue #1")
+        assertThat(mapper.readingListItem(alix).title).isEqualTo("Chapitre 1")
+        assertThat(mapper.readingListItem(special).title).isEqualTo("Hors-série")
+        assertThat(mapper.readingListItem(special.copy(title = null)).title).isEqualTo("Sans titre")
     }
 
     @Test
@@ -170,6 +196,15 @@ class KavitaMapperTest {
         assertThat(detail.files).isEmpty()
         assertThat(detail.readState).isEqualTo(ReadState.Unread)
         assertThat(detail.coverUrl).isEqualTo("$Server/api/Image/chapter-cover?chapterId=44")
+    }
+
+    @Test
+    fun `a lone book's page has no series`() {
+        val lone = book(read("chapter-lone"))
+        val series = SeriesDto(id = 372, name = "Nouvelles")
+
+        assertThat(mapper.detail(lone, series, null, lone = true).series).isNull()
+        assertThat(mapper.detail(lone, series, null).series).isEqualTo(SeriesRef(SeriesId("372"), "Nouvelles", null))
     }
 
     @Test

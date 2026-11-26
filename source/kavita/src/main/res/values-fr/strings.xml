@@ -2,4 +2,5 @@
 <resources>
     <string name="kavita_volume_title">Tome %1$s</string>
     <string name="kavita_chapter_title">Chapitre %1$s</string>
+    <string name="kavita_untitled">Sans titre</string>
 </resources>

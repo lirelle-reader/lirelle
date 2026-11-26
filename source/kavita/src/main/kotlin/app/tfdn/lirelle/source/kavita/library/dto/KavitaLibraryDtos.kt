@@ -72,11 +72,16 @@ internal data class ChapterDto(
     val files: List<FileDto> = emptyList(),
 )
 
-/** A volume and its chapters, as `GET api/Volume` and a series detail give it. */
+/**
+ * A volume and its chapters, as `GET api/Volume` and a series detail give it. Its [number] is cut to a whole
+ * number: [minNumber] and [maxNumber] keep a decimal ("10.5") and a range ("1-3").
+ */
 @Serializable
 internal data class VolumeDto(
     val id: Int,
     val number: Int = 0,
+    val minNumber: Float = 0f,
+    val maxNumber: Float = 0f,
     val name: String? = null,
     val pages: Int = 0,
     val pagesRead: Int = 0,

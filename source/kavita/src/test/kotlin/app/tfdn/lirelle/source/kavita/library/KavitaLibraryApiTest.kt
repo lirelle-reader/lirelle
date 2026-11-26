@@ -3,6 +3,7 @@ package app.tfdn.lirelle.source.kavita.library
 import app.tfdn.lirelle.source.kavita.network.KavitaApis
 import app.tfdn.lirelle.source.kavita.network.KavitaJson
 import app.tfdn.lirelle.source.kavita.network.answer
+import app.tfdn.lirelle.source.kavita.testing.bodyText
 import app.tfdn.lirelle.source.kavita.testing.enqueueJson
 import app.tfdn.lirelle.source.kavita.testing.fixtureBody
 import app.tfdn.lirelle.source.kavita.testing.fixturePagination
@@ -10,6 +11,8 @@ import app.tfdn.lirelle.source.kavita.testing.pathText
 import app.tfdn.lirelle.source.kavita.testing.serverUrl
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.runBlocking
+import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.jsonObject
 import mockwebserver3.MockWebServer
 import okhttp3.OkHttpClient
 import org.junit.After
@@ -56,5 +59,20 @@ class KavitaLibraryApiTest {
 
         assertThat(server.takeRequest().pathText()).isEqualTo("/api/Series/261")
         assertThat(series.name).isEqualTo("Dune")
+    }
+
+    @Test
+    fun `the series are asked with their filter as the body, by page`() = runBlocking {
+        server.enqueueJson(fixtureBody("all-first"))
+        val filter = seriesFilter(listOf(Statement(SeriesField.Libraries, Comparison.Equal, "1")))
+
+        val series = api().series(filter, page = 1, size = 100).answer()
+
+        val request = server.takeRequest()
+        assertThat(request.method).isEqualTo("POST")
+        assertThat(request.pathText()).isEqualTo("/api/Series/all-v2")
+        assertThat(request.url.query).isEqualTo("PageNumber=1&PageSize=100")
+        assertThat(Json.parseToJsonElement(request.bodyText()).jsonObject).isEqualTo(filter)
+        assertThat(series).isNotEmpty()
     }
 }

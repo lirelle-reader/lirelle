@@ -73,6 +73,29 @@ class KavitaBooksTest {
     }
 
     @Test
+    fun `volumes are ordered by their numbers, which keep their decimals and ranges`() {
+        fun volume(id: Int, min: Float, max: Float = min) = VolumeDto(
+            id = id,
+            number = min.toInt(),
+            minNumber = min,
+            maxNumber = max,
+            chapters = listOf(ChapterDto(id = id * 10, number = DefaultChapter)),
+        )
+        val detail = SeriesDetailDto(listOf(volume(1, 10.5f), volume(2, 10f), volume(3, 1f, 3f)))
+
+        val books = detail.books()
+
+        assertThat(books.map { it.item.bookId.value }).containsExactly("v3", "v2", "v1").inOrder()
+        assertThat(books.map { it.index }).containsExactly("1-3", "10", "10.5").inOrder()
+    }
+
+    @Test
+    fun `a volume without decimal numbers keeps its whole number`() {
+        assertThat(VolumeDto(id = 1, number = 4).index).isEqualTo("4")
+        assertThat(VolumeDto(id = 1, number = 0).index).isNull()
+    }
+
+    @Test
     fun `a chapter seen alone is the book it belongs to`() {
         assertThat(chapter("chapter-asterix").item()).isEqualTo(KavitaItem.Chapter(44))
         assertThat(chapter("continue-dune").item()).isEqualTo(KavitaItem.Volume(407))
@@ -81,10 +104,13 @@ class KavitaBooksTest {
 
     @Test
     fun `a chapter seen alone has the index of its book`() {
-        assertThat(chapter("chapter-asterix").book().index).isEqualTo("1")
-        assertThat(chapter("continue-dune").book(volumeNumber = 1).index).isEqualTo("1")
-        assertThat(chapter("chapter-lone").book().index).isNull()
-        assertThat(chapter("chapter-lone").book().special).isTrue()
+        val dune = KavitaJson.decodeFromString<VolumeDto>(fixtureBody("volume-dune"))
+
+        assertThat(chapter("chapter-asterix").book(volumeIndex = null).index).isEqualTo("1")
+        assertThat(chapter("continue-dune").book(dune.index).item).isEqualTo(KavitaItem.Volume(407))
+        assertThat(chapter("continue-dune").book(dune.index).index).isEqualTo("1")
+        assertThat(chapter("chapter-lone").book(volumeIndex = null).index).isNull()
+        assertThat(chapter("chapter-lone").book(volumeIndex = null).special).isTrue()
     }
 
     @Test

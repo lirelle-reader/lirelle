@@ -31,16 +31,18 @@ internal class KavitaMapper(private val serverUrl: String, private val titles: K
 
     /**
      * Kavita's title of the book, else one of the app's: a special's own title, a volume's "Tome N", a chapter's
-     * "Chapitre N". A special has no file name to stand for its title: the server's paths are not read.
+     * "Chapitre N". A special has no file name to stand for its title: the server's paths are not read. A book
+     * without a number goes by Kavita's other title when it says more than a number, else is untitled.
      */
     fun title(book: KavitaBook): String {
         val chapter = book.chapter
-        return chapter.titleName.orNullIfBlank() ?: when {
-            book.special -> chapter.title.orNullIfBlank()
-                ?: titles.chapter(chapter.range.orNullIfBlank() ?: chapter.number.orEmpty())
-            book.item is KavitaItem.Volume -> titles.volume(book.index.orEmpty())
-            else -> titles.chapter(book.index.orEmpty())
+        chapter.titleName.orNullIfBlank()?.let { return it }
+        if (book.special) {
+            return chapter.title.orNullIfBlank()
+                ?: titles.numbered(chapter.range.orIndex() ?: chapter.number.orIndex(), titles::chapter)
         }
+        val numbered = if (book.item is KavitaItem.Volume) titles::volume else titles::chapter
+        return book.index.orNullIfBlank()?.let(numbered) ?: chapter.title.saysMoreThanANumber() ?: titles.untitled()
     }
 
     /**
@@ -69,8 +71,9 @@ internal class KavitaMapper(private val serverUrl: String, private val titles: K
      * A book's page. What its chapter does not say — summary, genres, publisher, language — the series' [metadata]
      * does, when it came. An EPUB's Kavita pages are its spine items, a number that means nothing to a reader: the
      * page count is given for a book read by pages only. No file is offered yet: reading a Kavita book is #51's.
+     * A [lone] book, the only special of its series, has no series line.
      */
-    fun detail(book: KavitaBook, series: SeriesDto, metadata: SeriesMetadataDto?): BookDetail {
+    fun detail(book: KavitaBook, series: SeriesDto, metadata: SeriesMetadataDto?, lone: Boolean = false): BookDetail {
         val chapter = book.chapter
         val title = title(book)
         return BookDetail(
@@ -79,7 +82,7 @@ internal class KavitaMapper(private val serverUrl: String, private val titles: K
             subtitle = null,
             // A Kavita person is asked by name, unique on the server: the name stands for the id.
             authors = authorNames(chapter.writers, chapter.pencillers).map { AuthorRef(AuthorId(it), it) },
-            series = seriesRefOf(book, title, SeriesRefInfo(series.id, series.name)),
+            series = seriesRefOf(book, title, SeriesRefInfo(series.id, series.name).takeUnless { lone }),
             coverUrl = cover(book.item),
             coverShape = CoverShape.Portrait,
             media = MediaProfile.TextOnly,
@@ -151,10 +154,12 @@ internal class KavitaMapper(private val serverUrl: String, private val titles: K
         val index = when {
             volume -> item.volumeNumber.orNullIfBlank()
             item.isSpecial -> null
-            else -> item.chapterNumber.orNullIfBlank()
+            else -> item.chapterNumber.orIndex()
         }
-        val title = item.chapterTitleName.orNullIfBlank() ?: item.title.orNullIfBlank()
-            ?: if (volume) titles.volume(index.orEmpty()) else titles.chapter(index.orEmpty())
+        // Kavita's other title of a chapter is its own English words ("Issue #1"): a special's alone is read.
+        val title = item.chapterTitleName.orNullIfBlank()
+            ?: item.title.orNullIfBlank()?.takeIf { item.isSpecial }
+            ?: titles.numbered(index, if (volume) titles::volume else titles::chapter)
         val people = item.chapter
         val authors = listOfNotNull(people?.writerName.orNullIfBlank(), people?.pencillerName.orNullIfBlank())
         val seriesName = item.seriesName.orNullIfBlank()
@@ -192,3 +197,14 @@ private fun seriesRefOf(book: KavitaBook, title: String, series: SeriesRefInfo?)
     if (book.special && title.equals(name, ignoreCase = true)) return null
     return SeriesRef(SeriesId(series.id.toString()), name, book.index)
 }
+
+/** The title [numbered] gives a book of this [index]; untitled for a book without one. */
+private fun KavitaTitles.numbered(index: String?, numbered: (String) -> String): String =
+    index.orNullIfBlank()?.let(numbered) ?: untitled()
+
+/**
+ * Kavita's other title of a chapter, when it says more than a number: not "12", nor "Book -100000", which Kavita
+ * 0.8.9 writes for a default chapter.
+ */
+private fun String?.saysMoreThanANumber(): String? =
+    orNullIfBlank()?.takeUnless { it.contains(DefaultChapter) || it.toDoubleOrNull() != null }
