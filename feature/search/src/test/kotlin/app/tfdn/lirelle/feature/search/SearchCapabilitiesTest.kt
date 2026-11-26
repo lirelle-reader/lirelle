@@ -2,6 +2,7 @@ package app.tfdn.lirelle.feature.search
 
 import android.content.Context
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.ui.test.assert
 import androidx.compose.ui.test.assertCountEquals
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.hasAnyAncestor
@@ -134,8 +135,8 @@ class SearchCapabilitiesTest {
         assertThat(viewModel.state.value.genres).isEmpty()
     }
 
-    private fun showRoute(width: WindowWidthClass) {
-        val viewModel = viewModel()
+    private fun showRoute(width: WindowWidthClass, capabilities: SourceCapabilities = KomgaLikeCapabilities) {
+        val viewModel = viewModel(capabilities)
         compose.setContent {
             LirelleTheme {
                 CompositionLocalProvider(LocalWindowWidthClass provides width) {
@@ -177,6 +178,49 @@ class SearchCapabilitiesTest {
             .assertIsDisplayed()
         compose.onAllNodesWithText(text(R.string.search_authors)).assertCountEquals(0)
         compose.onAllNodesWithText("Marsha Writer").assertCountEquals(0)
+    }
+
+    private fun books(count: Int) = context.resources.getQuantityString(R.plurals.search_book_count, count, count)
+
+    @Test
+    fun `a series found shows its number of books when the source counts them`() {
+        showRoute(WindowWidthClass.Compact)
+
+        compose.onNodeWithTag("result-series-40").assert(hasText(books(3)))
+    }
+
+    @Test
+    fun `without series counts a series found shows no number of books`() {
+        showRoute(WindowWidthClass.Compact, KomgaLikeCapabilities.copy(seriesCounts = false))
+
+        compose.onNodeWithText("A Saga of Mars").assertIsDisplayed()
+        compose.onAllNodesWithText(books(3)).assertCountEquals(0)
+    }
+
+    private fun findSixBooks() {
+        repository.searchAnswer = { text ->
+            ApiResult.Success(
+                SearchResults(text, books = SearchSection((1..6).map { sampleBook("$it", "Book $it of Mars") }, 6)),
+            )
+        }
+    }
+
+    @Test
+    fun `on a phone the books found offer their full list when the source lists all books`() {
+        findSixBooks()
+        showRoute(WindowWidthClass.Compact)
+
+        compose.onNodeWithTag("result-book-6").assertDoesNotExist()
+        compose.onNodeWithText(text(R.string.search_see_all_count, 6)).assertIsDisplayed()
+    }
+
+    @Test
+    fun `on a phone every book found shows, with no full list, when the source lists no books`() {
+        findSixBooks()
+        showRoute(WindowWidthClass.Compact, KomgaLikeCapabilities.copy(libraryBooks = false))
+
+        compose.onNodeWithTag("result-book-6").assertExists()
+        compose.onAllNodesWithText(text(R.string.search_see_all_count, 6)).assertCountEquals(0)
     }
 
     @Test

@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import app.tfdn.lirelle.core.library.LibraryChoice
 import app.tfdn.lirelle.core.library.LibraryPreferences
 import app.tfdn.lirelle.core.library.LibraryRepository
+import app.tfdn.lirelle.core.library.SourceCapabilities
 import app.tfdn.lirelle.core.library.model.Series
 import app.tfdn.lirelle.core.library.model.SeriesProgressFilter
 import app.tfdn.lirelle.core.library.model.SeriesSort
@@ -30,7 +31,12 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-/** [series] is already sorted and filtered; they are those of [library], null for every library. */
+/**
+ * [series] is already sorted and filtered; they are those of [library], null for every library.
+ *
+ * @property showCounts whether the source gives each series its numbers of books and of books read: without them
+ *   the tiles have no progress line, and neither the sorts made of them nor the progress filter are offered.
+ */
 data class SeriesListUiState(
     val series: Loadable<List<Series>> = Loadable.Loading,
     val sort: SeriesSort = SeriesSort.Name,
@@ -38,7 +44,18 @@ data class SeriesListUiState(
     val filter: SeriesProgressFilter? = null,
     val refreshing: Boolean = false,
     val library: ServerLibrary? = null,
-)
+    val showCounts: Boolean = true,
+) {
+    /** The sorts the menu offers, in their order. */
+    val sorts: List<SeriesSort> get() = seriesSorts(showCounts)
+}
+
+/** The sorts made of a series' numbers of books, offered only when the source gives them. */
+private val CountSorts = setOf(SeriesSort.BookCount, SeriesSort.UnreadCount, SeriesSort.Progress)
+
+/** Every sort with the counts, the others without. */
+internal fun seriesSorts(showCounts: Boolean): List<SeriesSort> =
+    if (showCounts) SeriesSort.entries else SeriesSort.entries - CountSorts
 
 /** A name reads best from A; the counts and dates are looked at from the largest. */
 internal val SeriesSort.defaultDirection: SortDirection
@@ -48,11 +65,13 @@ private const val PreferencesKey = "series"
 
 @HiltViewModel
 class SeriesListViewModel @Inject constructor(
+    capabilities: SourceCapabilities,
     private val repository: LibraryRepository,
     private val preferences: LibraryPreferences,
     choice: LibraryChoice,
 ) : ViewModel() {
 
+    private val showCounts = capabilities.seriesCounts
     private val loaded = MutableStateFlow<Loadable<List<Series>>>(Loadable.Loading)
 
     /** The library [loaded] is of. */
@@ -69,19 +88,24 @@ class SeriesListViewModel @Inject constructor(
         preferences.view(PreferencesKey),
         filter,
         refreshing,
-    ) { loaded, shown, prefs, filter, refreshing ->
-        val sort = prefs.sort?.let { name -> SeriesSort.entries.firstOrNull { it.name == name } } ?: SeriesSort.Name
-        val direction = when (prefs.descending) {
+    ) { loaded, shown, prefs, chosenFilter, refreshing ->
+        val stored = SeriesSort.entries.firstOrNull { it.name == prefs.sort }
+        // A sort kept from before that is not offered gives way to the name's, in the name's direction.
+        val offered = stored?.takeIf { it in seriesSorts(showCounts) }
+        val sort = offered ?: SeriesSort.Name
+        val direction = when (prefs.descending.takeUnless { stored != null && offered == null }) {
             null -> sort.defaultDirection
             true -> SortDirection.Descending
             false -> SortDirection.Ascending
         }
+        // Without the counts there is no progress to filter on.
+        val filter = chosenFilter.takeIf { showCounts }
         val arranged = when (loaded) {
             is Loadable.Ready -> Loadable.Ready(loaded.value.arranged(sort, direction, filter))
             else -> loaded
         }
-        SeriesListUiState(arranged, sort, direction, filter, refreshing, shown)
-    }.stateIn(viewModelScope, SharingStarted.Eagerly, SeriesListUiState())
+        SeriesListUiState(arranged, sort, direction, filter, refreshing, shown, showCounts)
+    }.stateIn(viewModelScope, SharingStarted.Eagerly, SeriesListUiState(showCounts = showCounts))
 
     /** One more for each retry. */
     private val retries = MutableStateFlow(0)

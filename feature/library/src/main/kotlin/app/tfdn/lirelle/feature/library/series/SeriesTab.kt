@@ -137,7 +137,9 @@ private fun SeriesGrid(
             }
         }
         // A list's key must go in a Bundle: the id's text, not the id.
-        items(series, key = { it.id.value }) { SeriesTile(it, onClick = { onOpenSeries(it.id) }) }
+        items(series, key = { it.id.value }) {
+            SeriesTile(it, showCounts = state.showCounts, onClick = { onOpenSeries(it.id) })
+        }
     }
 }
 
@@ -179,11 +181,12 @@ private fun SeriesBar(
             SortChip(
                 label = stringResource(state.sort.labelRes()),
                 direction = state.direction,
-                options = SeriesSort.entries.map { it to stringResource(it.labelRes()) },
+                options = state.sorts.map { it to stringResource(it.labelRes()) },
                 selected = state.sort,
                 onSelect = onSort,
             )
-            ProgressFilterChip(state.filter, onFilter)
+            // Without the series' counts there is no progress to filter on.
+            if (state.showCounts) ProgressFilterChip(state.filter, onFilter)
         }
         Text(
             text = pluralStringResource(R.plurals.series_count, count, count),

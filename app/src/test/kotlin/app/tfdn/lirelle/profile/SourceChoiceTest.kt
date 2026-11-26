@@ -6,6 +6,11 @@ import app.tfdn.lirelle.awaited
 import app.tfdn.lirelle.core.library.LibraryStart
 import app.tfdn.lirelle.core.library.SourceCapabilities
 import app.tfdn.lirelle.core.library.model.BookSort
+import app.tfdn.lirelle.core.library.model.FormatFilter
+import app.tfdn.lirelle.core.library.model.HomeRowKind
+import app.tfdn.lirelle.core.library.model.SearchKind
+import app.tfdn.lirelle.core.library.model.ShelfKind
+import app.tfdn.lirelle.core.library.model.StatusFilter
 import app.tfdn.lirelle.core.session.Credential
 import app.tfdn.lirelle.core.session.Profile
 import app.tfdn.lirelle.core.session.ServerKind
@@ -76,8 +81,8 @@ private val KavitaSession = Session(
 )
 
 /**
- * What Kavita declares once a profile can connect and no more (spec 049, §6): nothing, but the one sort its empty
- * list of books is in, and a Library that opens on its series.
+ * What Kavita declares once a profile can be browsed (spec 050, §9 with §14): its library without a Books tab or
+ * series counts, nothing to read yet, and a Library that opens on its series.
  */
 private val KavitaCapabilities = SourceCapabilities(
     audiobooks = false,
@@ -86,16 +91,18 @@ private val KavitaCapabilities = SourceCapabilities(
     audioBookmarks = false,
     ratings = false,
     readingSessions = false,
-    genres = false,
-    authors = false,
+    genres = true,
+    authors = true,
     history = false,
-    homeRows = emptySet(),
-    shelfKinds = emptySet(),
-    searchKinds = emptySet(),
-    bookSorts = setOf(BookSort.Added),
-    statusFilters = emptySet(),
-    formatFilters = emptySet(),
+    homeRows = setOf(HomeRowKind.Continue, HomeRowKind.UpNext, HomeRowKind.WantToRead, HomeRowKind.RecentlyAdded),
+    shelfKinds = setOf(ShelfKind.Collection),
+    searchKinds = setOf(SearchKind.Books, SearchKind.Series, SearchKind.Authors),
+    bookSorts = setOf(BookSort.Added, BookSort.Title),
+    statusFilters = setOf(StatusFilter.Unread, StatusFilter.Reading, StatusFilter.Read),
+    formatFilters = setOf(FormatFilter.Epub, FormatFilter.Pdf, FormatFilter.Comics),
     libraryStart = LibraryStart.Series,
+    libraryBooks = false,
+    seriesCounts = false,
 )
 
 /**

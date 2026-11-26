@@ -23,7 +23,7 @@ class ResultListViewModelsTest {
         val found = listOf(sampleSeries("40", "A Saga"))
         fake.seriesResult = ApiResult.Success(found)
 
-        val viewModel = SeriesResultsViewModel("mars", fake)
+        val viewModel = SeriesResultsViewModel("mars", fake, SourceCapabilities.Everything)
 
         assertThat(fake.calls).containsExactly("series mars")
         assertThat(viewModel.state.value).isEqualTo(Loadable.Ready(found))
@@ -32,7 +32,7 @@ class ResultListViewModelsTest {
     @Test
     fun `a failed series list can be loaded again`() = runTest(mainRule.dispatcher) {
         fake.seriesResult = ApiResult.Failure(ApiError.ServerUnreachable)
-        val viewModel = SeriesResultsViewModel("mars", fake)
+        val viewModel = SeriesResultsViewModel("mars", fake, SourceCapabilities.Everything)
         assertThat(viewModel.state.value).isEqualTo(Loadable.Failed(ApiError.ServerUnreachable))
 
         fake.seriesResult = ApiResult.Success(emptyList())

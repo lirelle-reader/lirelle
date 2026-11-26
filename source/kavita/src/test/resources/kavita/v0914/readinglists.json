@@ -1,0 +1,28 @@
+[
+ {
+  "id": 7,
+  "title": "À lire cet hiver",
+  "summary": "",
+  "promoted": false,
+  "coverImageLocked": false,
+  "coverImage": "readinglist7.png",
+  "primaryColor": "#86553D",
+  "secondaryColor": "#C78D5D",
+  "itemCount": 5,
+  "startingYear": 0,
+  "startingMonth": 0,
+  "endingYear": 0,
+  "endingMonth": 0,
+  "ageRating": 0,
+  "ownerUserName": "lecteur",
+  "sourcePath": null,
+  "downloadUrl": null,
+  "shaHash": null,
+  "provider": 0,
+  "lastSyncCheckUtc": null,
+  "lastSyncedUtc": null,
+  "totalItemsAtImport": 0,
+  "tags": [],
+  "canSync": false
+ }
+]

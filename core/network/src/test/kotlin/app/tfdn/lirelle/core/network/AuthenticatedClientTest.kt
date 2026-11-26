@@ -50,7 +50,20 @@ private class ScriptedAuthorizer(
     /** What it was asked, in order: the value refused, if any, and where the header goes. */
     val asked = mutableListOf<Pair<String?, HttpUrl>>()
 
+    /**
+     * A query parameter it puts in the address of every request, as a source whose server takes the credential
+     * there; null to leave addresses as the contract's default does.
+     */
+    var inAddress: Pair<String, String>? = null
+
+    /** What [inAddress] becomes once a refusal is told: the address of the credential renewed. */
+    var inAddressAfterRefusal: Pair<String, String>? = null
+
     override suspend fun header(target: HttpUrl): AuthHeader? = answer(sent = null, target, held)
+
+    override fun address(target: HttpUrl): HttpUrl = inAddress
+        ?.let { (name, value) -> target.newBuilder().setQueryParameter(name, value).build() }
+        ?: super.address(target)
 
     override suspend fun rejected(sent: String, target: HttpUrl): AuthHeader? {
         if (refusing) {
@@ -58,6 +71,7 @@ private class ScriptedAuthorizer(
             signInNeeded = true
             throw IOException("The server refused the key")
         }
+        inAddressAfterRefusal?.let { inAddress = it }
         return answer(sent, target, renewed)
     }
 
@@ -268,6 +282,75 @@ class AuthenticatedClientTest {
         assertThat(authorizer.signInNeeded).isTrue()
         assertThat(authorizer.asked).containsExactly(null to server.url("/me"), "the-key" to server.url("/me"))
             .inOrder()
+    }
+
+    @Test
+    fun `a request goes to the address the authorizer gives, and still carries its header`() {
+        authorizer.inAddress = "k" to "v"
+        server.enqueue(MockResponse(code = Ok))
+
+        assertThat(get(path = "/image?id=7")).isEqualTo(Ok)
+
+        val sent = server.takeRequest()
+        assertThat(sent.url.queryParameter("k")).isEqualTo("v")
+        assertThat(sent.url.queryParameter("id")).isEqualTo("7")
+        assertThat(sent.headers["Authorization"]).isEqualTo("Bearer access-1")
+        assertThat(authorizer.asked).containsExactly(null to server.url("/image?id=7"))
+    }
+
+    @Test
+    fun `by default a request goes to its own address`() {
+        server.enqueue(MockResponse(code = Ok))
+
+        assertThat(get(path = "/image?id=7")).isEqualTo(Ok)
+
+        assertThat(server.takeRequest().url).isEqualTo(server.url("/image?id=7"))
+    }
+
+    @Test
+    fun `a request replayed after a 401 goes to the address of the renewed credential, not the refused one`() {
+        authorizer.inAddress = "k" to "v1"
+        authorizer.inAddressAfterRefusal = "k" to "v2"
+        server.enqueue(refused())
+        server.enqueue(MockResponse(code = Ok))
+
+        assertThat(get(path = "/image?id=7")).isEqualTo(Ok)
+
+        assertThat(server.takeRequest().url.queryParameterValues("k")).containsExactly("v1")
+        val replayed = server.takeRequest()
+        assertThat(replayed.url.queryParameterValues("k")).containsExactly("v2")
+        assertThat(replayed.url.queryParameter("id")).isEqualTo("7")
+        assertThat(replayed.headers["Authorization"]).isEqualTo("Bearer access-2")
+        // The authorizer is told of the address the request was asked with, never of one holding a credential.
+        assertThat(authorizer.asked)
+            .containsExactly(null to server.url("/image?id=7"), "Bearer access-1" to server.url("/image?id=7"))
+            .inOrder()
+    }
+
+    /** A proxy may send it on with its whole address in the redirect's (`?rd=…`): the credential would go along. */
+    @Test
+    fun `a request whose address holds the credential fails rather than follow a redirect to another server`() {
+        authorizer.inAddress = "k" to "v"
+        val elsewhere = otherHost.url("/sign-in?rd=k%3Dv").toString()
+        server.enqueue(MockResponse(code = Redirect, headers = headersOf("Location", elsewhere)))
+        otherHost.enqueue(MockResponse(code = Ok))
+
+        assertThrows(IOException::class.java) { get(path = "/image?id=7") }
+
+        assertThat(server.requestCount).isEqualTo(1)
+        assertThat(otherHost.requestCount).isEqualTo(0)
+    }
+
+    @Test
+    fun `a request whose address holds the credential follows a redirect on its server`() {
+        authorizer.inAddress = "k" to "v"
+        server.enqueue(MockResponse(code = Redirect, headers = headersOf("Location", "/moved")))
+        server.enqueue(MockResponse(code = Ok))
+
+        assertThat(get(path = "/image?id=7")).isEqualTo(Ok)
+
+        assertThat(server.takeRequest().url.queryParameter("k")).isEqualTo("v")
+        assertThat(server.takeRequest().url.encodedPath).isEqualTo("/moved")
     }
 
     private companion object {

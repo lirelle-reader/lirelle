@@ -1,0 +1,19 @@
+[
+ {
+  "id": 6,
+  "title": "À lire cet hiver",
+  "summary": "",
+  "promoted": false,
+  "coverImageLocked": false,
+  "coverImage": null,
+  "primaryColor": null,
+  "secondaryColor": null,
+  "itemCount": 5,
+  "startingYear": 0,
+  "startingMonth": 0,
+  "endingYear": 0,
+  "endingMonth": 0,
+  "ageRating": 0,
+  "ownerUserName": "lecteur"
+ }
+]

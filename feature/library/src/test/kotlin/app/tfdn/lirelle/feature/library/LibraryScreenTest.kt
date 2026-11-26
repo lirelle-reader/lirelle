@@ -96,6 +96,36 @@ class LibraryScreenTest {
     }
 
     @Test
+    fun `a source without a list of all books has no Books tab`() {
+        val noBooks = SourceCapabilities.Everything.copy(libraryBooks = false)
+
+        assertThat(noBooks.libraryTabs())
+            .containsExactly(LibraryTab.Series, LibraryTab.Authors, LibraryTab.Shelves).inOrder()
+        assertThat(SourceCapabilities.Everything.copy(libraryBooks = true).libraryTabs())
+            .containsExactlyElementsIn(LibraryTab.entries).inOrder()
+    }
+
+    @Test
+    fun `a source that starts on books it cannot list opens on its series`() {
+        val viewModel = viewModel(SourceCapabilities.Everything.copy(libraryBooks = false))
+        assertThat(viewModel.startTab).isEqualTo(LibraryTab.Series)
+
+        compose.setContent {
+            LirelleTheme {
+                LibraryScreen(
+                    tabs = viewModel.tabs,
+                    startTab = viewModel.startTab,
+                    page = { tab -> Text("page of ${tab.name}") },
+                )
+            }
+        }
+
+        compose.onNodeWithTag("tab-Books").assertDoesNotExist()
+        compose.onNodeWithTag("tab-Series").assertIsSelected()
+        compose.onNodeWithText("page of Series").assertIsDisplayed()
+    }
+
+    @Test
     fun `a tab shown that goes away leaves the Library on Books`() {
         var tabs by mutableStateOf<List<LibraryTab>>(LibraryTab.entries)
         showTabs { tabs }

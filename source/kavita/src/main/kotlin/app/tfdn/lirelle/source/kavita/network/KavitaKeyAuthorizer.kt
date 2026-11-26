@@ -53,8 +53,16 @@ internal class KavitaKeyAuthorizer(private val session: ProfileSession) : Sessio
     }
 
     /**
+     * Kavita's images are asked with the key in their address: the server refuses the header alone on them (0.8.9.1
+     * answers 400). Every other route, and an image whose address [withKey] gives no key for, keeps its own.
+     */
+    override fun address(target: HttpUrl): HttpUrl =
+        if (target.encodedPath.contains(ImageRoutes)) withKey(target) ?: target else target
+
+    /**
      * [target] with the profile's key as its [ApiKeyParameter], for the routes that take no header: Kavita's
-     * images and PDF files, fetched by what cannot be given one. Null for an address that is not on the profile's
+     * images and PDF files, fetched by what cannot be given one, and the images the authenticated client asks for
+     * ([address]), which the server refuses with the header alone. Null for an address that is not on the profile's
      * server, while the profile waits for a sign-in, and for a session that holds no key: the key goes nowhere
      * else, and a refused one is not sent again. An address with the key in it is as secret as the key: it is
      * neither logged nor kept.
@@ -71,4 +79,9 @@ internal class KavitaKeyAuthorizer(private val session: ProfileSession) : Sessio
         credential as? Credential.ApiKey ?: throw IOException("The session holds no key: nothing is asked in its name")
 
     private fun Credential.ApiKey.header() = AuthHeader(ApiKeyHeader, key)
+
+    private companion object {
+        /** Where Kavita's image routes are, under the server's address and any base path it has. */
+        const val ImageRoutes = "/api/Image/"
+    }
 }

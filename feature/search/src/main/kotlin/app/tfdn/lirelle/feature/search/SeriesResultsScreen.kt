@@ -36,7 +36,7 @@ fun SeriesResultsScreen(
                 LazyColumn(contentPadding = PaddingValues(CollectionEdgePadding)) {
                     // A list's key must go in a Bundle: the id's text, not the id.
                     items(found, key = { it.id.value }) { series ->
-                        SeriesResultRow(series, onClick = { onOpenSeries(series.id) })
+                        SeriesResultRow(series, viewModel.showCounts, onClick = { onOpenSeries(series.id) })
                     }
                 }
             }

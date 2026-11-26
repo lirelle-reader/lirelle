@@ -2,6 +2,8 @@ package app.tfdn.lirelle.feature.library.series
 
 import android.content.Context
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.ui.semantics.SemanticsProperties
+import androidx.compose.ui.test.SemanticsMatcher
 import androidx.compose.ui.test.assertCountEquals
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.hasAnyAncestor
@@ -70,6 +72,9 @@ class SeriesTabTest {
         }
     }
 
+    /** The progress bar of a tile. */
+    private val isProgressBar = SemanticsMatcher.keyIsDefined(SemanticsProperties.ProgressBarRangeInfo)
+
     private val ready = SeriesListUiState(
         series = Loadable.Ready(listOf(sampleSeries("1", name = "Dawn", books = 8, read = 5), sampleSeries("2"))),
     )
@@ -81,6 +86,7 @@ class SeriesTabTest {
         compose.onNodeWithText("Dawn").assertIsDisplayed()
         compose.onNodeWithText("Author 1").assertIsDisplayed()
         compose.onNodeWithText(text(R.string.series_progress, 5, 8)).assertIsDisplayed()
+        compose.onAllNodes(isProgressBar).assertCountEquals(2)
         compose.onNodeWithTag("series-1").performClick()
 
         assertThat(events).containsExactly(SeriesId("1"))
@@ -114,6 +120,33 @@ class SeriesTabTest {
         compose.onNodeWithText(text(R.string.progress_in_progress)).performClick()
 
         assertThat(events).containsExactly(SeriesProgressFilter.InProgress)
+    }
+
+    @Test
+    fun `without series counts a tile has no progress line`() {
+        show(ready.copy(showCounts = false))
+
+        compose.onNodeWithText("Dawn").assertIsDisplayed()
+        compose.onNodeWithText(text(R.string.series_progress, 5, 8)).assertDoesNotExist()
+        compose.onAllNodes(isProgressBar).assertCountEquals(0)
+    }
+
+    @Test
+    fun `without series counts the sort menu offers the name and the recently added`() {
+        show(ready.copy(showCounts = false))
+
+        compose.onNodeWithContentDescription(text(R.string.sort_ascending, text(R.string.sort_name))).performClick()
+        compose.onNodeWithText(text(R.string.sort_recent)).assertIsDisplayed()
+        listOf(R.string.sort_book_count, R.string.sort_unread_count, R.string.sort_progress).forEach {
+            compose.onNodeWithText(text(it)).assertDoesNotExist()
+        }
+    }
+
+    @Test
+    fun `without series counts there is no progress filter`() {
+        show(ready.copy(showCounts = false))
+
+        compose.onNodeWithText(text(R.string.filter_progress)).assertDoesNotExist()
     }
 
     @Test

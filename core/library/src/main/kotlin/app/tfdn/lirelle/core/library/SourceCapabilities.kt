@@ -19,6 +19,11 @@ enum class LibraryStart { Books, Series }
  * @property authors author pages, the Authors tab and author results.
  * @property history the History entry; what the history shows is the history's own capabilities.
  * @property libraryStart the tab the Library opens on, until the user leaves it on another.
+ * @property libraryBooks whether the source can list the whole library's books, sorted and filtered: the
+ *   Books tab, and Home's "See all" of Want to read and Recently added as lists. Without it those open the row's
+ *   own screen.
+ * @property seriesCounts whether a series in a list comes with its numbers of books and of books read: the
+ *   series tiles' progress line, the sorts and the filter made of them, a series' book count in Search.
  */
 data class SourceCapabilities(
     val audiobooks: Boolean,
@@ -37,6 +42,8 @@ data class SourceCapabilities(
     val statusFilters: Set<StatusFilter>,
     val formatFilters: Set<FormatFilter>,
     val libraryStart: LibraryStart,
+    val libraryBooks: Boolean = true,
+    val seriesCounts: Boolean = true,
 ) {
     companion object {
         /** A source that can do everything the app shows, whose Library opens on its books. */

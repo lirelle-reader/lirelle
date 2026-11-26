@@ -1,0 +1,27 @@
+{
+ "libraries": [],
+ "series": [
+  {
+   "seriesId": 81,
+   "name": "One Piece",
+   "originalName": "One Piece",
+   "sortName": "One Piece",
+   "localizedName": "",
+   "format": 1,
+   "libraryName": "Mangas",
+   "libraryId": 2,
+   "releaseYear": 2000,
+   "volumeCount": 1,
+   "chapterCount": 113
+  }
+ ],
+ "collections": [],
+ "readingLists": [],
+ "persons": [],
+ "genres": [],
+ "tags": [],
+ "files": [],
+ "chapters": [],
+ "bookmarks": [],
+ "annotations": []
+}

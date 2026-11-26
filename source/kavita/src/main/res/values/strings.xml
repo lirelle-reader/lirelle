@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- The title of a Kavita book that is a volume and has no title of its own, with its number: "Volume 3". -->
+    <string name="kavita_volume_title">Volume %1$s</string>
+    <!-- The title of a Kavita book that is a chapter and has no title of its own, with its number or range: "Chapter 12". -->
+    <string name="kavita_chapter_title">Chapter %1$s</string>
+    <!-- The title of a Kavita book that has neither a title nor a number. -->
+    <string name="kavita_untitled">Untitled</string>
+</resources>

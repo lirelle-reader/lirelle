@@ -142,4 +142,46 @@ class KavitaKeyAuthorizerTest {
             .isEqualTo("https://h.example.com/kavita/api/Image/series-cover?seriesId=12&apiKey=$TheKey".toHttpUrl())
         assertThat(under.withKey("https://elsewhere.example.com/kavita/api/Image/series-cover".toHttpUrl())).isNull()
     }
+
+    @Test
+    fun `a request for an image of the profile's server goes with the key in its address`() {
+        val cover = "$Server/api/Image/series-cover?seriesId=7".toHttpUrl()
+
+        assertThat(authorizer.address(cover))
+            .isEqualTo("$Server/api/Image/series-cover?seriesId=7&apiKey=$TheKey".toHttpUrl())
+    }
+
+    @Test
+    fun `a request for any other route goes to its own address`() {
+        val list = "$Server/api/Series/all-v2?PageNumber=1&PageSize=20".toHttpUrl()
+
+        assertThat(authorizer.address(list)).isEqualTo(list)
+    }
+
+    @Test
+    fun `a request for an image of another server goes without the key`() {
+        val elsewhere = "https://elsewhere.example.com/api/Image/series-cover?seriesId=7".toHttpUrl()
+
+        assertThat(authorizer.address(elsewhere)).isEqualTo(elsewhere)
+    }
+
+    /** The header then fails the request, as before: the address alone sends nothing. */
+    @Test
+    fun `a request for an image while the profile waits for a sign-in goes without the key`() {
+        session.signInNeeded.value = true
+        val cover = "$Server/api/Image/series-cover?seriesId=7".toHttpUrl()
+
+        assertThat(authorizer.address(cover)).isEqualTo(cover)
+        assertThat(runCatching { runBlocking { authorizer.header(cover) } }.exceptionOrNull())
+            .isInstanceOf(IOException::class.java)
+    }
+
+    @Test
+    fun `under a base path, a request for an image goes with the key in its address`() {
+        val under = KavitaKeyAuthorizer(FakeProfileSession(kavitaSession("https://h.example.com/kavita")))
+        val cover = "https://h.example.com/kavita/api/Image/chapter-cover?chapterId=3".toHttpUrl()
+
+        assertThat(under.address(cover))
+            .isEqualTo("https://h.example.com/kavita/api/Image/chapter-cover?chapterId=3&apiKey=$TheKey".toHttpUrl())
+    }
 }

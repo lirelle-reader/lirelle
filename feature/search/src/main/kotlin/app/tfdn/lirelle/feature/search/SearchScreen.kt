@@ -167,7 +167,7 @@ fun SearchContent(
                     modifier = Modifier.verticalScroll(rememberScrollState()),
                 )
             } else {
-                SearchResultsContent(results.value, wide, recording)
+                SearchResultsContent(results.value, wide, recording, state.showSeriesCounts, state.seeAllBooks)
             }
         }
     }

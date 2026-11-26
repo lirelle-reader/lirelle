@@ -222,7 +222,7 @@ class LibraryChangeListsTest {
     @Test
     fun `another library shows its series from the top, even answered before the loading was drawn`() {
         repository.seriesResult = ApiResult.Success((1..Many).map { sampleSeries("$it") })
-        val viewModel = SeriesListViewModel(repository, InMemoryLibraryPreferences(), choice)
+        val viewModel = SeriesListViewModel(Everything, repository, InMemoryLibraryPreferences(), choice)
         compose.setContent { LirelleTheme { SeriesTab(onOpenSeries = {}, viewModel = viewModel) } }
         scrollAway("series-1")
         repository.seriesResult = ApiResult.Success((101..100 + Many).map { sampleSeries("$it") })
@@ -255,7 +255,7 @@ class LibraryChangeListsTest {
 
     @Test
     fun `a pull to refresh of the series reads them again and tells the Library`() {
-        val viewModel = SeriesListViewModel(repository, InMemoryLibraryPreferences(), choice)
+        val viewModel = SeriesListViewModel(Everything, repository, InMemoryLibraryPreferences(), choice)
         compose.setContent {
             LirelleTheme { SeriesTab(onOpenSeries = {}, onRefresh = { refreshes++ }, viewModel = viewModel) }
         }
