@@ -17,6 +17,12 @@ import app.tfdn.lirelle.feature.player.service.FakeKeptBookData
 import com.google.common.truth.Truth.assertThat
 import java.io.File
 import java.io.FileNotFoundException
+import java.util.concurrent.CountDownLatch
+import java.util.concurrent.TimeUnit
+import kotlin.concurrent.thread
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.flow.map
 import org.junit.Assert.assertThrows
 import org.junit.Rule
 import org.junit.Test
@@ -46,18 +52,26 @@ class CarCoverProviderTest {
     private val fetches = CarCoverFetches({ 0 }, 4)
 
     /** The profile open now; null when none is. */
-    private var open: String? = "profile-1"
+    private val current = MutableStateFlow<String?>("profile-1")
+    private var open: String? by current::value
 
     /** How many times the open profile was asked. */
     private var asked = 0
 
-    private fun provider(timeoutMillis: Long = 10_000): CarCoverProvider {
+    /** The covers of a profile, which close when [open] names another. */
+    private fun covers(profileId: String, files: CarCoverFiles) =
+        ProfileCovers(profileId, files, current.map { it == profileId }) { open == profileId }
+
+    private fun provider(
+        timeoutMillis: Long = 10_000,
+        covers: (String, CarCoverFiles) -> ProfileCovers = ::covers,
+    ): CarCoverProvider {
         val files = CarCoverFiles(
             kept, urls, FakeLibraryRepository(), server.client, File(folder.root, "car-covers"), fetches,
         )
         val provider = CarCoverProvider(timeoutMillis) {
             asked++
-            open?.let { ProfileCovers(it, files) }
+            open?.let { covers(it, files) }
         }
         provider.attachInfo(context, ProviderInfo().apply { this.authority = this@CarCoverProviderTest.authority })
         return provider
@@ -147,6 +161,38 @@ class CarCoverProviderTest {
         assertThrows(FileNotFoundException::class.java) { provider.coverFile(uri(), Gearhead) }
         assertThat(provider.coverFile(uri("profile-2"), Gearhead).readText()).isEqualTo("cover-1")
         assertThat(asked).isEqualTo(3)
+    }
+
+    @Test
+    fun `a profile that closes while its cover is fetched gives none, and the fetch is given up`() {
+        urls.remember(BookId("1"), "https://books.example/c/1")
+        // The server never answers in the time of the test.
+        val answer = CountDownLatch(1).also { server.hold = it }
+        val provider = provider(timeoutMillis = 60_000)
+        var refused = false
+        val request = thread {
+            refused = runCatching { provider.coverFile(uri(), Gearhead) }.exceptionOrNull() is FileNotFoundException
+        }
+        assertThat(server.arrived.tryAcquire(5, TimeUnit.SECONDS)).isTrue()
+
+        open = null
+        request.join(5_000)
+        val waiting = request.isAlive
+        answer.countDown()
+        request.join()
+
+        assertThat(waiting).isFalse()
+        assertThat(refused).isTrue()
+    }
+
+    @Test
+    fun `a profile that closed just as its cover was found gives none - the same account opened again is another`() {
+        keep("1")
+        // Closed and opened again: the name is the same, the profile is not the one the cover was asked of. Its
+        // closing is not heard in time, and the cover is found: the profile is asked again last.
+        val provider = provider { id, files -> ProfileCovers(id, files, flowOf(true)) { false } }
+
+        assertThrows(FileNotFoundException::class.java) { provider.coverFile(uri(), Gearhead) }
     }
 
     @Test

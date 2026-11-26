@@ -13,21 +13,42 @@ import app.tfdn.lirelle.feature.player.di.PlayerReceiverEntry
 import dagger.hilt.android.EntryPointAccessors
 import java.io.File
 import java.io.FileNotFoundException
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withTimeoutOrNull
 
 /** How long a cover may take to come from the server: past it the car shows its placeholder. */
 private const val FetchTimeoutMillis = 15_000L
 
-/** The covers of the open profile, with the profile they are of. */
-class ProfileCovers(val profileId: String, val files: CarCoverFiles)
+/**
+ * The covers of the open profile, with the profile they are of.
+ *
+ * @property open whether that profile is still the open one, as it changes: the same account opened again is
+ *   another, and once false it is never true again.
+ * @property isOpen what [open] says now.
+ */
+class ProfileCovers(
+    val profileId: String,
+    val files: CarCoverFiles,
+    val open: Flow<Boolean>,
+    val isOpen: () -> Boolean,
+) {
+    /** What [fetch] finds; null once the profile closed, and the fetch is given up then. */
+    @OptIn(ExperimentalCoroutinesApi::class)
+    internal suspend fun <T : Any> whileOpen(fetch: suspend CarCoverFiles.() -> T?): T? =
+        open.mapLatest { stillOpen -> if (stillOpen) files.fetch() else null }.first()
+}
 
 /**
  * Serves the car the covers of the open profile, at the addresses of [CarCovers]: the car loads pictures by
  * itself and cannot sign in to the server. Exported without a permission, which the car's host could not be
  * granted: it answers the app and the car's host only, which is Android Auto as Google signed it
  * ([isAndroidAuto]): the system vouches for the name of the package that asks, and for who signed it. It serves
- * the covers of the profile open at that moment and of no other, and only to be read.
+ * the covers of the profile open at that moment and of no other, and only to be read: a profile that closes while
+ * its cover is fetched gives none.
  *
  * The system makes it, at any time, even with nobody signed in: the open profile is asked at each request
  * ([open]) and never kept.
@@ -64,8 +85,11 @@ class CarCoverProvider internal constructor(
         if (segments.size != 2) notFound("Not a cover: $uri")
         val (profileId, bookId) = segments
         val covers = open(context)?.takeIf { it.profileId == profileId } ?: notFound("Not the open profile")
-        return runBlocking { withTimeoutOrNull(timeoutMillis) { covers.files.file(BookId(bookId)) } }
+        val file = runBlocking { withTimeoutOrNull(timeoutMillis) { covers.whileOpen { file(BookId(bookId)) } } }
             ?: notFound("No cover for $uri")
+        // Fetching it took the time of the server, in which the profile may have closed: asked again last.
+        if (!covers.isOpen()) notFound("Not the open profile any more")
+        return file
     }
 
     /** What a provider answers for a file it does not give: the car then shows its placeholder. */
@@ -101,4 +125,4 @@ private fun openProfileCovers(context: Context): ProfileCovers? =
     EntryPointAccessors.fromApplication(context.applicationContext, PlayerReceiverEntry::class.java)
         .currentProfile()
         .openEntryOrNull<PlayerProfileEntry>()
-        ?.let { ProfileCovers(it.profileId, it.entry.carCovers()) }
+        ?.let { ProfileCovers(it.profileId, it.entry.carCovers(), it.open, it::isOpen) }
