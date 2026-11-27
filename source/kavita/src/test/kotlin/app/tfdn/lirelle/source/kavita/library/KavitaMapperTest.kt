@@ -253,6 +253,28 @@ class KavitaMapperTest {
     }
 
     @Test
+    fun `a file without an id, or a series without a library, gives no file`() {
+        val chapter = read<ChapterDto>("chapter-asterix")
+        val series = read<SeriesDto>("series-asterix")
+        val noId = chapter.copy(files = chapter.files.map { it.copy(id = 0) })
+
+        assertThat(mapper.detail(book(noId), series, metadata = null).files).isEmpty()
+        assertThat(mapper.detail(book(chapter), series.copy(libraryId = 0), metadata = null).files).isEmpty()
+    }
+
+    @Test
+    fun `a file of no size has no size and no content version`() {
+        val chapter = read<ChapterDto>("chapter-asterix")
+        val series = read<SeriesDto>("series-asterix")
+        val empty = chapter.copy(files = chapter.files.map { it.copy(bytes = 0) })
+
+        val file = mapper.detail(book(empty), series, metadata = null).files.single()
+
+        assertThat(file.sizeBytes).isNull()
+        assertThat(file.contentVersion).isNull()
+    }
+
+    @Test
     fun `a lone book's page has no series`() {
         val lone = book(read("chapter-lone"))
         val series = SeriesDto(id = 372, name = "Nouvelles")

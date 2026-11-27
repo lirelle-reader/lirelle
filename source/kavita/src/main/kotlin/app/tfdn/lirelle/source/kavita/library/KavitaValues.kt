@@ -16,7 +16,7 @@ private const val FullPercent = 100
 /** What Kavita writes for a time that is none: the first day of year 1. */
 private const val NoYear = 1
 
-/** Kavita's formats read by pages: images, an archive of images, a PDF. EPUB (3) and unknown (2) are not. */
+/** Kavita's `MangaFormat` values: images 0, an archive 1, unknown 2, EPUB 3, PDF 4. */
 internal const val ImageFormat = 0
 internal const val ArchiveFormat = 1
 internal const val EpubFormat = 3
