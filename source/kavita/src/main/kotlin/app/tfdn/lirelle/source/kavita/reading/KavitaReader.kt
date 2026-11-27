@@ -18,9 +18,13 @@ import app.tfdn.lirelle.core.network.ApiResult
 import app.tfdn.lirelle.core.session.profile.ProfileSession
 import app.tfdn.lirelle.source.kavita.library.KavitaFileRef
 import app.tfdn.lirelle.source.kavita.library.KavitaLibraryApi
+import app.tfdn.lirelle.source.kavita.library.KavitaMapper
+import app.tfdn.lirelle.source.kavita.library.KavitaTitles
 import app.tfdn.lirelle.source.kavita.library.NotFound
+import app.tfdn.lirelle.source.kavita.library.books
 import app.tfdn.lirelle.source.kavita.library.formatOf
 import app.tfdn.lirelle.source.kavita.library.kavitaFile
+import app.tfdn.lirelle.source.kavita.library.kavitaNumber
 import app.tfdn.lirelle.source.kavita.library.utcInstant
 import app.tfdn.lirelle.source.kavita.network.KavitaApis
 import app.tfdn.lirelle.source.kavita.network.KavitaCall
@@ -43,9 +47,10 @@ import retrofit2.HttpException
  * @param now when the device says it is: the time of a place written, as Kavita dates it on taking it.
  */
 internal class KavitaReader(
-    session: ProfileSession,
+    private val session: ProfileSession,
     reading: KavitaApis<KavitaReadingApi>,
-    library: KavitaApis<KavitaLibraryApi>,
+    private val library: KavitaApis<KavitaLibraryApi>,
+    private val titles: KavitaTitles,
     private val errors: KavitaErrors,
     now: () -> Instant = Instant::now,
 ) : ReaderRepository {
@@ -94,8 +99,21 @@ internal class KavitaReader(
 
     override suspend fun rate(readingId: ReadId, rating: Int?): ApiResult<Unit> = NotFound
 
-    override suspend fun nextVolume(seriesId: SeriesId, bookId: BookId, group: VolumeGroup): ApiResult<NextVolume?> =
-        ApiResult.Success(null)
+    /**
+     * The book after [bookId] in the series page's order, none after the last or for a book not in the series.
+     * Kavita's series hold one kind of book, so the [group] is not read.
+     */
+    override suspend fun nextVolume(seriesId: SeriesId, bookId: BookId, group: VolumeGroup): ApiResult<NextVolume?> {
+        val number = seriesId.kavitaNumber() ?: return NotFound
+        return errors.call(KavitaCall.Authenticated) {
+            val url = session.session.value.serverUrl
+            val books = library.forServer(url).detail(number).books()
+            val position = books.indexOfFirst { it.item.bookId == bookId }
+            books.getOrNull(position + 1)?.takeIf { position >= 0 }?.let {
+                NextVolume(it.item.bookId, KavitaMapper(url, titles).title(it), it.index)
+            }
+        }
+    }
 
     /** None: a file kept on the device comes with reading offline. */
     override fun fileUrl(fileId: FileId, audioless: Boolean): String? = null

@@ -96,6 +96,7 @@ internal class KavitaRoutes(private val server: MockWebServer) {
         session,
         readingApi(session),
         KavitaApis(client(session), KavitaJson, KavitaLibraryApi::class.java),
+        FakeTitles,
         KavitaErrors(),
         now,
     )

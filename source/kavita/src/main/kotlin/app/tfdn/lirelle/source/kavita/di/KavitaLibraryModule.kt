@@ -26,13 +26,14 @@ import app.tfdn.lirelle.source.kavita.library.EmptyKavitaAudio
 import app.tfdn.lirelle.source.kavita.library.EmptyKavitaAudioBookmarks
 import app.tfdn.lirelle.source.kavita.library.EmptyKavitaMarks
 import app.tfdn.lirelle.source.kavita.library.EmptyKavitaReadAlong
-import app.tfdn.lirelle.source.kavita.library.EmptyKavitaReader
 import app.tfdn.lirelle.source.kavita.library.KavitaLibrary
 import app.tfdn.lirelle.source.kavita.library.KavitaLibraryApi
 import app.tfdn.lirelle.source.kavita.library.KavitaTitles
 import app.tfdn.lirelle.source.kavita.library.ResourceKavitaTitles
 import app.tfdn.lirelle.source.kavita.network.KavitaApis
 import app.tfdn.lirelle.source.kavita.network.KavitaErrors
+import app.tfdn.lirelle.source.kavita.reading.KavitaReader
+import app.tfdn.lirelle.source.kavita.reading.KavitaReadingApi
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -99,7 +100,12 @@ internal object KavitaLibraryModule {
     @Provides
     @ProfileScoped
     @SourceOf(ServerKind.Kavita)
-    fun reader(): ReaderRepository = EmptyKavitaReader()
+    fun reader(
+        session: ProfileSession,
+        reading: KavitaApis<KavitaReadingApi>,
+        library: KavitaApis<KavitaLibraryApi>,
+        titles: KavitaTitles,
+    ): ReaderRepository = KavitaReader(session, reading, library, titles, KavitaErrors())
 
     @Provides
     @ProfileScoped
