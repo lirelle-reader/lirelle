@@ -6,6 +6,7 @@ import app.tfdn.lirelle.core.downloads.model.DownloadFormat
 import app.tfdn.lirelle.core.downloads.offline.KeptBookData
 import app.tfdn.lirelle.core.ids.BookId
 import app.tfdn.lirelle.core.library.LibraryRepository
+import app.tfdn.lirelle.core.library.SourceCapabilities
 import app.tfdn.lirelle.core.library.model.BookDetail
 import app.tfdn.lirelle.core.library.model.BookFile
 import app.tfdn.lirelle.core.library.model.DownloadProgress
@@ -117,6 +118,7 @@ class BookOpener @Inject constructor(
     private val kept: KeptBookData,
     private val downloads: Downloads,
     private val permission: DownloadPermission = DownloadPermission { true },
+    private val capabilities: SourceCapabilities = SourceCapabilities.Everything,
 ) {
     fun open(bookId: BookId): Flow<OpeningStep> = flow {
         val detail = when (val answer = detail(bookId)) {
@@ -137,6 +139,11 @@ class BookOpener @Inject constructor(
             emit(OpeningStep.Failed(failure ?: ReaderFailure.NoEpub))
             return@flow
         }
+        // Kavita serves an EPUB only as a download: an account without the right is told so, not sent asking.
+        if (refusedForWantOfDownloadRight(bookId)) {
+            emit(OpeningStep.Failed(ReaderFailure.DownloadNotAllowed))
+            return@flow
+        }
         val key = CachedBookKey(file.id, file.contentVersion)
         // A read-along file carries its audio: the text alone is what the reader needs.
         cache.open(bookId, key, audioless = file.hasReadAlong).collect { state ->
@@ -152,10 +159,15 @@ class BookOpener @Inject constructor(
         }
     }
 
+    /** Whether the source needs the right to download to read a text file, and the account has none to give. */
+    private suspend fun refusedForWantOfDownloadRight(bookId: BookId): Boolean =
+        capabilities.downloadToRead && !readAlongOpens(bookId)
+
     /**
-     * Whether a read-along file can be had: the account may download, or the device keeps the text already and
-     * nothing is asked of the server. When it cannot, the book's plain EPUB is the one opened, if it has one:
-     * this is known before the server is asked, not from its refusal.
+     * Whether a file that needs the right to download can be had: the account may download, or the device keeps
+     * the text already and nothing is asked of the server. It serves a read-along file, and any text file of a
+     * source whose [SourceCapabilities.downloadToRead] is set. When a read-along file cannot be had, the book's
+     * plain EPUB is the one opened, if it has one: this is known before the server is asked, not from its refusal.
      */
     private suspend fun readAlongOpens(bookId: BookId): Boolean =
         permission.allowed() || downloads.keeps(bookId, DownloadFormat.Text)
