@@ -20,6 +20,9 @@ internal enum class AbsCall {
     /** The session opened with a name and a password. */
     SignIn,
 
+    /** The session opened by exchanging the code the server's identity provider gave, through the browser. */
+    OidcExchange,
+
     /** A public call with no meaning of its own: the server's ways of signing in. */
     Other,
 }
@@ -61,12 +64,28 @@ internal class AbsErrors(private val log: () -> NetworkLog = { NetworkDiagnostic
         code in ServerErrors -> ApiError.ServerFailed
         // A wrong name or password, an unknown or disabled account: one answer, which says no more.
         code == Unauthorized && kind == AbsCall.SignIn -> ApiError.InvalidCredentials
+        kind == AbsCall.OidcExchange -> exchangeStatus(code)
+        else -> ApiError.Unexpected
+    }
+
+    /**
+     * What a refused exchange of the provider's code means. The server answers a failed one — a code refused or used,
+     * an account unknown, disabled or not let in — with a redirect to its web sign-in page; a refusal as such
+     * likewise. Without the sign-in's session (the server restarted, or the session was used by an exchange already)
+     * it answers 400: the sign-in can no longer end, as one begun too long ago, and the user begins again.
+     */
+    private fun exchangeStatus(code: Int): ApiError = when (code) {
+        in Redirects, Unauthorized, Forbidden -> ApiError.SignInRefused
+        BadRequest -> ApiError.OidcRefused
         else -> ApiError.Unexpected
     }
 
     private companion object {
+        const val BadRequest = 400
         const val Unauthorized = 401
+        const val Forbidden = 403
         const val TooManyRequests = 429
+        val Redirects = 300..399
         val ServerErrors = 500..599
     }
 }

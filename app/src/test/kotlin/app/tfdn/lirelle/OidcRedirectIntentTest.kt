@@ -1,7 +1,9 @@
 package app.tfdn.lirelle
 
+import android.content.Context
 import android.content.Intent
 import androidx.core.net.toUri
+import androidx.test.core.app.ApplicationProvider
 import com.google.common.truth.Truth.assertThat
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -19,6 +21,16 @@ class OidcRedirectIntentTest {
         assertThat(oidcRedirectOf(view(redirect))).isEqualTo(redirect)
     }
 
+    /** Audiobookshelf's sign-in returns to Lirelle's own address, or else to the one of the official app. */
+    @Test
+    fun `an Audiobookshelf return carries its uri, to either address`() {
+        listOf(
+            "lirelle://oauth?code=code-1&state=state-1",
+            "audiobookshelf://oauth?code=code-1&state=state-1",
+            "lirelle://oauth?code=undefined&state=state-1",
+        ).forEach { assertThat(oidcRedirectOf(view(it))).isEqualTo(it) }
+    }
+
     @Test
     fun `an intent replayed from the recent apps carries no redirect`() {
         assertThat(oidcRedirectOf(view(redirect, Intent.FLAG_ACTIVITY_LAUNCHED_FROM_HISTORY))).isNull()
@@ -33,6 +45,29 @@ class OidcRedirectIntentTest {
     fun `another link carries no redirect`() {
         assertThat(oidcRedirectOf(view("https://books.example.com/oauth2-callback?code=code-1"))).isNull()
         assertThat(oidcRedirectOf(view("bookorbit://elsewhere?code=code-1&state=state-1"))).isNull()
+        assertThat(oidcRedirectOf(view("lirelle://elsewhere?code=code-1&state=state-1"))).isNull()
+        assertThat(oidcRedirectOf(view("lirelle://oauth2-callback?code=code-1&state=state-1"))).isNull()
+        assertThat(oidcRedirectOf(view("bookorbit://oauth?code=code-1&state=state-1"))).isNull()
+        assertThat(oidcRedirectOf(view("audiobookshelf://elsewhere?code=code-1&state=state-1"))).isNull()
+        assertThat(oidcRedirectOf(view("https://books.example.com/oauth?code=code-1&state=state-1"))).isNull()
+    }
+
+    /** What the browser's return finds: the activity, by the manifest's filters, for the three addresses only. */
+    @Test
+    fun `the browser's returns open the app, other links of its schemes do not`() {
+        val context = ApplicationProvider.getApplicationContext<Context>()
+        fun opensTheApp(uri: String): Boolean {
+            val intent = view(uri).addCategory(Intent.CATEGORY_BROWSABLE).setPackage(context.packageName)
+            return context.packageManager.queryIntentActivities(intent, 0)
+                .any { it.activityInfo.name == MainActivity::class.java.name }
+        }
+
+        assertThat(opensTheApp(redirect)).isTrue()
+        assertThat(opensTheApp("lirelle://oauth?code=code-1&state=state-1")).isTrue()
+        assertThat(opensTheApp("audiobookshelf://oauth?code=code-1&state=state-1")).isTrue()
+        assertThat(opensTheApp("lirelle://elsewhere?code=code-1&state=state-1")).isFalse()
+        assertThat(opensTheApp("bookorbit://oauth?code=code-1&state=state-1")).isFalse()
+        assertThat(opensTheApp("lirelle://oauth2-callback?code=code-1&state=state-1")).isFalse()
     }
 
     @Test

@@ -109,6 +109,23 @@ class PendingOidcAnswerTest {
         assertThat(pendingOidc.pending).isEqualTo(begun())
     }
 
+    /** Audiobookshelf's sign-in waits in the same place, and returns to the address its record names. */
+    @Test
+    fun `an Audiobookshelf return is not BookOrbit's, even with the state of the sign-in that waits`() =
+        runBlocking {
+            val audiobookshelf = begun().copy(redirectUri = "lirelle://oauth", cookies = "connect.sid=abc")
+            pendingOidc.pending = audiobookshelf
+
+            listOf("lirelle://oauth?code=code-1&state=state-1", "audiobookshelf://oauth?code=code-1&state=state-1")
+                .forEach {
+                    assertThat(repository.answersPendingOidc(it)).isFalse()
+                    assertThat(repository.completeOidc(it)).isEqualTo(ApiResult.Failure(ApiError.OidcRefused))
+                }
+
+            assertThat(pendingOidc.pending).isEqualTo(audiobookshelf)
+            assertThat(server.requestCount).isEqualTo(0)
+        }
+
     @Test
     fun `a sign-in is begun at the time it is`() = runBlocking {
         server.enqueueFixture("oidc-state.json")

@@ -14,3 +14,18 @@ internal const val ReturnTokensHeader = "x-return-tokens"
 
 /** The header a refresh token goes in, to renew the session or to close it. */
 internal const val RefreshTokenHeader = "x-refresh-token"
+
+/** The first call of a sign-in through the server's identity provider, from the server's address. */
+internal const val OidcRoute = "auth/openid"
+
+/** The exchange of the code the provider gave for the session, from the server's address. */
+internal const val OidcCallbackRoute = "auth/openid/callback"
+
+/** Where the browser comes back to the app from the provider, when the server allows it: Lirelle's own address. */
+internal const val LirelleReturn = "lirelle://oauth"
+
+/**
+ * Where it comes back otherwise: the official app's address, which every server allows unless its administrator
+ * removed it.
+ */
+internal const val OfficialAppReturn = "audiobookshelf://oauth"

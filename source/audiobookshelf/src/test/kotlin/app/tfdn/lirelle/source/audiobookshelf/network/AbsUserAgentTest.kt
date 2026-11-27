@@ -1,8 +1,13 @@
 package app.tfdn.lirelle.source.audiobookshelf.network
 
+import app.tfdn.lirelle.core.network.OidcProvider
+import app.tfdn.lirelle.core.network.ProviderFlow
 import app.tfdn.lirelle.core.network.newPublicClient
 import app.tfdn.lirelle.core.testing.TestUserAgent
+import app.tfdn.lirelle.source.audiobookshelf.testing.AbsOidcServer
+import app.tfdn.lirelle.source.audiobookshelf.testing.MemoryPendingOidc
 import app.tfdn.lirelle.source.audiobookshelf.testing.MemoryStore
+import app.tfdn.lirelle.source.audiobookshelf.testing.SignedInAt
 import app.tfdn.lirelle.source.audiobookshelf.testing.enqueueDone
 import app.tfdn.lirelle.source.audiobookshelf.testing.enqueueJson
 import app.tfdn.lirelle.source.audiobookshelf.testing.loginJson
@@ -21,8 +26,8 @@ private const val UserAgentHeader = "User-Agent"
 
 /**
  * Every request Audiobookshelf's sign-in sends names Lirelle: its clients are made from the public client, as the
- * app makes them ([absProbe], [absPublicApi], [AbsLogout]), so that a client built aside, without the agent, fails
- * here.
+ * app makes them ([absProbe], [absPublicApi], [absOidcApi], [AbsLogout]), so that a client built aside, without the
+ * agent, fails here.
  */
 class AbsUserAgentTest {
 
@@ -46,7 +51,17 @@ class AbsUserAgentTest {
         assertThat(headers.values(UserAgentHeader)).containsExactly(TestUserAgent.value)
     }
 
-    private fun signIn() = AbsSignIn(MemoryStore(), absPublicApi(publicClient), AbsErrors(), AbsLogout(publicClient))
+    private val pendingOidc = MemoryPendingOidc()
+
+    private fun signIn() = AbsSignIn(
+        store = MemoryStore(),
+        api = absPublicApi(publicClient),
+        oidcApi = absOidcApi(publicClient),
+        pendingOidc = pendingOidc,
+        errors = AbsErrors(),
+        logout = AbsLogout(publicClient),
+        now = { SignedInAt },
+    )
 
     @Test
     fun `the probe's request names Lirelle`() = runBlocking<Unit> {
@@ -67,6 +82,19 @@ class AbsUserAgentTest {
 
         server.takeRequest().assertNamesLirelle("/status")
         server.takeRequest().assertNamesLirelle("/login")
+    }
+
+    @Test
+    fun `a sign-in through the provider names Lirelle, from its first call to its exchange`() = runBlocking<Unit> {
+        val routes = AbsOidcServer()
+        server.dispatcher = routes
+
+        signIn().beginOidc(url, OidcProvider("openid", "OpenID", "", "", ProviderFlow.Browser))
+        val state = pendingOidc.pending!!.state
+        signIn().completeOidc("lirelle://oauth?code=c&state=$state")
+
+        server.takeRequest().assertNamesLirelle("/auth/openid")
+        server.takeRequest().assertNamesLirelle("/auth/openid/callback")
     }
 
     @Test

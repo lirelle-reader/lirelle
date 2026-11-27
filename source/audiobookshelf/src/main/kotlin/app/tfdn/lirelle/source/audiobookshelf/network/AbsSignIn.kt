@@ -10,6 +10,7 @@ import app.tfdn.lirelle.core.network.ProviderFlow
 import app.tfdn.lirelle.core.network.SignInIdentifier
 import app.tfdn.lirelle.core.network.SourceSignIn
 import app.tfdn.lirelle.core.session.Credential
+import app.tfdn.lirelle.core.session.PendingOidcStore
 import app.tfdn.lirelle.core.session.ServerKind
 import app.tfdn.lirelle.core.session.SessionStore
 import app.tfdn.lirelle.core.session.SignOutReason
@@ -21,9 +22,6 @@ import kotlinx.coroutines.NonCancellable
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.SerializationException
 
-/** What the app calls Audiobookshelf's one identity provider: the server's own route names it so. */
-private const val ProviderSlug = "openid"
-
 /** What a provider's button says when the server gives it no text. */
 private const val UnnamedProvider = "OpenID"
 
@@ -32,10 +30,11 @@ private const val LocalMethod = "local"
 private const val OpenIdMethod = "openid"
 
 /**
- * Signing in to an Audiobookshelf server, and out of an Audiobookshelf profile. By name and password: the session
- * it opens is saved as an Audiobookshelf profile holding its access and refresh tokens, under a sign-in id the app
- * draws ([AbsProfiles]) — the refresh token changes at every renewal, and cannot name the sign-in. The password and
- * the old token every answer also carries are kept nowhere. Never with a key the user pasted ([NoPastedKey]).
+ * Signing in to an Audiobookshelf server, and out of an Audiobookshelf profile. By name and password, or through the
+ * server's identity provider in the browser ([AbsOidc]): the session either opens is saved as an Audiobookshelf
+ * profile holding its access and refresh tokens, under a sign-in id the app draws ([AbsProfiles]) — the refresh token
+ * changes at every renewal, and cannot name the sign-in. The password and the old token every answer also carries
+ * are kept nowhere. Never with a key the user pasted ([NoPastedKey]).
  *
  * A session the app lets go of is closed on the server at best ([logout]): the current profile's when it is signed
  * out of, the one an account signed in again replaces, and the one of a profile removed while it slept.
@@ -43,6 +42,8 @@ private const val OpenIdMethod = "openid"
 internal class AbsSignIn(
     private val store: SessionStore,
     private val api: AbsApis<AbsPublicApi>,
+    oidcApi: AbsApis<AbsOidcApi>,
+    pendingOidc: PendingOidcStore,
     private val errors: AbsErrors,
     private val logout: AbsLogout,
     now: () -> Instant = Instant::now,
@@ -51,6 +52,8 @@ internal class AbsSignIn(
     PastedKeySignIn by NoPastedKey {
 
     private val profiles = AbsProfiles(store, logout, now, newSignInId)
+
+    private val oidc = AbsOidc(pendingOidc, oidcApi, errors, profiles, now)
 
     /**
      * A name and a password when the server announces `local`, its provider in the browser when it announces
@@ -78,21 +81,21 @@ internal class AbsSignIn(
             profiles.save(serverUrl, user)
         }
 
-    /** No sign-in through the server's provider is begun yet: the browser flow is still to come. */
+    /** The server has one provider, [ProviderSlug]: whichever [provider] is asked for, it is that one. */
     override suspend fun beginOidc(serverUrl: String, provider: OidcProvider): ApiResult<String> =
-        ApiResult.Failure(ApiError.OidcRefused)
+        oidc.begin(serverUrl)
 
-    override suspend fun completeOidc(redirectUri: String): ApiResult<Unit> = ApiResult.Failure(ApiError.OidcRefused)
+    override suspend fun completeOidc(redirectUri: String): ApiResult<Unit> = oidc.complete(redirectUri)
 
     /** Audiobookshelf's provider signs in through the browser, whose redirect [completeOidc] takes: never a WebView. */
     override suspend fun completeWithSession(serverUrl: String, cookies: String): ApiResult<Unit> =
         ApiResult.Failure(ApiError.OidcRefused)
 
-    override suspend fun hasPendingOidc(): Boolean = false
+    override suspend fun hasPendingOidc(): Boolean = oidc.isPending()
 
-    override suspend fun answersPendingOidc(redirectUri: String): Boolean = false
+    override suspend fun answersPendingOidc(redirectUri: String): Boolean = oidc.answers(redirectUri)
 
-    override suspend fun cancelOidc() = Unit
+    override suspend fun cancelOidc() = oidc.cancel()
 
     /**
      * Removes the profile [profileId] when it is the current one and an Audiobookshelf profile, then closes its

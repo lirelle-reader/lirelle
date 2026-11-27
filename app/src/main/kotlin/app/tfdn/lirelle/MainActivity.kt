@@ -72,7 +72,7 @@ internal fun oidcRedirectOf(intent: Intent?): String? {
     // An activity brought back from the recent apps is handed its original intent again:
     // that redirect was already used.
     if (intent.flags and Intent.FLAG_ACTIVITY_LAUNCHED_FROM_HISTORY != 0) return null
-    return data.toString().takeIf { data.scheme == OidcScheme && data.host == OidcHost }
+    return data.toString().takeIf { (data.scheme to data.host) in OidcReturns }
 }
 
 /**
@@ -104,5 +104,13 @@ internal fun takeDownloadsRequest(intent: Intent?): Boolean {
     return asked && intent.flags and Intent.FLAG_ACTIVITY_LAUNCHED_FROM_HISTORY == 0
 }
 
-private const val OidcScheme = "bookorbit"
-private const val OidcHost = "oauth2-callback"
+/**
+ * The addresses the browser comes back to from an identity provider, as scheme and host: BookOrbit's, which its
+ * server alone accepts, and Audiobookshelf's — Lirelle's own, or else the official app's, which every server allows
+ * unless its administrator removed it. Each kind tells its own return from another's.
+ */
+private val OidcReturns = setOf(
+    "bookorbit" to "oauth2-callback",
+    "lirelle" to "oauth",
+    "audiobookshelf" to "oauth",
+)
