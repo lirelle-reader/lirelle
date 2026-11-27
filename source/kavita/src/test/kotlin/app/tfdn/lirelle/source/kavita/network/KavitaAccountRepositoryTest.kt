@@ -113,7 +113,7 @@ class KavitaAccountRepositoryTest {
 
     private suspend fun canDownloadWith(json: String): Boolean {
         server.enqueueJson(json)
-        account.refreshAccount()
+        assertThat(account.refreshAccount()).isEqualTo(ApiResult.Success(Unit))
         return session.session.value.user.canDownload
     }
 
