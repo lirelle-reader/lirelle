@@ -44,14 +44,14 @@ internal fun filesOf(chapter: ChapterDto, libraryId: Int, seriesId: Int): List<B
             isPrimary = true,
             narrationSeconds = null,
             chapterCount = null,
-            contentVersion = size?.let { versionOf(chapter.files) },
+            contentVersion = size?.let { chapterVersion(chapter.files) },
             keepable = keepable,
         ),
     )
 }
 
 /** The version of a chapter's [files]: each one's id and size, `44:90730953,45:10`. */
-private fun versionOf(files: List<FileDto>): String =
+private fun chapterVersion(files: List<FileDto>): String =
     files.joinToString(FilesSeparator) { "${it.id}$VersionSeparator${it.bytes}" }
 
 private const val VersionSeparator = ":"
