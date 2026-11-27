@@ -21,6 +21,11 @@ data class BookFile(
     val chapterCount: Int?,
     /** Changes when the file is replaced on the server (and sometimes when it is not). */
     val contentVersion: String? = null,
+    /**
+     * Whether the file can be kept on the device. False when its server cannot serve it as it reads it (a Kavita
+     * chapter of several files, sent as a zip of them): it is read online and offered nowhere to keep.
+     */
+    val keepable: Boolean = true,
 ) {
     /** An EPUB whose narration is synchronised with its text. */
     val hasReadAlong: Boolean get() = kind == BookFileKind.ReadAlongEpub
