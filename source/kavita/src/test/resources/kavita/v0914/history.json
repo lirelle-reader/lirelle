@@ -1,0 +1,175 @@
+{
+ "pagination": "{\"currentPage\":1,\"itemsPerPage\":5,\"totalItems\":66,\"totalPages\":14}",
+ "body": [
+  {
+   "sessionDataIds": [
+    237
+   ],
+   "sessionId": 65,
+   "isGeneratedSession": false,
+   "startTimeUtc": "2026-11-26T20:44:17.2240952",
+   "endTimeUtc": "2026-11-26T20:44:21.4738689",
+   "localDate": "2026-11-26T00:00:00",
+   "seriesId": 43,
+   "seriesName": "Garfield",
+   "seriesFormat": 1,
+   "chapters": [
+    {
+     "chapterId": 535,
+     "label": "Issue #1 - Prend du poids",
+     "startTimeUtc": "2026-11-26T20:44:17.2240952",
+     "endTimeUtc": "2026-11-26T20:44:21.4738689",
+     "pagesRead": 8,
+     "wordsRead": 0,
+     "durationSeconds": 4,
+     "startPage": 4,
+     "endPage": 12,
+     "totalPages": 48,
+     "completed": false
+    }
+   ],
+   "libraryId": 1,
+   "libraryName": "BD",
+   "pagesRead": 8,
+   "wordsRead": 0,
+   "durationSeconds": 4,
+   "totalPages": 48
+  },
+  {
+   "sessionDataIds": [
+    238
+   ],
+   "sessionId": 66,
+   "isGeneratedSession": true,
+   "startTimeUtc": "2026-11-26T20:26:58.4508841",
+   "endTimeUtc": "2026-11-26T20:44:24.5034949",
+   "localDate": "2026-11-26T00:00:00",
+   "seriesId": 7,
+   "seriesName": "Astérix",
+   "seriesFormat": 1,
+   "chapters": [
+    {
+     "chapterId": 44,
+     "label": "Volume 1 - Issue #1 - Astérix le Gaulois",
+     "startTimeUtc": "2026-11-26T20:26:58.4508841",
+     "endTimeUtc": "2026-11-26T20:44:24.5034949",
+     "pagesRead": 53,
+     "wordsRead": 0,
+     "durationSeconds": 1046,
+     "startPage": 53,
+     "endPage": 53,
+     "totalPages": 53,
+     "completed": true
+    }
+   ],
+   "libraryId": 1,
+   "libraryName": "BD",
+   "pagesRead": 53,
+   "wordsRead": 0,
+   "durationSeconds": 1046,
+   "totalPages": 53
+  },
+  {
+   "sessionDataIds": [
+    119
+   ],
+   "sessionId": 33,
+   "isGeneratedSession": false,
+   "startTimeUtc": "2026-11-26T08:27:16.3278263",
+   "endTimeUtc": "2026-11-26T08:27:16.4956189",
+   "localDate": "2026-11-26T00:00:00",
+   "seriesId": 43,
+   "seriesName": "Garfield",
+   "seriesFormat": 1,
+   "chapters": [
+    {
+     "chapterId": 535,
+     "label": "Issue #1 - Prend du poids",
+     "startTimeUtc": "2026-11-26T08:27:16.3278263",
+     "endTimeUtc": "2026-11-26T08:27:16.4956189",
+     "pagesRead": 1,
+     "wordsRead": 0,
+     "durationSeconds": 0,
+     "startPage": 3,
+     "endPage": 4,
+     "totalPages": 48,
+     "completed": false
+    }
+   ],
+   "libraryId": 1,
+   "libraryName": "BD",
+   "pagesRead": 1,
+   "wordsRead": 0,
+   "durationSeconds": 0,
+   "totalPages": 48
+  },
+  {
+   "sessionDataIds": [
+    221
+   ],
+   "sessionId": 56,
+   "isGeneratedSession": true,
+   "startTimeUtc": "2026-11-26T08:11:29.3488166",
+   "endTimeUtc": "2026-11-26T08:27:16.7172715",
+   "localDate": "2026-11-26T00:00:00",
+   "seriesId": 65,
+   "seriesName": "Lucky Luke",
+   "seriesFormat": 1,
+   "chapters": [
+    {
+     "chapterId": 861,
+     "label": "Issue #32 - La diligence",
+     "startTimeUtc": "2026-11-26T08:11:29.3488166",
+     "endTimeUtc": "2026-11-26T08:27:16.7172715",
+     "pagesRead": 48,
+     "wordsRead": 0,
+     "durationSeconds": 947,
+     "startPage": 48,
+     "endPage": 48,
+     "totalPages": 48,
+     "completed": true
+    }
+   ],
+   "libraryId": 1,
+   "libraryName": "BD",
+   "pagesRead": 48,
+   "wordsRead": 0,
+   "durationSeconds": 947,
+   "totalPages": 48
+  },
+  {
+   "sessionDataIds": [
+    218
+   ],
+   "sessionId": 54,
+   "isGeneratedSession": true,
+   "startTimeUtc": "2026-11-26T08:11:29.3479707",
+   "endTimeUtc": "2026-11-26T08:27:16.7164256",
+   "localDate": "2026-11-26T00:00:00",
+   "seriesId": 65,
+   "seriesName": "Lucky Luke",
+   "seriesFormat": 1,
+   "chapters": [
+    {
+     "chapterId": 844,
+     "label": "Issue #33 - Le Pied-Tendre",
+     "startTimeUtc": "2026-11-26T08:11:29.3479707",
+     "endTimeUtc": "2026-11-26T08:27:16.7164256",
+     "pagesRead": 48,
+     "wordsRead": 0,
+     "durationSeconds": 947,
+     "startPage": 48,
+     "endPage": 48,
+     "totalPages": 48,
+     "completed": true
+    }
+   ],
+   "libraryId": 1,
+   "libraryName": "BD",
+   "pagesRead": 48,
+   "wordsRead": 0,
+   "durationSeconds": 947,
+   "totalPages": 48
+  }
+ ]
+}

@@ -1,0 +1,39 @@
+{
+ "pagination": "{\"currentPage\":1,\"itemsPerPage\":5,\"totalItems\":1,\"totalPages\":1}",
+ "body": [
+  {
+   "sessionDataIds": [
+    238
+   ],
+   "sessionId": 66,
+   "isGeneratedSession": true,
+   "startTimeUtc": "2026-11-26T20:26:58.4508841",
+   "endTimeUtc": "2026-11-26T20:44:24.5034949",
+   "localDate": "2026-11-26T00:00:00",
+   "seriesId": 7,
+   "seriesName": "Astérix",
+   "seriesFormat": 1,
+   "chapters": [
+    {
+     "chapterId": 44,
+     "label": "Volume 1 - Issue #1 - Astérix le Gaulois",
+     "startTimeUtc": "2026-11-26T20:26:58.4508841",
+     "endTimeUtc": "2026-11-26T20:44:24.5034949",
+     "pagesRead": 53,
+     "wordsRead": 0,
+     "durationSeconds": 1046,
+     "startPage": 53,
+     "endPage": 53,
+     "totalPages": 53,
+     "completed": true
+    }
+   ],
+   "libraryId": 1,
+   "libraryName": "BD",
+   "pagesRead": 53,
+   "wordsRead": 0,
+   "durationSeconds": 1046,
+   "totalPages": 53
+  }
+ ]
+}

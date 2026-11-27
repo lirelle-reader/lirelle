@@ -1,0 +1,38 @@
+{
+ "pagination": "{\"currentPage\":1,\"itemsPerPage\":5,\"totalItems\":1,\"totalPages\":1}",
+ "body": [
+  {
+   "sessionDataIds": [
+    1
+   ],
+   "sessionId": 1,
+   "startTimeUtc": "2026-11-26T08:36:37.2537995",
+   "endTimeUtc": "2026-11-26T08:38:30.050052",
+   "localDate": "2026-11-26T00:00:00",
+   "seriesId": 50,
+   "seriesName": "Garfield",
+   "seriesFormat": 1,
+   "chapters": [
+    {
+     "chapterId": 589,
+     "label": "Issue #1",
+     "startTimeUtc": "2026-11-26T08:36:37.2537995",
+     "endTimeUtc": "2026-11-26T08:38:30.050052",
+     "pagesRead": 1,
+     "wordsRead": 0,
+     "durationSeconds": 112,
+     "startPage": 3,
+     "endPage": 4,
+     "totalPages": 48,
+     "completed": false
+    }
+   ],
+   "libraryId": 1,
+   "libraryName": "BD",
+   "pagesRead": 1,
+   "wordsRead": 0,
+   "durationSeconds": 112,
+   "totalPages": 48
+  }
+ ]
+}
