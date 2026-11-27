@@ -612,6 +612,25 @@ class FormatPlannerTest {
             assertThat(refused(DownloadFormat.Text)).isEqualTo(ApiError.NotFound)
         }
 
+    @Test
+    fun `a text file that cannot be kept is no download, and no answer for a check or an update`() =
+        runBlocking<Unit> {
+            keepAlbum(version = "text-11")
+            val epub = Books.book(Books.epub(11, format = "EPUB"))
+            kept.keep(epub)
+            // The chapter gained a second file: the server now sends a zip of them.
+            serve(epub.copy(files = epub.files.map { it.copy(keepable = false) }))
+
+            assertThat(planner.plan(TheBook, DownloadFormat.Text, PlanFor.Download))
+                .isEqualTo(ApiResult.Failure(ApiError.NotFound))
+            assertThat(planner.plan(TheBook, DownloadFormat.Text, PlanFor.Check))
+                .isEqualTo(ApiResult.Failure(ApiError.Unexpected))
+            assertThat(planner.plan(TheBook, DownloadFormat.Text, PlanFor.Update))
+                .isEqualTo(ApiResult.Failure(ApiError.Unexpected))
+            assertThat(kept.detail(TheBook)).isEqualTo(epub)
+            assertThat(served.asked).isEmpty()
+        }
+
     // --- every plan
 
     @Test

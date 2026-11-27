@@ -172,4 +172,20 @@ class OfferedFormatTest {
             OfferedFormat(DownloadFormat.Narration, FileId("31"), 98_700_000),
         ).inOrder()
     }
+
+    @Test
+    fun `a text file that cannot be kept offers nothing`() {
+        listOf("EPUB", "PDF").forEach { format ->
+            val book = Books.book(Books.epub(11, format = format).copy(keepable = false))
+
+            assertThat(book.offeredFormats()).isEmpty()
+        }
+    }
+
+    @Test
+    fun `an EPUB that cannot be kept leaves the audiobook offered`() {
+        val book = Books.book(Books.epub(11).copy(keepable = false), Books.audio(21, 27_000_000))
+
+        assertThat(book.offeredFormats().map { it.format }).containsExactly(DownloadFormat.Audiobook)
+    }
 }

@@ -39,7 +39,8 @@ fun List<OfferedFormat>.textName(): TextName =
 val BookDetail.textFile: BookFile? get() = readerFile ?: pagedFile
 
 /**
- * The formats of the book that can be kept, in the order of [DownloadFormat]. The text is the [textFile].
+ * The formats of the book that can be kept, in the order of [DownloadFormat]. The text is the [textFile], when it
+ * can be kept.
  *
  * The size of a read-along file is its text and its tracks together: it is shown under the narration only, and the
  * text of such a file, which comes without its audio, has no size known beforehand. A plain EPUB of the same
@@ -47,7 +48,7 @@ val BookDetail.textFile: BookFile? get() = readerFile ?: pagedFile
  * beforehand either: their file's is the estimate.
  */
 fun BookDetail.offeredFormats(): List<OfferedFormat> = listOfNotNull(
-    textFile?.let { text(it) },
+    textFile?.takeIf { it.keepable }?.let { text(it) },
     audioFiles.takeIf { it.isNotEmpty() }?.let { audio ->
         OfferedFormat(
             format = DownloadFormat.Audiobook,

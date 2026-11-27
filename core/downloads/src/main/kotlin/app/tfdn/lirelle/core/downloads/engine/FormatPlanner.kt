@@ -80,7 +80,9 @@ class FormatPlanner @Inject internal constructor(
      *
      * A book without this format is [ApiError.NotFound]; one merged into another is [ApiError.Moved], and is not
      * planned under the number asked. A check or an update of a book whose files the server cannot serve for now
-     * ([BookDetail.filesUnavailable]) is [ApiError.Unexpected]: no answer about the book, an update to retry.
+     * ([BookDetail.filesUnavailable]), or whose text file cannot be kept ([BookFile.keepable]), is
+     * [ApiError.Unexpected]: no answer about the book, an update to retry. A download of the latter is
+     * [ApiError.NotFound].
      */
     override suspend fun plan(bookId: BookId, format: DownloadFormat, purpose: PlanFor): ApiResult<FormatPlan> {
         val detail = when (val book = library.book(bookId)) {
@@ -107,6 +109,11 @@ class FormatPlanner @Inject internal constructor(
 
     private suspend fun text(detail: BookDetail, purpose: PlanFor): ApiResult<FormatPlan> {
         val file = detail.textFile ?: return ApiResult.Failure(ApiError.NotFound)
+        // A file the server cannot serve as it reads it is kept nowhere: nothing to download, and for a book kept
+        // before that, a check or an update gets no answer (not gone, not updated) and the kept copy stays.
+        if (!file.keepable) {
+            return ApiResult.Failure(if (purpose == PlanFor.Download) ApiError.NotFound else ApiError.Unexpected)
+        }
         // A book read page by page from the server, a comic or a DjVu, has no single file to keep: its pages are.
         val served = servedKind(file)
         if (served != null) return paged.plan(detail.id, file, served, purpose)
