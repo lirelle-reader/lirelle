@@ -224,6 +224,20 @@ class KavitaReadsTest {
     }
 
     @Test
+    fun `entries without any time are ordered by their day, not by their session`() {
+        val reads = readsOf(
+            listOf(
+                untimed(session = 1, day = "2026-11-21", chapter = 44, completed = true, seconds = 300),
+                untimed(session = 2, day = "2026-11-20", chapter = 44, completed = false, seconds = 600),
+            ),
+        )
+
+        assertThat(reads).containsExactly(
+            read(44, started = "2026-11-20", ended = "2026-11-21", readNumber = 1, seconds = 900, sessions = 2),
+        )
+    }
+
+    @Test
     fun `no sessions make no reads`() {
         assertThat(readsOf(emptyList())).isEmpty()
     }
@@ -250,6 +264,12 @@ class KavitaReadsTest {
             chapters = listOf(HistoryChapterDto(chapter, start, seconds, completed)),
         )
     }
+
+    /** An item as [item] makes it, but without any time: its day only. */
+    private fun untimed(session: Int, day: String, chapter: Int, completed: Boolean, seconds: Long) =
+        item(session, day, chapter, completed, seconds).let {
+            it.copy(startTimeUtc = null, chapters = listOf(it.chapters.single().copy(startTimeUtc = null)))
+        }
 
     /** A read of an Astérix chapter. */
     @Suppress("LongParameterList") // Tests name every parameter they set.
