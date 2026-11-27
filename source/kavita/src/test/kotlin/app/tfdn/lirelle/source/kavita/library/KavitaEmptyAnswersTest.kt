@@ -1,6 +1,5 @@
 package app.tfdn.lirelle.source.kavita.library
 
-import app.tfdn.lirelle.core.downloads.model.FileSource
 import app.tfdn.lirelle.core.ids.BookId
 import app.tfdn.lirelle.core.ids.FileId
 import app.tfdn.lirelle.core.network.ApiError
@@ -17,7 +16,7 @@ private val Nothing = ApiResult.Success(emptyList<Any>())
 
 /**
  * What Kavita does not have: no audio, no mark, no narration (every write is refused, nothing is asked of the
- * server), and how a refused download is told.
+ * server).
  */
 class KavitaEmptyAnswersTest {
 
