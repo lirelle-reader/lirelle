@@ -69,7 +69,7 @@ internal class KavitaMapper(private val serverUrl: String, private val titles: K
     /**
      * A book's page. What its chapter does not say — summary, genres, publisher, language — the series' [metadata]
      * does, when it came. An EPUB's Kavita pages are its spine items, a number that means nothing to a reader: the
-     * page count is given for a book read by pages only. No file is offered yet: reading a Kavita book is #51's.
+     * page count is given for a book read by pages only. Its file is the chapter's first ([filesOf]).
      * A [lone] book, the only special of its series, has no series line.
      */
     fun detail(book: KavitaBook, series: SeriesDto, metadata: SeriesMetadataDto?, lone: Boolean = false): BookDetail {
@@ -97,7 +97,7 @@ internal class KavitaMapper(private val serverUrl: String, private val titles: K
             addedAt = utcInstant(chapter.createdUtc),
             narrators = emptyList(),
             collections = emptyList(),
-            files = emptyList(),
+            files = filesOf(chapter, series.libraryId, series.id),
             readState = readStateOf(chapter.pagesRead, chapter.pages),
             startedAt = null,
         )

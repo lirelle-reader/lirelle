@@ -17,9 +17,10 @@ private const val FullPercent = 100
 private const val NoYear = 1
 
 /** Kavita's formats read by pages: images, an archive of images, a PDF. EPUB (3) and unknown (2) are not. */
-private const val ImageFormat = 0
-private const val ArchiveFormat = 1
-private const val PdfFormat = 4
+internal const val ImageFormat = 0
+internal const val ArchiveFormat = 1
+internal const val EpubFormat = 3
+internal const val PdfFormat = 4
 
 /** Unread at no page read, read when every page is, reading in between. */
 internal fun readStateOf(pagesRead: Int, pages: Int): ReadState = when {
