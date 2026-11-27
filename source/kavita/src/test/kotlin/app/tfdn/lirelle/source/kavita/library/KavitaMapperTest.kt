@@ -269,6 +269,20 @@ class KavitaMapperTest {
     }
 
     @Test
+    fun `the version of a chapter of several archives is every archive's, so a change to any of them shows`() {
+        val chapter = read<ChapterDto>("chapter-asterix")
+        val series = read<SeriesDto>("series-asterix")
+        val two = chapter.copy(files = chapter.files + FileDto(id = 45, format = 1, bytes = 10, extension = ".cbz"))
+        val laterChanged = two.copy(files = two.files.mapIndexed { i, f -> if (i == 1) f.copy(bytes = 11) else f })
+
+        val version = mapper.detail(book(two), series, metadata = null).files.single().contentVersion
+        val changed = mapper.detail(book(laterChanged), series, metadata = null).files.single().contentVersion
+
+        assertThat(version).isEqualTo("44:90730953,45:10")
+        assertThat(changed).isEqualTo("44:90730953,45:11")
+    }
+
+    @Test
     fun `a file of a format the app does not read gives no file`() {
         val chapter = read<ChapterDto>("chapter-asterix")
         val series = read<SeriesDto>("series-asterix")

@@ -21,9 +21,10 @@ internal fun formatOf(file: FileDto): String? = when (file.format) {
 /**
  * The book's files: the first file of its [chapter], primary. Kavita's own readers read the first file of a
  * chapter, so a position means the same text in both. None when the app reads no format of it, or when an id
- * is missing (a 0 would make an id [kavitaFile] refuses). Its content version is its id and its size: a file
- * replaced under another id, or with another size, is seen as changed. A chapter of several files served whole
- * (EPUB, PDF) cannot be kept: Kavita sends it as a zip of them.
+ * is missing (a 0 would make an id [kavitaFile] refuses). Its content version is the id and the size of every file
+ * of the chapter (a comic of several archives is kept as all their pages): a file replaced under another id, or with
+ * another size, is seen as changed. A chapter of several files served whole (EPUB, PDF) cannot be kept: Kavita sends
+ * it as a zip of them.
  */
 internal fun filesOf(chapter: ChapterDto, libraryId: Int, seriesId: Int): List<BookFile> {
     val file = chapter.files.firstOrNull() ?: return emptyList()
@@ -43,13 +44,18 @@ internal fun filesOf(chapter: ChapterDto, libraryId: Int, seriesId: Int): List<B
             isPrimary = true,
             narrationSeconds = null,
             chapterCount = null,
-            contentVersion = size?.let { "${file.id}$VersionSeparator$it" },
+            contentVersion = size?.let { versionOf(chapter.files) },
             keepable = keepable,
         ),
     )
 }
 
+/** The version of a chapter's [files]: each one's id and size, `44:90730953,45:10`. */
+private fun versionOf(files: List<FileDto>): String =
+    files.joinToString(FilesSeparator) { "${it.id}$VersionSeparator${it.bytes}" }
+
 private const val VersionSeparator = ":"
+private const val FilesSeparator = ","
 
 private val ArchiveExtensions = mapOf(
     ".cbz" to "CBZ",
