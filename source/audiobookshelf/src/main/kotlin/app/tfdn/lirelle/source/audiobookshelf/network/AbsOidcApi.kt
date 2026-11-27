@@ -44,10 +44,16 @@ internal interface AbsOidcApi {
 /**
  * The client of a sign-in through the provider, made from the sign-in's ([absSignInClient]): it follows no redirect,
  * on either call. The first call's leads to the provider's page, which the browser opens with its own cookies; the
- * exchange's leads to the server's web sign-in page, and means the exchange failed.
+ * exchange's leads to the server's web sign-in page, and means the exchange failed. Nor does OkHttp send either
+ * again after a connection failure (`retryOnConnectionFailure`): a code is good for one exchange, which a replay
+ * would spend — on a sign-in that then fails — and the first call opens a sign-in's session on the server.
  */
 internal fun absOidcApi(publicClient: OkHttpClient): AbsApis<AbsOidcApi> = AbsApis(
-    absSignInClient(publicClient).newBuilder().followRedirects(false).followSslRedirects(false).build(),
+    absSignInClient(publicClient).newBuilder()
+        .followRedirects(false)
+        .followSslRedirects(false)
+        .retryOnConnectionFailure(false)
+        .build(),
     AbsJson,
     AbsOidcApi::class.java,
 )

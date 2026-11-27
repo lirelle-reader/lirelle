@@ -12,11 +12,13 @@ import app.tfdn.lirelle.source.audiobookshelf.testing.TheSignInId
 import app.tfdn.lirelle.source.audiobookshelf.testing.enqueueJson
 import app.tfdn.lirelle.source.audiobookshelf.testing.enqueueRefusal
 import app.tfdn.lirelle.source.audiobookshelf.testing.jsonAnswer
+import app.tfdn.lirelle.source.audiobookshelf.testing.madeUpJwt
 import app.tfdn.lirelle.source.audiobookshelf.testing.pathText
 import app.tfdn.lirelle.source.audiobookshelf.testing.refreshJson
 import app.tfdn.lirelle.source.audiobookshelf.testing.tokens
 import com.google.common.truth.Truth.assertThat
 import java.io.IOException
+import java.time.Duration
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
@@ -99,6 +101,39 @@ class AbsTokenRefresherTest {
         // A renewal is the same sign-in.
         assertThat(profile.session.value.credential)
             .isEqualTo(Credential.RotatingTokens(TheSignInId, checkNotNull(tokens)))
+    }
+
+    /** The server's clock says the new token lasts an hour; the phone's, an hour ahead, must not see it expired. */
+    @Test
+    fun `a phone clock ahead of the server's does not renew the tokens it just received`() = runBlocking {
+        rig.clock = SignedInAt.plus(Duration.ofHours(1))
+        rig.signIn(accessExpiresAt = SignedInAt)
+        server.enqueueJson(refreshJson())
+
+        val renewed = refresher.freshTokens()
+        assertThat(renewed?.accessTokenExpiresAt).isEqualTo(rig.clock.plusSeconds(3_660))
+
+        rig.clock = rig.clock.plusSeconds(5)
+        assertThat(refresher.freshTokens()).isEqualTo(renewed)
+        assertThat(server.requestCount).isEqualTo(1)
+    }
+
+    /** Never taken as expiring now, which would renew it before every request: the server's 401 renews it. */
+    @Test
+    fun `an access token without exp is not renewed until the server refuses it`() = runBlocking {
+        val noExp = madeUpJwt("""{"userId":"u","type":"access","iat":${SignedInAt.epochSecond}}""")
+        rig.signIn(accessExpiresAt = SignedInAt)
+        server.enqueueJson(refreshJson(accessToken = noExp))
+
+        assertThat(refresher.freshTokens()?.accessToken).isEqualTo(noExp)
+        rig.clock = rig.clock.plus(Duration.ofDays(2))
+        assertThat(refresher.freshTokens()?.accessToken).isEqualTo(noExp)
+        assertThat(server.requestCount).isEqualTo(1)
+
+        server.enqueueJson(refreshJson())
+        assertThat(refresher.rejected("Bearer $noExp", onServer()))
+            .isEqualTo(AuthHeader("Authorization", "Bearer $RenewedAccess"))
+        assertThat(server.requestCount).isEqualTo(2)
     }
 
     @Test

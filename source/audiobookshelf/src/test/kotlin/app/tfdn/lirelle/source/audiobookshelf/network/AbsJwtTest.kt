@@ -13,21 +13,46 @@ import java.time.Instant
 import org.junit.Test
 
 /**
- * Audiobookshelf's tokens are JWTs: when each expires is read from its `exp`, without checking its signature — the
- * server checks it, the app only needs to know when to renew. A token whose expiry cannot be read is renewed
- * before its first use (an access token) or taken to last seven days, the shortest any version gave (a refresh
- * token).
+ * Audiobookshelf's tokens are JWTs: when each expires is read from them, without checking their signature — the
+ * server checks it, the app only needs to know when to renew. On the device's clock: the lifetime the token states
+ * (`exp` − `iat`) from when it was received, so that a clock ahead of or behind the server's does not matter; its
+ * `exp` alone when it states no `iat`. An access token whose expiry cannot be read lasts until the server refuses
+ * it; a refresh token, seven days from its receipt, the shortest any version gave.
  */
 class AbsJwtTest {
 
-    private val now: Instant = Instant.parse("2026-11-27T12:00:00Z")
+    /** When the device received the tokens: two hours after the server made them, by the device's clock. */
+    private val received: Instant = Instant.parse("2026-11-27T12:00:00Z")
 
     @Test
-    fun `the expiry is read from the token's exp`() {
-        assertThat(AbsJwt.expiry(TheAccessToken)).isEqualTo(AccessExpiry)
-        assertThat(AbsJwt.expiry(TheRefreshToken)).isEqualTo(RefreshExpiry)
-        assertThat(AbsJwt.accessExpiry(TheAccessToken, now)).isEqualTo(AccessExpiry)
-        assertThat(AbsJwt.refreshExpiry(TheRefreshToken, now)).isEqualTo(RefreshExpiry)
+    fun `the expiry is the token's lifetime from its receipt, on the device's clock`() {
+        assertThat(AbsJwt.expiry(TheAccessToken, received)).isEqualTo(received.plus(Duration.ofHours(1)))
+        assertThat(AbsJwt.expiry(TheRefreshToken, received)).isEqualTo(received.plus(Duration.ofDays(30)))
+        assertThat(AbsJwt.accessExpiry(TheAccessToken, SignedInAt)).isEqualTo(AccessExpiry)
+        assertThat(AbsJwt.refreshExpiry(TheRefreshToken, SignedInAt)).isEqualTo(RefreshExpiry)
+    }
+
+    @Test
+    fun `a clock behind the server's does not matter either`() {
+        val behind = SignedInAt.minus(Duration.ofHours(1))
+
+        assertThat(AbsJwt.accessExpiry(TheAccessToken, behind)).isEqualTo(behind.plus(Duration.ofHours(1)))
+    }
+
+    @Test
+    fun `a token without iat expires at its exp`() {
+        val token = madeUpJwt("""{"exp":${AccessExpiry.epochSecond}}""")
+
+        assertThat(AbsJwt.expiry(token, received)).isEqualTo(AccessExpiry)
+        assertThat(AbsJwt.accessExpiry(token, received)).isEqualTo(AccessExpiry)
+    }
+
+    /** No lifetime can be read from it: its exp is all it says. */
+    @Test
+    fun `a token whose exp is not after its iat expires at its exp`() {
+        val token = madeUpJwt("""{"iat":${AccessExpiry.epochSecond},"exp":${SignedInAt.epochSecond}}""")
+
+        assertThat(AbsJwt.expiry(token, received)).isEqualTo(SignedInAt)
     }
 
     /** Base64url without padding, whatever the payload's length: each of the three remainders. */
@@ -36,22 +61,33 @@ class AbsJwtTest {
         listOf("", "a", "ab", "abc").forEach { extra ->
             val token = madeUpJwt("""{"exp":${SignedInAt.epochSecond},"x":"$extra"}""")
 
-            assertWithMessage(extra).that(AbsJwt.expiry(token)).isEqualTo(SignedInAt)
+            assertWithMessage(extra).that(AbsJwt.expiry(token, received)).isEqualTo(SignedInAt)
         }
     }
 
     @Test
-    fun `an exp with a fraction of a second is read to the second`() {
-        assertThat(AbsJwt.expiry(madeUpJwt("""{"exp":${SignedInAt.epochSecond}.75}"""))).isEqualTo(SignedInAt)
+    fun `claims with a fraction of a second are read to the second`() {
+        assertThat(AbsJwt.expiry(madeUpJwt("""{"exp":${SignedInAt.epochSecond}.75}"""), received))
+            .isEqualTo(SignedInAt)
+        val withIat = madeUpJwt("""{"iat":${SignedInAt.epochSecond}.5,"exp":${AccessExpiry.epochSecond}.75}""")
+        assertThat(AbsJwt.expiry(withIat, received)).isEqualTo(received.plus(Duration.ofHours(1)))
     }
 
+    /** Never "expiring now", which would renew it before every request: the server's 401 renews it. */
     @Test
-    fun `a token without exp expires at once, or lasts seven days if it is a refresh token`() {
+    fun `an access token without exp lasts until the server refuses it, a refresh token seven days`() {
         val token = madeUpJwt("""{"userId":"u","type":"access","iat":${SignedInAt.epochSecond}}""")
 
-        assertThat(AbsJwt.expiry(token)).isNull()
-        assertThat(AbsJwt.accessExpiry(token, now)).isEqualTo(now)
-        assertThat(AbsJwt.refreshExpiry(token, now)).isEqualTo(now.plus(Duration.ofDays(7)))
+        assertThat(AbsJwt.expiry(token, received)).isNull()
+        assertThat(AbsJwt.accessExpiry(token, received)).isEqualTo(AbsJwt.UntilRefused)
+        assertThat(AbsJwt.refreshExpiry(token, received)).isEqualTo(received.plus(Duration.ofDays(7)))
+    }
+
+    /** The profile keeps it as text, read back as it was written. */
+    @Test
+    fun `lasting until refused survives being kept as text`() {
+        assertThat(Instant.parse(AbsJwt.UntilRefused.toString())).isEqualTo(AbsJwt.UntilRefused)
+        assertThat(AbsJwt.UntilRefused.plus(Duration.ofDays(365))).isGreaterThan(AbsJwt.UntilRefused)
     }
 
     @Test
@@ -67,10 +103,19 @@ class AbsJwtTest {
             madeUpJwt("""{"exp":null}"""),
             madeUpJwt("""{"exp":{"at":1}}"""),
             madeUpJwt("""{"exp":1e300}"""),
+            madeUpJwt("""{"iat":${SignedInAt.epochSecond}}"""),
         )
         garbage.forEach { token ->
-            assertWithMessage(token).that(AbsJwt.expiry(token)).isNull()
-            assertWithMessage(token).that(AbsJwt.accessExpiry(token, now)).isEqualTo(now)
+            assertWithMessage(token).that(AbsJwt.expiry(token, received)).isNull()
+            assertWithMessage(token).that(AbsJwt.accessExpiry(token, received)).isEqualTo(AbsJwt.UntilRefused)
         }
+    }
+
+    /** An iat that cannot be read leaves the exp: the lifetime cannot be told. */
+    @Test
+    fun `an unreadable iat leaves the exp`() {
+        val token = madeUpJwt("""{"iat":"yesterday","exp":${AccessExpiry.epochSecond}}""")
+
+        assertThat(AbsJwt.expiry(token, received)).isEqualTo(AccessExpiry)
     }
 }

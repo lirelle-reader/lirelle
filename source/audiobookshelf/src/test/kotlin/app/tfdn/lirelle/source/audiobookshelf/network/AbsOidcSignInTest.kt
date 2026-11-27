@@ -175,6 +175,26 @@ class AbsOidcSignInTest {
         assertThat(server.requestCount).isEqualTo(0)
     }
 
+    /** The address the server took is compared whole, as BookOrbit compares its own: no path, no user, no port. */
+    @Test
+    fun `a return to another address than the sign-in's, even by a path, leaves it waiting`() = runBlocking {
+        pendingOidc.pending = begun()
+
+        listOf(
+            "lirelle://oauth/x?code=c&state=$State",
+            "lirelle://oauth/?code=c&state=$State",
+            "lirelle://user@oauth?code=c&state=$State",
+            "lirelle://oauth:80?code=c&state=$State",
+            "LIRELLE://OAUTH/x?code=c&state=$State",
+        ).forEach {
+            assertThat(signIn.answersPendingOidc(it)).isFalse()
+            assertThat(signIn.completeOidc(it)).isEqualTo(refused)
+        }
+
+        assertThat(pendingOidc.pending).isEqualTo(begun())
+        assertThat(server.requestCount).isEqualTo(0)
+    }
+
     /** Audiobookshelf passes the provider's refusal on as a code `undefined`, or not at all. */
     @Test
     fun `a return without a code ends the sign-in, refused`() = runBlocking {

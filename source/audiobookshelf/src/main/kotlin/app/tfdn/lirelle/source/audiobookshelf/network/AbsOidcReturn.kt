@@ -1,7 +1,5 @@
 package app.tfdn.lirelle.source.audiobookshelf.network
 
-import java.net.URI
-import java.net.URISyntaxException
 import java.net.URLDecoder
 
 /**
@@ -30,8 +28,9 @@ internal sealed interface AbsOidcReturn {
 
     companion object {
         /**
-         * Reads [uri] as a return to [address], the one the sign-in that waits returns to: its scheme and its host
-         * must be those of [address]. Anything can send the app a link, so whatever cannot be read is [Refused].
+         * Reads [uri] as a return to [address], the one the sign-in that waits returns to: what comes before its
+         * query must be [address], whole — no path, no user, no port more — as BookOrbit compares its own. Anything
+         * can send the app a link, so whatever cannot be read is [Refused].
          */
         fun parse(uri: String, address: String): AbsOidcReturn {
             if (!uri.isAt(address)) return Refused
@@ -47,16 +46,12 @@ internal sealed interface AbsOidcReturn {
     }
 }
 
-/** Whether this link has the scheme and the host of [address], as the app's activity tells them. */
-private fun String.isAt(address: String): Boolean {
-    val (link, expected) = try {
-        URI(this) to URI(address)
-    } catch (_: URISyntaxException) {
-        return false
-    }
-    return link.scheme != null && link.host != null &&
-        link.scheme.equals(expected.scheme, ignoreCase = true) && link.host.equals(expected.host, ignoreCase = true)
-}
+/**
+ * Whether this link is to [address], whole, before its query; its fragment, which comes after, set aside. Its case
+ * aside too: a scheme and a host are the same in any case, and the address has nothing else.
+ */
+private fun String.isAt(address: String): Boolean =
+    substringBefore('#').substringBefore('?').equals(address, ignoreCase = true)
 
 /** The parameters of the query of [uri], decoded; null when one cannot be (a broken escape such as `%zz`). */
 private fun queryOf(uri: String): Map<String, String>? {

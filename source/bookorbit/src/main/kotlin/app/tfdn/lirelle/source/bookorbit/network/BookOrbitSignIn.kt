@@ -51,6 +51,12 @@ internal fun PendingOidcRequest.expired(now: Instant): Boolean {
 }
 
 /**
+ * Whether this sign-in is BookOrbit's: its records never name the address the browser returns to, which is always
+ * BookOrbit's own. Another kind's sign-in waits in the same place, naming its own (Audiobookshelf's).
+ */
+private fun PendingOidcRequest.isBookOrbits(): Boolean = redirectUri == null
+
+/**
  * Signing in to a BookOrbit server — a username and a password, or an identity provider through the browser
  * (PKCE, back by the app's `bookorbit://` redirect) — and out of a BookOrbit profile. Each sign-in opens a session
  * of its own for the device, saved as a BookOrbit profile. Never with a key the user pasted ([NoPastedKey]).
@@ -109,7 +115,8 @@ internal class BookOrbitSignIn(
         val redirect = OidcRedirect.parse(redirectUri)
         // Looked at before it is used up: anything can send this link, and only the answer of the sign-in that
         // waits may end it. Any other is refused with that sign-in left as it is, for its own redirect.
-        val pending = redirect.state?.let { state -> pendingOidc.takeWhen { it.state == state } }
+        // BookOrbit's records name no address to return to: one that does is another kind's (Audiobookshelf's).
+        val pending = redirect.state?.let { state -> pendingOidc.takeWhen { it.isBookOrbits() && it.state == state } }
         if (pending == null || redirect !is OidcRedirect.Code || pending.expired(now())) {
             return ApiResult.Failure(ApiError.OidcRefused)
         }
@@ -138,7 +145,7 @@ internal class BookOrbitSignIn(
 
     override suspend fun answersPendingOidc(redirectUri: String): Boolean {
         val state = OidcRedirect.parse(redirectUri).state ?: return false
-        return pendingOidc.peek()?.state == state
+        return pendingOidc.peek()?.takeIf { it.isBookOrbits() }?.state == state
     }
 
     override suspend fun cancelOidc() {

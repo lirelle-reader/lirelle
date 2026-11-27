@@ -12,6 +12,7 @@ import app.tfdn.lirelle.source.audiobookshelf.testing.AccessExpiry
 import app.tfdn.lirelle.source.audiobookshelf.testing.AnnId
 import app.tfdn.lirelle.source.audiobookshelf.testing.MemoryStore
 import app.tfdn.lirelle.source.audiobookshelf.testing.RefreshExpiry
+import app.tfdn.lirelle.source.audiobookshelf.testing.SignedInAt
 import app.tfdn.lirelle.source.audiobookshelf.testing.TheAccessToken
 import app.tfdn.lirelle.source.audiobookshelf.testing.TheOldToken
 import app.tfdn.lirelle.source.audiobookshelf.testing.TheRefreshToken
@@ -27,6 +28,7 @@ import app.tfdn.lirelle.source.audiobookshelf.testing.loginJson
 import app.tfdn.lirelle.source.audiobookshelf.testing.pathText
 import app.tfdn.lirelle.source.audiobookshelf.testing.serverUrl
 import com.google.common.truth.Truth.assertThat
+import java.time.Duration
 import java.time.Instant
 import java.util.UUID
 import java.util.concurrent.TimeUnit
@@ -92,6 +94,19 @@ class AbsPasswordSignInTest {
             val credential = Credential.RotatingTokens(TheSignInId, theTokens)
             assertThat(store.saved).containsExactly(Session(url, credential, ann) to ServerKind.Audiobookshelf)
         }
+
+    /** A phone an hour ahead of the server: its tokens last the hour they state, from when they came. */
+    @Test
+    fun `the tokens' expiries are their lifetimes from the sign-in, on the device's clock`() = runBlocking<Unit> {
+        val ahead = SignedInAt.plus(Duration.ofHours(1))
+        server.enqueueJson(loginJson())
+
+        absSignIn(store, now = { ahead }).signInWithPassword(url, Username, Password)
+
+        val tokens = (store.saved.single().first.credential as Credential.RotatingTokens).tokens
+        assertThat(tokens.accessTokenExpiresAt).isEqualTo(ahead.plus(Duration.ofHours(1)))
+        assertThat(tokens.refreshTokenExpiresAt).isEqualTo(ahead.plus(Duration.ofDays(30)))
+    }
 
     @Test
     fun `each sign-in draws a sign-in id of its own`() = runBlocking<Unit> {
@@ -220,14 +235,20 @@ class AbsPasswordSignInTest {
         assertThat(logout.headers["Authorization"]).isNull()
     }
 
+    /** The server refused to renew it — a disabled account, say — and may take its logout once it is enabled again. */
     @Test
-    fun `a session the server had refused already is not closed again`() = runBlocking<Unit> {
+    fun `a session the server had refused is closed too`() = runBlocking<Unit> {
         store.replaced = ReplacedSession(Credential.RotatingTokens("an-older-sign-in", oldTokens), refused = true)
         server.enqueueJson(loginJson())
+        server.enqueueDone()
 
         assertThat(signIn.signInWithPassword(url, Username, Password)).isEqualTo(ApiResult.Success(Unit))
 
-        assertThat(server.requestCount).isEqualTo(1)
+        assertThat(server.requestCount).isEqualTo(2)
+        server.takeRequest()
+        val logout = server.takeRequest()
+        assertThat(logout.pathText()).isEqualTo("/logout")
+        assertThat(logout.headers["x-refresh-token"]).isEqualTo("old-refresh")
     }
 
     @Test

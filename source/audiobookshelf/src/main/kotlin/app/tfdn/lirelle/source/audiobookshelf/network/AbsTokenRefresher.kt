@@ -64,7 +64,11 @@ private const val BearerPrefix = "Bearer "
  * answer would have left it anyway. One whose connection could not even be made rotated nothing and is not tried
  * again. Nothing more: renewals count against the server's login limit (40 per 10 minutes per address, shared by a
  * household), and past it the server answers 429, which marks nothing. The call itself is not retried by OkHttp
- * and times out quickly ([absRefreshApi]).
+ * and times out quickly ([absRefreshApi]). Nor is a failed renewal asked again at once ([AbsRenewalFailures]): the
+ * callers that waited behind it get its failure, and after a 429 nothing is asked for that sign-in for a minute.
+ *
+ * When a token expires is read from it on the device's clock ([AbsJwt]), whether that clock is ahead of the
+ * server's or behind it; an access token that does not say is renewed when the server refuses it.
  *
  * Only a 401 says the session is over, and it removes nothing: the profile is marked as needing a sign-in
  * ([ProfileSession.expire]), and until the same account signs in again every request for the server fails here, at
@@ -81,6 +85,7 @@ internal class AbsTokenRefresher(
     private val now: () -> Instant,
 ) : SessionAuthorizer {
     private val mutex = Mutex()
+    private val failures = AbsRenewalFailures(now)
 
     /** The access token as a bearer header, renewed first when it is about to expire. */
     override suspend fun header(target: HttpUrl): AuthHeader? = freshTokens(target = target)?.bearer()
@@ -100,27 +105,33 @@ internal class AbsTokenRefresher(
      * @return null when [target] is not on the session's server, and only then.
      * @throws IOException when a renewal could not be made or failed without the server refusing it, when one is
      *   needed for a profile that is gone, when the server has just refused it, and for as long as the profile then
-     *   waits for a sign-in.
+     *   waits for a sign-in. Without asking, when the caller waited behind a renewal of the same sign-in that has
+     *   just failed (that failure), and for a minute after the server answered 429 to it.
      */
-    suspend fun freshTokens(rejectedAccessToken: String? = null, target: HttpUrl? = null): Tokens? = mutex.withLock {
-        // Read before the session: the mark falls only once the session carries the tokens of the new sign-in.
-        val signInNeeded = session.signInNeeded.value
-        val known = session.session.value
-        if (target != null && !target.isOnServer(known.serverUrl)) return@withLock null
-        // Under the lock: whoever waited here behind the renewal that was refused learns of it.
-        if (signInNeeded) throw IOException("The session needs a sign-in: nothing is asked in its name")
-        val current = known.credential as? Credential.RotatingTokens
-            ?: throw IOException("The session holds no Audiobookshelf tokens: nothing is asked in its name")
-        val expiresSoon = current.tokens.accessTokenExpiresAt.isBefore(now().plusSeconds(ExpiryMarginSeconds))
-        if (!expiresSoon && current.tokens.accessToken != rejectedAccessToken) return@withLock current.tokens
-        // Asked under the lock: a renewal that waited here for another one learns of a sign-out made meanwhile.
-        if (!session.open) throw IOException("The profile is closed: its session is not renewed")
+    suspend fun freshTokens(rejectedAccessToken: String? = null, target: HttpUrl? = null): Tokens? {
+        // Before the lock: a renewal that fails while this caller waits is one it waited behind.
+        val arrival = failures.mark()
+        return mutex.withLock {
+            // Read before the session: the mark falls only once the session carries the tokens of the new sign-in.
+            val signInNeeded = session.signInNeeded.value
+            val known = session.session.value
+            if (target != null && !target.isOnServer(known.serverUrl)) return@withLock null
+            val current = usable(known.credential, signInNeeded)
+            val expiresSoon = current.tokens.accessTokenExpiresAt.isBefore(now().plusSeconds(ExpiryMarginSeconds))
+            if (!expiresSoon && current.tokens.accessToken != rejectedAccessToken) return@withLock current.tokens
+            // Asked under the lock: a renewal that waited here for another one learns of a sign-out made meanwhile.
+            if (!session.open) throw IOException("The profile is closed: its session is not renewed")
+            // Nor is it asked again at once after it failed.
+            failures.check(current, arrival)
 
-        // Once the request is sent the server may have rotated the refresh token: a caller that is cancelled must
-        // not stop the answer from being stored.
-        withContext(NonCancellable) { renew(known.serverUrl, current) }
-            // The same failure as every request after this one: nothing goes out without tokens.
-            ?: throw IOException("The server refused to renew the session: nothing is asked in its name")
+            failures.remembering(current) {
+                // Once the request is sent the server may have rotated the refresh token: a caller that is
+                // cancelled must not stop the answer from being stored.
+                withContext(NonCancellable) { renew(known.serverUrl, current) }
+            }
+                // The same failure as every request after this one: nothing goes out without tokens.
+                ?: throw IOException("The server refused to renew the session: nothing is asked in its name")
+        }
     }
 
     /**
@@ -175,7 +186,7 @@ internal class AbsTokenRefresher(
             signedInSince(current)
         }
         in ServerErrors -> throw MayHaveRotated("Token renewal failed with HTTP $code")
-        TooManyRequests -> throw IOException("Token renewal refused: too many attempts")
+        TooManyRequests -> throw TooManyRenewals()
         else -> throw IOException("Token renewal failed with HTTP $code")
     }
 
@@ -192,8 +203,9 @@ internal class AbsTokenRefresher(
     }
 
     /**
-     * The new pair, its expiries read from it ([AbsJwt]); an answer without the refresh token keeps the one sent. An
-     * answer without the access token is unreadable: the server may have rotated the refresh token all the same.
+     * The new pair, its expiries read from it as received now ([AbsJwt]); an answer without the refresh token keeps
+     * the one sent. An answer without the access token is unreadable: the server may have rotated the refresh token
+     * all the same.
      */
     private fun AbsRenewedDto.toTokens(previous: Tokens): Tokens {
         val access = accessToken?.takeIf { it.isNotBlank() }
@@ -207,6 +219,16 @@ internal class AbsTokenRefresher(
             refreshTokenExpiresAt = refresh?.let { AbsJwt.refreshExpiry(it, at) } ?: previous.refreshTokenExpiresAt,
         )
     }
+}
+
+/**
+ * The tokens of [credential], when they may be used: not while the profile waits for a sign-in ([signInNeeded]) —
+ * under the refresher's lock, whoever waited behind the renewal that was refused learns of it here.
+ */
+private fun usable(credential: Credential, signInNeeded: Boolean): Credential.RotatingTokens {
+    if (signInNeeded) throw IOException("The session needs a sign-in: nothing is asked in its name")
+    return credential as? Credential.RotatingTokens
+        ?: throw IOException("The session holds no Audiobookshelf tokens: nothing is asked in its name")
 }
 
 /** A renewal that may have reached the server, and rotated the refresh token, without its answer giving the new one. */

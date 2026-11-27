@@ -73,7 +73,8 @@ internal interface AbsAccountApi {
  * are relative to the server's address, so that a base path (`https://host/audiobookshelf`) is kept.
  */
 internal class AbsApis<T : Any>(
-    private val client: OkHttpClient,
+    /** The client every call goes through: how it follows redirects and replays calls is told by its maker. */
+    val client: OkHttpClient,
     private val json: Json,
     private val service: Class<T>,
 ) {

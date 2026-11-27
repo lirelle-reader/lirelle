@@ -126,6 +126,19 @@ class PendingOidcAnswerTest {
             assertThat(server.requestCount).isEqualTo(0)
         }
 
+    /** BookOrbit's records never name the address they return to: one that does is Audiobookshelf's. */
+    @Test
+    fun `BookOrbit's own return does not end an Audiobookshelf sign-in that carries its state`() = runBlocking {
+        val audiobookshelf = begun().copy(redirectUri = "lirelle://oauth", cookies = "connect.sid=abc")
+        pendingOidc.pending = audiobookshelf
+
+        assertThat(repository.answersPendingOidc(Answer)).isFalse()
+        assertThat(repository.completeOidc(Answer)).isEqualTo(ApiResult.Failure(ApiError.OidcRefused))
+
+        assertThat(pendingOidc.pending).isEqualTo(audiobookshelf)
+        assertThat(server.requestCount).isEqualTo(0)
+    }
+
     @Test
     fun `a sign-in is begun at the time it is`() = runBlocking {
         server.enqueueFixture("oidc-state.json")

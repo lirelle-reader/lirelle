@@ -52,6 +52,18 @@ class OidcRedirectIntentTest {
         assertThat(oidcRedirectOf(view("https://books.example.com/oauth?code=code-1&state=state-1"))).isNull()
     }
 
+    /** Each address is compared whole, before its query: a path, a user or a port makes another one. */
+    @Test
+    fun `a return address with anything more carries no redirect`() {
+        listOf(
+            "lirelle://oauth/x?code=code-1&state=state-1",
+            "lirelle://oauth/?code=code-1&state=state-1",
+            "audiobookshelf://oauth/x?code=code-1&state=state-1",
+            "lirelle://user@oauth?code=code-1&state=state-1",
+            "bookorbit://oauth2-callback/x?code=code-1&state=state-1",
+        ).forEach { assertThat(oidcRedirectOf(view(it))).isNull() }
+    }
+
     /** What the browser's return finds: the activity, by the manifest's filters, for the three addresses only. */
     @Test
     fun `the browser's returns open the app, other links of its schemes do not`() {

@@ -41,7 +41,9 @@
             <!--
                 Audiobookshelf's return from its identity provider: Lirelle's own address when the server
                 allows it, else the official app's, which every server allows unless its administrator removed
-                it. Both data elements combine: lirelle://oauth and audiobookshelf://oauth, nothing else.
+                it. Both data elements combine: lirelle://oauth and audiobookshelf://oauth. A filter cannot ask
+                for no path (one with a path refuses a link without any), so the activity compares the whole
+                address before the query (oidcRedirectOf).
             -->
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />

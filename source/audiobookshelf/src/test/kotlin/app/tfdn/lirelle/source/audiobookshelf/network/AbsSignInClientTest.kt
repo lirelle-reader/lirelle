@@ -146,4 +146,16 @@ class AbsSignInClientTest {
         val bare = Request.Builder().url("http://abs.example/status").build()
         assertThat(bare.sendsBodyAwayFrom(server)).isFalse()
     }
+
+    /**
+     * A code is good for one exchange, and a refresh token is rotated by the call that sends it: OkHttp replays
+     * neither after a connection failure; whoever makes the call decides alone whether to send it again.
+     */
+    @Test
+    fun `the code exchange and the renewal are not replayed by OkHttp`() {
+        val oidc = absOidcApi(OkHttpClient()).client
+        assertThat(oidc.retryOnConnectionFailure).isFalse()
+        assertThat(oidc.followRedirects).isFalse()
+        assertThat(absRefreshApi(OkHttpClient()).client.retryOnConnectionFailure).isFalse()
+    }
 }

@@ -19,16 +19,21 @@ import okhttp3.OkHttpClient
 private const val HeldAnswerSeconds = 60L
 
 /**
- * An Audiobookshelf profile, signed in on [server], and its authorizer as the app makes it ([absRefreshApi]), at
- * [SignedInAt]. [attempts] counts the renewals the authorizer made, even those whose connection could not be made.
+ * An Audiobookshelf profile, signed in on [server], and its authorizer as the app makes it ([absRefreshApi]), on a
+ * device whose clock says [clock] — [SignedInAt] unless the test moves it. [attempts] counts the renewals the
+ * authorizer made, even those whose connection could not be made.
  */
 internal class RefresherRig(val server: MockWebServer) {
     val profile = FakeProfileSession(absSession(server.serverUrl))
     val attempts = AtomicInteger()
+
+    /** What the device's clock says. */
+    @Volatile
+    var clock: Instant = SignedInAt
     private val counting = OkHttpClient.Builder()
         .addInterceptor(Interceptor { chain -> attempts.incrementAndGet(); chain.proceed(chain.request()) })
         .build()
-    val refresher = AbsTokenRefresher(profile, absRefreshApi(counting)) { SignedInAt }
+    val refresher = AbsTokenRefresher(profile, absRefreshApi(counting)) { clock }
 
     /** Signs in with an access token expiring at [accessExpiresAt]: `access-1`, and the refresh token `refresh-1`. */
     fun signIn(accessExpiresAt: Instant = AccessExpiry) {
