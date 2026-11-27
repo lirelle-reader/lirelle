@@ -7,6 +7,7 @@ import app.tfdn.lirelle.source.kavita.network.KavitaApis
 import app.tfdn.lirelle.source.kavita.network.KavitaErrors
 import app.tfdn.lirelle.source.kavita.network.KavitaJson
 import app.tfdn.lirelle.source.kavita.network.KavitaKeyAuthorizer
+import app.tfdn.lirelle.source.kavita.reading.KavitaReadingApi
 import java.util.concurrent.CopyOnWriteArrayList
 import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.json.Json
@@ -67,28 +68,47 @@ internal class KavitaRoutes(private val server: MockWebServer) {
     fun library(
         session: FakeProfileSession = FakeProfileSession(kavitaSession(server.serverUrl)),
         clock: () -> Long = { 0L },
-    ): KavitaLibrary {
+    ): KavitaLibrary = KavitaLibrary(
+        session,
+        KavitaApis(client(session), KavitaJson, KavitaLibraryApi::class.java),
+        FakeTitles,
+        KavitaErrors(),
+        clock,
+    )
+
+    /**
+     * The routes of reading, asked as the profile's client asks them: with the profile's key as the header, and in
+     * the address of the routes that take it there (page images, PDF files), so that `apiKey` shows in the requests
+     * the server records.
+     */
+    fun readingApi(
+        session: FakeProfileSession = FakeProfileSession(kavitaSession(server.serverUrl)),
+    ): KavitaApis<KavitaReadingApi> =
+        KavitaApis(client(session), KavitaJson, KavitaReadingApi::class.java)
+
+    /** The server's address in the form the profile keeps it: no trailing slash. */
+    val serverUrl: String get() = server.serverUrl
+
+    /** The address of [path] (`/api/Reader/image`) on this server, with [query] when given (`chapterId=44`). */
+    fun urlOf(path: String, query: String? = null): String =
+        serverUrl + path + query?.let { "?$it" }.orEmpty()
+
+    /** The client of a profile with [session]: [ParallelCalls] calls at once, its key given to what it asks. */
+    private fun client(session: FakeProfileSession): OkHttpClient {
         val calls = okhttp3.Dispatcher().apply {
             maxRequests = ParallelCalls
             maxRequestsPerHost = ParallelCalls
         }
-        val client = OkHttpClient.Builder()
+        return OkHttpClient.Builder()
             .dispatcher(calls)
             .addInterceptor(keyed(KavitaKeyAuthorizer(session)))
             .build()
-        return KavitaLibrary(
-            session,
-            KavitaApis(client, KavitaJson, KavitaLibraryApi::class.java),
-            FakeTitles,
-            KavitaErrors(),
-            clock,
-        )
     }
 
-    /** The profile's client, as far as the library is concerned: what the authorizer gives goes with the request. */
+    /** The profile's client, as far as its calls are concerned: what the authorizer gives goes with the request. */
     private fun keyed(authorizer: KavitaKeyAuthorizer) = Interceptor { chain ->
         val header: AuthHeader? = runBlocking { authorizer.header(chain.request().url) }
-        val request = chain.request().newBuilder()
+        val request = chain.request().newBuilder().url(authorizer.address(chain.request().url))
         header?.let { request.header(it.name, it.value) }
         chain.proceed(request.build())
     }

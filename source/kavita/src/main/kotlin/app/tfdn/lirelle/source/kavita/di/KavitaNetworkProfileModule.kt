@@ -13,7 +13,7 @@ import app.tfdn.lirelle.core.session.profile.ProfileComponent
 import app.tfdn.lirelle.core.session.profile.ProfileScoped
 import app.tfdn.lirelle.core.session.profile.ProfileSession
 import app.tfdn.lirelle.core.session.profile.SourceOf
-import app.tfdn.lirelle.source.kavita.comics.NoKavitaPages
+import app.tfdn.lirelle.source.kavita.comics.KavitaPageSource
 import app.tfdn.lirelle.source.kavita.downloads.KavitaDownloadRefusals
 import app.tfdn.lirelle.source.kavita.downloads.NoKavitaDownloadLocations
 import app.tfdn.lirelle.source.kavita.library.KavitaLibraryApi
@@ -35,7 +35,7 @@ import okhttp3.OkHttpClient
 /**
  * What speaks to the open profile's Kavita server as its account: its key, which the authenticated client of
  * `core/network` asks for, what is asked about the account itself and of its library, where its picture is
- * (nowhere), its pages and kept files (none until #51), and which of its requests are long transfers (none yet).
+ * (nowhere), its pages, its kept files (none until #51), and which of its requests are long transfers (none yet).
  */
 @Module
 @InstallIn(ProfileComponent::class)
@@ -87,7 +87,8 @@ internal object KavitaNetworkProfileModule {
     @Provides
     @ProfileScoped
     @SourceOf(ServerKind.Kavita)
-    fun pages(): PageSource = NoKavitaPages()
+    fun pages(api: KavitaApis<KavitaReadingApi>, session: ProfileSession): PageSource =
+        KavitaPageSource(api, KavitaErrors()) { session.session.value.serverUrl }
 
     /** Made for each object that takes it, as the other sources': it holds nothing. */
     @Provides
