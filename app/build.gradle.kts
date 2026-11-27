@@ -186,6 +186,9 @@ dependencies {
     implementation(project(":source:komga"))
     // The Kavita source: its probe and its sign-in, until its profiles have the implementations of the contracts.
     implementation(project(":source:kavita"))
+    // The Audiobookshelf source: the implementations of the contracts for an Audiobookshelf profile, its library
+    // empty until #67.
+    implementation(project(":source:audiobookshelf"))
     implementation(project(":feature:library"))
     implementation(project(":feature:book"))
     implementation(project(":feature:home"))

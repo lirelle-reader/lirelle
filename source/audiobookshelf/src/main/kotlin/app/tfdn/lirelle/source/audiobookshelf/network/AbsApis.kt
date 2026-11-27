@@ -2,6 +2,8 @@ package app.tfdn.lirelle.source.audiobookshelf.network
 
 import app.tfdn.lirelle.source.audiobookshelf.network.dto.AbsLoginDto
 import app.tfdn.lirelle.source.audiobookshelf.network.dto.AbsLoginRequest
+import app.tfdn.lirelle.source.audiobookshelf.network.dto.AbsRefreshDto
+import app.tfdn.lirelle.source.audiobookshelf.network.dto.AbsUserDto
 import java.util.concurrent.ConcurrentHashMap
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -49,6 +51,21 @@ internal interface AbsPublicApi {
     /** Closes the session of [refreshToken] on the server. */
     @POST(LogoutRoute)
     suspend fun logout(@Header(RefreshTokenHeader) refreshToken: String): Response<Unit>
+
+    /**
+     * Renews the session of [refreshToken]: the new pair in the answer, the refresh token sent then refused (at
+     * once below 2.35, after a grace of ten minutes from it). Only [AbsTokenRefresher] asks it.
+     */
+    @POST(RefreshRoute)
+    suspend fun refresh(@Header(RefreshTokenHeader) refreshToken: String): Response<AbsRefreshDto>
+}
+
+/** What is asked of an Audiobookshelf server about the account its access token proves. */
+internal interface AbsAccountApi {
+
+    /** The account: its id, its username and its permissions. */
+    @GET(MeRoute)
+    suspend fun me(): AbsUserDto
 }
 
 /**

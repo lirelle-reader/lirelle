@@ -2,6 +2,7 @@ package app.tfdn.lirelle.signin
 
 import android.content.Context
 import androidx.test.core.app.ApplicationProvider
+import app.tfdn.lirelle.core.network.ApiError
 import app.tfdn.lirelle.core.network.ApiResult
 import app.tfdn.lirelle.core.session.Credential
 import app.tfdn.lirelle.core.session.ServerKind
@@ -11,6 +12,7 @@ import app.tfdn.lirelle.signout.TestDevice
 import app.tfdn.lirelle.signout.clearCurrent
 import app.tfdn.lirelle.until
 import com.google.common.truth.Truth.assertThat
+import java.util.Base64
 import java.util.Collections
 import kotlinx.coroutines.runBlocking
 import mockwebserver3.Dispatcher
@@ -29,11 +31,24 @@ private const val ProvidersRoute = "/api/v1/oauth2/providers"
 private const val AccountRoute = "/api/v2/users/me"
 private const val HealthRoute = "/api/Health"
 private const val OidcSettingsRoute = "/api/Settings/oidc"
+private const val StatusRoute = "/status"
+private const val MeRoute = "/api/me"
+
+/** A made-up JWT of [type] expiring at [exp], in seconds: put together from its parts, never written whole. */
+private fun madeUpJwt(type: String, exp: Long): String {
+    fun part(text: String) = Base64.getUrlEncoder().withoutPadding().encodeToString(text.toByteArray())
+    val payload = """{"userId":"u-1","username":"ann","type":"$type","exp":$exp}"""
+    return listOf(part("""{"alg":"HS256","typ":"JWT"}"""), part(payload), part("not-signed")).joinToString(".")
+}
+
+/** Long after the tests run, in seconds. */
+private const val FarAway = 4_102_444_800L
 
 /**
- * The app's own sign-in, on its real graph: an address is asked of BookOrbit first, then of Komga, then of Kavita,
- * the kind found remembered with it; a Komga account signed in by its password becomes a Komga profile, opened with
- * Komga's objects, and a Kavita account a Kavita profile, opened with Kavita's.
+ * The app's own sign-in, on its real graph: an address is asked of BookOrbit first, then of Komga, then of
+ * Audiobookshelf, then of Kavita, the kind found remembered with it; a Komga account signed in by its password becomes
+ * a Komga profile, opened with Komga's objects, a Kavita account a Kavita profile, opened with Kavita's, and an
+ * Audiobookshelf account an Audiobookshelf profile, opened with Audiobookshelf's.
  */
 @RunWith(RobolectricTestRunner::class)
 class KindDetectionTest {
@@ -103,6 +118,31 @@ class KindDetectionTest {
         }
     }
 
+    /**
+     * An Audiobookshelf server running [version]: it says what it is at its status, signs an account in with the
+     * tokens in the answer, tells the account its access token proves, and answers every other route — the other
+     * kinds' among them — with a bare 401.
+     */
+    private fun audiobookshelf(version: String = "2.38.0") = serve { request ->
+        val access = madeUpJwt("access", FarAway)
+        when (request.url.encodedPath) {
+            StatusRoute -> json(
+                """{"app":"audiobookshelf","serverVersion":"$version","isInit":true,"authMethods":["local"],""" +
+                    """"authFormData":{"authOpenIDButtonText":""}}""",
+            )
+            "/login" -> json(
+                """{"user":{"id":"u-1","username":"ann","type":"user","permissions":{"download":true},""" +
+                    """"accessToken":"$access","refreshToken":"${madeUpJwt("refresh", FarAway)}"}}""",
+            )
+            MeRoute -> if (request.headers["Authorization"] == "Bearer $access") {
+                json("""{"id":"u-1","username":"ann","type":"user","permissions":{"download":true}}""")
+            } else {
+                MockResponse(code = 401, headers = headersOf("Content-Type", "text/plain"), body = "Unauthorized")
+            }
+            else -> MockResponse(code = 401, headers = headersOf("Content-Type", "text/plain"), body = "Unauthorized")
+        }
+    }
+
     private fun serve(answer: (RecordedRequest) -> MockResponse): String {
         server.dispatcher = object : Dispatcher() {
             override fun dispatch(request: RecordedRequest): MockResponse {
@@ -137,15 +177,59 @@ class KindDetectionTest {
     }
 
     @Test
-    fun `a Kavita server is asked of BookOrbit, then of Komga, then found to be Kavita's and remembered so`(): Unit =
+    fun `a Kavita server is asked of BookOrbit, Komga and Audiobookshelf, then found to be Kavita's`(): Unit =
         runBlocking {
             val address = kavita()
 
             assertThat(auth.connectToServer(address)).isEqualTo(ApiResult.Success(Unit))
 
-            assertThat(asked).containsExactly(IdentityRoute, ProvidersRoute, HealthRoute, OidcSettingsRoute).inOrder()
+            assertThat(asked)
+                .containsExactly(IdentityRoute, ProvidersRoute, StatusRoute, HealthRoute, OidcSettingsRoute).inOrder()
             assertThat(auth.serverUrl.value).isEqualTo(address)
             assertThat(auth.serverKind.value).isEqualTo(ServerKind.Kavita)
+        }
+
+    @Test
+    fun `an Audiobookshelf server is found before Kavita's probe is asked, and remembered so`(): Unit = runBlocking {
+        val address = audiobookshelf()
+
+        assertThat(auth.connectToServer(address)).isEqualTo(ApiResult.Success(Unit))
+
+        assertThat(asked).containsExactly(IdentityRoute, ProvidersRoute, StatusRoute).inOrder()
+        assertThat(auth.serverUrl.value).isEqualTo(address)
+        assertThat(auth.serverKind.value).isEqualTo(ServerKind.Audiobookshelf)
+    }
+
+    @Test
+    fun `an Audiobookshelf server too old is told so at the address`(): Unit = runBlocking {
+        val address = audiobookshelf(version = "2.25.1")
+
+        val result = auth.connectToServer(address)
+
+        assertThat((result as ApiResult.Failure).error)
+            .isEqualTo(ApiError.ServerTooOld(ServerKind.Audiobookshelf, "2.25.1", "2.26"))
+        assertThat(auth.serverKind.value).isNull()
+    }
+
+    @Test
+    fun `an Audiobookshelf account signed in by its password becomes an Audiobookshelf profile`(): Unit =
+        runBlocking {
+            val address = audiobookshelf()
+
+            val result = auth.signInWithPassword(address, ServerKind.Audiobookshelf, "ann", "secret")
+
+            assertThat(result).isEqualTo(ApiResult.Success(Unit))
+            val profile = checkNotNull(device.data.sessions().current.value)
+            assertThat(profile.kind).isEqualTo(ServerKind.Audiobookshelf)
+            assertThat(profile.session.credential).isInstanceOf(Credential.RotatingTokens::class.java)
+            assertThat(profile.session.user.username).isEqualTo("ann")
+            until("the Audiobookshelf profile is open") {
+                device.data.openProfiles().current.value?.profileId == profile.id
+            }
+            // The open profile reads its account with its access token, which needs no renewal.
+            until("the account is read with the profile's token") { MeRoute in asked }
+            assertThat(asked).doesNotContain("/auth/refresh")
+            assertThat(device.data.sessions().current.value?.signInNeeded).isFalse()
         }
 
     @Test

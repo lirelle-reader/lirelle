@@ -80,6 +80,9 @@ private val Allowed: Map<String, String> = mapOf(
 /** Where the modules keep what is shipped. */
 private val ModuleGroups = listOf("app", "core", "feature", "source")
 
+/** The source of each kind of server, which the walk must read: Komga's and Audiobookshelf's ids are no numbers. */
+private val SourceFolders = listOf("source/bookorbit/", "source/komga/", "source/kavita/", "source/audiobookshelf/")
+
 /** The fewest files the walk must find to have looked at the project at all. */
 private const val FewestSources = 200
 
@@ -161,6 +164,14 @@ class OpaqueIdsTest {
         """.trimIndent()
 
         assertThat(numericIdUses(source)).isEmpty()
+    }
+
+    /** Without this, a source the walk misses would pass for one that keeps its ids opaque. */
+    @Test
+    fun `every source of a kind of server is read`() {
+        val read = sources.map { it.relativeTo(root).invariantSeparatorsPath }
+
+        SourceFolders.forEach { folder -> assertWithMessage(folder).that(read.any { it.startsWith(folder) }).isTrue() }
     }
 
     /** An entry kept for a file that is gone, or that no longer converts, would hide the next one. */

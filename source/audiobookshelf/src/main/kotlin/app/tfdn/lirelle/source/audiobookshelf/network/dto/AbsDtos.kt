@@ -55,3 +55,17 @@ internal data class AbsUserDto(
 /** What the account may do, of which the app reads whether it may download. Null: the server did not say. */
 @Serializable
 internal data class AbsPermissionsDto(val download: Boolean? = null)
+
+/**
+ * What a renewal answers (`POST auth/refresh`), of which the app reads only the new pair: the account the answer
+ * also carries is read with `api/me`.
+ */
+@Serializable
+internal data class AbsRefreshDto(val user: AbsRenewedDto)
+
+/** The new pair a renewal gives. Either may be missing from an answer the app then judges. */
+@Serializable
+internal data class AbsRenewedDto(val accessToken: String? = null, val refreshToken: String? = null) {
+    /** Never prints the tokens: this text ends up in logs and in failed assertions. */
+    override fun toString(): String = "AbsRenewedDto(<redacted>)"
+}

@@ -23,6 +23,9 @@ internal enum class AbsCall {
     /** The session opened by exchanging the code the server's identity provider gave, through the browser. */
     OidcExchange,
 
+    /** A call made with the profile's access token. */
+    Authenticated,
+
     /** A public call with no meaning of its own: the server's ways of signing in. */
     Other,
 }
@@ -64,6 +67,7 @@ internal class AbsErrors(private val log: () -> NetworkLog = { NetworkDiagnostic
         code in ServerErrors -> ApiError.ServerFailed
         // A wrong name or password, an unknown or disabled account: one answer, which says no more.
         code == Unauthorized && kind == AbsCall.SignIn -> ApiError.InvalidCredentials
+        kind == AbsCall.Authenticated -> authenticatedStatus(code)
         kind == AbsCall.OidcExchange -> exchangeStatus(code)
         else -> ApiError.Unexpected
     }
@@ -80,10 +84,21 @@ internal class AbsErrors(private val log: () -> NetworkLog = { NetworkDiagnostic
         else -> ApiError.Unexpected
     }
 
+    /**
+     * What a refusal of a call made with the profile's access token means: one the server no longer takes ended the
+     * session (the profile's authorizer marks it when it cannot be renewed); something it does not have is not found.
+     */
+    private fun authenticatedStatus(code: Int): ApiError = when (code) {
+        Unauthorized -> ApiError.SessionExpired
+        NotFound -> ApiError.NotFound
+        else -> ApiError.Unexpected
+    }
+
     private companion object {
         const val BadRequest = 400
         const val Unauthorized = 401
         const val Forbidden = 403
+        const val NotFound = 404
         const val TooManyRequests = 429
         val Redirects = 300..399
         val ServerErrors = 500..599

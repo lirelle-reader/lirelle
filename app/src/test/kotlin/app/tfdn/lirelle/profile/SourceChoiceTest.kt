@@ -15,6 +15,7 @@ import app.tfdn.lirelle.core.session.Credential
 import app.tfdn.lirelle.core.session.Profile
 import app.tfdn.lirelle.core.session.ServerKind
 import app.tfdn.lirelle.core.session.Session
+import app.tfdn.lirelle.core.session.Tokens
 import app.tfdn.lirelle.core.session.UserProfile
 import app.tfdn.lirelle.core.testing.KomgaLikeCapabilities
 import app.tfdn.lirelle.di.ProfileSourceEntry
@@ -24,6 +25,7 @@ import app.tfdn.lirelle.signout.profile
 import app.tfdn.lirelle.signout.removeFakeAndroidKeystore
 import com.google.common.truth.Truth.assertThat
 import com.google.common.truth.Truth.assertWithMessage
+import java.time.Instant
 import kotlinx.coroutines.runBlocking
 import org.junit.After
 import org.junit.Test
@@ -35,6 +37,7 @@ import org.robolectric.annotation.Config
 private const val BookOrbitSource = "app.tfdn.lirelle.source.bookorbit."
 private const val KomgaSource = "app.tfdn.lirelle.source.komga."
 private const val KavitaSource = "app.tfdn.lirelle.source.kavita."
+private const val AbsSource = "app.tfdn.lirelle.source.audiobookshelf."
 
 /** Every contract a source fulfils for a profile, by its name, as the profile's objects are given it. */
 private fun ProfileSourceEntry.contracts(): Map<String, Any> = mapOf(
@@ -80,6 +83,45 @@ private val KavitaSession = Session(
     user = UserProfile("7", "ann", "ann", "ann@example.com"),
 )
 
+/** Long after the tests run. */
+private val FarAway: Instant = Instant.parse("2100-01-01T00:00:00Z")
+
+/**
+ * An Audiobookshelf account's session: its tokens under the sign-in's id, and the account, named by its username. The
+ * access token far from expiring: nothing is renewed while the test looks.
+ */
+private val AbsSession = Session(
+    serverUrl = "https://abs.example.com",
+    credential = Credential.RotatingTokens(
+        signInId = "0b9d6c3e-1f2a-4e5b-8c7d-6a5b4c3d2e1f",
+        tokens = Tokens("access", FarAway, "refresh", FarAway),
+    ),
+    user = UserProfile("5f0e1a8c-6b3d-4c2e-9a71-2d4b8e6f1c90", "ann", "ann", null),
+)
+
+/**
+ * What Audiobookshelf declares once a profile is connected and nothing more (spec 066, §5): nothing, but the one sort
+ * its empty list of books is in, and a Library that opens on its books.
+ */
+private val AbsCapabilities = SourceCapabilities(
+    audiobooks = false,
+    readAlong = false,
+    annotations = false,
+    audioBookmarks = false,
+    ratings = false,
+    readingSessions = false,
+    genres = false,
+    authors = false,
+    history = false,
+    homeRows = emptySet(),
+    shelfKinds = emptySet(),
+    searchKinds = emptySet(),
+    bookSorts = setOf(BookSort.Added),
+    statusFilters = emptySet(),
+    formatFilters = emptySet(),
+    libraryStart = LibraryStart.Books,
+)
+
 /**
  * What Kavita declares once its books can be read (spec 050, §9 with §14; spec 051): its library without a Books tab
  * or series counts, a Library that opens on its series, its reading sessions and History, and its text files read
@@ -110,7 +152,8 @@ private val KavitaCapabilities = SourceCapabilities(
 /**
  * The source of a profile is chosen by the kind of server its registry entry records: on the application's real
  * graph, a profile of kind BookOrbit is given BookOrbit's implementation of every contract, one of kind Komga
- * Komga's, one of kind Kavita Kavita's, each with the scope the source gave it.
+ * Komga's, one of kind Kavita Kavita's, one of kind Audiobookshelf Audiobookshelf's, each with the scope the source
+ * gave it.
  */
 @RunWith(RobolectricTestRunner::class)
 @Config(application = TwoListedProfilesApplication::class)
@@ -145,6 +188,12 @@ class SourceChoiceTest {
         return profiles.openUnlisted(Profile("kavita", ServerKind.Kavita, KavitaSession))
     }
 
+    /** An Audiobookshelf profile, opened beside the BookOrbit one the app shows. */
+    private suspend fun audiobookshelf(): GraphView {
+        current()
+        return profiles.openUnlisted(Profile("audiobookshelf", ServerKind.Audiobookshelf, AbsSession))
+    }
+
     @Test
     fun `a profile of kind BookOrbit gets BookOrbit's implementation of every contract`(): Unit = runBlocking {
         val entry = current().profile<ProfileSourceEntry>()
@@ -171,6 +220,16 @@ class SourceChoiceTest {
     }
 
     @Test
+    fun `a profile of kind Audiobookshelf gets Audiobookshelf's implementation of every contract`(): Unit =
+        runBlocking {
+            val entry = audiobookshelf().profile<ProfileSourceEntry>()
+
+            assertThat(entry.contracts()).hasSize(ProfileSourceEntry::class.java.declaredMethods.size)
+            assertWithMessage("contracts not fulfilled by the Audiobookshelf source")
+                .that(elsewhere(entry, AbsSource)).isEmpty()
+        }
+
+    @Test
     fun `a profile of kind BookOrbit can do everything BookOrbit declares`(): Unit = runBlocking {
         val capabilities = current().profile<ProfileSourceEntry>().sourceCapabilities
 
@@ -188,8 +247,13 @@ class SourceChoiceTest {
     }
 
     @Test
+    fun `a profile of kind Audiobookshelf can do what Audiobookshelf declares`(): Unit = runBlocking {
+        assertThat(audiobookshelf().profile<ProfileSourceEntry>().sourceCapabilities).isEqualTo(AbsCapabilities)
+    }
+
+    @Test
     fun `each implementation keeps the scope its source gave it`(): Unit = runBlocking {
-        listOf(current(), komga(), kavita()).forEach { view ->
+        listOf(current(), komga(), kavita(), audiobookshelf()).forEach { view ->
             val entry = view.profile<ProfileSourceEntry>()
             val once = entry.contracts()
             val again = entry.contracts()

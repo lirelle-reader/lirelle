@@ -28,6 +28,10 @@ dependencies {
     implementation(project(":core:ids"))
     implementation(project(":core:session"))
     implementation(project(":core:network"))
+    implementation(project(":core:library"))
+    implementation(project(":core:history"))
+    implementation(project(":core:comics"))
+    implementation(project(":core:downloads"))
     implementation(libs.retrofit)
     implementation(libs.retrofit.kotlinx.serialization)
     implementation(libs.kotlinx.serialization.json)
@@ -39,4 +43,5 @@ dependencies {
     testImplementation(libs.truth)
     testImplementation(libs.kotlinx.coroutines.test)
     testImplementation(libs.okhttp.mockwebserver)
+    testImplementation(libs.androidx.paging.testing)
 }

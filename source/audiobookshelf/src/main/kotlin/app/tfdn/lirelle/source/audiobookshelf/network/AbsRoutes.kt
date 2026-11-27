@@ -9,6 +9,12 @@ internal const val LoginRoute = "login"
 /** The end of a sign-in's session, from the server's address. */
 internal const val LogoutRoute = "logout"
 
+/** The renewal of a session's tokens, from the server's address: the refresh token in its header. */
+internal const val RefreshRoute = "auth/refresh"
+
+/** The account the access token proves, from the server's address. */
+internal const val MeRoute = "api/me"
+
 /** What asks a sign-in to answer with the tokens in its body, rather than the refresh token in a cookie. */
 internal const val ReturnTokensHeader = "x-return-tokens"
 
