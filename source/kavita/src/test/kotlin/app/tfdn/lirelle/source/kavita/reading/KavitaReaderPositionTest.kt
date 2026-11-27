@@ -27,7 +27,6 @@ import kotlinx.serialization.json.jsonArray
 import kotlinx.serialization.json.jsonObject
 import mockwebserver3.MockResponse
 import mockwebserver3.MockWebServer
-import mockwebserver3.RecordedRequest
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
@@ -74,7 +73,15 @@ class KavitaReaderPositionTest {
     }
 
     private fun held(pageNum: Int, at: String = KavitaDate, scroll: String? = null) {
-        val place = ProgressDto(1, 44, pageNum, 7, 1, bookScrollId = scroll, lastModifiedUtc = at)
+        val place = ProgressDto(
+            volumeId = 7,
+            chapterId = 44,
+            pageNum = pageNum,
+            seriesId = 7,
+            libraryId = 1,
+            bookScrollId = scroll,
+            lastModifiedUtc = at,
+        )
         routes.answer(Progress, Json.encodeToString(ProgressDto.serializer(), place))
     }
 
@@ -83,11 +90,9 @@ class KavitaReaderPositionTest {
 
     private fun routesAsked(): List<String> = routes.requests().map { it.route() }
 
-    /** The place posted, a null field as an absent one: Kavita reads both alike. */
-    private fun RecordedRequest.place(): Map<String, JsonElement> =
-        jsonBody().jsonObject.filterValues { it != JsonNull }
-
-    private fun posted(): Map<String, JsonElement> = routes.requests().single { it.route() == Save }.place()
+    /** The place posted, every field as sent. */
+    private fun posted(): Map<String, JsonElement> =
+        routes.requests().single { it.route() == Save }.jsonBody().jsonObject
 
     private fun placeOf(json: String): Map<String, JsonElement> = Json.parseToJsonElement(json).jsonObject.toMap()
 
@@ -100,7 +105,7 @@ class KavitaReaderPositionTest {
 
         assertThat(position).isEqualTo(
             ApiResult.Success(
-                ReadingPosition(Album, cfi = null, percent = 4 * 100.0 / 53, updatedAt = KavitaInstant, page = 5),
+                ReadingPosition(Album, cfi = null, percent = 5 * 100.0 / 53, updatedAt = KavitaInstant, page = 5),
             ),
         )
         val requests = routes.requests()
@@ -134,8 +139,53 @@ class KavitaReaderPositionTest {
 
         save()
 
-        assertThat(posted())
-            .isEqualTo(placeOf("""{"libraryId":1,"seriesId":7,"volumeId":7,"chapterId":44,"pageNum":4}"""))
+        assertThat(posted()).isEqualTo(
+            placeOf("""{"libraryId":1,"seriesId":7,"volumeId":7,"chapterId":44,"pageNum":4,"bookScrollId":null}"""),
+        )
+    }
+
+    @Test
+    fun `the first page is posted as page 0, with every id`() {
+        comic()
+
+        save(percent = 1.9, page = 1)
+
+        assertThat(posted()).isEqualTo(
+            placeOf("""{"libraryId":1,"seriesId":7,"volumeId":7,"chapterId":44,"pageNum":0,"bookScrollId":null}"""),
+        )
+    }
+
+    @Test
+    fun `an EPUB place without a CFI is posted as spine item 0`() {
+        epub()
+
+        save(cfi = null, percent = 0.0, page = null)
+
+        val place = posted()
+        assertThat(place["pageNum"]).isEqualTo(JsonPrimitive(0))
+        assertThat(place["bookScrollId"]).isEqualTo(JsonNull)
+    }
+
+    @Test
+    fun `the chapter is asked once for the places written while it is read`() {
+        comic()
+
+        save(page = 5)
+        save(page = 6)
+
+        assertThat(routesAsked()).containsExactly(Chapter, Save, Save).inOrder()
+    }
+
+    @Test
+    fun `the chapter is asked again at the opening, and kept for the places written next`() {
+        comic()
+        held(pageNum = 4)
+
+        runBlocking { reader.position(Album) }
+        runBlocking { reader.position(Album) }
+        save(page = 6)
+
+        assertThat(routesAsked().filter { it == Chapter }).hasSize(2)
     }
 
     @Test
@@ -181,11 +231,22 @@ class KavitaReaderPositionTest {
     }
 
     @Test
-    fun `a late place is posted over an older one, saved at when it was made`() {
+    fun `a late place Kavita already holds from before is saved, at Kavita's date`() {
+        comic()
+        held(pageNum = 4, at = "2026-11-26T07:00:00")
+
+        assertThat(save(editedAt = Edited))
+            .isEqualTo(ApiResult.Success(SavedPosition(SaveOutcome.Saved, Instant.parse("2026-11-26T07:00:00Z"))))
+
+        assertThat(routesAsked()).doesNotContain(Save)
+    }
+
+    @Test
+    fun `a late place is posted over an older one, saved at when Kavita took it`() {
         comic()
         held(pageNum = 2, at = "2026-11-26T07:00:00")
 
-        assertThat(save(editedAt = Edited)).isEqualTo(ApiResult.Success(SavedPosition(SaveOutcome.Saved, Edited)))
+        assertThat(save(editedAt = Edited)).isEqualTo(ApiResult.Success(SavedPosition(SaveOutcome.Saved, Now)))
 
         assertThat(posted()["pageNum"]).isEqualTo(JsonPrimitive(4))
     }
@@ -195,7 +256,7 @@ class KavitaReaderPositionTest {
         comic()
         routes.answer(Progress, fixtureBody("progress-never"))
 
-        assertThat(save(editedAt = Edited)).isEqualTo(ApiResult.Success(SavedPosition(SaveOutcome.Saved, Edited)))
+        assertThat(save(editedAt = Edited)).isEqualTo(ApiResult.Success(SavedPosition(SaveOutcome.Saved, Now)))
 
         assertThat(routesAsked()).contains(Save)
     }

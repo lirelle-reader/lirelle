@@ -17,24 +17,29 @@ private const val StepsPerItem = 2
 
 /**
  * The place Kavita keeps of a chapter of [pages] pages (spine items for an [epub]). A comic's or a PDF's page counts
- * from 0 on Kavita, from 1 in the app; the page count means read, at the last page. An EPUB's place is the app's CFI
- * when the app wrote it in `bookScrollId`; otherwise (Kavita's web reader writes an XPath there) the start of its
- * spine item, the last one for a book read to the end. Never opened: 0, no place, no date.
+ * from 0 on Kavita, from 1 in the app; the page count means read, at the last page. Its percentage is the app's page
+ * over the page count, as the app counts it while reading. An EPUB's place is the app's CFI when the app wrote it in
+ * `bookScrollId`; otherwise (Kavita's web reader writes an XPath there) the start of its spine item, the last one for
+ * a book read to the end; its percentage is the spine item over the spine count, until the reader places itself.
+ * Never opened: 0, no place, no date.
  */
 internal fun positionOf(fileId: FileId, dto: ProgressDto, pages: Int, epub: Boolean): ReadingPosition {
     val updatedAt = utcInstant(dto.lastModifiedUtc)
     if (updatedAt == null && dto.pageNum <= 0) {
         return ReadingPosition(fileId, cfi = null, percent = 0.0, updatedAt = null)
     }
-    val percent = if (pages <= 0) 0.0 else (dto.pageNum * Percent / pages).coerceIn(0.0, Percent)
     val last = (pages - 1).coerceAtLeast(0)
     if (epub) {
         val cfi = dto.bookScrollId?.takeIf { it.startsWith(CfiPrefix) } ?: spineStart(dto.pageNum.coerceAtMost(last))
-        return ReadingPosition(fileId, cfi = cfi, percent = percent, updatedAt = updatedAt)
+        return ReadingPosition(fileId, cfi = cfi, percent = percentOf(dto.pageNum, pages), updatedAt = updatedAt)
     }
     val page = (dto.pageNum + 1).coerceIn(1, last + 1)
-    return ReadingPosition(fileId, cfi = null, percent = percent, updatedAt = updatedAt, page = page)
+    return ReadingPosition(fileId, cfi = null, percent = percentOf(page, pages), updatedAt = updatedAt, page = page)
 }
+
+/** [part] over [pages], 0 to 100; 0 for a chapter without pages. */
+private fun percentOf(part: Int, pages: Int): Double =
+    if (pages <= 0) 0.0 else (part * Percent / pages).coerceIn(0.0, Percent)
 
 /** Kavita's page of the app's [page] (from 1): one less, the end ([percent] 100) the page count. */
 internal fun pageNumOf(page: Int, percent: Double, pages: Int): Int =

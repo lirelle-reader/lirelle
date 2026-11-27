@@ -28,6 +28,7 @@ import app.tfdn.lirelle.source.kavita.network.KavitaCall
 import app.tfdn.lirelle.source.kavita.network.KavitaErrors
 import java.io.OutputStream
 import java.time.Instant
+import java.util.concurrent.ConcurrentHashMap
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import retrofit2.HttpException
@@ -40,7 +41,7 @@ import retrofit2.HttpException
  * writes: the app's own are accepted and dropped. No narration, finished reading nor rating: Kavita rates series,
  * not books.
  *
- * @param now when the device says it is, for the place the user is at.
+ * @param now when the device says it is: the time of a place written, as Kavita dates it on taking it.
  */
 internal class KavitaReader(
     session: ProfileSession,
@@ -58,10 +59,10 @@ internal class KavitaReader(
         return errors.call(KavitaCall.Authenticated) {
             coroutineScope {
                 val progress = async { server.api().progress(ref.chapterId) }
-                val chapter = async { server.chapter(ref) }
+                val chapter = async { server.freshChapter(ref) }
                 val held = progress.await()
                 val read = chapter.await()
-                positionOf(fileId, held, read.pages, read.isEpub())
+                positionOf(fileId, held, read.pages, read.epub)
             }
         }
     }
@@ -107,38 +108,52 @@ internal class KavitaReader(
     ): ApiResult<Unit> = NotFound
 }
 
-/** The profile's own server, read at each call. */
+/** What the reader needs of a chapter: its page count (spine items for an [epub]), and whether it is one. */
+private class ChapterFacts(val pages: Int, val epub: Boolean)
+
+/**
+ * The profile's own server, read at each call, and what it said of the chapters read: asked again when a chapter is
+ * opened, so that a place written while it is read (each page turned) asks nothing more than the write.
+ */
 private class KavitaReadingServer(
     private val session: ProfileSession,
     private val reading: KavitaApis<KavitaReadingApi>,
     private val library: KavitaApis<KavitaLibraryApi>,
 ) {
     private val url: String get() = session.session.value.serverUrl
+    private val chapters = ConcurrentHashMap<Int, ChapterFacts>()
 
     fun api(): KavitaReadingApi = reading.forServer(url)
 
-    /** The chapter of a file: its format and its page count (spine items for an EPUB). */
-    suspend fun chapter(ref: KavitaFileRef): ChapterDto = library.forServer(url).chapter(ref.chapterId)
+    /** The chapter of a file as Kavita says it now, kept for the places written next. */
+    suspend fun freshChapter(ref: KavitaFileRef): ChapterFacts {
+        val chapter = library.forServer(url).chapter(ref.chapterId)
+        return ChapterFacts(chapter.pages, chapter.isEpub()).also { chapters[ref.chapterId] = it }
+    }
+
+    /** The chapter of a file as kept, asked only when it is not. */
+    suspend fun chapter(ref: KavitaFileRef): ChapterFacts = chapters[ref.chapterId] ?: freshChapter(ref)
 }
 
 /**
  * The places written to Kavita. Kavita keeps the last place written and never refuses one, whatever its date: a
  * place sent late (the outbox's, `editedAt` set) first reads Kavita's, and is set aside when Kavita holds one dated
- * after it — a place moved on another device meanwhile. Kavita holding the very same place counts as saved. The
- * place the user is at right now is written at once. Kavita's answer to a write tells no date: a place written is
- * stored at when it was made, the device's [now] for the one the user is at.
+ * after it — a place moved on another device meanwhile. Kavita holding the very same place counts as saved, at
+ * Kavita's date. The place the user is at right now is written at once. Kavita dates a place when it takes it, and
+ * its answer tells no date: a place written is stored at the device's [now] once Kavita answered, the device's
+ * estimate of Kavita's date, late or not.
  */
 private class KavitaPlaces(private val server: KavitaReadingServer, private val now: () -> Instant) {
 
-    suspend fun save(place: ProgressDto, editedAt: Instant?): SavedPosition =
-        heldOver(place, editedAt) ?: write(place, editedAt)
+    suspend fun save(place: ProgressWriteDto, editedAt: Instant?): SavedPosition =
+        heldOver(place, editedAt) ?: write(place)
 
     /**
      * What a place sent late becomes without being written: saved when Kavita holds the very same place, set aside
      * when Kavita holds one dated after [editedAt]. Null when it is to be written: a live place ([editedAt] null),
      * a chapter never opened, or one Kavita holds an older place of.
      */
-    private suspend fun heldOver(place: ProgressDto, editedAt: Instant?): SavedPosition? {
+    private suspend fun heldOver(place: ProgressWriteDto, editedAt: Instant?): SavedPosition? {
         if (editedAt == null) return null
         val held = server.api().progress(place.chapterId)
         val heldAt = utcInstant(held.lastModifiedUtc) ?: return null
@@ -150,10 +165,10 @@ private class KavitaPlaces(private val server: KavitaReadingServer, private val 
         }
     }
 
-    private suspend fun write(place: ProgressDto, editedAt: Instant?): SavedPosition {
+    private suspend fun write(place: ProgressWriteDto): SavedPosition {
         val answer = server.api().saveProgress(place)
         if (!answer.isSuccessful) throw HttpException(answer)
-        return SavedPosition(SaveOutcome.Saved, editedAt ?: now())
+        return SavedPosition(SaveOutcome.Saved, now())
     }
 }
 
@@ -161,17 +176,19 @@ private class KavitaPlaces(private val server: KavitaReadingServer, private val 
  * The place to write of the file of [ref] in its [chapter]: its page from 0, or for an EPUB its spine item and its
  * [cfi]. A [page] missing for a file read by pages is a caller's mistake, written as the first page.
  */
-private fun placeOf(ref: KavitaFileRef, chapter: ChapterDto, cfi: String?, percent: Double, page: Int?): ProgressDto {
-    val epub = chapter.isEpub()
-    return ProgressDto(
+private fun placeOf(ref: KavitaFileRef, chapter: ChapterFacts, cfi: String?, percent: Double, page: Int?) =
+    ProgressWriteDto(
         volumeId = ref.volumeId,
         chapterId = ref.chapterId,
-        pageNum = if (epub) spineNumOf(cfi, percent, chapter.pages) else pageNumOf(page ?: 1, percent, chapter.pages),
+        pageNum = if (chapter.epub) {
+            spineNumOf(cfi, percent, chapter.pages)
+        } else {
+            pageNumOf(page ?: 1, percent, chapter.pages)
+        },
         seriesId = ref.seriesId,
         libraryId = ref.libraryId,
-        bookScrollId = if (epub) cfi else null,
+        bookScrollId = if (chapter.epub) cfi else null,
     )
-}
 
 /** Whether the chapter is read as an EPUB: its first file is one, as Kavita's own readers read the first file. */
 private fun ChapterDto.isEpub(): Boolean = files.firstOrNull()?.let(::formatOf) == "EPUB"

@@ -17,9 +17,26 @@ class KavitaPositionsTest {
         val position = positionOf(file, ProgressDto(pageNum = 4, lastModifiedUtc = at), pages = 53, epub = false)
 
         assertThat(position.page).isEqualTo(5)
-        assertThat(position.percent).isWithin(1e-9).of(4 * 100.0 / 53)
+        assertThat(position.percent).isWithin(1e-9).of(5 * 100.0 / 53)
         assertThat(position.updatedAt).isEqualTo(Instant.parse("2026-11-26T08:27:17.927461Z"))
         assertThat(position.cfi).isNull()
+    }
+
+    @Test
+    fun `the first page is the app's page 1`() {
+        val position = positionOf(file, ProgressDto(pageNum = 0, lastModifiedUtc = at), pages = 53, epub = false)
+
+        assertThat(position.page).isEqualTo(1)
+        assertThat(position.percent).isWithin(1e-9).of(100.0 / 53)
+        assertThat(position.updatedAt).isNotNull()
+    }
+
+    @Test
+    fun `the last page is at 100, as the page count read`() {
+        val last = positionOf(file, ProgressDto(pageNum = 52, lastModifiedUtc = at), pages = 53, epub = false)
+
+        assertThat(last.page).isEqualTo(53)
+        assertThat(last.percent).isEqualTo(100.0)
     }
 
     @Test

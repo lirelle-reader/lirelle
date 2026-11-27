@@ -20,7 +20,7 @@ internal interface KavitaReadingApi {
     suspend fun progress(@Query("chapterId") chapterId: Int): ProgressDto
 
     @POST("api/Reader/progress")
-    suspend fun saveProgress(@Body progress: ProgressDto): Response<Unit>
+    suspend fun saveProgress(@Body progress: ProgressWriteDto): Response<Unit>
 
     @GET("api/Reader/chapter-info")
     suspend fun chapterInfo(@Query("chapterId") chapterId: Int): ChapterInfoDto

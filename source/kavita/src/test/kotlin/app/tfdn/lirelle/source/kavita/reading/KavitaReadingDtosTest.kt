@@ -38,6 +38,15 @@ class KavitaReadingDtosTest {
     private fun api(): KavitaReadingApi =
         KavitaApis(OkHttpClient(), KavitaJson, KavitaReadingApi::class.java).forServer(server.serverUrl)
 
+    private fun place(pageNum: Int) = ProgressWriteDto(
+        volumeId = 7,
+        chapterId = 44,
+        pageNum = pageNum,
+        seriesId = 7,
+        libraryId = 1,
+        bookScrollId = null,
+    )
+
     private inline fun <reified T> read(name: String, version: RecordedOn = RecordedOn.Latest): T =
         KavitaJson.decodeFromString<T>(fixtureBody(name, version))
 
@@ -123,8 +132,8 @@ class KavitaReadingDtosTest {
         server.enqueueJson("true")
         server.enqueueDone()
 
-        assertThat(api().saveProgress(ProgressDto(chapterId = 44, pageNum = 3)).isSuccessful).isTrue()
-        assertThat(api().saveProgress(ProgressDto(chapterId = 44, pageNum = 4)).isSuccessful).isTrue()
+        assertThat(api().saveProgress(place(pageNum = 3)).isSuccessful).isTrue()
+        assertThat(api().saveProgress(place(pageNum = 4)).isSuccessful).isTrue()
         assertThat(server.takeRequest().body?.utf8()).contains("\"pageNum\":3")
     }
 
