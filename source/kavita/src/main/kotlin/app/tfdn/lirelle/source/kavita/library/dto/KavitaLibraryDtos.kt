@@ -5,9 +5,14 @@ import kotlinx.serialization.Serializable
 // What the library reads of Kavita's answers. Every field has a default, so that one a version leaves out never
 // fails a whole list; the fields the app does not read are ignored, the server's paths among them.
 
-/** A library of the server, as `GET api/Library/libraries` lists it. */
+/**
+ * A library of the server, as `GET api/Library/libraries` lists it.
+ *
+ * @property type Kavita's library type: 0 Manga, 1 Comic, 2 Book, 3 Image, 4 LightNovel, 5 ComicVine; -1 when not
+ *   told.
+ */
 @Serializable
-internal data class LibraryDto(val id: Int, val name: String = "")
+internal data class LibraryDto(val id: Int, val name: String = "", val type: Int = -1)
 
 /**
  * A series, as a list of series and `GET api/Series/{id}` give it.

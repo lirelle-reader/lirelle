@@ -24,6 +24,7 @@ import app.tfdn.lirelle.source.kavita.network.KavitaApis
 import app.tfdn.lirelle.source.kavita.network.KavitaErrors
 import app.tfdn.lirelle.source.kavita.network.KavitaKeyAuthorizer
 import app.tfdn.lirelle.source.kavita.network.PassThrough
+import app.tfdn.lirelle.source.kavita.reading.KavitaReadingApi
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -59,6 +60,14 @@ internal object KavitaNetworkProfileModule {
         @AuthenticatedClient client: OkHttpClient,
         @SourceOf(ServerKind.Kavita) json: Json,
     ): KavitaApis<KavitaLibraryApi> = KavitaApis(client, json, KavitaLibraryApi::class.java)
+
+    /** What reading asks (progress, pages, files, history) goes through the profile's client too. */
+    @Provides
+    @ProfileScoped
+    fun readingApi(
+        @AuthenticatedClient client: OkHttpClient,
+        @SourceOf(ServerKind.Kavita) json: Json,
+    ): KavitaApis<KavitaReadingApi> = KavitaApis(client, json, KavitaReadingApi::class.java)
 
     /** The account is read with the profile's client: a key the server refuses marks the profile there. */
     @Provides
