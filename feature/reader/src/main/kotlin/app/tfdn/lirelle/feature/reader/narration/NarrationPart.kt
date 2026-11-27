@@ -1,6 +1,7 @@
 package app.tfdn.lirelle.feature.reader.narration
 
 import app.tfdn.lirelle.core.audio.narration.SkippedNotice
+import app.tfdn.lirelle.core.reader.marks.sectionStartCfi
 import app.tfdn.lirelle.feature.player.narration.NarrationActions
 import app.tfdn.lirelle.feature.reader.EndOfBook
 import app.tfdn.lirelle.feature.reader.ReaderCore
@@ -8,7 +9,6 @@ import app.tfdn.lirelle.feature.reader.ReaderUiState
 import app.tfdn.lirelle.feature.reader.bridge.HostMessage
 import app.tfdn.lirelle.feature.reader.bridge.NarrationTarget
 import app.tfdn.lirelle.feature.reader.bridge.PageMessage
-import app.tfdn.lirelle.feature.reader.sectionStartCfi
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.launch
 

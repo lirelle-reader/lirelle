@@ -72,16 +72,33 @@ class KavitaPositionsTest {
     fun `an EPUB place from Kavita's web reader opens at its spine item`() {
         val dto = ProgressDto(pageNum = 6, bookScrollId = "//html[1]/BODY/APP-ROOT[1]/DIV[1]", lastModifiedUtc = at)
 
-        assertThat(positionOf(file, dto, pages = 31, epub = true).cfi).isEqualTo("epubcfi(/6/14)")
+        assertThat(positionOf(file, dto, pages = 31, epub = true).cfi).isEqualTo("epubcfi(/6/14!/4)")
     }
 
     @Test
-    fun `an EPUB read to the end on Kavita's web reader opens at its last spine item`() {
+    fun `an EPUB read to the end on Kavita's web reader opens at its very end`() {
         val dto = ProgressDto(pageNum = 31, lastModifiedUtc = at)
 
         val position = positionOf(file, dto, pages = 31, epub = true)
 
-        assertThat(position.cfi).isEqualTo("epubcfi(/6/62)")
+        assertThat(position.cfi).isNull()
+        assertThat(position.percent).isEqualTo(100.0)
+    }
+
+    @Test
+    fun `an EPUB at its last spine item opens at the start of it`() {
+        val dto = ProgressDto(pageNum = 30, lastModifiedUtc = at)
+
+        assertThat(positionOf(file, dto, pages = 31, epub = true).cfi).isEqualTo("epubcfi(/6/62!/4)")
+    }
+
+    @Test
+    fun `an EPUB read to the end by the app keeps the app's CFI`() {
+        val dto = ProgressDto(pageNum = 31, bookScrollId = "epubcfi(/6/62!/4/8/1:20)", lastModifiedUtc = at)
+
+        val position = positionOf(file, dto, pages = 31, epub = true)
+
+        assertThat(position.cfi).isEqualTo("epubcfi(/6/62!/4/8/1:20)")
         assertThat(position.percent).isEqualTo(100.0)
     }
 

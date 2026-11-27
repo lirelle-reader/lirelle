@@ -59,4 +59,11 @@ class CfiOrderTest {
             assertThat(spineIndexOf(cfi)).isNull()
         }
     }
+
+    @Test
+    fun `a section starts at its body`() {
+        assertThat(sectionStartCfi(0)).isEqualTo("epubcfi(/6/2!/4)")
+        assertThat(sectionStartCfi(6)).isEqualTo("epubcfi(/6/14!/4)")
+        assertThat(spineIndexOf(sectionStartCfi(30))).isEqualTo(30)
+    }
 }
