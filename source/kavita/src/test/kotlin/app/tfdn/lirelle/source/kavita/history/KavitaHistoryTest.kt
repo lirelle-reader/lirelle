@@ -261,19 +261,44 @@ class KavitaHistoryTest {
     }
 
     @Test
-    fun `another year is taken from the reads held, without asking the server again`() {
+    fun `a first page of another period is a new visit and loads again`() {
+        val first = item(1, "2025-12-31", 7, 44, completed = true)
+        val second = item(2, "2026-01-02", 7, 55, completed = true)
+        var loads = 0
+        routes.answer(HistoryRoute) { json(if (loads++ == 0) items(first) else items(first, second)) }
+        val history = routes.history()
+
+        log(history, period = HistoryPeriod(year = 2025))
+        val all = log(history, period = HistoryPeriod(null))
+
+        assertThat(records(all).map { it.bookId }).containsExactly(BookId("c55"), BookId("c44")).inOrder()
+        assertThat(historyRequests()).hasSize(2)
+    }
+
+    @Test
+    fun `the next pages of a period are taken from its load, of another period they load`() {
         routes.answer(
             HistoryRoute,
             items(item(1, "2025-12-31", 7, 44, completed = true), item(2, "2026-01-02", 7, 55, completed = true)),
         )
         val history = routes.history()
 
-        log(history, period = HistoryPeriod(null))
-        val year = log(history, period = HistoryPeriod(year = 2025))
-        val all = log(history, period = HistoryPeriod(null))
+        log(history, period = HistoryPeriod(year = 2026), offset = 0, limit = 1)
+        val next = log(history, period = HistoryPeriod(year = 2026), offset = 1, limit = 1)
+        val other = log(history, period = HistoryPeriod(year = 2025), offset = 1, limit = 1)
 
-        assertThat(records(year).map { it.bookId }).containsExactly(BookId("c44"))
-        assertThat(records(all).map { it.bookId }).containsExactly(BookId("c55"), BookId("c44")).inOrder()
+        assertThat(records(next)).isEmpty()
+        assertThat(records(other)).isEmpty()
+        // The first page loaded, the next of the same period did not, the next of another period did.
+        assertThat(historyRequests()).hasSize(2)
+    }
+
+    @Test
+    fun `a next page without any load loads`() {
+        routes.answer(HistoryRoute, items(item(1, "2026-11-20", 7, 44, completed = true)))
+
+        log(routes.history(), offset = 20)
+
         assertThat(historyRequests()).hasSize(1)
     }
 

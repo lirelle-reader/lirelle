@@ -45,8 +45,8 @@ import kotlinx.coroutines.coroutineScope
  * cover), a book no longer in its series being left out. There is no summary, outcome, rating nor marks.
  *
  * Kavita gives its sessions, not its reads, so the whole history (every year) is loaded when the screen asks its
- * first page and kept: the pages after it, and the first page of another year, are taken from it; the first page of
- * the same year again (coming back to History, a retry) loads it anew. The books of each series met are kept for the
+ * first page and kept: the pages after it are taken from it; every first page (coming back to History, another
+ * year, a retry) loads it anew. The books of each series met are kept for the
  * profile's life, so a load asks only the series not seen yet, and those that lack the chapter of a read. The rows
  * of each page go to [cache] for their detail.
  *
@@ -74,20 +74,17 @@ internal class KavitaHistory(
 
     private val calls = KavitaCallLimit()
 
-    /** The rows of every read of the last load, all years, newest end first; null before the first. */
+    /** The rows of every read of the last load, all years, newest end first, and the period it was made for. */
     @Volatile
-    private var loaded: List<ReadRecord>? = null
-
-    /** The period the screen asked last. */
-    @Volatile
-    private var lastPeriod: HistoryPeriod? = null
+    private var loaded: Load? = null
 
     /** The books of each series met, by series id. */
     private val seriesBooks = ConcurrentHashMap<Int, SeriesBooks>()
 
     /**
-     * A page of the reads ended in [period], from [offset]: the first page of the period asked last loads them all
-     * again; the next pages, and the first page of another period, take them from the last load. No month totals:
+     * A page of the reads ended in [period], from [offset]: the first page loads them all again (Kavita has no
+     * year filter, and a new visit must see what was read since); the next pages take them from the load made for
+     * the same period, or load when there is none. No month totals:
      * the screen counts the reads of each month from its rows. Only finished reads exist: asked for none, nothing is
      * asked.
      */
@@ -102,9 +99,8 @@ internal class KavitaHistory(
             return ApiResult.Success(ReadPage(emptyList(), months = null, total = 0, offset, limit))
         }
         return errors.call(KavitaCall.Authenticated) {
-            val held = loaded?.takeIf { offset > 0 || period != lastPeriod }
-            lastPeriod = period
-            val reads = (held ?: load().also { loaded = it })
+            val held = loaded?.takeIf { offset > 0 && it.period == period }
+            val reads = (held ?: Load(period, load()).also { loaded = it }).reads
                 .filter { period.year == null || it.endedOn?.year == period.year }
             val ordered = if (newestFirst) reads else reads.asReversed()
             val records = ordered.drop(offset).take(limit.coerceAtLeast(0))
@@ -194,6 +190,9 @@ internal class KavitaHistory(
     override suspend fun setRating(readId: ReadId, stars: Int?): ApiResult<RatingResult> =
         ApiResult.Failure(ApiError.NotFound)
 }
+
+/** The rows of every read, newest end first, as loaded for [period]. */
+private class Load(val period: HistoryPeriod, val reads: List<ReadRecord>)
 
 /** How many sessions each batch of the history holds: Kavita accepts 1000. */
 private const val HistoryBatch = 1000
