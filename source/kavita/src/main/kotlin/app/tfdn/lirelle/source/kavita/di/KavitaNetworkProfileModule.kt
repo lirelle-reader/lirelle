@@ -14,8 +14,8 @@ import app.tfdn.lirelle.core.session.profile.ProfileScoped
 import app.tfdn.lirelle.core.session.profile.ProfileSession
 import app.tfdn.lirelle.core.session.profile.SourceOf
 import app.tfdn.lirelle.source.kavita.comics.KavitaPageSource
+import app.tfdn.lirelle.source.kavita.downloads.KavitaDownloadLocations
 import app.tfdn.lirelle.source.kavita.downloads.KavitaDownloadRefusals
-import app.tfdn.lirelle.source.kavita.downloads.NoKavitaDownloadLocations
 import app.tfdn.lirelle.source.kavita.library.KavitaLibraryApi
 import app.tfdn.lirelle.source.kavita.network.KavitaAccountApi
 import app.tfdn.lirelle.source.kavita.network.KavitaAccountPictures
@@ -98,10 +98,11 @@ internal object KavitaNetworkProfileModule {
     fun pages(api: KavitaApis<KavitaReadingApi>, session: ProfileSession): PageSource =
         KavitaPageSource(api, KavitaErrors()) { session.session.value.serverUrl }
 
-    /** Made for each object that takes it, as the other sources': it holds nothing. */
+    /** Made for each object that takes it, as the other sources': it holds nothing but the profile's pages. */
     @Provides
     @SourceOf(ServerKind.Kavita)
-    fun downloadLocations(): DownloadLocations = NoKavitaDownloadLocations()
+    fun downloadLocations(@SourceOf(ServerKind.Kavita) pages: PageSource, session: ProfileSession): DownloadLocations =
+        KavitaDownloadLocations(pages) { session.session.value.serverUrl }
 
     @Provides
     @SourceOf(ServerKind.Kavita)

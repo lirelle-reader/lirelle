@@ -6,7 +6,6 @@ import app.tfdn.lirelle.core.ids.FileId
 import app.tfdn.lirelle.core.network.ApiError
 import app.tfdn.lirelle.core.network.ApiResult
 import app.tfdn.lirelle.source.kavita.downloads.KavitaDownloadRefusals
-import app.tfdn.lirelle.source.kavita.downloads.NoKavitaDownloadLocations
 import app.tfdn.lirelle.source.kavita.network.KavitaAccountPictures
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.runBlocking
@@ -36,7 +35,6 @@ class KavitaEmptyAnswersTest {
         assertThat(EmptyKavitaMarks().highlights(Book, File)).isEqualTo(Nothing)
         assertThat(EmptyKavitaMarks().addBookmark(Book, File, "cfi", "title")).isEqualTo(NotFound)
         assertThat(EmptyKavitaReadAlong().trackUrl(Book, File, "a.mp3")).isNull()
-        assertThat(NoKavitaDownloadLocations().url(Book, FileSource.Whole(File))).isNull()
         assertThat(KavitaAccountPictures.pictureUrl("https://kavita.example.com", "/avatar")).isNull()
     }
 
