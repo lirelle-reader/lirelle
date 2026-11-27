@@ -3,12 +3,14 @@ package app.tfdn.lirelle.source.kavita.downloads
 import app.tfdn.lirelle.core.comics.PageSource
 import app.tfdn.lirelle.core.downloads.DownloadLocations
 import app.tfdn.lirelle.core.downloads.DownloadRefusals
+import app.tfdn.lirelle.core.downloads.model.DownloadFailure
 import app.tfdn.lirelle.core.downloads.model.FileSource
 import app.tfdn.lirelle.core.ids.BookId
 import app.tfdn.lirelle.core.network.ApiError
 import app.tfdn.lirelle.source.kavita.library.kavitaFile
 import app.tfdn.lirelle.source.kavita.network.KavitaCall
 import app.tfdn.lirelle.source.kavita.network.KavitaErrors
+import java.net.HttpURLConnection
 import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
 import okhttp3.Response
 
@@ -39,7 +41,14 @@ internal class KavitaDownloadLocations(
 
 private const val ChapterDownload = "api/Download/chapter"
 
-/** A Kavita server's refusal of a kept file, read from its status as its other refusals to the profile's key. */
+/**
+ * A Kavita server's refusal of a kept file, read from its status as its other refusals to the profile's key. A file
+ * refused (403) is the account's rights: its Download role taken away while it downloads, which the download says
+ * is not allowed.
+ */
 internal class KavitaDownloadRefusals(private val errors: KavitaErrors = KavitaErrors()) : DownloadRefusals {
     override fun refusal(response: Response): ApiError = errors.status(response.code, KavitaCall.Authenticated)
+
+    override fun failure(response: Response): DownloadFailure =
+        if (response.code == HttpURLConnection.HTTP_FORBIDDEN) DownloadFailure.NotAllowed else super.failure(response)
 }
