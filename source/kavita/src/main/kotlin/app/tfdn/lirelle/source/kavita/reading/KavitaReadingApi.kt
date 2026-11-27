@@ -7,7 +7,6 @@ import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
-import retrofit2.http.Path
 import retrofit2.http.Query
 import retrofit2.http.Streaming
 
@@ -40,9 +39,6 @@ internal interface KavitaReadingApi {
     @GET("api/Download/chapter")
     suspend fun download(@Query("chapterId") chapterId: Int): Response<ResponseBody>
 
-    @GET("api/reading-profile/{libraryId}/{seriesId}")
-    suspend fun readingProfile(@Path("libraryId") libraryId: Int, @Path("seriesId") seriesId: Int): ReadingProfileDto
-
     @GET("api/Library/libraries")
     suspend fun libraries(): List<LibraryDto>
 
@@ -50,15 +46,6 @@ internal interface KavitaReadingApi {
     suspend fun history(
         @Query("Libraries") libraries: List<Int>,
         @Query("TimeZoneId") zone: String,
-        @Query("PageNumber") page: Int,
-        @Query("PageSize") size: Int,
-    ): Response<List<HistoryItemDto>>
-
-    /** Kavita 0.9 and later; 0.8.9 answers 404. */
-    @GET("api/Stats/reading-history/series/{seriesId}")
-    suspend fun seriesHistory(
-        @Path("seriesId") seriesId: Int,
-        @Query("tzId") zone: String,
         @Query("PageNumber") page: Int,
         @Query("PageSize") size: Int,
     ): Response<List<HistoryItemDto>>

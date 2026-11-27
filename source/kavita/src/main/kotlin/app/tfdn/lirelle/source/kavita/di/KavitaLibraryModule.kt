@@ -51,9 +51,14 @@ import dagger.hilt.android.qualifiers.ApplicationContext
  * [SourceCapabilities.libraryBooks] is off and Home's "See all" opens the row's own screen. A series in a list comes
  * without its numbers of books and of books read, so [SourceCapabilities.seriesCounts] is off too.
  *
- * Ratings stay off: Kavita rates a series per user, not a book. #51 turns on the history and the annotations with
- * reading. Kavita has no audio at all — no audiobook, no narration, no bookmark of them — and no reading sessions:
- * those stay off for good.
+ * Reading is on with #51: comics by pages, EPUB and PDF through the reader cache, the place kept on Kavita. The
+ * History is on, made from Kavita's reading sessions, and so is [SourceCapabilities.readingSessions], which makes
+ * the book page show the time spent on a book and its sessions (the app's own sessions are not sent: the reader
+ * drops them). An EPUB is served only as a download, so [SourceCapabilities.downloadToRead] is on: the reader checks
+ * the account's right to download before asking.
+ *
+ * Ratings stay off: Kavita rates a series per user, not a book. Annotations stay off until they are made (#60).
+ * Kavita has no audio at all, no audiobook, no narration, no bookmark of them: those stay off for good.
  */
 private val KavitaCapabilities = SourceCapabilities(
     audiobooks = false,
@@ -61,10 +66,10 @@ private val KavitaCapabilities = SourceCapabilities(
     annotations = false,
     audioBookmarks = false,
     ratings = false,
-    readingSessions = false,
+    readingSessions = true,
     genres = true,
     authors = true,
-    history = false,
+    history = true,
     homeRows = setOf(HomeRowKind.Continue, HomeRowKind.UpNext, HomeRowKind.WantToRead, HomeRowKind.RecentlyAdded),
     shelfKinds = setOf(ShelfKind.Collection),
     searchKinds = setOf(SearchKind.Books, SearchKind.Series, SearchKind.Authors),
@@ -74,11 +79,12 @@ private val KavitaCapabilities = SourceCapabilities(
     libraryStart = LibraryStart.Series,
     libraryBooks = false,
     seriesCounts = false,
+    downloadToRead = true,
 )
 
 /**
- * What the open profile's Kavita server says of its books, its readings and its history — its library as far as
- * #50 brings it, nothing to read until #51 — and what it can do, the same for every Kavita server. Made with the
+ * What the open profile's Kavita server says of its books, its readings and its history, and what it can do, the
+ * same for every Kavita server. The audio, the marks and the read-along are empty: Kavita has none. Made with the
  * profile, and gone with it.
  */
 @Module
