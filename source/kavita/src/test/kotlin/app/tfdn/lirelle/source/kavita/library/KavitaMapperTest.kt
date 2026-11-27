@@ -330,13 +330,35 @@ class KavitaMapperTest {
         val reading = mapper.reading(read("continue-naruto"))
         val unread = mapper.reading(read("chapter-asterix"))
 
-        assertThat(reading.progressPercent).isEqualTo(9 * 100 / 191)
-        assertThat(reading.page).isEqualTo(9)
+        assertThat(reading.progressPercent).isEqualTo(10 * 100 / 191)
+        assertThat(reading.page).isEqualTo(10)
         assertThat(reading.lastReadAt).isNull()
         assertThat(reading.totalSeconds).isEqualTo(0)
         assertThat(reading.sessionCount).isEqualTo(0)
         assertThat(unread.progressPercent).isNull()
         assertThat(unread.page).isNull()
+    }
+
+    @Test
+    fun `a paged book's page is Kavita's page from 1, as the reader opens it`() {
+        fun reading(read: Int) = mapper.reading(ChapterDto(id = 1, pages = 53, pagesRead = read))
+
+        assertThat(reading(4).page).isEqualTo(5)
+        assertThat(reading(4).progressPercent).isEqualTo(5 * 100 / 53)
+        assertThat(reading(52).page).isEqualTo(53)
+        assertThat(reading(52).progressPercent).isEqualTo(100)
+        assertThat(reading(53).page).isEqualTo(53)
+        assertThat(reading(53).progressPercent).isEqualTo(100)
+    }
+
+    @Test
+    fun `an EPUB's reading is its spine items read, without a page`() {
+        val epub = ChapterDto(id = 1, pages = 31, pagesRead = 6, files = listOf(FileDto(format = 3)))
+
+        val reading = mapper.reading(epub)
+
+        assertThat(reading.page).isNull()
+        assertThat(reading.progressPercent).isEqualTo(6 * 100 / 31)
     }
 
     @Test

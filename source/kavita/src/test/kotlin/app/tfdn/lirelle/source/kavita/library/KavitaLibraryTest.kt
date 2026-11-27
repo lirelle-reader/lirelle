@@ -300,8 +300,8 @@ class KavitaLibraryTest {
         val chapter = (library.bookReading(BookId("c44")) as ApiResult.Success).value
         val volume = (library.bookReading(BookId("v407")) as ApiResult.Success).value
 
-        assertThat(chapter.progressPercent).isEqualTo(49)
-        assertThat(chapter.page).isEqualTo(26)
+        assertThat(chapter.progressPercent).isEqualTo(27 * 100 / 53)
+        assertThat(chapter.page).isEqualTo(27)
         assertThat(chapter.totalSeconds).isEqualTo(0)
         assertThat(volume).isEqualTo(
             BookReading(
@@ -352,7 +352,7 @@ class KavitaLibraryTest {
 
         assertThat(reading.totalSeconds).isEqualTo(0)
         assertThat(reading.sessionCount).isEqualTo(0)
-        assertThat(reading.page).isEqualTo(26)
+        assertThat(reading.page).isEqualTo(27)
     }
 
     @Test
