@@ -14,8 +14,8 @@ its version), and what an attacker could do with it.
 
 ## What is in scope
 
-The Lirelle app and the code in this repository. Vulnerabilities in the BookOrbit or Komga servers themselves belong
-to those projects: report them there.
+The Lirelle app and the code in this repository. Vulnerabilities in the BookOrbit, Komga or Kavita servers themselves
+belong to those projects: report them there.
 
 ## What happens next
 

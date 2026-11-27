@@ -1,9 +1,9 @@
 # Politique de confidentialité
 
-*Dernière mise à jour : 26 novembre 2026.* [English version](PRIVACY.md)
+*Dernière mise à jour : 27 novembre 2026.* [English version](PRIVACY.md)
 
 Lirelle est une application Android qui lit, affiche et fait écouter les livres, BD et livres audio d’un serveur
-BookOrbit ou Komga que vous y ajoutez. Cette politique dit ce que l’application fait de vos données.
+BookOrbit, Komga ou Kavita que vous y ajoutez. Cette politique dit ce que l’application fait de vos données.
 
 ## Le développeur ne collecte rien
 
@@ -28,10 +28,13 @@ Lirelle ne parle qu’aux serveurs que vous ajoutez, et n’envoie à chacun que
 Ce qu’un serveur fait de ces données relève de celui qui le gère, selon sa propre politique de confidentialité. Si
 vous gérez votre propre serveur, elles restent chez vous.
 
-**Connexion à Komga par son fournisseur d’identité (OIDC) :** la connexion se fait dans une vue web, dans
+**Connexion à Komga ou à Kavita par son fournisseur d’identité (OIDC) :** la connexion se fait dans une vue web, dans
 l’application, sur la page de connexion du serveur et du fournisseur d’identité qu’il utilise. La vue web se présente
 comme un navigateur, avec en plus le nom et la version de l’application. L’application ne garde que ce que le serveur
 lui rend pour rester connectée.
+
+**La clé d’accès de Kavita :** sur Kavita, la connexion crée une clé d’accès dans votre compte, au nom de
+l’application, que l’application garde pour rester connectée ; supprimer le profil la supprime.
 
 ## Ce qui reste sur votre appareil
 
