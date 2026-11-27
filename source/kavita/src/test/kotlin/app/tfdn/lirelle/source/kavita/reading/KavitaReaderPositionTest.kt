@@ -189,8 +189,30 @@ class KavitaReaderPositionTest {
     }
 
     @Test
-    fun `the end is posted as the page count`() {
+    fun `the end is posted as the page count, over a place before it`() {
         comic()
+        held(pageNum = 52)
+
+        assertThat(save(percent = 100.0, page = 53)).isEqualTo(ApiResult.Success(SavedPosition(SaveOutcome.Saved, Now)))
+
+        assertThat(posted()["pageNum"]).isEqualTo(JsonPrimitive(53))
+    }
+
+    @Test
+    fun `the end Kavita already holds is saved at Kavita's date, not posted again`() {
+        comic()
+        held(pageNum = 53)
+
+        assertThat(save(percent = 100.0, page = 53))
+            .isEqualTo(ApiResult.Success(SavedPosition(SaveOutcome.Saved, KavitaInstant)))
+
+        assertThat(routesAsked()).doesNotContain(Save)
+    }
+
+    @Test
+    fun `the end of a chapter never opened is posted`() {
+        comic()
+        routes.answer(Progress, fixtureBody("progress-never"))
 
         save(percent = 100.0, page = 53)
 

@@ -81,7 +81,8 @@ internal class KavitaReader(
     ): ApiResult<SavedPosition> {
         val ref = fileId.kavitaFile() ?: return NotFound
         return errors.call(KavitaCall.Authenticated) {
-            places.save(placeOf(ref, server.chapter(ref), cfi, percent, page), editedAt)
+            val chapter = server.chapter(ref)
+            places.save(placeOf(ref, chapter, cfi, percent, page), chapter.pages, editedAt)
         }
     }
 
@@ -166,25 +167,32 @@ internal class KavitaReadingServer(
  * The places written to Kavita. Kavita keeps the last place written and never refuses one, whatever its date: a
  * place sent late (the outbox's, `editedAt` set) first reads Kavita's, and is set aside when Kavita holds one dated
  * after it — a place moved on another device meanwhile. Kavita holding the very same place counts as saved, at
- * Kavita's date. The place the user is at right now is written at once. Kavita dates a place when it takes it, and
+ * Kavita's date. The place the user is at right now is written at once, but for the end: Kavita takes the end written
+ * again as one more read, so the end is first read too, and counts as saved, at Kavita's date, when Kavita already
+ * holds it (a book read again moves below the end with its first pages). Kavita dates a place when it takes it, and
  * its answer tells no date: a place written is stored at the device's [now] once Kavita answered, the device's
  * estimate of Kavita's date, late or not.
  */
 private class KavitaPlaces(private val server: KavitaReadingServer, private val now: () -> Instant) {
 
-    suspend fun save(place: ProgressWriteDto, editedAt: Instant?): SavedPosition =
-        heldOver(place, editedAt) ?: write(place)
+    /** Writes [place] of a chapter of [pages] pages, unless Kavita holds it already or a newer one. */
+    suspend fun save(place: ProgressWriteDto, pages: Int, editedAt: Instant?): SavedPosition =
+        heldOver(place, pages, editedAt) ?: write(place)
 
     /**
-     * What a place sent late becomes without being written: saved when Kavita holds the very same place, set aside
-     * when Kavita holds one dated after [editedAt]. Null when it is to be written: a live place ([editedAt] null),
-     * a chapter never opened, or one Kavita holds an older place of.
+     * What a place becomes without being written: saved when it is the end (the page count of [pages]) and Kavita
+     * holds the end already; for a place sent late, saved when Kavita holds the very same place, set aside when
+     * Kavita holds one dated after [editedAt]. Null when it is to be written: a live place before the end ([editedAt]
+     * null), a chapter never opened, or one Kavita holds an older place of.
      */
-    private suspend fun heldOver(place: ProgressWriteDto, editedAt: Instant?): SavedPosition? {
-        if (editedAt == null) return null
+    private suspend fun heldOver(place: ProgressWriteDto, pages: Int, editedAt: Instant?): SavedPosition? {
+        val end = pages > 0 && place.pageNum >= pages
+        if (editedAt == null && !end) return null
         val held = server.api().progress(place.chapterId)
         val heldAt = utcInstant(held.lastModifiedUtc) ?: return null
         return when {
+            end && held.pageNum >= pages -> SavedPosition(SaveOutcome.Saved, heldAt)
+            editedAt == null -> null
             held.pageNum == place.pageNum && held.bookScrollId == place.bookScrollId ->
                 SavedPosition(SaveOutcome.Saved, heldAt)
             heldAt.isAfter(editedAt) -> SavedPosition(SaveOutcome.Superseded, heldAt)
