@@ -1,4 +1,4 @@
-Lirelle reads, shows and plays the books, comics and audiobooks of your own server — BookOrbit, or Komga for comics. It signs in to a server you or a friend runs; there is no store, no account to create with us, and nothing to buy.
+Lirelle reads, shows and plays the books, comics and audiobooks of your own server — BookOrbit; Komga, for comics; or Kavita, for books, comics and manga. It signs in to a server you or a friend runs; there is no store, no account to create with us, and nothing to buy.
 
 <b>Books</b>
 • EPUB, MOBI, AZW/AZW3 and FB2, paged or scrolled
@@ -28,6 +28,6 @@ Lirelle has no ads, no analytics and no tracking: it only talks to the servers y
 <b>Free software</b>
 Lirelle is free software under the GNU GPL, version 3 or later: https://github.com/lirelle-reader/lirelle
 
-Lirelle needs Android 14 or later, and a BookOrbit server (3.8.0 or later) or a Komga server.
+Lirelle needs Android 14 or later, and a BookOrbit server (3.8.0 or later), a Komga server, or a Kavita server (0.8.9 or later).
 
 Screenshots show Pepper&Carrot — art: David Revoy, www.peppercarrot.com (CC BY 4.0) — and public-domain books from Standard Ebooks and LibriVox.

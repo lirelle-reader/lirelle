@@ -1,4 +1,4 @@
-Lirelle lit, affiche et fait écouter les livres, BD et livres audio de votre propre serveur — BookOrbit, ou Komga pour les BD. Il se connecte à un serveur que vous ou un proche faites tourner : pas de boutique, pas de compte à créer chez nous, rien à acheter.
+Lirelle lit, affiche et fait écouter les livres, BD et livres audio de votre propre serveur — BookOrbit ; Komga, pour les BD ; ou Kavita, pour les livres, BD et mangas. Il se connecte à un serveur que vous ou un proche faites tourner : pas de boutique, pas de compte à créer chez nous, rien à acheter.
 
 <b>Livres</b>
 • EPUB, MOBI, AZW/AZW3 et FB2, en pages ou en défilement
@@ -28,6 +28,6 @@ Lirelle n'a ni publicité, ni statistiques d'usage, ni pistage : il ne parle qu'
 <b>Logiciel libre</b>
 Lirelle est un logiciel libre, sous licence GNU GPL version 3 ou ultérieure : https://github.com/lirelle-reader/lirelle
 
-Lirelle demande Android 14 ou plus récent, et un serveur BookOrbit (3.8.0 ou plus récent) ou Komga.
+Lirelle demande Android 14 ou plus récent, et un serveur BookOrbit (3.8.0 ou plus récent), Komga, ou Kavita (0.8.9 ou plus récent).
 
 Les captures d'écran montrent Pepper&Carrot — dessin : David Revoy, www.peppercarrot.com (CC BY 4.0) — et des livres du domaine public de Standard Ebooks et LibriVox.
