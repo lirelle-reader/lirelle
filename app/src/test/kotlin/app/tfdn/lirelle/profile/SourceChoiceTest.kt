@@ -81,8 +81,9 @@ private val KavitaSession = Session(
 )
 
 /**
- * What Kavita declares once a profile can be browsed (spec 050, §9 with §14): its library without a Books tab or
- * series counts, nothing to read yet, and a Library that opens on its series.
+ * What Kavita declares once its books can be read (spec 050, §9 with §14; spec 051): its library without a Books tab
+ * or series counts, a Library that opens on its series, its reading sessions and History, and its text files read
+ * only with the account's right to download.
  */
 private val KavitaCapabilities = SourceCapabilities(
     audiobooks = false,
@@ -90,10 +91,10 @@ private val KavitaCapabilities = SourceCapabilities(
     annotations = false,
     audioBookmarks = false,
     ratings = false,
-    readingSessions = false,
+    readingSessions = true,
     genres = true,
     authors = true,
-    history = false,
+    history = true,
     homeRows = setOf(HomeRowKind.Continue, HomeRowKind.UpNext, HomeRowKind.WantToRead, HomeRowKind.RecentlyAdded),
     shelfKinds = setOf(ShelfKind.Collection),
     searchKinds = setOf(SearchKind.Books, SearchKind.Series, SearchKind.Authors),
@@ -103,6 +104,7 @@ private val KavitaCapabilities = SourceCapabilities(
     libraryStart = LibraryStart.Series,
     libraryBooks = false,
     seriesCounts = false,
+    downloadToRead = true,
 )
 
 /**
