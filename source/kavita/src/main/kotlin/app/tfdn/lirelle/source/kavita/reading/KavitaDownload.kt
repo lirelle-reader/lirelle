@@ -7,8 +7,9 @@ import app.tfdn.lirelle.core.network.ApiResult
 import app.tfdn.lirelle.source.kavita.library.KavitaFileRef
 import app.tfdn.lirelle.source.kavita.network.KavitaCall
 import app.tfdn.lirelle.source.kavita.network.KavitaErrors
+import app.tfdn.lirelle.source.kavita.network.copyBlocks
+import app.tfdn.lirelle.source.kavita.network.onDevice
 import java.io.FilterInputStream
-import java.io.IOException
 import java.io.InputStream
 import java.io.OutputStream
 import java.util.zip.ZipInputStream
@@ -20,12 +21,7 @@ import okhttp3.MediaType
 import okhttp3.ResponseBody
 import retrofit2.HttpException
 
-private const val CopyBlockBytes = 64 * 1024
-
 private val ZipTypes = setOf("zip", "x-zip-compressed")
-
-/** The device could not take the bytes (no room left, a cache cleared under the fetch): not the server's doing. */
-private class SinkFailure(cause: IOException) : RuntimeException(cause)
 
 /**
  * The files Kavita serves whole, into the reader cache's sink: an EPUB from `Download/chapter` (the first EPUB of a
@@ -84,7 +80,7 @@ internal suspend fun copyFile(
         }
     }
     if (zip) copyFirstEpub(counted, sink) else copyBlocks(counted, sink)
-    sink.onDevice { flush() }
+    onDevice { sink.flush() }
 }
 
 /** The first entry of the zip in [source] that is an EPUB, into [sink]; unexpected when there is none. */
@@ -98,21 +94,4 @@ private suspend fun copyFirstEpub(source: InputStream, sink: OutputStream) {
             return
         }
     }
-}
-
-private suspend fun copyBlocks(source: InputStream, sink: OutputStream) {
-    val block = ByteArray(CopyBlockBytes)
-    while (true) {
-        currentCoroutineContext().ensureActive()
-        val count = source.read(block)
-        if (count < 0) break
-        sink.onDevice { write(block, 0, count) }
-    }
-}
-
-/** A failure of [action] on the sink is the device's, and is told apart from the network's. */
-private inline fun OutputStream.onDevice(action: OutputStream.() -> Unit) = try {
-    action()
-} catch (failure: IOException) {
-    throw SinkFailure(failure)
 }

@@ -10,24 +10,18 @@ import app.tfdn.lirelle.source.kavita.library.kavitaFile
 import app.tfdn.lirelle.source.kavita.network.KavitaApis
 import app.tfdn.lirelle.source.kavita.network.KavitaCall
 import app.tfdn.lirelle.source.kavita.network.KavitaErrors
+import app.tfdn.lirelle.source.kavita.network.copyBlocks
+import app.tfdn.lirelle.source.kavita.network.onDevice
 import app.tfdn.lirelle.source.kavita.reading.KavitaReadingApi
-import java.io.IOException
 import java.util.concurrent.atomic.AtomicBoolean
 import kotlinx.coroutines.CoroutineStart
 import kotlinx.coroutines.awaitCancellation
 import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.currentCoroutineContext
-import kotlinx.coroutines.ensureActive
 import kotlinx.coroutines.launch
 import okhttp3.HttpUrl.Companion.toHttpUrl
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.await
-
-private const val BlockBytes = 64 * 1024
-
-/** The device could not take the bytes (no room left, a cache cleared under the fetch): not the server's doing. */
-private class SinkFailure(cause: IOException) : RuntimeException(cause)
 
 /**
  * The pages of the comics of a Kavita server (a chapter whose file is an archive or a folder of images). The app and
@@ -100,27 +94,5 @@ private suspend fun Call<ResponseBody>.writeTo(sink: PageSink) = coroutineScope 
 
 /** A block at a time: a page is never held whole in memory, and a cancelled fetch stops between two blocks. */
 private suspend fun ResponseBody.writeTo(sink: PageSink) {
-    val source = byteStream()
-    val block = ByteArray(BlockBytes)
-    onDevice { sink.open() }.use { out ->
-        while (true) {
-            currentCoroutineContext().ensureActive()
-            val read = try {
-                source.read(block)
-            } catch (failure: IOException) {
-                // A read ended by the fetch being given up is not a failure of the server.
-                currentCoroutineContext().ensureActive()
-                throw failure
-            }
-            if (read < 0) break
-            onDevice { out.write(block, 0, read) }
-        }
-    }
-}
-
-/** A failure of [action] is the device's, and is told apart from the network's. */
-private inline fun <T> onDevice(action: () -> T): T = try {
-    action()
-} catch (failure: IOException) {
-    throw SinkFailure(failure)
+    onDevice { sink.open() }.use { out -> copyBlocks(byteStream(), out) }
 }
