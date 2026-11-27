@@ -181,6 +181,17 @@ class HomeSignInNoticeTest {
         )
     }
 
+    /** Its session is renewed by tokens, as BookOrbit's: refused, it has expired. */
+    @Test
+    fun `for an Audiobookshelf profile it says its session has expired, as for BookOrbit`() {
+        show(Loaded.copy(expired = ExpiredSession("p9", "camille", ServerKind.Audiobookshelf)))
+
+        body.assertTextEquals(
+            "The session of camille · Audiobookshelf has expired. Your downloaded books stay readable; " +
+                "what you read will be sent once you sign in again.",
+        )
+    }
+
     @Test
     fun `its button asks to sign in again to the profile Home is shown for`() {
         show(Loaded.copy(expired = Camille))

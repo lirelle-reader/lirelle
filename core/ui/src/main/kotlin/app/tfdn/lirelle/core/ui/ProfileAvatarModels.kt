@@ -51,11 +51,13 @@ private val ServerKind.letter: String
     get() = when (this) {
         ServerKind.BookOrbit -> "B"
         ServerKind.Komga, ServerKind.Kavita -> "K"
+        ServerKind.Audiobookshelf -> "A"
     }
 
 private val BookOrbitBadge = AvatarColors(ground = Color(0xFFFAFAF8), content = Color(0xFF1E1E18))
 private val KomgaBadge = AvatarColors(ground = Color(0xFF005ED3), content = Color(0xFFFFFFFF))
 private val KavitaBadge = AvatarColors(ground = Color(0xFF4AC694), content = Color(0xFF06281B))
+private val AudiobookshelfBadge = AvatarColors(ground = Color(0xFF232323), content = Color(0xFFCD9D49))
 
 /**
  * The colours of the badge of a kind of server, the same in the light and in the dark theme: each letter reads at
@@ -66,4 +68,5 @@ private val ServerKind.badge: AvatarColors
         ServerKind.BookOrbit -> BookOrbitBadge
         ServerKind.Komga -> KomgaBadge
         ServerKind.Kavita -> KavitaBadge
+        ServerKind.Audiobookshelf -> AudiobookshelfBadge
     }

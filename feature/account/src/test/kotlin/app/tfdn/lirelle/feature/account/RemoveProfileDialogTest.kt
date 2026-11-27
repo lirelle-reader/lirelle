@@ -13,6 +13,7 @@ import androidx.compose.ui.test.performClick
 import androidx.test.core.app.ApplicationProvider
 import app.tfdn.lirelle.core.designsystem.LirelleTheme
 import app.tfdn.lirelle.feature.account.switcher.ProfileRow
+import app.tfdn.lirelle.feature.account.switcher.audiobookshelfRow
 import app.tfdn.lirelle.feature.account.switcher.kavitaRow
 import app.tfdn.lirelle.feature.account.switcher.komgaRow
 import app.tfdn.lirelle.feature.account.switcher.row
@@ -178,6 +179,48 @@ class RemoveProfileDialogTest {
         compose.onNodeWithText(
             "Ce profil sera déconnecté et tout ce que l'appareil garde pour lui sera effacé. " +
                 "Sa clé sera révoquée sur le serveur.",
+        ).assertIsDisplayed()
+    }
+
+    @Test
+    fun `for the current Audiobookshelf profile it says it is signed out and its session closed on the server`() {
+        show(RemovalCost.Counted(), audiobookshelfRow("p5", "ann", "audio.example.org", current = true))
+
+        compose.onNodeWithText(
+            "This profile will be signed out and everything the device keeps for it will be erased. " +
+                "Its session will be closed on the server.",
+        ).assertIsDisplayed()
+        compose.onNodeWithText(string(R.string.profiles_remove_body)).assertDoesNotExist()
+    }
+
+    @Test
+    fun `for an Audiobookshelf profile that sleeps it says its session will be closed, not that it is signed out`() {
+        show(RemovalCost.NotCounted, audiobookshelfRow("p5", "ann", "audio.example.org"))
+
+        compose.onNodeWithText(
+            "Everything the device keeps for this profile will be erased. Its session will be closed on the server.",
+        ).assertIsDisplayed()
+        compose.onNodeWithText(string(R.string.profiles_remove_body_sleeping)).assertDoesNotExist()
+    }
+
+    @Test
+    @Config(qualifiers = "fr-w360dp-h740dp-xhdpi")
+    fun `the current Audiobookshelf profile's removal is said in French`() {
+        show(RemovalCost.Counted(), audiobookshelfRow("p5", "ann", "audio.example.org", current = true))
+
+        compose.onNodeWithText(
+            "Ce profil sera déconnecté et tout ce que l'appareil garde pour lui sera effacé. " +
+                "Sa session sera fermée sur le serveur.",
+        ).assertIsDisplayed()
+    }
+
+    @Test
+    @Config(qualifiers = "fr-w360dp-h740dp-xhdpi")
+    fun `the closing of a sleeping Audiobookshelf profile's session is said in French`() {
+        show(RemovalCost.NotCounted, audiobookshelfRow("p5", "ann", "audio.example.org"))
+
+        compose.onNodeWithText(
+            "Tout ce que l'appareil garde pour ce profil sera effacé. Sa session sera fermée sur le serveur.",
         ).assertIsDisplayed()
     }
 

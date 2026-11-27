@@ -80,10 +80,34 @@ class ProfileAvatarModelsTest {
         )
     }
 
+    private val rotating = Profile(
+        id = "c41d9a07",
+        kind = ServerKind.Audiobookshelf,
+        session = Session(
+            serverUrl = "https://audio.example.org",
+            credential = Credential.RotatingTokens(
+                signInId = "8c1f2b9e-4d7a-4f0e-b6a1-3e5d9c2f7a18",
+                tokens = Tokens("access", Instant.MAX, "refresh", Instant.MAX),
+            ),
+            user = UserProfile("2f0c6b1e-7a3d-4c58-9e21-b4d8f6a0c937", "camille", "camille", email = null),
+        ),
+    )
+
+    @Test
+    fun `an Audiobookshelf profile has the letter A, amber on Audiobookshelf's dark grey`() {
+        assertThat(rotating.avatarModel(picture = null)).isEqualTo(
+            ProfileAvatarModel("c41d9a07", "C", "A", Color(0xFF232323), Color(0xFFCD9D49), null, signInNeeded = false),
+        )
+    }
+
     @Test
     fun `a model made without a profile has the badge of its kind`() {
         ServerKind.entries.forEach { kind ->
-            val ofProfile = (if (kind == ServerKind.BookOrbit) profile("camille") else keyed(kind)).avatarModel(null)
+            val ofProfile = when (kind) {
+                ServerKind.BookOrbit -> profile("camille")
+                ServerKind.Komga, ServerKind.Kavita -> keyed(kind)
+                ServerKind.Audiobookshelf -> rotating
+            }.avatarModel(null)
 
             assertThat(profileAvatarModel(ofProfile.seed, "C", kind, picture = null, signInNeeded = false))
                 .isEqualTo(ofProfile)

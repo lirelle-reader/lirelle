@@ -34,7 +34,7 @@ import app.tfdn.lirelle.core.session.ServerKind
 private val ServerKind.whereToMakeKey: Int?
     get() = when (this) {
         ServerKind.Kavita -> R.string.sign_in_key_where_kavita
-        ServerKind.BookOrbit, ServerKind.Komga -> null
+        ServerKind.BookOrbit, ServerKind.Komga, ServerKind.Audiobookshelf -> null
     }
 
 /**

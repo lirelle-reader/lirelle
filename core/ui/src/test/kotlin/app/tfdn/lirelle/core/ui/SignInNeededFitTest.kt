@@ -36,7 +36,8 @@ class SignInNeededFitTest(screen: String, language: String, fontScale: Float) {
     @get:Rule(order = 1)
     val compose = createAndroidComposeRule<ComponentActivity>()
 
-    private val waiting = SignInNeeded("p0", "marie-christine.delacroix-de-la-fontaine", ServerKind.BookOrbit)
+    /** Of the kind with the longest name, whose sign-in expires as a session: the longest sentence. */
+    private val waiting = SignInNeeded("p0", "marie-christine.delacroix-de-la-fontaine", ServerKind.Audiobookshelf)
 
     private fun text(id: Int) = compose.activity.getString(id)
 
@@ -44,7 +45,7 @@ class SignInNeededFitTest(screen: String, language: String, fontScale: Float) {
     private val sentence
         get() = compose.activity.getString(
             R.string.sign_in_needed_message,
-            "marie-christine.delacroix-de-la-fontaine · BookOrbit",
+            "marie-christine.delacroix-de-la-fontaine · Audiobookshelf",
         )
 
     private fun show(content: @Composable () -> Unit) {

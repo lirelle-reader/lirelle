@@ -34,6 +34,15 @@ class DataStorePendingOidcStoreTest {
         nonce = "nonce-1",
     )
 
+    /** One begun in the browser through the server: the return address it accepted, and its first call's cookies. */
+    private val browserRequest = request.copy(
+        providerSlug = "openid",
+        nonce = "",
+        begunAtMillis = 2_000,
+        redirectUri = "lirelle://oauth",
+        cookies = "connect.sid=s%3Asession-1; auth_method=openid-mobile",
+    )
+
     @After
     fun tearDown() {
         scope.cancel()
@@ -92,6 +101,43 @@ class DataStorePendingOidcStoreTest {
         assertThat(read).isEqualTo(request)
         assertThat(read?.begunAtMillis).isNull()
     }
+
+    @Test
+    fun `a request stored before the return address and the cookies were kept has neither`() = runBlocking {
+        val dataStore = dataStore()
+        val old = """{"serverUrl":"https://books.example.com","providerSlug":"authentik","state":"state-1",""" +
+            """"codeVerifier":"verifier-1","nonce":"nonce-1","begunAtMillis":1000}"""
+        dataStore.edit { it[stringPreferencesKey("pending_oidc")] = FakeTokenCipher().encrypt(old) }
+
+        val read = DataStorePendingOidcStore(dataStore, FakeTokenCipher()).peek()
+
+        assertThat(read).isEqualTo(request.copy(begunAtMillis = 1_000))
+        assertThat(read?.redirectUri).isNull()
+        assertThat(read?.cookies).isNull()
+    }
+
+    @Test
+    fun `the return address and the cookies survive a write and a read, not in clear text`() = runBlocking {
+        val dataStore = dataStore()
+        val store = DataStorePendingOidcStore(dataStore, FakeTokenCipher())
+        store.save(browserRequest)
+
+        assertThat(store.peek()).isEqualTo(browserRequest)
+        assertThat(dataStore.data.first().asMap().values.joinToString()).doesNotContain("s%3Asession-1")
+        assertThat(store.takeWhen { true }).isEqualTo(browserRequest)
+    }
+
+    @Test
+    fun `a BookOrbit request is written as it was before the return address and the cookies were kept`() =
+        runBlocking {
+            val dataStore = dataStore()
+            DataStorePendingOidcStore(dataStore, FakeTokenCipher()).save(request)
+
+            val written = FakeTokenCipher().decrypt(dataStore.data.first()[stringPreferencesKey("pending_oidc")]!!)
+
+            assertThat(written).doesNotContain("redirectUri")
+            assertThat(written).doesNotContain("cookies")
+        }
 
     @Test
     fun `an undecryptable request is not looked at, and goes when it is asked for`() = runBlocking {
@@ -179,6 +225,15 @@ class DataStorePendingOidcStoreTest {
         assertThat(printed).doesNotContain("nonce-1")
         assertThat(printed).contains("https://books.example.com")
         assertThat(printed).contains("authentik")
+    }
+
+    @Test
+    fun `a pending request does not print its cookies, but says where it returns`() {
+        val printed = browserRequest.toString()
+
+        assertThat(printed).doesNotContain("session-1")
+        assertThat(printed).doesNotContain("openid-mobile")
+        assertThat(printed).contains("lirelle://oauth")
     }
 
     private companion object {

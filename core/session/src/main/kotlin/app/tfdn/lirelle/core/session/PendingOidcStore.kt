@@ -15,6 +15,11 @@ import kotlinx.serialization.json.Json
  * @property begunAtMillis when the sign-in was begun, in milliseconds since the epoch: a sign-in does not wait
  *   for ever, or a browser tab finished much later would sign somebody in behind the user's back. Null in a
  *   request stored before the time was kept, which is then too old to be completed.
+ * @property redirectUri the return address the server accepted for this sign-in, when it took one from the app
+ *   (Audiobookshelf's); null for a sign-in whose return address is the source's own (BookOrbit's), and in a
+ *   request stored before it was kept.
+ * @property cookies the cookies the server set on the sign-in's first call, as one `Cookie` header, to be sent
+ *   with the code's exchange (Audiobookshelf's); null when there were none, and in a request stored before.
  */
 @Serializable
 data class PendingOidcRequest(
@@ -24,11 +29,14 @@ data class PendingOidcRequest(
     val codeVerifier: String,
     val nonce: String,
     val begunAtMillis: Long? = null,
+    val redirectUri: String? = null,
+    val cookies: String? = null,
 ) {
     /** Never prints the secrets: this text ends up in logs and in failed assertions. */
     override fun toString(): String =
         "PendingOidcRequest(serverUrl=$serverUrl, providerSlug=$providerSlug, " +
-            "state=<redacted>, codeVerifier=<redacted>, nonce=<redacted>, begunAtMillis=$begunAtMillis)"
+            "state=<redacted>, codeVerifier=<redacted>, nonce=<redacted>, begunAtMillis=$begunAtMillis, " +
+            "redirectUri=$redirectUri, cookies=${cookies?.let { "<redacted>" }})"
 }
 
 interface PendingOidcStore {

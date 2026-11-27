@@ -64,4 +64,5 @@
     <string name="server_kind_bookorbit">BookOrbit</string>
     <string name="server_kind_komga">Komga</string>
     <string name="server_kind_kavita">Kavita</string>
+    <string name="server_kind_audiobookshelf">Audiobookshelf</string>
 </resources>

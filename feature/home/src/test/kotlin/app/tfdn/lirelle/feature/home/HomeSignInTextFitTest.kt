@@ -50,16 +50,19 @@ class HomeSignInTextFitTest(private val screen: String, language: String, fontSc
 
     private fun text(id: Int, vararg args: Any) = compose.activity.getString(id, *args)
 
+    /** Of the kind with the longest name whose sign-in expires as a session: the longest sentence. */
+    private val kind = ServerKind.Audiobookshelf
+
     private fun body(username: String) = text(
         R.string.home_sign_in_notice_body,
-        profileLine(compose.activity.resources, username, ServerKind.BookOrbit),
+        profileLine(compose.activity.resources, username, kind),
     )
 
     private fun fits(rows: (HomeRowKind) -> Loadable<HomeRow>, username: String): List<LaidOutText> {
         val width = if (screen == Wide) WindowWidthClass.Expanded else WindowWidthClass.Compact
         val state = HomeUiState(
             rows = HomeRowKind.entries.associateWith(rows),
-            expired = ExpiredSession("p7", username, ServerKind.BookOrbit),
+            expired = ExpiredSession("p7", username, kind),
         )
         compose.setContent {
             LirelleTheme {

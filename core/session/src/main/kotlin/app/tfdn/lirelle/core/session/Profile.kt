@@ -1,7 +1,7 @@
 package app.tfdn.lirelle.core.session
 
 /** The kind of server a profile talks to, stored by its name: a kind added later needs no migration. */
-enum class ServerKind { BookOrbit, Komga, Kavita }
+enum class ServerKind { BookOrbit, Komga, Kavita, Audiobookshelf }
 
 /**
  * One server and one account on this device.

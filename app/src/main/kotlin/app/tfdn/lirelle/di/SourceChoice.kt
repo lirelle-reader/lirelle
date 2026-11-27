@@ -44,6 +44,8 @@ internal fun <T> ProfileSession.chosen(bookOrbit: Provider<T>, komga: Provider<T
         ServerKind.BookOrbit -> bookOrbit.get()
         ServerKind.Komga -> komga.get()
         ServerKind.Kavita -> kavita.get()
+        // No Audiobookshelf profile is made before its source is bound here, with its sign-in (#66).
+        ServerKind.Audiobookshelf -> error("No source is bound for $kind")
     }
 
 /** Each kind's probe, in the order the kinds are asked of an address. */
