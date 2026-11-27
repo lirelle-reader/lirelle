@@ -25,6 +25,7 @@ import app.tfdn.lirelle.source.kavita.library.MaxBatches
 import app.tfdn.lirelle.source.kavita.library.SeriesRefInfo
 import app.tfdn.lirelle.source.kavita.library.books
 import app.tfdn.lirelle.source.kavita.library.isLoneBook
+import app.tfdn.lirelle.source.kavita.library.kavitaReadId
 import app.tfdn.lirelle.source.kavita.library.wholeList
 import app.tfdn.lirelle.source.kavita.network.KavitaApis
 import app.tfdn.lirelle.source.kavita.network.KavitaCall
@@ -154,7 +155,7 @@ internal class KavitaHistory(
         val shownIn = SeriesRefInfo(read.seriesId, read.seriesName.orEmpty()).takeUnless { series.lone }
         val summary = mapper.summary(book, shownIn)
         return ReadRecord(
-            id = ReadId("${summary.id.value}#${read.readNumber}"),
+            id = summary.id.kavitaReadId(read.readNumber),
             bookId = summary.id,
             title = summary.title,
             authors = summary.authors,
