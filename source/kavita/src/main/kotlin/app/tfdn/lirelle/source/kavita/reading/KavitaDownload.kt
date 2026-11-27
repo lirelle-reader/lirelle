@@ -40,11 +40,11 @@ internal class KavitaDownload(private val server: KavitaReadingServer, private v
                 val answer = server.api().download(ref.chapterId)
                 val body = answer.body()
                 if (!answer.isSuccessful || body == null) throw HttpException(answer)
-                withContext(Dispatchers.IO) { body.use { copyFile(it, isZip(it.contentType()), sink, onProgress) } }
+                body.use { withContext(Dispatchers.IO) { copyFile(it, isZip(it.contentType()), sink, onProgress) } }
             }
             "PDF" -> {
                 val body = server.api().pdf(ref.chapterId)
-                withContext(Dispatchers.IO) { body.use { copyFile(it, zip = false, sink, onProgress) } }
+                body.use { withContext(Dispatchers.IO) { copyFile(it, zip = false, sink, onProgress) } }
             }
             else -> throw ApiErrorException(ApiError.NotFound)
         }
