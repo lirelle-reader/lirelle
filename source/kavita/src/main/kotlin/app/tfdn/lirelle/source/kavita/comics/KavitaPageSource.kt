@@ -10,7 +10,7 @@ import app.tfdn.lirelle.source.kavita.library.kavitaFile
 import app.tfdn.lirelle.source.kavita.network.KavitaApis
 import app.tfdn.lirelle.source.kavita.network.KavitaCall
 import app.tfdn.lirelle.source.kavita.network.KavitaErrors
-import app.tfdn.lirelle.source.kavita.network.copyBlocks
+import app.tfdn.lirelle.source.kavita.network.copyBlocksAndClose
 import app.tfdn.lirelle.source.kavita.network.onDevice
 import app.tfdn.lirelle.source.kavita.reading.KavitaReadingApi
 import java.util.concurrent.atomic.AtomicBoolean
@@ -94,5 +94,5 @@ private suspend fun Call<ResponseBody>.writeTo(sink: PageSink) = coroutineScope 
 
 /** A block at a time: a page is never held whole in memory, and a cancelled fetch stops between two blocks. */
 private suspend fun ResponseBody.writeTo(sink: PageSink) {
-    onDevice { sink.open() }.use { out -> copyBlocks(byteStream(), out) }
+    copyBlocksAndClose(byteStream(), onDevice { sink.open() })
 }

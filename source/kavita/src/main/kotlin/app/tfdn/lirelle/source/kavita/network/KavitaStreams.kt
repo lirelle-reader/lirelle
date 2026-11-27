@@ -39,3 +39,21 @@ internal suspend fun copyBlocks(source: InputStream, sink: OutputStream) {
         onDevice { sink.write(block, 0, read) }
     }
 }
+
+/**
+ * [source] into [sink] as [copyBlocks] does, then the sink is closed: a close that fails is the device's too
+ * ([SinkFailure]), but never hides the failure of the copy, which is the one told.
+ */
+internal suspend fun copyBlocksAndClose(source: InputStream, sink: OutputStream) {
+    try {
+        copyBlocks(source, sink)
+    } catch (copy: Throwable) {
+        try {
+            sink.close()
+        } catch (_: IOException) {
+            // The copy's failure is the one told.
+        }
+        throw copy
+    }
+    onDevice { sink.close() }
+}

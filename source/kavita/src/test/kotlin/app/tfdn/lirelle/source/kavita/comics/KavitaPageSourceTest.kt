@@ -10,6 +10,8 @@ import app.tfdn.lirelle.source.kavita.testing.KavitaRoutes
 import app.tfdn.lirelle.source.kavita.testing.TheKey
 import com.google.common.truth.Truth.assertThat
 import java.io.ByteArrayOutputStream
+import java.io.IOException
+import java.io.OutputStream
 import kotlinx.coroutines.runBlocking
 import mockwebserver3.MockResponse
 import mockwebserver3.MockWebServer
@@ -77,6 +79,55 @@ class KavitaPageSourceTest {
         assertThat(request.url.queryParameter("chapterId")).isEqualTo("44")
         assertThat(request.url.queryParameter("page")).isEqualTo("0")
         assertThat(request.url.queryParameter("apiKey")).isEqualTo(TheKey)
+    }
+
+    @Test
+    fun `a sink that cannot be closed is the device's failure, not the network's`() {
+        routes.answer("GET /api/Reader/image") {
+            MockResponse.Builder().addHeader("Content-Type", "image/jpeg").body(Buffer().write(Picture)).build()
+        }
+        val closing = PageSink {
+            object : OutputStream() {
+                override fun write(b: Int) = Unit
+
+                override fun close() = throw IOException("cannot close")
+            }
+        }
+
+        val result = runBlocking { source.page(PagedKind.Comic, Album, 0, closing) }
+
+        assertThat(result).isEqualTo(ApiResult.Failure(ApiError.Unexpected))
+    }
+
+    @Test
+    fun `a sink that cannot be opened is the device's failure, not the network's`() {
+        routes.answer("GET /api/Reader/image") {
+            MockResponse.Builder().addHeader("Content-Type", "image/jpeg").body(Buffer().write(Picture)).build()
+        }
+
+        val result = runBlocking { source.page(PagedKind.Comic, Album, 0, { throw IOException("full") }) }
+
+        assertThat(result).isEqualTo(ApiResult.Failure(ApiError.Unexpected))
+    }
+
+    @Test
+    fun `a failed copy is told rather than the close that follows it`() {
+        routes.answer("GET /api/Reader/image") {
+            MockResponse.Builder().addHeader("Content-Type", "image/jpeg").body(Buffer().write(Picture)).build()
+        }
+        val failing = PageSink {
+            object : OutputStream() {
+                override fun write(b: Int) = throw IOException("full")
+
+                override fun write(b: ByteArray, off: Int, len: Int) = throw IOException("full")
+
+                override fun close() = throw IOException("cannot close")
+            }
+        }
+
+        val result = runBlocking { source.page(PagedKind.Comic, Album, 0, failing) }
+
+        assertThat(result).isEqualTo(ApiResult.Failure(ApiError.Unexpected))
     }
 
     @Test
