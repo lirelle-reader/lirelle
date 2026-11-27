@@ -2,6 +2,7 @@ package app.tfdn.lirelle.source.kavita.di
 
 import android.content.Context
 import app.tfdn.lirelle.core.history.HistoryRepository
+import app.tfdn.lirelle.core.history.ReadRecordCache
 import app.tfdn.lirelle.core.library.AudioBookmarkRepository
 import app.tfdn.lirelle.core.library.AudioRepository
 import app.tfdn.lirelle.core.library.LibraryRepository
@@ -21,7 +22,7 @@ import app.tfdn.lirelle.core.session.profile.ProfileComponent
 import app.tfdn.lirelle.core.session.profile.ProfileScoped
 import app.tfdn.lirelle.core.session.profile.ProfileSession
 import app.tfdn.lirelle.core.session.profile.SourceOf
-import app.tfdn.lirelle.source.kavita.history.EmptyKavitaHistory
+import app.tfdn.lirelle.source.kavita.history.KavitaHistory
 import app.tfdn.lirelle.source.kavita.library.EmptyKavitaAudio
 import app.tfdn.lirelle.source.kavita.library.EmptyKavitaAudioBookmarks
 import app.tfdn.lirelle.source.kavita.library.EmptyKavitaMarks
@@ -130,7 +131,13 @@ internal object KavitaLibraryModule {
     @Provides
     @ProfileScoped
     @SourceOf(ServerKind.Kavita)
-    fun history(): HistoryRepository = EmptyKavitaHistory()
+    fun history(
+        session: ProfileSession,
+        reading: KavitaApis<KavitaReadingApi>,
+        library: KavitaApis<KavitaLibraryApi>,
+        titles: KavitaTitles,
+        cache: ReadRecordCache,
+    ): HistoryRepository = KavitaHistory(session, reading, library, titles, KavitaErrors(), cache)
 
     /** Kavita's column of the table. */
     @Provides

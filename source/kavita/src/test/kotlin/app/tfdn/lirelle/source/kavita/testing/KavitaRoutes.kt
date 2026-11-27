@@ -1,6 +1,8 @@
 package app.tfdn.lirelle.source.kavita.testing
 
+import app.tfdn.lirelle.core.history.ReadRecordCache
 import app.tfdn.lirelle.core.network.AuthHeader
+import app.tfdn.lirelle.source.kavita.history.KavitaHistory
 import app.tfdn.lirelle.source.kavita.library.KavitaLibrary
 import app.tfdn.lirelle.source.kavita.library.KavitaLibraryApi
 import app.tfdn.lirelle.source.kavita.network.KavitaApis
@@ -10,6 +12,7 @@ import app.tfdn.lirelle.source.kavita.network.KavitaKeyAuthorizer
 import app.tfdn.lirelle.source.kavita.reading.KavitaReader
 import app.tfdn.lirelle.source.kavita.reading.KavitaReadingApi
 import java.time.Instant
+import java.time.ZoneId
 import java.util.concurrent.CopyOnWriteArrayList
 import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.json.Json
@@ -99,6 +102,24 @@ internal class KavitaRoutes(private val server: MockWebServer) {
         FakeTitles,
         KavitaErrors(),
         now,
+    )
+
+    /**
+     * A Kavita profile's reading history on this server, asked as the profile's client asks, on the calendar of
+     * [zone], its reads given to [cache].
+     */
+    fun history(
+        session: FakeProfileSession = FakeProfileSession(kavitaSession(server.serverUrl)),
+        cache: ReadRecordCache = ReadRecordCache(),
+        zone: ZoneId = ZoneId.of("Europe/Paris"),
+    ): KavitaHistory = KavitaHistory(
+        session,
+        readingApi(session),
+        KavitaApis(client(session), KavitaJson, KavitaLibraryApi::class.java),
+        FakeTitles,
+        KavitaErrors(),
+        cache,
+        zone = { zone },
     )
 
     /** The server's address in the form the profile keeps it: no trailing slash. */
