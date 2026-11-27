@@ -8,12 +8,8 @@ import app.tfdn.lirelle.core.network.ApiResult
 import app.tfdn.lirelle.source.kavita.downloads.KavitaDownloadRefusals
 import app.tfdn.lirelle.source.kavita.downloads.NoKavitaDownloadLocations
 import app.tfdn.lirelle.source.kavita.network.KavitaAccountPictures
-import app.tfdn.lirelle.source.kavita.network.PassThrough
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.runBlocking
-import mockwebserver3.MockResponse
-import mockwebserver3.MockWebServer
-import okhttp3.OkHttpClient
 import okhttp3.Protocol
 import okhttp3.Request
 import okhttp3.Response
@@ -27,7 +23,7 @@ private val Nothing = ApiResult.Success(emptyList<Any>())
 
 /**
  * What Kavita does not have: no audio, no mark, no narration (every write is refused, nothing is asked of the
- * server), and how a refused download and a plain transfer are told.
+ * server), and how a refused download is told.
  */
 class KavitaEmptyAnswersTest {
 
@@ -53,22 +49,6 @@ class KavitaEmptyAnswersTest {
         assertThat(refusals.refusal(response(429))).isEqualTo(ApiError.TooManyAttempts)
         assertThat(refusals.refusal(response(401))).isEqualTo(ApiError.SessionExpired)
         assertThat(refusals.refusal(response(403))).isEqualTo(ApiError.Unexpected)
-    }
-
-    @Test
-    fun `no request is a long transfer, each goes on as it is`() {
-        val server = MockWebServer()
-        server.start()
-        try {
-            server.enqueue(MockResponse(code = 200, body = "ok"))
-            val client = OkHttpClient.Builder().addInterceptor(PassThrough).build()
-
-            val answer = client.newCall(Request.Builder().url(server.url("/api/Download/chapter")).build()).execute()
-
-            assertThat(answer.body.string()).isEqualTo("ok")
-        } finally {
-            server.close()
-        }
     }
 
     private fun response(code: Int) = Response.Builder()

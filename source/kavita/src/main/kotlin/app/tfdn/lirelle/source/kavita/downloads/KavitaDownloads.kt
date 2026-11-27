@@ -9,7 +9,7 @@ import app.tfdn.lirelle.source.kavita.network.KavitaCall
 import app.tfdn.lirelle.source.kavita.network.KavitaErrors
 import okhttp3.Response
 
-/** Where a Kavita profile's server serves its files, until its books are read and kept (#51): nowhere. */
+/** Where a Kavita profile's server serves its files, until its books are kept (#52): nowhere. */
 internal class NoKavitaDownloadLocations : DownloadLocations {
     override fun url(bookId: BookId, source: FileSource): String? = null
 }
