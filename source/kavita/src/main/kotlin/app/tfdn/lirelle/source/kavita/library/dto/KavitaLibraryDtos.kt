@@ -5,14 +5,20 @@ import kotlinx.serialization.Serializable
 // What the library reads of Kavita's answers. Every field has a default, so that one a version leaves out never
 // fails a whole list; the fields the app does not read are ignored, the server's paths among them.
 
-/** A library of the server, as `GET api/Library/libraries` lists it. */
+/**
+ * A library of the server, as `GET api/Library/libraries` lists it.
+ *
+ * @property type Kavita's library type: 0 Manga, 1 Comic, 2 Book, 3 Image, 4 LightNovel, 5 ComicVine; -1 when not
+ *   told.
+ */
 @Serializable
-internal data class LibraryDto(val id: Int, val name: String = "")
+internal data class LibraryDto(val id: Int, val name: String = "", val type: Int = -1)
 
 /**
  * A series, as a list of series and `GET api/Series/{id}` give it.
  *
  * @property format what its files are: 0 images, 1 an archive, 2 unknown, 3 EPUB, 4 PDF.
+ * @property libraryId the library it is in.
  * @property lastChapterAddedUtc when the series was last added to.
  */
 @Serializable
@@ -21,6 +27,7 @@ internal data class SeriesDto(
     val name: String = "",
     val sortName: String? = null,
     val format: Int = 2,
+    val libraryId: Int = 0,
     val libraryName: String? = null,
     val lastChapterAddedUtc: String? = null,
 )
@@ -33,9 +40,12 @@ internal data class PersonRefDto(val id: Int, val name: String = "")
 @Serializable
 internal data class GenreDto(val id: Int, val title: String = "")
 
-/** A file of a chapter, of which neither the path nor the size is read. */
+/**
+ * A file of a chapter: its id, its size, its format (0 images, 1 an archive, 2 unknown, 3 EPUB, 4 PDF) and its
+ * extension. The server's path is never read.
+ */
 @Serializable
-internal data class FileDto(val format: Int = 2)
+internal data class FileDto(val id: Int = 0, val format: Int = 2, val bytes: Long = 0, val extension: String? = null)
 
 /**
  * A chapter, as `GET api/Chapter`, a series detail, a volume and the search give it. Its number is `-100000` for

@@ -65,10 +65,18 @@ internal class KavitaProfiles(
     }
 }
 
-/** The account as the app keeps it: Kavita names its accounts by their username, and its id is a number's text. */
+private const val DownloadRole = "Download"
+private const val AdminRole = "Admin"
+
+/**
+ * The account as the app keeps it: Kavita names its accounts by their username, and its id is a number's text. Its
+ * download policy takes either the Download role or the Admin one; a server that tells no roles keeps the app's
+ * default, which allows it.
+ */
 internal fun KavitaUserDto.toProfile() = UserProfile(
     id = id.toString(),
     username = username,
     name = username,
     email = email,
+    canDownload = roles?.let { DownloadRole in it || AdminRole in it } ?: true,
 )

@@ -28,6 +28,7 @@ import app.tfdn.lirelle.core.network.ApiResult
 import app.tfdn.lirelle.core.session.profile.ProfileSession
 import app.tfdn.lirelle.source.kavita.network.KavitaApis
 import app.tfdn.lirelle.source.kavita.network.KavitaErrors
+import java.time.ZoneId
 
 /**
  * The lists of a Kavita profile's library asked of its [server]: its libraries, its series, its reading lists with
@@ -79,6 +80,8 @@ private val BookListRequest.isOfGenre: Boolean get() = genre.orNullIfBlank() != 
  * the app's books by one rule (`KavitaBooks.kt`), their pages, readings and reading lists ([KavitaLibraryLists]),
  * Home's rows ([KavitaHome], whose time [clock] tells, in milliseconds), the search ([KavitaSearch]) and an
  * author's page ([KavitaAuthors]). Reads the profile's server on every call, through [session].
+ *
+ * @param zone the device's calendar, which Kavita's days are told in.
  */
 internal class KavitaLibrary(
     session: ProfileSession,
@@ -86,9 +89,10 @@ internal class KavitaLibrary(
     titles: KavitaTitles,
     errors: KavitaErrors,
     clock: () -> Long = ::monotonicMillis,
+    zone: () -> ZoneId = ZoneId::systemDefault,
 ) : KavitaLibraryLists(KavitaProfileServer(session, apis, titles, errors)) {
 
-    private val bookPages = KavitaBookPages(server)
+    private val bookPages = KavitaBookPages(server, zone)
     private val home = KavitaHome(server, clock)
     private val search = KavitaSearch(server)
 

@@ -1,9 +1,11 @@
 package app.tfdn.lirelle.source.kavita.library
 
 import app.tfdn.lirelle.source.kavita.library.dto.ChapterDto
+import app.tfdn.lirelle.source.kavita.library.dto.HistoryItemDto
 import app.tfdn.lirelle.source.kavita.library.dto.LibraryDto
 import app.tfdn.lirelle.source.kavita.library.dto.ReadingListDto
 import app.tfdn.lirelle.source.kavita.library.dto.ReadingListItemDto
+import app.tfdn.lirelle.source.kavita.library.dto.ReadingProfileDto
 import app.tfdn.lirelle.source.kavita.library.dto.SeriesDetailDto
 import app.tfdn.lirelle.source.kavita.library.dto.SeriesDto
 import app.tfdn.lirelle.source.kavita.library.dto.SeriesMetadataDto
@@ -55,6 +57,21 @@ internal interface KavitaLibraryApi : KavitaBrowseApi {
 
     @GET("api/Search/series-for-chapter")
     suspend fun seriesOfChapter(@Query("chapterId") chapterId: Int): SeriesDto
+
+    @GET("api/reading-profile/{libraryId}/{seriesId}")
+    suspend fun readingProfile(
+        @Path("libraryId") libraryId: Int,
+        @Path("seriesId") seriesId: Int,
+    ): ReadingProfileDto
+
+    /** A series' reading sessions, from Kavita 0.9 (0.8.9 answers 404), told in the calendar of [zone]. */
+    @GET("api/Stats/reading-history/series/{seriesId}")
+    suspend fun seriesHistory(
+        @Path("seriesId") seriesId: Int,
+        @Query("tzId") zone: String,
+        @Query("PageNumber") page: Int,
+        @Query("PageSize") size: Int,
+    ): Response<List<HistoryItemDto>>
 
     @GET("api/Reader/continue-point")
     suspend fun continuePoint(@Query("seriesId") seriesId: Int): ChapterDto

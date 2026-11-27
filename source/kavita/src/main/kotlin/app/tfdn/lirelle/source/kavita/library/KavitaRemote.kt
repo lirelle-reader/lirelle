@@ -85,20 +85,24 @@ private const val MaxCalls = 6
 internal fun notFound(): Nothing = throw ApiErrorException(ApiError.NotFound)
 
 /**
- * Every page of a list Kavita gives by pages, the first being 1, in batches of [BatchSize]. A batch shorter than
- * what was asked for is the last one, whatever total the `Pagination` header says; so is the one that reaches that
- * total.
+ * Every page of a list Kavita gives by pages, the first being 1, in batches of [batchSize], at most [maxBatches] of
+ * them. A batch shorter than what was asked for is the last one, whatever total the `Pagination` header says; so is
+ * the one that reaches that total.
  */
-internal suspend fun <T> wholeList(fetch: suspend (page: Int, size: Int) -> Response<List<T>>): List<T> {
+internal suspend fun <T> wholeList(
+    batchSize: Int = BatchSize,
+    maxBatches: Int = MaxBatches,
+    fetch: suspend (page: Int, size: Int) -> Response<List<T>>,
+): List<T> {
     val all = mutableListOf<T>()
     var page = FirstPage
     do {
-        val response = fetch(page, BatchSize)
+        val response = fetch(page, batchSize)
         val batch = response.answer()
         all += batch
-        val more = batch.size >= BatchSize && all.size < (response.totalItems() ?: Int.MAX_VALUE)
+        val more = batch.size >= batchSize && all.size < (response.totalItems() ?: Int.MAX_VALUE)
         page++
-    } while (more && page < FirstPage + MaxBatches)
+    } while (more && page < FirstPage + maxBatches)
     return all
 }
 
@@ -108,5 +112,5 @@ internal const val BatchSize = 100
 /** Kavita numbers its pages from 1. */
 internal const val FirstPage = 1
 
-/** Safety stop for whole-list loads: 5 000 items. */
-private const val MaxBatches = 50
+/** Safety stop for whole-list loads: 50 batches, 5 000 items in batches of [BatchSize]. */
+internal const val MaxBatches = 50

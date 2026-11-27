@@ -1,6 +1,7 @@
 package app.tfdn.lirelle.feature.reader.narration
 
 import app.tfdn.lirelle.core.audio.narration.HeardSentence
+import app.tfdn.lirelle.core.reader.marks.sectionStartCfi
 import app.tfdn.lirelle.feature.player.controller.NarrationFailure
 import app.tfdn.lirelle.feature.player.controller.NarrationUi
 import android.util.Log
@@ -8,7 +9,6 @@ import app.tfdn.lirelle.feature.reader.BuildConfig
 import app.tfdn.lirelle.feature.reader.ReaderCore
 import app.tfdn.lirelle.feature.reader.ReaderUiState
 import app.tfdn.lirelle.feature.reader.panelWindowOpen
-import app.tfdn.lirelle.feature.reader.sectionStartCfi
 import app.tfdn.lirelle.feature.reader.bridge.HostMessage
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch

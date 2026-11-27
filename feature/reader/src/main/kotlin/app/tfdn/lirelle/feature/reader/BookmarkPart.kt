@@ -2,12 +2,10 @@ package app.tfdn.lirelle.feature.reader
 
 import app.tfdn.lirelle.core.reader.marks.CfiOrder
 import app.tfdn.lirelle.core.reader.marks.MarkId
+import app.tfdn.lirelle.core.reader.marks.sectionStartCfi
 import app.tfdn.lirelle.core.reader.marks.spineIndexOf
 import app.tfdn.lirelle.feature.reader.bridge.HostMessage
 import kotlinx.coroutines.CompletableDeferred
-
-/** The package's spine is its third child: spine item `N` is at step `/6/(2N + 2)`. */
-private const val StepsPerItem = 2
 
 /** The bookmarks of the visible page, the undo of a deletion, the panel's tabs and its rows. */
 internal class BookmarkPart(private val core: ReaderCore, private val writes: MarkWrites) : MarkListActions {
@@ -98,9 +96,6 @@ internal class BookmarkPart(private val core: ReaderCore, private val writes: Ma
         writes.launch { deleteBookmarks(it, ids) }
     }
 }
-
-/** The start of the section at [index] of the spine. */
-internal fun sectionStartCfi(index: Int): String = "epubcfi(/6/${StepsPerItem * (index + 1)}!/4)"
 
 /**
  * Whether [cfi] may be on the page that starts at [pageStart]: later in the same section, it is

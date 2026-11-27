@@ -8,6 +8,7 @@ import app.tfdn.lirelle.core.library.model.BookSummary
 import app.tfdn.lirelle.core.library.model.CoverShape
 import app.tfdn.lirelle.core.library.model.MediaProfile
 import app.tfdn.lirelle.core.library.model.ReadState
+import app.tfdn.lirelle.core.library.model.PageDirection
 import app.tfdn.lirelle.core.library.model.RelatedBook
 import app.tfdn.lirelle.core.library.model.Series
 import app.tfdn.lirelle.core.library.model.SeriesRef
@@ -69,10 +70,17 @@ internal class KavitaMapper(private val serverUrl: String, private val titles: K
     /**
      * A book's page. What its chapter does not say — summary, genres, publisher, language — the series' [metadata]
      * does, when it came. An EPUB's Kavita pages are its spine items, a number that means nothing to a reader: the
-     * page count is given for a book read by pages only. No file is offered yet: reading a Kavita book is #51's.
-     * A [lone] book, the only special of its series, has no series line.
+     * page count is given for a book read by pages only. Its file is the chapter's first ([filesOf]).
+     * A [lone] book, the only special of its series, has no series line. Its [direction] is the one its series'
+     * reading profile gives, null when unknown.
      */
-    fun detail(book: KavitaBook, series: SeriesDto, metadata: SeriesMetadataDto?, lone: Boolean = false): BookDetail {
+    fun detail(
+        book: KavitaBook,
+        series: SeriesDto,
+        metadata: SeriesMetadataDto?,
+        lone: Boolean = false,
+        direction: PageDirection? = null,
+    ): BookDetail {
         val chapter = book.chapter
         val title = title(book)
         return BookDetail(
@@ -97,20 +105,35 @@ internal class KavitaMapper(private val serverUrl: String, private val titles: K
             addedAt = utcInstant(chapter.createdUtc),
             narrators = emptyList(),
             collections = emptyList(),
-            files = emptyList(),
+            files = filesOf(chapter, series.libraryId, series.id),
             readState = readStateOf(chapter.pagesRead, chapter.pages),
             startedAt = null,
+            pageDirection = direction,
         )
     }
 
-    /** Kavita keeps the pages read of a chapter and when they last moved: no session, no time spent. */
-    fun reading(chapter: ChapterDto) = BookReading(
-        progressPercent = percentOf(chapter.pagesRead, chapter.pages),
-        lastReadAt = utcInstant(chapter.lastReadingProgressUtc),
-        totalSeconds = 0,
-        sessionCount = 0,
-        page = chapter.pagesRead.takeIf { it > 0 },
-    )
+    /**
+     * Kavita keeps the pages read of a chapter and when they last moved; the time spent and the [sessions] come from
+     * its reading sessions, none on a server that has none. A paged file's pages read are Kavita's page from 0: its
+     * page is one more (the page count at most), and its percentage that page over the page count, as the reader
+     * opens it. An EPUB's pages read are its spine items, which mean nothing to a reader: it has no page, and its
+     * percentage is the spine items read over the spine count.
+     */
+    fun reading(chapter: ChapterDto, seconds: Long = 0, sessions: Int = 0): BookReading {
+        val read = chapter.pagesRead
+        val page = if (read > 0 && chapter.formatOr(null) != EpubFormat) {
+            (read + 1).let { if (chapter.pages > 0) it.coerceAtMost(chapter.pages) else it }
+        } else {
+            null
+        }
+        return BookReading(
+            progressPercent = percentOf(page ?: read, chapter.pages),
+            lastReadAt = utcInstant(chapter.lastReadingProgressUtc),
+            totalSeconds = seconds,
+            sessionCount = sessions,
+            page = page,
+        )
+    }
 
     /** Another book of the series of the one shown, with its place in it. */
     fun related(book: KavitaBook) = RelatedBook(

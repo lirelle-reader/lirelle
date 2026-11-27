@@ -6,6 +6,7 @@ import app.tfdn.lirelle.core.ids.SeriesId
 import app.tfdn.lirelle.core.library.model.BookListRequest
 import app.tfdn.lirelle.core.library.model.BookListSource
 import app.tfdn.lirelle.core.library.model.BookReading
+import app.tfdn.lirelle.core.library.model.PageDirection
 import app.tfdn.lirelle.core.library.model.RelatedBooks
 import app.tfdn.lirelle.core.library.model.SeriesRef
 import app.tfdn.lirelle.core.library.model.ServerLibrary
@@ -14,6 +15,7 @@ import app.tfdn.lirelle.core.network.ApiResult
 import app.tfdn.lirelle.source.kavita.library.dto.ChapterDto
 import app.tfdn.lirelle.source.kavita.library.dto.SeriesDto
 import app.tfdn.lirelle.source.kavita.library.dto.SeriesMetadataDto
+import app.tfdn.lirelle.source.kavita.library.dto.VolumeDto
 import app.tfdn.lirelle.source.kavita.network.KavitaJson
 import app.tfdn.lirelle.source.kavita.testing.FakeTitles
 import app.tfdn.lirelle.source.kavita.testing.KavitaRoutes
@@ -33,6 +35,19 @@ import org.junit.Before
 import org.junit.Test
 
 private val Bd = ServerLibrary(LibraryId("1"), "BD")
+
+/** Two real sessions of chapter 44 (30 s and 90 s), a generated one of it, and a real one of chapter 45. */
+private val seriesHistory = """
+    [
+      {"sessionId": 1, "isGeneratedSession": false, "seriesId": 7,
+       "chapters": [{"chapterId": 44, "durationSeconds": 30}, {"chapterId": 45, "durationSeconds": 500}]},
+      {"sessionId": 2, "isGeneratedSession": false, "seriesId": 7,
+       "chapters": [{"chapterId": 44, "durationSeconds": 90}]},
+      {"sessionId": 3, "isGeneratedSession": true, "seriesId": 7,
+       "chapters": [{"chapterId": 44, "durationSeconds": 1000}]},
+      {"sessionId": 4, "isGeneratedSession": false, "seriesId": 7, "chapters": [{"chapterId": 45, "durationSeconds": 60}]}
+    ]
+""".trimIndent()
 
 /**
  * A Kavita profile's library: its libraries, its series and their pages, its books' pages and readings, each
@@ -189,6 +204,31 @@ class KavitaLibraryTest {
     }
 
     @Test
+    fun `a book's page reads in the direction of its series' reading profile`() = runBlocking {
+        routes.answerFixture("GET /api/Chapter", "chapter-asterix")
+        routes.answerFixture("GET /api/Search/series-for-chapter", "series-for-chapter")
+        routes.answerFixture("GET /api/reading-profile/1/7", "reading-profile-manga")
+        routes.answerFixture("GET /api/Library/libraries", "libraries")
+
+        val detail = (library.book(BookId("c44")) as ApiResult.Success).value
+
+        // Astérix is in BD (type 1): Kavita's default profile there says left to right.
+        assertThat(detail.pageDirection).isEqualTo(PageDirection.LeftToRight)
+    }
+
+    @Test
+    fun `a server without reading profiles leaves the direction unsaid`() = runBlocking {
+        routes.answerFixture("GET /api/Chapter", "chapter-asterix")
+        routes.answerFixture("GET /api/Search/series-for-chapter", "series-for-chapter")
+        routes.fail("GET /api/reading-profile/1/7", 404)
+        routes.answerFixture("GET /api/Library/libraries", "libraries")
+
+        val detail = (library.book(BookId("c44")) as ApiResult.Success).value
+
+        assertThat(detail.pageDirection).isNull()
+    }
+
+    @Test
     fun `a volume's page is its volume's book, its series and the series' metadata`() = runBlocking {
         routes.answerFixture("GET /api/Volume", "volume-dune")
         routes.answerFixture("GET /api/Series/261", "series-dune")
@@ -260,8 +300,8 @@ class KavitaLibraryTest {
         val chapter = (library.bookReading(BookId("c44")) as ApiResult.Success).value
         val volume = (library.bookReading(BookId("v407")) as ApiResult.Success).value
 
-        assertThat(chapter.progressPercent).isEqualTo(49)
-        assertThat(chapter.page).isEqualTo(26)
+        assertThat(chapter.progressPercent).isEqualTo(27 * 100 / 53)
+        assertThat(chapter.page).isEqualTo(27)
         assertThat(chapter.totalSeconds).isEqualTo(0)
         assertThat(volume).isEqualTo(
             BookReading(
@@ -269,10 +309,50 @@ class KavitaLibraryTest {
                 lastReadAt = volume.lastReadAt,
                 totalSeconds = 0,
                 sessionCount = 0,
-                page = 60,
+                page = null,
             ),
         )
         assertThat(volume.lastReadAt).isNotNull()
+    }
+
+    @Test
+    fun `the time spent on a book is its real sessions' in the series' history`() = runBlocking {
+        routes.answerFixture("GET /api/Chapter", "chapter-asterix")
+        routes.answerFixture("GET /api/Search/series-for-chapter", "series-for-chapter")
+        routes.answer("GET /api/Stats/reading-history/series/7", seriesHistory)
+
+        val reading = (library.bookReading(BookId("c44")) as ApiResult.Success).value
+
+        assertThat(reading.totalSeconds).isEqualTo(120)
+        assertThat(reading.sessionCount).isEqualTo(2)
+        val asked = routes.requests().single { it.url.encodedPath == "/api/Stats/reading-history/series/7" }
+        assertThat(asked.url.queryParameter("tzId")).isEqualTo("Europe/Paris")
+    }
+
+    @Test
+    fun `a volume's time is asked of its series' history`() = runBlocking {
+        routes.answerFixture("GET /api/Volume", "volume-dune")
+        routes.answer("GET /api/Stats/reading-history/series/${read<VolumeDto>("volume-dune").seriesId}") {
+            json("[]")
+        }
+
+        val reading = (library.bookReading(BookId("v407")) as ApiResult.Success).value
+
+        assertThat(reading.totalSeconds).isEqualTo(0)
+        assertThat(reading.sessionCount).isEqualTo(0)
+    }
+
+    @Test
+    fun `a server without series history gives no time, the reading still given`() = runBlocking {
+        routes.answer("GET /api/Chapter", fixtureWith("chapter-asterix", "pagesRead" to 26))
+        routes.answerFixture("GET /api/Search/series-for-chapter", "series-for-chapter")
+        routes.fail("GET /api/Stats/reading-history/series/7", 404)
+
+        val reading = (library.bookReading(BookId("c44")) as ApiResult.Success).value
+
+        assertThat(reading.totalSeconds).isEqualTo(0)
+        assertThat(reading.sessionCount).isEqualTo(0)
+        assertThat(reading.page).isEqualTo(27)
     }
 
     @Test

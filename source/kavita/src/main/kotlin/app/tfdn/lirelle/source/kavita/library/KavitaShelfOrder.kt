@@ -61,8 +61,3 @@ private fun BookSummary.matches(text: String): Boolean =
     title.contains(text, ignoreCase = true) ||
         series?.name?.contains(text, ignoreCase = true) == true ||
         authors.any { it.contains(text, ignoreCase = true) }
-
-private const val ImageFormat = 0
-private const val ArchiveFormat = 1
-private const val EpubFormat = 3
-private const val PdfFormat = 4

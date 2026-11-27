@@ -32,6 +32,7 @@ dependencies {
     implementation(project(":core:history"))
     implementation(project(":core:comics"))
     implementation(project(":core:downloads"))
+    implementation(project(":core:reader"))
     implementation(libs.retrofit)
     implementation(libs.retrofit.kotlinx.serialization)
     implementation(libs.kotlinx.serialization.json)

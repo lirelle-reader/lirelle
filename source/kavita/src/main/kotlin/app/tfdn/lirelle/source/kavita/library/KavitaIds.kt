@@ -1,6 +1,8 @@
 package app.tfdn.lirelle.source.kavita.library
 
+import app.tfdn.lirelle.core.ids.BookId
 import app.tfdn.lirelle.core.ids.LibraryId
+import app.tfdn.lirelle.core.ids.ReadId
 import app.tfdn.lirelle.core.ids.SeriesId
 import app.tfdn.lirelle.core.ids.ShelfId
 
@@ -26,3 +28,9 @@ internal fun ShelfId.kavitaNumber(): Int? = value.kavitaNumber()
 /** The number this text writes, digits only and above 0, as Kavita numbers its items; null for any other text. */
 internal fun String.kavitaNumber(): Int? =
     takeIf { it.isNotEmpty() && it.all { digit -> digit in '0'..'9' } }?.toIntOrNull()?.takeIf { it > 0 }
+
+/**
+ * The id of the [readNumber]th read of the Kavita book of this id, from 1: `c44#2`. Kavita keeps no read of its own,
+ * only sessions: the History counts a book's reads.
+ */
+internal fun BookId.kavitaReadId(readNumber: Int): ReadId = ReadId("$value#$readNumber")

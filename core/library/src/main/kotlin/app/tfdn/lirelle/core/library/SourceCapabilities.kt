@@ -24,6 +24,8 @@ enum class LibraryStart { Books, Series }
  *   own screen.
  * @property seriesCounts whether a series in a list comes with its numbers of books and of books read: the
  *   series tiles' progress line, the sorts and the filter made of them, a series' book count in Search.
+ * @property downloadToRead whether reading a book's text file needs the account's right to download (Kavita serves
+ *   an EPUB only as a download): without it the reader says so before asking the server.
  */
 data class SourceCapabilities(
     val audiobooks: Boolean,
@@ -44,6 +46,7 @@ data class SourceCapabilities(
     val libraryStart: LibraryStart,
     val libraryBooks: Boolean = true,
     val seriesCounts: Boolean = true,
+    val downloadToRead: Boolean = false,
 ) {
     companion object {
         /** A source that can do everything the app shows, whose Library opens on its books. */

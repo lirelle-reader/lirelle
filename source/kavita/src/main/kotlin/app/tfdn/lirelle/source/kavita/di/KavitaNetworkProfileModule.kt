@@ -13,7 +13,7 @@ import app.tfdn.lirelle.core.session.profile.ProfileComponent
 import app.tfdn.lirelle.core.session.profile.ProfileScoped
 import app.tfdn.lirelle.core.session.profile.ProfileSession
 import app.tfdn.lirelle.core.session.profile.SourceOf
-import app.tfdn.lirelle.source.kavita.comics.NoKavitaPages
+import app.tfdn.lirelle.source.kavita.comics.KavitaPageSource
 import app.tfdn.lirelle.source.kavita.downloads.KavitaDownloadRefusals
 import app.tfdn.lirelle.source.kavita.downloads.NoKavitaDownloadLocations
 import app.tfdn.lirelle.source.kavita.library.KavitaLibraryApi
@@ -22,8 +22,9 @@ import app.tfdn.lirelle.source.kavita.network.KavitaAccountPictures
 import app.tfdn.lirelle.source.kavita.network.KavitaAccountRepository
 import app.tfdn.lirelle.source.kavita.network.KavitaApis
 import app.tfdn.lirelle.source.kavita.network.KavitaErrors
+import app.tfdn.lirelle.source.kavita.network.KavitaFilePatience
 import app.tfdn.lirelle.source.kavita.network.KavitaKeyAuthorizer
-import app.tfdn.lirelle.source.kavita.network.PassThrough
+import app.tfdn.lirelle.source.kavita.reading.KavitaReadingApi
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -34,7 +35,8 @@ import okhttp3.OkHttpClient
 /**
  * What speaks to the open profile's Kavita server as its account: its key, which the authenticated client of
  * `core/network` asks for, what is asked about the account itself and of its library, where its picture is
- * (nowhere), its pages and kept files (none until #51), and which of its requests are long transfers (none yet).
+ * (nowhere), its pages, its kept files (none until #52), and which of its requests are long transfers (its whole
+ * files).
  */
 @Module
 @InstallIn(ProfileComponent::class)
@@ -60,6 +62,19 @@ internal object KavitaNetworkProfileModule {
         @SourceOf(ServerKind.Kavita) json: Json,
     ): KavitaApis<KavitaLibraryApi> = KavitaApis(client, json, KavitaLibraryApi::class.java)
 
+    /**
+     * What reading asks (progress, pages, files, history) goes through the profile's client too, its whole files
+     * waited for as long transfers.
+     */
+    @Provides
+    @ProfileScoped
+    fun readingApi(
+        @AuthenticatedClient client: OkHttpClient,
+        @SourceOf(ServerKind.Kavita) json: Json,
+        @LongTransferOf(ServerKind.Kavita) patience: Interceptor,
+    ): KavitaApis<KavitaReadingApi> =
+        KavitaApis(client.newBuilder().addInterceptor(patience).build(), json, KavitaReadingApi::class.java)
+
     /** The account is read with the profile's client: a key the server refuses marks the profile there. */
     @Provides
     @ProfileScoped
@@ -71,14 +86,17 @@ internal object KavitaNetworkProfileModule {
     @SourceOf(ServerKind.Kavita)
     fun accountPictures(): AccountPictures = KavitaAccountPictures
 
+    /** Kavita's file routes, told by their paths: one instance for every client that installs it. */
     @Provides
+    @ProfileScoped
     @LongTransferOf(ServerKind.Kavita)
-    fun longTransfer(): Interceptor = PassThrough
+    fun longTransfer(): Interceptor = KavitaFilePatience()
 
     @Provides
     @ProfileScoped
     @SourceOf(ServerKind.Kavita)
-    fun pages(): PageSource = NoKavitaPages()
+    fun pages(api: KavitaApis<KavitaReadingApi>, session: ProfileSession): PageSource =
+        KavitaPageSource(api, KavitaErrors()) { session.session.value.serverUrl }
 
     /** Made for each object that takes it, as the other sources': it holds nothing. */
     @Provides

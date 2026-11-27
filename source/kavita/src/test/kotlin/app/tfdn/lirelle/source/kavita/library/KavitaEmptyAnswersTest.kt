@@ -1,28 +1,15 @@
 package app.tfdn.lirelle.source.kavita.library
 
-import app.tfdn.lirelle.core.comics.PageSink
 import app.tfdn.lirelle.core.downloads.model.FileSource
-import app.tfdn.lirelle.core.history.model.HistoryCapabilities
-import app.tfdn.lirelle.core.history.model.HistoryPeriod
 import app.tfdn.lirelle.core.ids.BookId
 import app.tfdn.lirelle.core.ids.FileId
-import app.tfdn.lirelle.core.ids.ReadId
-import app.tfdn.lirelle.core.ids.SeriesId
-import app.tfdn.lirelle.core.library.model.PagedKind
 import app.tfdn.lirelle.core.network.ApiError
 import app.tfdn.lirelle.core.network.ApiResult
-import app.tfdn.lirelle.source.kavita.comics.NoKavitaPages
 import app.tfdn.lirelle.source.kavita.downloads.KavitaDownloadRefusals
 import app.tfdn.lirelle.source.kavita.downloads.NoKavitaDownloadLocations
-import app.tfdn.lirelle.source.kavita.history.EmptyKavitaHistory
 import app.tfdn.lirelle.source.kavita.network.KavitaAccountPictures
-import app.tfdn.lirelle.source.kavita.network.PassThrough
 import com.google.common.truth.Truth.assertThat
-import java.io.ByteArrayOutputStream
 import kotlinx.coroutines.runBlocking
-import mockwebserver3.MockResponse
-import mockwebserver3.MockWebServer
-import okhttp3.OkHttpClient
 import okhttp3.Protocol
 import okhttp3.Request
 import okhttp3.Response
@@ -35,25 +22,13 @@ private val NotFound = ApiResult.Failure(ApiError.NotFound)
 private val Nothing = ApiResult.Success(emptyList<Any>())
 
 /**
- * Until its books are read (#51), a Kavita profile's server has nothing to serve: no file, no place, no page, no
- * audio, no mark nor history — every write is refused, and nothing is asked of the server.
+ * What Kavita does not have: no audio, no mark, no narration (every write is refused, nothing is asked of the
+ * server), and how a refused download is told.
  */
 class KavitaEmptyAnswersTest {
 
     @Test
-    fun `no file is read, no place is kept and none is saved`() = runBlocking {
-        val reader = EmptyKavitaReader()
-
-        assertThat(reader.fileUrl(File, audioless = false)).isNull()
-        assertThat(reader.position(File)).isEqualTo(NotFound)
-        assertThat(reader.savePosition(File, cfi = null, percent = 50.0, page = 3)).isEqualTo(NotFound)
-        assertThat(reader.finishedReading(Book)).isEqualTo(ApiResult.Success(null))
-        assertThat(reader.nextVolume(SeriesId("5"), Book)).isEqualTo(ApiResult.Success(null))
-        assertThat(reader.download(File, audioless = false, ByteArrayOutputStream()) {}).isEqualTo(NotFound)
-    }
-
-    @Test
-    fun `no page, no audio and no marks are served`() = runBlocking {
+    fun `no audio, no marks and no narration are served`() = runBlocking {
         assertThat(EmptyKavitaAudio().assetUrl(Book, "a")).isNull()
         assertThat(EmptyKavitaAudio().manifest(Book)).isEqualTo(NotFound)
         assertThat(EmptyKavitaAudioBookmarks().list(Book)).isEqualTo(Nothing)
@@ -61,25 +36,8 @@ class KavitaEmptyAnswersTest {
         assertThat(EmptyKavitaMarks().highlights(Book, File)).isEqualTo(Nothing)
         assertThat(EmptyKavitaMarks().addBookmark(Book, File, "cfi", "title")).isEqualTo(NotFound)
         assertThat(EmptyKavitaReadAlong().trackUrl(Book, File, "a.mp3")).isNull()
-        assertThat(NoKavitaPages().servesByPages(PagedKind.Comic)).isFalse()
-        assertThat(NoKavitaPages().pageUrl(PagedKind.Comic, File, 0)).isNull()
-        assertThat(NoKavitaPages().pageCount(PagedKind.Comic, File)).isEqualTo(NotFound)
-        assertThat(NoKavitaPages().page(PagedKind.Comic, File, 0, PageSink { ByteArrayOutputStream() }))
-            .isEqualTo(NotFound)
         assertThat(NoKavitaDownloadLocations().url(Book, FileSource.Whole(File))).isNull()
         assertThat(KavitaAccountPictures.pictureUrl("https://kavita.example.com", "/avatar")).isNull()
-    }
-
-    @Test
-    fun `the history is an empty list, with nothing more to show`() = runBlocking {
-        val history = EmptyKavitaHistory()
-
-        assertThat(history.capabilities).isEqualTo(HistoryCapabilities(false, false, false, false, false, false, false))
-        val page = (history.log(HistoryPeriod(null), emptySet(), true, offset = 0, limit = 20) as ApiResult.Success)
-        assertThat(page.value.records).isEmpty()
-        assertThat(page.value.total).isEqualTo(0)
-        assertThat(history.marks(ReadId("9"))).isEqualTo(NotFound)
-        assertThat(history.setRating(ReadId("9"), stars = 4)).isEqualTo(NotFound)
     }
 
     @Test
@@ -91,22 +49,6 @@ class KavitaEmptyAnswersTest {
         assertThat(refusals.refusal(response(429))).isEqualTo(ApiError.TooManyAttempts)
         assertThat(refusals.refusal(response(401))).isEqualTo(ApiError.SessionExpired)
         assertThat(refusals.refusal(response(403))).isEqualTo(ApiError.Unexpected)
-    }
-
-    @Test
-    fun `no request is a long transfer, each goes on as it is`() {
-        val server = MockWebServer()
-        server.start()
-        try {
-            server.enqueue(MockResponse(code = 200, body = "ok"))
-            val client = OkHttpClient.Builder().addInterceptor(PassThrough).build()
-
-            val answer = client.newCall(Request.Builder().url(server.url("/api/Download/chapter")).build()).execute()
-
-            assertThat(answer.body.string()).isEqualTo("ok")
-        } finally {
-            server.close()
-        }
     }
 
     private fun response(code: Int) = Response.Builder()

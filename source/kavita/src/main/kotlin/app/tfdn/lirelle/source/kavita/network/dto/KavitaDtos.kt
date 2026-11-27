@@ -25,6 +25,7 @@ internal data class LoginRequest(val username: String, val password: String, val
  * that of the session a password opened: null when the account was read with a key or a provider's session. The
  * refresh token answered beside it is not read: the session is never renewed, and it is held nowhere.
  *
+ * @property roles the account's roles ("Download", "Admin"); null when the server tells none.
  * @property kavitaVersion the version the server runs, "0.9.1.4"; null when it tells none, or a null.
  */
 @Serializable
@@ -32,6 +33,7 @@ internal data class KavitaUserDto(
     val id: Int,
     val username: String,
     val email: String? = null,
+    val roles: List<String>? = null,
     val kavitaVersion: String? = null,
     val token: String? = null,
 ) {

@@ -184,4 +184,31 @@ class KavitaKeyAuthorizerTest {
         assertThat(under.address(cover))
             .isEqualTo("https://h.example.com/kavita/api/Image/chapter-cover?chapterId=3&apiKey=$TheKey".toHttpUrl())
     }
+
+    @Test
+    fun `a page and a PDF file are asked with the key in their address`() {
+        val page = "$Server/api/Reader/image?chapterId=44&page=0".toHttpUrl()
+        val pdf = "$Server/api/Reader/pdf?chapterId=1355".toHttpUrl()
+
+        assertThat(authorizer.address(page)).isEqualTo("$page&apiKey=$TheKey".toHttpUrl())
+        assertThat(authorizer.address(pdf)).isEqualTo("$pdf&apiKey=$TheKey".toHttpUrl())
+    }
+
+    @Test
+    fun `the other reading routes go to their own address`() {
+        val progress = "$Server/api/Reader/progress".toHttpUrl()
+        val info = "$Server/api/Reader/chapter-info?chapterId=44".toHttpUrl()
+        val imageLike = "$Server/api/Reader/image-something?chapterId=44".toHttpUrl()
+
+        assertThat(authorizer.address(progress)).isEqualTo(progress)
+        assertThat(authorizer.address(info)).isEqualTo(info)
+        assertThat(authorizer.address(imageLike)).isEqualTo(imageLike)
+    }
+
+    @Test
+    fun `a page of another server goes without the key`() {
+        val elsewhere = "https://elsewhere.example.com/api/Reader/image?chapterId=44&page=0".toHttpUrl()
+
+        assertThat(authorizer.address(elsewhere)).isEqualTo(elsewhere)
+    }
 }

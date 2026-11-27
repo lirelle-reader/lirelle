@@ -53,11 +53,15 @@ internal class KavitaKeyAuthorizer(private val session: ProfileSession) : Sessio
     }
 
     /**
-     * Kavita's images are asked with the key in their address: the server refuses the header alone on them (0.8.9.1
-     * answers 400). Every other route, and an image whose address [withKey] gives no key for, keeps its own.
+     * Kavita's images, its pages and its PDF files are asked with the key in their address: the server refuses the
+     * header alone on them (0.8.9.1 answers 400). Every other route, and an address [withKey] gives no key for,
+     * keeps its own.
      */
     override fun address(target: HttpUrl): HttpUrl =
-        if (target.encodedPath.contains(ImageRoutes)) withKey(target) ?: target else target
+        if (carriesKey(target.encodedPath)) withKey(target) ?: target else target
+
+    private fun carriesKey(path: String) =
+        path.contains(ImageRoutes) || path.endsWith(PageRoute) || path.endsWith(PdfRoute)
 
     /**
      * [target] with the profile's key as its [ApiKeyParameter], for the routes that take no header: Kavita's
@@ -83,5 +87,11 @@ internal class KavitaKeyAuthorizer(private val session: ProfileSession) : Sessio
     private companion object {
         /** Where Kavita's image routes are, under the server's address and any base path it has. */
         const val ImageRoutes = "/api/Image/"
+
+        /** Where a page of a chapter is, which takes the key in its address. */
+        const val PageRoute = "/api/Reader/image"
+
+        /** Where a chapter's PDF file is, which takes the key in its address. */
+        const val PdfRoute = "/api/Reader/pdf"
     }
 }

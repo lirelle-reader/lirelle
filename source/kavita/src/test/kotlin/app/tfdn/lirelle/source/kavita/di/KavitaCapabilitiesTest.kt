@@ -12,13 +12,14 @@ import com.google.common.truth.Truth.assertThat
 import org.junit.Test
 
 /**
- * What Kavita can do once a profile can be browsed (spec 050, §9 with §14): its library, without a Books tab and
- * without the numbers of a series' books. Reading, its history and its annotations come with #51.
+ * What Kavita can do (specs 050, §9 with §14, and 051, §8): its library, without a Books tab and without the
+ * numbers of a series' books; its history, its reading sessions, and the right to download needed to read a text
+ * file. Its annotations stay off.
  */
 class KavitaCapabilitiesTest {
 
     @Test
-    fun `a Kavita profile can be browsed, without a Books tab or series counts`() {
+    fun `a Kavita profile is read and has a history, without a Books tab or series counts`() {
         assertThat(KavitaLibraryModule.capabilities()).isEqualTo(
             SourceCapabilities(
                 audiobooks = false,
@@ -26,10 +27,10 @@ class KavitaCapabilitiesTest {
                 annotations = false,
                 audioBookmarks = false,
                 ratings = false,
-                readingSessions = false,
+                readingSessions = true,
                 genres = true,
                 authors = true,
-                history = false,
+                history = true,
                 homeRows = setOf(
                     HomeRowKind.Continue,
                     HomeRowKind.UpNext,
@@ -44,6 +45,7 @@ class KavitaCapabilitiesTest {
                 libraryStart = LibraryStart.Series,
                 libraryBooks = false,
                 seriesCounts = false,
+                downloadToRead = true,
             ),
         )
     }

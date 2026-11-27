@@ -2,8 +2,10 @@ package app.tfdn.lirelle.source.kavita.library
 
 import app.tfdn.lirelle.core.ids.AuthorId
 import app.tfdn.lirelle.core.ids.BookId
+import app.tfdn.lirelle.core.ids.FileId
 import app.tfdn.lirelle.core.ids.SeriesId
 import app.tfdn.lirelle.core.library.model.AuthorRef
+import app.tfdn.lirelle.core.library.model.BookFileKind
 import app.tfdn.lirelle.core.library.model.CoverShape
 import app.tfdn.lirelle.core.library.model.MediaProfile
 import app.tfdn.lirelle.core.library.model.PagedKind
@@ -203,9 +205,73 @@ class KavitaMapperTest {
         assertThat(detail.description).startsWith("Dans le camp fortifié romain")
         assertThat(detail.isbn).isNull()
         assertThat(detail.addedAt).isEqualTo(Instant.parse("2026-11-26T07:53:46.7739865Z"))
-        assertThat(detail.files).isEmpty()
+        assertThat(detail.files).hasSize(1)
         assertThat(detail.readState).isEqualTo(ReadState.Unread)
         assertThat(detail.coverUrl).isEqualTo("$Server/api/Image/chapter-cover?chapterId=44")
+    }
+
+    @Test
+    fun `a comic's page gives its one file, primary, with the ids progress needs`() {
+        val chapter = read<ChapterDto>("chapter-asterix")
+        val series = read<SeriesDto>("series-asterix")
+
+        val detail = mapper.detail(book(chapter), series, metadata = null)
+
+        val file = detail.files.single()
+        assertThat(file.id).isEqualTo(FileId("1-7-7-44-44"))
+        assertThat(file.format).isEqualTo("CBZ")
+        assertThat(file.isPrimary).isTrue()
+        assertThat(file.kind).isEqualTo(BookFileKind.Text)
+        assertThat(file.sizeBytes).isEqualTo(90_730_953L)
+        assertThat(file.contentVersion).isEqualTo("90730953")
+        assertThat(detail.pagedKind).isEqualTo(PagedKind.Comic)
+    }
+
+    @Test
+    fun `a chapter of several files gives its first only`() {
+        val chapter = read<ChapterDto>("chapter-asterix")
+        val series = read<SeriesDto>("series-asterix")
+        val two = chapter.copy(files = chapter.files + FileDto(id = 45, format = 3, bytes = 10, extension = ".epub"))
+
+        val file = mapper.detail(book(two), series, metadata = null).files.single()
+
+        assertThat(file.id).isEqualTo(FileId("1-7-7-44-44"))
+        assertThat(file.format).isEqualTo("CBZ")
+    }
+
+    @Test
+    fun `a file of a format the app does not read gives no file`() {
+        val chapter = read<ChapterDto>("chapter-asterix")
+        val series = read<SeriesDto>("series-asterix")
+        val text = chapter.copy(files = listOf(FileDto(id = 44, format = 2, bytes = 10, extension = ".txt")))
+
+        val detail = mapper.detail(book(text), series, metadata = null)
+
+        assertThat(detail.files).isEmpty()
+        assertThat(detail.readerFile).isNull()
+        assertThat(detail.pagedFile).isNull()
+    }
+
+    @Test
+    fun `a file without an id, or a series without a library, gives no file`() {
+        val chapter = read<ChapterDto>("chapter-asterix")
+        val series = read<SeriesDto>("series-asterix")
+        val noId = chapter.copy(files = chapter.files.map { it.copy(id = 0) })
+
+        assertThat(mapper.detail(book(noId), series, metadata = null).files).isEmpty()
+        assertThat(mapper.detail(book(chapter), series.copy(libraryId = 0), metadata = null).files).isEmpty()
+    }
+
+    @Test
+    fun `a file of no size has no size and no content version`() {
+        val chapter = read<ChapterDto>("chapter-asterix")
+        val series = read<SeriesDto>("series-asterix")
+        val empty = chapter.copy(files = chapter.files.map { it.copy(bytes = 0) })
+
+        val file = mapper.detail(book(empty), series, metadata = null).files.single()
+
+        assertThat(file.sizeBytes).isNull()
+        assertThat(file.contentVersion).isNull()
     }
 
     @Test
@@ -264,13 +330,35 @@ class KavitaMapperTest {
         val reading = mapper.reading(read("continue-naruto"))
         val unread = mapper.reading(read("chapter-asterix"))
 
-        assertThat(reading.progressPercent).isEqualTo(9 * 100 / 191)
-        assertThat(reading.page).isEqualTo(9)
+        assertThat(reading.progressPercent).isEqualTo(10 * 100 / 191)
+        assertThat(reading.page).isEqualTo(10)
         assertThat(reading.lastReadAt).isNull()
         assertThat(reading.totalSeconds).isEqualTo(0)
         assertThat(reading.sessionCount).isEqualTo(0)
         assertThat(unread.progressPercent).isNull()
         assertThat(unread.page).isNull()
+    }
+
+    @Test
+    fun `a paged book's page is Kavita's page from 1, as the reader opens it`() {
+        fun reading(read: Int) = mapper.reading(ChapterDto(id = 1, pages = 53, pagesRead = read))
+
+        assertThat(reading(4).page).isEqualTo(5)
+        assertThat(reading(4).progressPercent).isEqualTo(5 * 100 / 53)
+        assertThat(reading(52).page).isEqualTo(53)
+        assertThat(reading(52).progressPercent).isEqualTo(100)
+        assertThat(reading(53).page).isEqualTo(53)
+        assertThat(reading(53).progressPercent).isEqualTo(100)
+    }
+
+    @Test
+    fun `an EPUB's reading is its spine items read, without a page`() {
+        val epub = ChapterDto(id = 1, pages = 31, pagesRead = 6, files = listOf(FileDto(format = 3)))
+
+        val reading = mapper.reading(epub)
+
+        assertThat(reading.page).isNull()
+        assertThat(reading.progressPercent).isEqualTo(6 * 100 / 31)
     }
 
     @Test

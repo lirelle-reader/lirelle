@@ -38,6 +38,9 @@ fun spineIndexOf(cfi: String): Int? {
     return if (step >= StepsPerItem && step % StepsPerItem == 0) step / StepsPerItem - 1 else null
 }
 
+/** The start of the section at [index] of the spine: its body, `/6/(2N + 2)!/4`. */
+fun sectionStartCfi(index: Int): String = "epubcfi(/6/${StepsPerItem * (index + 1)}!/4)"
+
 /** The path a CFI starts at, without assertions: a range's parent and start joined. */
 private fun startOf(cfi: String): String? {
     val inner = Wrapped.matchEntire(cfi)?.groupValues?.get(1)?.replace(Assertions, "") ?: return null
