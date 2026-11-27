@@ -7,7 +7,9 @@ import app.tfdn.lirelle.source.kavita.network.KavitaApis
 import app.tfdn.lirelle.source.kavita.network.KavitaErrors
 import app.tfdn.lirelle.source.kavita.network.KavitaJson
 import app.tfdn.lirelle.source.kavita.network.KavitaKeyAuthorizer
+import app.tfdn.lirelle.source.kavita.reading.KavitaReader
 import app.tfdn.lirelle.source.kavita.reading.KavitaReadingApi
+import java.time.Instant
 import java.util.concurrent.CopyOnWriteArrayList
 import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.json.Json
@@ -85,6 +87,18 @@ internal class KavitaRoutes(private val server: MockWebServer) {
         session: FakeProfileSession = FakeProfileSession(kavitaSession(server.serverUrl)),
     ): KavitaApis<KavitaReadingApi> =
         KavitaApis(client(session), KavitaJson, KavitaReadingApi::class.java)
+
+    /** A Kavita profile's reading on this server, asked as the profile's client asks, its time told by [now]. */
+    fun reader(
+        session: FakeProfileSession = FakeProfileSession(kavitaSession(server.serverUrl)),
+        now: () -> Instant = { Instant.EPOCH },
+    ): KavitaReader = KavitaReader(
+        session,
+        readingApi(session),
+        KavitaApis(client(session), KavitaJson, KavitaLibraryApi::class.java),
+        KavitaErrors(),
+        now,
+    )
 
     /** The server's address in the form the profile keeps it: no trailing slash. */
     val serverUrl: String get() = server.serverUrl
