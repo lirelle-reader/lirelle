@@ -223,7 +223,7 @@ class KavitaMapperTest {
         assertThat(file.isPrimary).isTrue()
         assertThat(file.kind).isEqualTo(BookFileKind.Text)
         assertThat(file.sizeBytes).isEqualTo(90_730_953L)
-        assertThat(file.contentVersion).isEqualTo("90730953")
+        assertThat(file.contentVersion).isEqualTo("44:90730953")
         assertThat(detail.pagedKind).isEqualTo(PagedKind.Comic)
     }
 
@@ -237,6 +237,35 @@ class KavitaMapperTest {
 
         assertThat(file.id).isEqualTo(FileId("1-7-7-44-44"))
         assertThat(file.format).isEqualTo("CBZ")
+    }
+
+    @Test
+    fun `a chapter of several EPUB or PDF files gives a file that cannot be kept`() {
+        val chapter = read<ChapterDto>("chapter-asterix")
+        val series = read<SeriesDto>("series-asterix")
+        mapOf(3 to ".epub", 4 to ".pdf").forEach { (format, extension) ->
+            val files = listOf(
+                FileDto(id = 44, format = format, bytes = 10, extension = extension),
+                FileDto(id = 45, format = format, bytes = 20, extension = extension),
+            )
+
+            val file = mapper.detail(book(chapter.copy(files = files)), series, metadata = null).files.single()
+
+            assertThat(file.id).isEqualTo(FileId("1-7-7-44-44"))
+            assertThat(file.keepable).isFalse()
+        }
+    }
+
+    @Test
+    fun `a chapter of several comic archives, or of one file, can be kept`() {
+        val chapter = read<ChapterDto>("chapter-asterix")
+        val series = read<SeriesDto>("series-asterix")
+        val two = chapter.copy(files = chapter.files + FileDto(id = 45, format = 1, bytes = 10, extension = ".cbz"))
+        val epub = chapter.copy(files = listOf(FileDto(id = 44, format = 3, bytes = 10, extension = ".epub")))
+
+        assertThat(mapper.detail(book(two), series, metadata = null).files.single().keepable).isTrue()
+        assertThat(mapper.detail(book(chapter), series, metadata = null).files.single().keepable).isTrue()
+        assertThat(mapper.detail(book(epub), series, metadata = null).files.single().keepable).isTrue()
     }
 
     @Test
