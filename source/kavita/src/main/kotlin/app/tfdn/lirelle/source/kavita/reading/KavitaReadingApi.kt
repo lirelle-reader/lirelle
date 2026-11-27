@@ -1,5 +1,6 @@
 package app.tfdn.lirelle.source.kavita.reading
 
+import app.tfdn.lirelle.source.kavita.library.dto.HistoryItemDto
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Response

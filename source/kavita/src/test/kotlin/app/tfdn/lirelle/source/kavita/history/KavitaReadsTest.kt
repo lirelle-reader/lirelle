@@ -1,7 +1,7 @@
 package app.tfdn.lirelle.source.kavita.history
 
-import app.tfdn.lirelle.source.kavita.reading.HistoryChapterDto
-import app.tfdn.lirelle.source.kavita.reading.HistoryItemDto
+import app.tfdn.lirelle.source.kavita.library.dto.HistoryChapterDto
+import app.tfdn.lirelle.source.kavita.library.dto.HistoryItemDto
 import com.google.common.truth.Truth.assertThat
 import java.time.Duration
 import java.time.LocalDate

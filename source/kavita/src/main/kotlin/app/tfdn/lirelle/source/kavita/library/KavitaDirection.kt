@@ -1,7 +1,7 @@
 package app.tfdn.lirelle.source.kavita.library
 
 import app.tfdn.lirelle.core.library.model.PageDirection
-import app.tfdn.lirelle.source.kavita.reading.ReadingProfileDto
+import app.tfdn.lirelle.source.kavita.library.dto.ReadingProfileDto
 
 /**
  * The direction a series' pages are turned in, from its reading [profile] (null when the server has none to give,

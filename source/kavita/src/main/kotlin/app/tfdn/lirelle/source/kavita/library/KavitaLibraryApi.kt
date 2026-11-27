@@ -1,16 +1,16 @@
 package app.tfdn.lirelle.source.kavita.library
 
 import app.tfdn.lirelle.source.kavita.library.dto.ChapterDto
+import app.tfdn.lirelle.source.kavita.library.dto.HistoryItemDto
 import app.tfdn.lirelle.source.kavita.library.dto.LibraryDto
 import app.tfdn.lirelle.source.kavita.library.dto.ReadingListDto
 import app.tfdn.lirelle.source.kavita.library.dto.ReadingListItemDto
+import app.tfdn.lirelle.source.kavita.library.dto.ReadingProfileDto
 import app.tfdn.lirelle.source.kavita.library.dto.SeriesDetailDto
 import app.tfdn.lirelle.source.kavita.library.dto.SeriesDto
 import app.tfdn.lirelle.source.kavita.library.dto.SeriesMetadataDto
 import app.tfdn.lirelle.source.kavita.library.dto.VolumeDto
 import app.tfdn.lirelle.source.kavita.network.KavitaJson
-import app.tfdn.lirelle.source.kavita.reading.HistoryItemDto
-import app.tfdn.lirelle.source.kavita.reading.ReadingProfileDto
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.intOrNull

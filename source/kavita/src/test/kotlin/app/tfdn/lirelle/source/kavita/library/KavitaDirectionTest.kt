@@ -1,7 +1,7 @@
 package app.tfdn.lirelle.source.kavita.library
 
 import app.tfdn.lirelle.core.library.model.PageDirection
-import app.tfdn.lirelle.source.kavita.reading.ReadingProfileDto
+import app.tfdn.lirelle.source.kavita.library.dto.ReadingProfileDto
 import com.google.common.truth.Truth.assertThat
 import org.junit.Test
 

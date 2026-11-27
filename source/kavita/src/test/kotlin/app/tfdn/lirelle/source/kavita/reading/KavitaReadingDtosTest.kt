@@ -1,7 +1,9 @@
 package app.tfdn.lirelle.source.kavita.reading
 
 import app.tfdn.lirelle.source.kavita.library.dto.ChapterDto
+import app.tfdn.lirelle.source.kavita.library.dto.HistoryItemDto
 import app.tfdn.lirelle.source.kavita.library.dto.LibraryDto
+import app.tfdn.lirelle.source.kavita.library.dto.ReadingProfileDto
 import app.tfdn.lirelle.source.kavita.library.utcInstant
 import app.tfdn.lirelle.source.kavita.network.KavitaApis
 import app.tfdn.lirelle.source.kavita.network.KavitaJson
