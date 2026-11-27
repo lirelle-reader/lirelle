@@ -1,9 +1,9 @@
 # Privacy policy
 
-*Last updated: 26 November 2026.* [Version française](PRIVACY.fr.md)
+*Last updated: 27 November 2026.* [Version française](PRIVACY.fr.md)
 
-Lirelle is an Android app that reads, shows and plays the books, comics and audiobooks of a BookOrbit or Komga server
-that you add to it. This policy says what the app does with your data.
+Lirelle is an Android app that reads, shows and plays the books, comics and audiobooks of a BookOrbit, Komga or Kavita
+server that you add to it. This policy says what the app does with your data.
 
 ## The developer collects nothing
 
@@ -26,9 +26,12 @@ Lirelle talks only to the servers you add, and to each of them it sends only wha
 What a server does with these data is up to whoever runs it, under their own privacy policy. If you run your own
 server, they stay with you.
 
-**Signing in to Komga through its identity provider (OIDC):** the sign-in happens in a web view inside the app, on the
-server's own sign-in page and the identity provider it uses. The web view names itself as a browser does, with the
-app's name and version added. The app keeps only what the server gives it back to stay signed in.
+**Signing in to Komga or Kavita through its identity provider (OIDC):** the sign-in happens in a web view inside the
+app, on the server's own sign-in page and the identity provider it uses. The web view names itself as a browser does,
+with the app's name and version added. The app keeps only what the server gives it back to stay signed in.
+
+**Kavita's auth key:** on Kavita, signing in creates an auth key in your account, named after the app, which the app
+keeps to stay signed in; removing the profile deletes it.
 
 ## What stays on your device
 

@@ -7,8 +7,8 @@
   <a href="https://github.com/lirelle-reader/lirelle/releases/latest"><img src="https://img.shields.io/github/v/release/lirelle-reader/lirelle" alt="Latest release"></a>
 </p>
 
-Books, comics and audiobooks from your own [BookOrbit](https://github.com/bookorbit/bookorbit) or
-[Komga](https://github.com/gotson/komga) server, on Android.
+Books, comics and audiobooks from your own [BookOrbit](https://github.com/bookorbit/bookorbit),
+[Komga](https://github.com/gotson/komga) or [Kavita](https://github.com/Kareadita/Kavita) server, on Android.
 
 Lirelle is a client: it signs in to a server you or a friend runs, and reads, shows and plays what that server holds.
 
@@ -23,9 +23,9 @@ Books and audiobooks from Standard Ebooks and LibriVox, in the public domain. Se
 
 ## What it does
 
-- **Two kinds of servers**: BookOrbit, for everything below, and Komga, for comics. Each server and account is a
-  profile of its own, and their data are kept apart; you switch from one to the other in two taps, from the profile
-  button of the home screen.
+- **Three kinds of servers**: BookOrbit, for everything below; Komga, for comics; Kavita, for books, comics and
+  manga. Each server and account is a profile of its own, and their data are kept apart; you switch from one to the
+  other in two taps, from the profile button of the home screen.
 - **Books**: EPUB, MOBI, AZW/AZW3 and FB2, paged or scrolled, with bookmarks, highlights, notes and search.
 - **A reader to your liking**: themes (light, sepia, dark, black), fonts (serif, sans-serif, one made for dyslexic
   readers, or the book's own), text size, line spacing, margins, alignment and hyphenation, a header and a footer of
@@ -50,11 +50,13 @@ Books and audiobooks from Standard Ebooks and LibriVox, in the public domain. Se
 
 ## What it does not do
 
-- It is not a server: you need a BookOrbit or Komga server.
+- It is not a server: you need a BookOrbit, Komga or Kavita server.
 - It does not read files outside a server, and has no store, no purchases and no DRM.
 - It does not manage the library (metadata, imports): that is the server's job.
 - It does not mix several servers in one library: each profile shows its own.
 - With Komga, it reads comics only: Komga's EPUBs and PDFs are not opened yet.
+- With Kavita, there are no audiobooks, no bookmarks, highlights or notes, and no ratings; reading an EPUB and
+  downloading need the account's Download role.
 - In the car, it does not switch profiles: Android Auto shows the profile open on the phone. Cars with Android
   built in (Android Automotive) are not supported.
 - It runs on Android 14 or later only.
@@ -68,8 +70,10 @@ change is reviewed and tested on real devices by a human before it ships. Contri
 ## Requirements and install
 
 - Android 14 or later. Books need Android System WebView 120 or later, which the Play Store keeps up to date.
-- A BookOrbit server, 3.8.0 or later, or a Komga server (tested with Komga 1.30). The editions of a book are grouped
-  from BookOrbit 3.10.0.
+- A BookOrbit server, 3.8.0 or later, a Komga server (tested with Komga 1.30), or a Kavita server, 0.8.9 or later
+  (tested with Kavita 0.9.1.4). The editions of a book are grouped from BookOrbit 3.10.0.
+- On Kavita, sign in with your password, through the server's identity provider, or with an auth key pasted from
+  Kavita's settings; a passkey cannot be used through the provider inside the app: paste an auth key instead.
 
 Each release carries its signed APK on GitHub: download it from the
 [latest release](https://github.com/lirelle-reader/lirelle/releases/latest). To get the new releases as they come, add
@@ -106,4 +110,4 @@ Some files come from other projects under their own licences (the reading engine
 the SIL Open Font License, the Gradle wrapper under the Apache License 2.0): [`REUSE.toml`](REUSE.toml) says which,
 and their texts are in [`LICENSES/`](LICENSES/).
 
-Lirelle is not affiliated with BookOrbit or Komga.
+Lirelle is not affiliated with BookOrbit, Komga or Kavita.
