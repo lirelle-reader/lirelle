@@ -110,4 +110,30 @@ class KavitaAccountRepositoryTest {
         assertThat(account.account()).isEqualTo(ApiResult.Failure(ApiError.ServerFailed))
         assertThat(session.session.value.user.username).isEqualTo("old")
     }
+
+    private suspend fun canDownloadWith(json: String): Boolean {
+        server.enqueueJson(json)
+        account.refreshAccount()
+        return session.session.value.user.canDownload
+    }
+
+    @Test
+    fun `the Download role gives the right to download`() = runBlocking {
+        assertThat(canDownloadWith(annJson())).isTrue()
+    }
+
+    @Test
+    fun `an account without the Download role may not download`() = runBlocking {
+        assertThat(canDownloadWith(annJson().replace("\"Download\"", "\"Login\""))).isFalse()
+    }
+
+    @Test
+    fun `an administrator may download whatever its other roles`() = runBlocking {
+        assertThat(canDownloadWith(annJson().replace("\"Pleb\",\"Download\"", "\"Admin\",\"Login\""))).isTrue()
+    }
+
+    @Test
+    fun `a server that tells no roles keeps the app's default`() = runBlocking {
+        assertThat(canDownloadWith(annJson().replace("\"roles\":[\"Pleb\",\"Download\"],", ""))).isTrue()
+    }
 }
