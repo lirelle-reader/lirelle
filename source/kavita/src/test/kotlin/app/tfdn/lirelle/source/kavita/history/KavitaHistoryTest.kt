@@ -67,6 +67,11 @@ class KavitaHistoryTest {
     private fun historyRequests(): List<RecordedRequest> =
         routes.requests().filter { "${it.method} ${it.url.encodedPath}" == HistoryRoute }
 
+    /** The series whose detail was asked, in the order asked. */
+    private fun detailRequests(): List<String?> = routes.requests()
+        .filter { it.url.encodedPath == "/api/Series/series-detail" }
+        .map { it.url.queryParameter("seriesId") }
+
     @Test
     fun `the history is asked of every library of the account, on the device's calendar, page after page`() {
         routes.answer(HistoryRoute, items(item(1, "2026-11-20", 7, 44, completed = true)))
@@ -77,16 +82,16 @@ class KavitaHistoryTest {
         assertThat(request.url.queryParameterValues("Libraries")).containsExactly("1", "3", "2").inOrder()
         assertThat(request.url.queryParameter("TimeZoneId")).isEqualTo("Europe/Paris")
         assertThat(request.url.queryParameter("PageNumber")).isEqualTo("1")
-        assertThat(request.url.queryParameter("PageSize")).isEqualTo("100")
+        assertThat(request.url.queryParameter("PageSize")).isEqualTo("1000")
     }
 
     @Test
     fun `a full first page that does not reach the total is followed by the next`() {
-        val unfinished = List(100) { item(100 + it, "2026-11-10", 43, 535, completed = false) }
+        val unfinished = List(1000) { item(1000 + it, "2026-11-10", 43, 535, completed = false) }
         val finished = item(1, "2026-11-20", 7, 44, completed = true)
         routes.answer(HistoryRoute) { request ->
             val page = if (request.url.queryParameter("PageNumber") == "1") unfinished else listOf(finished)
-            json(items(*page.toTypedArray()), headers = arrayOf("Pagination" to pagination(101)))
+            json(items(*page.toTypedArray()), headers = arrayOf("Pagination" to pagination(1001)))
         }
 
         val result = log(routes.history())
@@ -256,6 +261,63 @@ class KavitaHistoryTest {
     }
 
     @Test
+    fun `another year is taken from the reads held, without asking the server again`() {
+        routes.answer(
+            HistoryRoute,
+            items(item(1, "2025-12-31", 7, 44, completed = true), item(2, "2026-01-02", 7, 55, completed = true)),
+        )
+        val history = routes.history()
+
+        log(history, period = HistoryPeriod(null))
+        val year = log(history, period = HistoryPeriod(year = 2025))
+        val all = log(history, period = HistoryPeriod(null))
+
+        assertThat(records(year).map { it.bookId }).containsExactly(BookId("c44"))
+        assertThat(records(all).map { it.bookId }).containsExactly(BookId("c55"), BookId("c44")).inOrder()
+        assertThat(historyRequests()).hasSize(1)
+    }
+
+    @Test
+    fun `the same year asked again, a new visit or a retry, loads again`() {
+        routes.answer(HistoryRoute, items(item(1, "2026-11-20", 7, 44, completed = true)))
+        val history = routes.history()
+
+        log(history, period = HistoryPeriod(year = 2026))
+        log(history, period = HistoryPeriod(year = 2026))
+
+        assertThat(historyRequests()).hasSize(2)
+    }
+
+    @Test
+    fun `a load again asks only the series not seen yet`() {
+        val asterix = item(1, "2026-11-20", 7, 44, completed = true)
+        val lone = item(2, "2026-11-21", 451, 1857, completed = true)
+        var loads = 0
+        routes.answer(HistoryRoute) { json(if (loads++ == 0) items(asterix) else items(asterix, lone)) }
+        val history = routes.history()
+
+        log(history)
+        val again = log(history)
+
+        assertThat(records(again).map { it.bookId }).containsExactly(BookId("c1857"), BookId("c44")).inOrder()
+        assertThat(detailRequests()).containsExactly("7", "451").inOrder()
+    }
+
+    @Test
+    fun `a series without the chapter of a read is asked again`() {
+        val first = item(1, "2026-11-20", 7, 44, completed = true)
+        val unknown = item(2, "2026-11-21", 7, 999, completed = true)
+        var loads = 0
+        routes.answer(HistoryRoute) { json(if (loads++ == 0) items(first) else items(first, unknown)) }
+        val history = routes.history()
+
+        log(history)
+        log(history)
+
+        assertThat(detailRequests()).containsExactly("7", "7")
+    }
+
+    @Test
     fun `a failed history is the error of the call`() {
         routes.fail(HistoryRoute, 500)
 
@@ -292,9 +354,9 @@ class KavitaHistoryTest {
 /** Kavita's answer of [items]. */
 private fun items(vararg items: String): String = items.joinToString(",", prefix = "[", postfix = "]")
 
-/** Kavita's `Pagination` header of a history of [total] sessions, by pages of 100. */
+/** Kavita's `Pagination` header of a history of [total] sessions, by pages of 1000. */
 private fun pagination(total: Int): String =
-    """{"currentPage":1,"itemsPerPage":100,"totalItems":$total,"totalPages":${(total + 99) / 100}}"""
+    """{"currentPage":1,"itemsPerPage":1000,"totalItems":$total,"totalPages":${(total + 999) / 1000}}"""
 
 /** The names of the test server's series, by id. */
 private val SeriesNames = mapOf(7 to "Astérix", 43 to "Garfield", 451 to "11/22/63")

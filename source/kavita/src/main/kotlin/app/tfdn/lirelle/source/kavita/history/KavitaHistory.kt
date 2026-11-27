@@ -21,6 +21,7 @@ import app.tfdn.lirelle.source.kavita.library.KavitaCallLimit
 import app.tfdn.lirelle.source.kavita.library.KavitaLibraryApi
 import app.tfdn.lirelle.source.kavita.library.KavitaMapper
 import app.tfdn.lirelle.source.kavita.library.KavitaTitles
+import app.tfdn.lirelle.source.kavita.library.MaxBatches
 import app.tfdn.lirelle.source.kavita.library.SeriesRefInfo
 import app.tfdn.lirelle.source.kavita.library.books
 import app.tfdn.lirelle.source.kavita.library.isLoneBook
@@ -31,6 +32,7 @@ import app.tfdn.lirelle.source.kavita.network.KavitaErrors
 import app.tfdn.lirelle.source.kavita.reading.KavitaReadingApi
 import java.time.Duration
 import java.time.ZoneId
+import java.util.concurrent.ConcurrentHashMap
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
@@ -41,9 +43,11 @@ import kotlinx.coroutines.coroutineScope
  * they were real; one marked read has none. Each read is named as the app names its book (title, people, series,
  * cover), a book no longer in its series being left out. There is no summary, outcome, rating nor marks.
  *
- * Kavita gives its sessions, not its reads, so the whole history is loaded when the screen asks its first page and
- * kept for the pages after it: asking the first page again (coming back to History, another year) loads it anew.
- * The rows of each page go to [cache] for their detail.
+ * Kavita gives its sessions, not its reads, so the whole history (every year) is loaded when the screen asks its
+ * first page and kept: the pages after it, and the first page of another year, are taken from it; the first page of
+ * the same year again (coming back to History, a retry) loads it anew. The books of each series met are kept for the
+ * profile's life, so a load asks only the series not seen yet, and those that lack the chapter of a read. The rows
+ * of each page go to [cache] for their detail.
  *
  * @param zone the device's calendar, which Kavita's days are told in.
  */
@@ -69,14 +73,22 @@ internal class KavitaHistory(
 
     private val calls = KavitaCallLimit()
 
-    /** The rows of the last load, and the period they were loaded for. */
+    /** The rows of every read of the last load, all years, newest end first; null before the first. */
     @Volatile
-    private var loaded: LoadedReads? = null
+    private var loaded: List<ReadRecord>? = null
+
+    /** The period the screen asked last. */
+    @Volatile
+    private var lastPeriod: HistoryPeriod? = null
+
+    /** The books of each series met, by series id. */
+    private val seriesBooks = ConcurrentHashMap<Int, SeriesBooks>()
 
     /**
-     * A page of the reads ended in [period], from [offset]: the first page loads them all again, the next ones take
-     * them from that load (from a new one when it was for another period). No month totals: the screen counts the
-     * reads of each month from its rows. Only finished reads exist: asked for none, nothing is asked.
+     * A page of the reads ended in [period], from [offset]: the first page of the period asked last loads them all
+     * again; the next pages, and the first page of another period, take them from the last load. No month totals:
+     * the screen counts the reads of each month from its rows. Only finished reads exist: asked for none, nothing is
+     * asked.
      */
     override suspend fun log(
         period: HistoryPeriod,
@@ -89,38 +101,50 @@ internal class KavitaHistory(
             return ApiResult.Success(ReadPage(emptyList(), months = null, total = 0, offset, limit))
         }
         return errors.call(KavitaCall.Authenticated) {
-            val reads = loaded?.takeIf { offset > 0 && it.period == period }
-                ?: LoadedReads(period, load(period)).also { loaded = it }
-            val ordered = if (newestFirst) reads.records else reads.records.asReversed()
+            val held = loaded?.takeIf { offset > 0 || period != lastPeriod }
+            lastPeriod = period
+            val reads = (held ?: load().also { loaded = it })
+                .filter { period.year == null || it.endedOn?.year == period.year }
+            val ordered = if (newestFirst) reads else reads.asReversed()
             val records = ordered.drop(offset).take(limit.coerceAtLeast(0))
             cache.put(records)
             ReadPage(records, months = null, total = ordered.size, offset = offset, limit = limit)
         }
     }
 
-    /** The rows of the reads ended in [period], newest end first: every session of the account's libraries. */
-    private suspend fun load(period: HistoryPeriod): List<ReadRecord> {
+    /** The rows of every read, newest end first: every session of the account's libraries. */
+    private suspend fun load(): List<ReadRecord> {
         val serverUrl = session.session.value.serverUrl
         val api = reading.forServer(serverUrl)
         // Kavita answers nothing for no library, and the account may see none.
         val libraries = api.libraries().map { it.id }.ifEmpty { return emptyList() }
         val zoneId = zone().id
-        val reads = readsOf(wholeList { page, size -> api.history(libraries, zoneId, page, size) })
-            .filter { period.year == null || it.endedOn.year == period.year }
-        val series = seriesOf(library.forServer(serverUrl), reads.map { it.seriesId }.distinct())
+        val sessions = wholeList(HistoryBatch, MaxBatches) { page, size -> api.history(libraries, zoneId, page, size) }
+        val reads = readsOf(sessions)
+        askSeries(library.forServer(serverUrl), reads)
         val mapper = KavitaMapper(serverUrl, titles)
-        return reads.mapNotNull { read -> series[read.seriesId]?.let { record(mapper, read, it) } }
+        return reads.mapNotNull { read -> seriesBooks[read.seriesId]?.let { record(mapper, read, it) } }
     }
 
-    /** The books of each series of [ids], asked together; a series no longer there is left out. */
-    private suspend fun seriesOf(api: KavitaLibraryApi, ids: List<Int>): Map<Int, SeriesBooks> = coroutineScope {
-        ids.map { id ->
+    /**
+     * Asks together the books of each series of [reads] not seen yet, or seen without the chapter of one of them; a
+     * series no longer there is forgotten.
+     */
+    private suspend fun askSeries(api: KavitaLibraryApi, reads: List<ChapterRead>) = coroutineScope {
+        val wanted = reads.groupBy { it.seriesId }.filter { (id, ofSeries) ->
+            val known = seriesBooks[id]
+            known == null || ofSeries.any { it.chapterId !in known.byChapter }
+        }.keys
+        wanted.map { id ->
             async {
-                calls.orGone { api.detail(id) }?.let { detail ->
-                    id to SeriesBooks(detail.books().associateBy { it.chapter.id }, detail.isLoneBook)
+                val detail = calls.orGone { api.detail(id) }
+                if (detail == null) {
+                    seriesBooks.remove(id)
+                } else {
+                    seriesBooks[id] = SeriesBooks(detail.books().associateBy { it.chapter.id }, detail.isLoneBook)
                 }
             }
-        }.awaitAll().filterNotNull().toMap()
+        }.awaitAll()
     }
 
     /** The row of [read], named as the app names its book in [series]; none when the chapter left the series. */
@@ -169,8 +193,8 @@ internal class KavitaHistory(
         ApiResult.Failure(ApiError.NotFound)
 }
 
-/** The rows of the reads ended in [period], newest end first. */
-private class LoadedReads(val period: HistoryPeriod, val records: List<ReadRecord>)
+/** How many sessions each batch of the history holds: Kavita accepts 1000. */
+private const val HistoryBatch = 1000
 
 /** A series' books by the id of the chapter each is read through, and whether it is a [lone] book. */
 private class SeriesBooks(val byChapter: Map<Int, KavitaBook>, val lone: Boolean)
