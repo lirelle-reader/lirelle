@@ -6,6 +6,7 @@ import app.tfdn.lirelle.core.ids.SeriesId
 import app.tfdn.lirelle.core.library.model.BookListRequest
 import app.tfdn.lirelle.core.library.model.BookListSource
 import app.tfdn.lirelle.core.library.model.BookReading
+import app.tfdn.lirelle.core.library.model.PageDirection
 import app.tfdn.lirelle.core.library.model.RelatedBooks
 import app.tfdn.lirelle.core.library.model.SeriesRef
 import app.tfdn.lirelle.core.library.model.ServerLibrary
@@ -186,6 +187,31 @@ class KavitaLibraryTest {
         assertThat(asked.getValue("/api/Chapter").url.queryParameter("chapterId")).isEqualTo("44")
         assertThat(asked.getValue("/api/Search/series-for-chapter").url.queryParameter("chapterId")).isEqualTo("44")
         assertThat(asked.getValue("/api/Series/metadata").url.queryParameter("seriesId")).isEqualTo("7")
+    }
+
+    @Test
+    fun `a book's page reads in the direction of its series' reading profile`() = runBlocking {
+        routes.answerFixture("GET /api/Chapter", "chapter-asterix")
+        routes.answerFixture("GET /api/Search/series-for-chapter", "series-for-chapter")
+        routes.answerFixture("GET /api/reading-profile/1/7", "reading-profile-manga")
+        routes.answerFixture("GET /api/Library/libraries", "libraries")
+
+        val detail = (library.book(BookId("c44")) as ApiResult.Success).value
+
+        // Astérix is in BD (type 1): Kavita's default profile there says left to right.
+        assertThat(detail.pageDirection).isEqualTo(PageDirection.LeftToRight)
+    }
+
+    @Test
+    fun `a server without reading profiles leaves the direction unsaid`() = runBlocking {
+        routes.answerFixture("GET /api/Chapter", "chapter-asterix")
+        routes.answerFixture("GET /api/Search/series-for-chapter", "series-for-chapter")
+        routes.fail("GET /api/reading-profile/1/7", 404)
+        routes.answerFixture("GET /api/Library/libraries", "libraries")
+
+        val detail = (library.book(BookId("c44")) as ApiResult.Success).value
+
+        assertThat(detail.pageDirection).isNull()
     }
 
     @Test

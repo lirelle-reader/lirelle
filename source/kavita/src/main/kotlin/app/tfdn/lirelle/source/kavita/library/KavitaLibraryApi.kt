@@ -9,6 +9,7 @@ import app.tfdn.lirelle.source.kavita.library.dto.SeriesDto
 import app.tfdn.lirelle.source.kavita.library.dto.SeriesMetadataDto
 import app.tfdn.lirelle.source.kavita.library.dto.VolumeDto
 import app.tfdn.lirelle.source.kavita.network.KavitaJson
+import app.tfdn.lirelle.source.kavita.reading.ReadingProfileDto
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.intOrNull
@@ -55,6 +56,12 @@ internal interface KavitaLibraryApi : KavitaBrowseApi {
 
     @GET("api/Search/series-for-chapter")
     suspend fun seriesOfChapter(@Query("chapterId") chapterId: Int): SeriesDto
+
+    @GET("api/reading-profile/{libraryId}/{seriesId}")
+    suspend fun readingProfile(
+        @Path("libraryId") libraryId: Int,
+        @Path("seriesId") seriesId: Int,
+    ): ReadingProfileDto
 
     @GET("api/Reader/continue-point")
     suspend fun continuePoint(@Query("seriesId") seriesId: Int): ChapterDto

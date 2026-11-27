@@ -8,6 +8,7 @@ import app.tfdn.lirelle.core.library.model.BookSummary
 import app.tfdn.lirelle.core.library.model.CoverShape
 import app.tfdn.lirelle.core.library.model.MediaProfile
 import app.tfdn.lirelle.core.library.model.ReadState
+import app.tfdn.lirelle.core.library.model.PageDirection
 import app.tfdn.lirelle.core.library.model.RelatedBook
 import app.tfdn.lirelle.core.library.model.Series
 import app.tfdn.lirelle.core.library.model.SeriesRef
@@ -70,9 +71,16 @@ internal class KavitaMapper(private val serverUrl: String, private val titles: K
      * A book's page. What its chapter does not say — summary, genres, publisher, language — the series' [metadata]
      * does, when it came. An EPUB's Kavita pages are its spine items, a number that means nothing to a reader: the
      * page count is given for a book read by pages only. Its file is the chapter's first ([filesOf]).
-     * A [lone] book, the only special of its series, has no series line.
+     * A [lone] book, the only special of its series, has no series line. Its [direction] is the one its series'
+     * reading profile gives, null when unknown.
      */
-    fun detail(book: KavitaBook, series: SeriesDto, metadata: SeriesMetadataDto?, lone: Boolean = false): BookDetail {
+    fun detail(
+        book: KavitaBook,
+        series: SeriesDto,
+        metadata: SeriesMetadataDto?,
+        lone: Boolean = false,
+        direction: PageDirection? = null,
+    ): BookDetail {
         val chapter = book.chapter
         val title = title(book)
         return BookDetail(
@@ -100,6 +108,7 @@ internal class KavitaMapper(private val serverUrl: String, private val titles: K
             files = filesOf(chapter, series.libraryId, series.id),
             readState = readStateOf(chapter.pagesRead, chapter.pages),
             startedAt = null,
+            pageDirection = direction,
         )
     }
 

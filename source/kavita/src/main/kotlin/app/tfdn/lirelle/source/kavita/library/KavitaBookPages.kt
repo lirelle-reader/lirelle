@@ -3,9 +3,11 @@ package app.tfdn.lirelle.source.kavita.library
 import app.tfdn.lirelle.core.ids.BookId
 import app.tfdn.lirelle.core.library.model.BookDetail
 import app.tfdn.lirelle.core.library.model.BookReading
+import app.tfdn.lirelle.core.library.model.PageDirection
 import app.tfdn.lirelle.core.library.model.RelatedBooks
 import app.tfdn.lirelle.core.network.ApiResult
 import app.tfdn.lirelle.source.kavita.library.dto.ChapterDto
+import app.tfdn.lirelle.source.kavita.library.dto.SeriesDto
 import app.tfdn.lirelle.source.kavita.library.dto.VolumeDto
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
@@ -30,7 +32,8 @@ internal class KavitaBookPages(private val server: KavitaProfileServer) {
             coroutineScope {
                 val series = async { remote.api.oneSeries(volume.seriesId) }
                 val metadata = async { server.orNull { remote.api.metadata(volume.seriesId) } }
-                remote.mapper.detail(book, series.await(), metadata.await())
+                val direction = async { directionOf(remote, series.await()) }
+                remote.mapper.detail(book, series.await(), metadata.await(), direction = direction.await())
             }
         }
         is KavitaItem.Chapter -> server.call { remote ->
@@ -45,9 +48,21 @@ internal class KavitaBookPages(private val server: KavitaProfileServer) {
                 val lone = async {
                     chapter.isSpecial && server.orNull { remote.api.detail(series.id) }?.isLoneBook == true
                 }
-                remote.mapper.detail(chapter.asAsked(), series, metadata.await(), lone.await())
+                val direction = async { directionOf(remote, series) }
+                remote.mapper.detail(chapter.asAsked(), series, metadata.await(), lone.await(), direction.await())
             }
         }
+    }
+
+    /**
+     * The direction the [series]' pages turn in: its reading profile and its library's type, asked together. Null
+     * when either cannot be had (a server older than 0.8.7 has no profile), the page then showing without.
+     */
+    private suspend fun directionOf(remote: KavitaRemote, series: SeriesDto): PageDirection? = coroutineScope {
+        val profile = async { server.orNull { remote.api.readingProfile(series.libraryId, series.id) } }
+        val libraries = async { server.orNull { remote.api.libraries() } }
+        val type = libraries.await()?.firstOrNull { it.id == series.libraryId }?.type ?: UnknownLibraryType
+        directionOf(profile.await(), type)
     }
 
     /** Where the book's reading is: the pages read of its chapter. */
@@ -91,3 +106,6 @@ private fun VolumeDto.bookOf(item: KavitaItem.Volume): KavitaBook =
  */
 private fun ChapterDto.asAsked(): KavitaBook =
     KavitaBook(KavitaItem.Chapter(id), this, if (isSpecial) null else range.orIndex(), isSpecial)
+
+/** The type of a library the server does not list: none of Kavita's. */
+private const val UnknownLibraryType = -1
