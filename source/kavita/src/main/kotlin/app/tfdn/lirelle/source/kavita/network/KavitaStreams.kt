@@ -45,15 +45,18 @@ internal suspend fun copyBlocks(source: InputStream, sink: OutputStream) {
  * ([SinkFailure]), but never hides the failure of the copy, which is the one told.
  */
 internal suspend fun copyBlocksAndClose(source: InputStream, sink: OutputStream) {
+    var copied = false
     try {
         copyBlocks(source, sink)
-    } catch (copy: Throwable) {
-        try {
-            sink.close()
-        } catch (_: IOException) {
-            // The copy's failure is the one told.
+        copied = true
+    } finally {
+        if (!copied) {
+            try {
+                sink.close()
+            } catch (_: IOException) {
+                // The copy's failure is the one told.
+            }
         }
-        throw copy
     }
     onDevice { sink.close() }
 }
