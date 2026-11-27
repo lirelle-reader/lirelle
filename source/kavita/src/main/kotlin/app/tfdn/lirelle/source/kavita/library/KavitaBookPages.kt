@@ -9,6 +9,7 @@ import app.tfdn.lirelle.core.network.ApiResult
 import app.tfdn.lirelle.source.kavita.library.dto.ChapterDto
 import app.tfdn.lirelle.source.kavita.library.dto.SeriesDto
 import app.tfdn.lirelle.source.kavita.library.dto.VolumeDto
+import java.time.ZoneId
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 
@@ -16,8 +17,13 @@ import kotlinx.coroutines.coroutineScope
  * A book's page, its reading and the other books of its series, asked of [server] by what its id says it is: a
  * volume is asked as a volume (`GET api/Volume`), a chapter as a chapter (`GET api/Chapter`). An id that is none of
  * a Kavita book's is not found, without a word to the server.
+ *
+ * @param zone the device's calendar, which Kavita's days are told in.
  */
-internal class KavitaBookPages(private val server: KavitaProfileServer) {
+internal class KavitaBookPages(
+    private val server: KavitaProfileServer,
+    private val zone: () -> ZoneId = ZoneId::systemDefault,
+) {
 
     /**
      * The book, its series, and what the series' metadata says that its chapter does not: a book whose metadata
@@ -65,13 +71,36 @@ internal class KavitaBookPages(private val server: KavitaProfileServer) {
         directionOf(profile.await(), type)
     }
 
-    /** Where the book's reading is: the pages read of its chapter. */
+    /**
+     * Where the book's reading is: the pages read of its chapter, and the time its real sessions took, which Kavita
+     * 0.9 tells and 0.8.9 does not (none then, as when the series' history cannot be had).
+     */
     suspend fun bookReading(bookId: BookId): ApiResult<BookReading> = when (val item = bookId.kavitaItem()) {
         null -> NotFound
         is KavitaItem.Volume -> server.call { remote ->
-            remote.mapper.reading(remote.api.volume(item.id).bookOf(item).chapter)
+            val volume = remote.api.volume(item.id)
+            val chapter = volume.bookOf(item).chapter
+            readingOf(remote, chapter, volume.seriesId)
         }
-        is KavitaItem.Chapter -> server.call { remote -> remote.mapper.reading(remote.api.chapter(item.id)) }
+        is KavitaItem.Chapter -> server.call { remote ->
+            val chapter = remote.api.chapter(item.id)
+            readingOf(remote, chapter, server.orNull { remote.api.seriesOfChapter(item.id) }?.id)
+        }
+    }
+
+    /** The reading of [chapter], with its time from its series' history; none when [seriesId] is unknown or fails. */
+    private suspend fun readingOf(remote: KavitaRemote, chapter: ChapterDto, seriesId: Int?): BookReading {
+        val items = seriesId?.let { id ->
+            val zoneId = zone().id
+            server.orNull { wholeList { page, size -> remote.api.seriesHistory(id, zoneId, page, size) } }
+        }.orEmpty()
+        val entries = items.filter { !it.isGeneratedSession }
+            .flatMap { item -> item.chapters.filter { it.chapterId == chapter.id }.map { item.sessionId to it } }
+        return remote.mapper.reading(
+            chapter,
+            seconds = entries.sumOf { it.second.durationSeconds },
+            sessions = entries.map { it.first }.distinct().size,
+        )
     }
 
     /**

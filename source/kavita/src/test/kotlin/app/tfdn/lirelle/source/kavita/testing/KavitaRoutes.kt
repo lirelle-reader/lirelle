@@ -73,12 +73,14 @@ internal class KavitaRoutes(private val server: MockWebServer) {
     fun library(
         session: FakeProfileSession = FakeProfileSession(kavitaSession(server.serverUrl)),
         clock: () -> Long = { 0L },
+        zone: ZoneId = ZoneId.of("Europe/Paris"),
     ): KavitaLibrary = KavitaLibrary(
         session,
         KavitaApis(client(session), KavitaJson, KavitaLibraryApi::class.java),
         FakeTitles,
         KavitaErrors(),
         clock,
+        zone = { zone },
     )
 
     /**

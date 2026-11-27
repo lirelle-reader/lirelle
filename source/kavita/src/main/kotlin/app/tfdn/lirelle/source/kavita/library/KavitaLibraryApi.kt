@@ -9,6 +9,7 @@ import app.tfdn.lirelle.source.kavita.library.dto.SeriesDto
 import app.tfdn.lirelle.source.kavita.library.dto.SeriesMetadataDto
 import app.tfdn.lirelle.source.kavita.library.dto.VolumeDto
 import app.tfdn.lirelle.source.kavita.network.KavitaJson
+import app.tfdn.lirelle.source.kavita.reading.HistoryItemDto
 import app.tfdn.lirelle.source.kavita.reading.ReadingProfileDto
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.json.JsonObject
@@ -62,6 +63,15 @@ internal interface KavitaLibraryApi : KavitaBrowseApi {
         @Path("libraryId") libraryId: Int,
         @Path("seriesId") seriesId: Int,
     ): ReadingProfileDto
+
+    /** A series' reading sessions, from Kavita 0.9 (0.8.9 answers 404), told in the calendar of [zone]. */
+    @GET("api/Stats/reading-history/series/{seriesId}")
+    suspend fun seriesHistory(
+        @Path("seriesId") seriesId: Int,
+        @Query("tzId") zone: String,
+        @Query("PageNumber") page: Int,
+        @Query("PageSize") size: Int,
+    ): Response<List<HistoryItemDto>>
 
     @GET("api/Reader/continue-point")
     suspend fun continuePoint(@Query("seriesId") seriesId: Int): ChapterDto

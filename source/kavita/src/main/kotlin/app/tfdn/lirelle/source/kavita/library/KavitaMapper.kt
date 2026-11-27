@@ -112,13 +112,17 @@ internal class KavitaMapper(private val serverUrl: String, private val titles: K
         )
     }
 
-    /** Kavita keeps the pages read of a chapter and when they last moved: no session, no time spent. */
-    fun reading(chapter: ChapterDto) = BookReading(
+    /**
+     * Kavita keeps the pages read of a chapter and when they last moved; the time spent and the [sessions] come from
+     * its reading sessions, none on a server that has none. An EPUB's pages read are its spine items, which mean
+     * nothing to a reader: it has no page.
+     */
+    fun reading(chapter: ChapterDto, seconds: Long = 0, sessions: Int = 0) = BookReading(
         progressPercent = percentOf(chapter.pagesRead, chapter.pages),
         lastReadAt = utcInstant(chapter.lastReadingProgressUtc),
-        totalSeconds = 0,
-        sessionCount = 0,
-        page = chapter.pagesRead.takeIf { it > 0 },
+        totalSeconds = seconds,
+        sessionCount = sessions,
+        page = chapter.pagesRead.takeIf { it > 0 && chapter.formatOr(null) != EpubFormat },
     )
 
     /** Another book of the series of the one shown, with its place in it. */
