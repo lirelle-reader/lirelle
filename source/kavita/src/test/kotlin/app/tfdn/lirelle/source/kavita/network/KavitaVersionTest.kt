@@ -2,6 +2,7 @@ package app.tfdn.lirelle.source.kavita.network
 
 import app.tfdn.lirelle.core.network.ApiError
 import app.tfdn.lirelle.core.network.ApiErrorException
+import app.tfdn.lirelle.core.session.ServerKind
 import app.tfdn.lirelle.source.kavita.network.dto.KavitaUserDto
 import com.google.common.truth.Truth.assertThat
 import com.google.common.truth.Truth.assertWithMessage
@@ -65,7 +66,7 @@ class KavitaVersionTest {
             KavitaUserDto(7, "ann", kavitaVersion = "0.8.8.3-beta").onRecentEnoughServer()
         }
 
-        assertThat(refused.error).isEqualTo(ApiError.ServerTooOld("0.8.8.3-beta", "0.8.9"))
+        assertThat(refused.error).isEqualTo(ApiError.ServerTooOld(ServerKind.Kavita, "0.8.8.3-beta", "0.8.9"))
     }
 
     /** What follows the numbers is the server's to say, and may be anything: only its beginning is told. */
@@ -76,7 +77,8 @@ class KavitaVersionTest {
                 .onRecentEnoughServer()
         }
 
-        assertThat(refused.error).isEqualTo(ApiError.ServerTooOld("0.8.8.3-0123456789abcde", "0.8.9"))
+        assertThat(refused.error)
+            .isEqualTo(ApiError.ServerTooOld(ServerKind.Kavita, "0.8.8.3-0123456789abcde", "0.8.9"))
     }
 
     /** Read without a pattern's recursion, which so many numbers would have overflowed. */
@@ -97,7 +99,7 @@ class KavitaVersionTest {
             KavitaUserDto(7, "ann", kavitaVersion = "0.8.8.3").onRecentEnoughServer()
         }
 
-        assertThat(refused.error).isEqualTo(ApiError.ServerTooOld("0.8.8.3", "0.8.9"))
+        assertThat(refused.error).isEqualTo(ApiError.ServerTooOld(ServerKind.Kavita, "0.8.8.3", "0.8.9"))
     }
 
     @Test

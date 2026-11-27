@@ -2,6 +2,7 @@ package app.tfdn.lirelle.source.kavita.network
 
 import app.tfdn.lirelle.core.network.ApiError
 import app.tfdn.lirelle.core.network.ApiErrorException
+import app.tfdn.lirelle.core.session.ServerKind
 import app.tfdn.lirelle.source.kavita.network.dto.KavitaUserDto
 
 /** The oldest Kavita the app works with: the first whose accounts make keys of their own. */
@@ -74,7 +75,8 @@ internal fun toldKavitaVersion(version: String): String {
 internal fun KavitaUserDto.onRecentEnoughServer(): KavitaUserDto {
     val version = kavitaVersion?.takeIf { tellsKavitaVersion(it) } ?: throw ApiErrorException(ApiError.SignInRefused)
     if (isOlderKavita(version)) {
-        throw ApiErrorException(ApiError.ServerTooOld(toldKavitaVersion(version), MinimumKavitaVersion))
+        val tooOld = ApiError.ServerTooOld(ServerKind.Kavita, toldKavitaVersion(version), MinimumKavitaVersion)
+        throw ApiErrorException(tooOld)
     }
     return this
 }

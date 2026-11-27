@@ -120,13 +120,13 @@ class KeySignInTextFitTest(
         show(
             passwords = true,
             providers = listOf(provider),
-            keyError = ApiError.ServerTooOld(version = "0.8.8.3-beta", minimum = "0.8.10.12"),
+            keyError = ApiError.ServerTooOld(ServerKind.Kavita, version = "0.8.8.3-beta", minimum = "0.8.10.12"),
         )
 
         val keyButton = text(R.string.sign_in_with_key)
         val texts = compose.assertAllTextFits(unbreakable = setOf(KavitaServer), wrappingLabels = setOf(keyButton))
 
-        val said = texts.single { it.text == text(R.string.error_server_too_old, "0.8.8.3-beta", "0.8.10.12") }
+        val said = texts.single { it.text == text(R.string.error_server_too_old_kavita, "0.8.8.3-beta", "0.8.10.12") }
         if (screen.startsWith("w320dp")) assertThat(said.lineCount).isGreaterThan(1)
         assertThat(texts.map { it.text }).doesNotContain(text(R.string.sign_in_key_where_kavita))
     }

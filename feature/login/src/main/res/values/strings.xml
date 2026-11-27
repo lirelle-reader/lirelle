@@ -39,7 +39,7 @@
     <string name="sign_in_back">Back</string>
 
     <string name="error_server_unreachable">Could not reach the server. Check the address and your connection.</string>
-    <string name="error_unknown_server">This address is not a BookOrbit, Komga or Kavita server.</string>
+    <string name="error_unknown_server">This address is not a BookOrbit, Komga, Audiobookshelf or Kavita server.</string>
     <string name="error_invalid_credentials">Wrong username or password.</string>
     <!-- The same, for a server whose accounts are named by their email address. -->
     <string name="error_invalid_email_credentials">Wrong email address or password.</string>
@@ -47,7 +47,7 @@
         <item quantity="one">Account locked after too many attempts. Try again in %d minute.</item>
         <item quantity="other">Account locked after too many attempts. Try again in %d minutes.</item>
     </plurals>
-    <string name="error_too_many_attempts">Too many attempts. Wait a moment before trying again.</string>
+    <string name="error_too_many_attempts">Too many sign-in attempts. Try again in a few minutes.</string>
     <string name="error_default_password">This account still uses its default password. Change it in the BookOrbit web interface, then sign in again.</string>
     <string name="error_oidc_cancelled">Sign-in was cancelled.</string>
     <string name="error_oidc_refused">The identity provider or the server refused this sign-in.</string>
@@ -58,7 +58,9 @@
     <!-- The key the user pasted to sign in is not one of the server's. -->
     <string name="error_key_refused">The server does not know this auth key.</string>
     <!-- The version the server runs, then the oldest one the app works with. -->
-    <string name="error_server_too_old">This Kavita server runs version %1$s. Lirelle needs version %2$s or later.</string>
+    <string name="error_server_too_old">This server runs version %1$s. Lirelle needs version %2$s or later.</string>
+    <string name="error_server_too_old_kavita">This Kavita server runs version %1$s. Lirelle needs version %2$s or later.</string>
+    <string name="error_server_too_old_audiobookshelf">This Audiobookshelf server runs version %1$s. Lirelle needs version %2$s or later.</string>
     <string name="error_browser_unavailable">No browser is available to sign in.</string>
     <string name="error_session_expired">Your session has expired. Sign in again.</string>
     <string name="error_server_failed">The server has a problem. Try again later.</string>

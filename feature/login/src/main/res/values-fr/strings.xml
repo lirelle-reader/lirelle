@@ -40,7 +40,7 @@
     <string name="sign_in_back">Retour</string>
 
     <string name="error_server_unreachable">Serveur injoignable. Vérifiez l\'adresse et votre connexion.</string>
-    <string name="error_unknown_server">Cette adresse n\'est ni un serveur BookOrbit, ni un serveur Komga, ni un serveur Kavita.</string>
+    <string name="error_unknown_server">Cette adresse n\'est ni un serveur BookOrbit, ni un serveur Komga, ni un serveur Audiobookshelf, ni un serveur Kavita.</string>
     <string name="error_invalid_credentials">Identifiant ou mot de passe incorrect.</string>
     <!-- The same, for a server whose accounts are named by their email address. -->
     <string name="error_invalid_email_credentials">Adresse e-mail ou mot de passe incorrect.</string>
@@ -49,7 +49,7 @@
         <item quantity="many">Compte verrouillé après trop de tentatives. Réessayez dans %d minutes.</item>
         <item quantity="other">Compte verrouillé après trop de tentatives. Réessayez dans %d minutes.</item>
     </plurals>
-    <string name="error_too_many_attempts">Trop de tentatives. Patientez un instant avant de réessayer.</string>
+    <string name="error_too_many_attempts">Trop de tentatives de connexion. Réessayez dans quelques minutes.</string>
     <string name="error_default_password">Ce compte utilise encore son mot de passe par défaut. Changez-le dans l\'interface web de BookOrbit, puis reconnectez-vous.</string>
     <string name="error_oidc_cancelled">Connexion annulée.</string>
     <string name="error_oidc_refused">Le fournisseur d\'identité ou le serveur a refusé cette connexion.</string>
@@ -60,7 +60,9 @@
     <!-- The key the user pasted to sign in is not one of the server's. -->
     <string name="error_key_refused">Cette clé d\'accès n\'est pas reconnue par le serveur.</string>
     <!-- The version the server runs, then the oldest one the app works with. -->
-    <string name="error_server_too_old">Ce serveur Kavita est en version %1$s. Lirelle a besoin de la version %2$s ou plus récente.</string>
+    <string name="error_server_too_old">Ce serveur est en version %1$s. Lirelle a besoin de la version %2$s ou plus récente.</string>
+    <string name="error_server_too_old_kavita">Ce serveur Kavita est en version %1$s. Lirelle a besoin de la version %2$s ou plus récente.</string>
+    <string name="error_server_too_old_audiobookshelf">Ce serveur Audiobookshelf est en version %1$s. Lirelle a besoin de la version %2$s ou plus récente.</string>
     <string name="error_browser_unavailable">Aucun navigateur n\'est disponible pour se connecter.</string>
     <string name="error_session_expired">Votre session a expiré. Reconnectez-vous.</string>
     <string name="error_server_failed">Le serveur rencontre un problème. Réessayez plus tard.</string>

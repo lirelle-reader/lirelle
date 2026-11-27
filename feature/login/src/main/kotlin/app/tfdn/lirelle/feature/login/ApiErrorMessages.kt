@@ -6,6 +6,7 @@ import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import app.tfdn.lirelle.core.network.ApiError
 import app.tfdn.lirelle.core.network.SignInIdentifier
+import app.tfdn.lirelle.core.session.ServerKind
 
 private const val SecondsPerMinute = 60
 
@@ -21,6 +22,16 @@ private val SignInIdentifier.invalidCredentials: Int
         SignInIdentifier.Email -> R.string.error_invalid_email_credentials
     }
 
+/** A server too old, naming its kind where the app knows a minimum version for it. */
+@get:StringRes
+private val ServerKind.tooOld: Int
+    get() = when (this) {
+        ServerKind.Kavita -> R.string.error_server_too_old_kavita
+        ServerKind.Audiobookshelf -> R.string.error_server_too_old_audiobookshelf
+        // No minimum is checked for these: a sentence that names no kind, should one ever be.
+        ServerKind.BookOrbit, ServerKind.Komga -> R.string.error_server_too_old
+    }
+
 /**
  * The localised sentence shown for [this] error. Raw server messages are never shown.
  *
@@ -33,7 +44,7 @@ fun ApiError.message(identifier: SignInIdentifier = SignInIdentifier.Username): 
         val minutes = lockedMinutes(retryAfterSeconds)
         pluralStringResource(R.plurals.error_account_locked, minutes, minutes)
     }
-    is ApiError.ServerTooOld -> stringResource(R.string.error_server_too_old, version, minimum)
+    is ApiError.ServerTooOld -> stringResource(kind.tooOld, version, minimum)
     else -> stringResource(plainMessage)
 }
 
