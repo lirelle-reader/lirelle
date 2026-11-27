@@ -19,7 +19,6 @@ import app.tfdn.lirelle.core.session.profile.ProfileSession
 import app.tfdn.lirelle.source.kavita.library.KavitaFileRef
 import app.tfdn.lirelle.source.kavita.library.KavitaLibraryApi
 import app.tfdn.lirelle.source.kavita.library.NotFound
-import app.tfdn.lirelle.source.kavita.library.dto.ChapterDto
 import app.tfdn.lirelle.source.kavita.library.formatOf
 import app.tfdn.lirelle.source.kavita.library.kavitaFile
 import app.tfdn.lirelle.source.kavita.library.utcInstant
@@ -53,6 +52,7 @@ internal class KavitaReader(
 
     private val server = KavitaReadingServer(session, reading, library)
     private val places = KavitaPlaces(server, now)
+    private val downloads = KavitaDownload(server, errors)
 
     override suspend fun position(fileId: FileId): ApiResult<ReadingPosition> {
         val ref = fileId.kavitaFile() ?: return NotFound
@@ -105,17 +105,25 @@ internal class KavitaReader(
         audioless: Boolean,
         sink: OutputStream,
         onProgress: (DownloadProgress) -> Unit,
-    ): ApiResult<Unit> = NotFound
+    ): ApiResult<Unit> {
+        val ref = fileId.kavitaFile() ?: return NotFound
+        return downloads.fetch(ref, sink, onProgress)
+    }
 }
 
-/** What the reader needs of a chapter: its page count (spine items for an [epub]), and whether it is one. */
-private class ChapterFacts(val pages: Int, val epub: Boolean)
+/**
+ * What the reader needs of a chapter: its page count (spine items for an [epub]), and the app's name of its first
+ * file's [format].
+ */
+internal class ChapterFacts(val pages: Int, val format: String?) {
+    val epub: Boolean get() = format == "EPUB"
+}
 
 /**
  * The profile's own server, read at each call, and what it said of the chapters read: asked again when a chapter is
  * opened, so that a place written while it is read (each page turned) asks nothing more than the write.
  */
-private class KavitaReadingServer(
+internal class KavitaReadingServer(
     private val session: ProfileSession,
     private val reading: KavitaApis<KavitaReadingApi>,
     private val library: KavitaApis<KavitaLibraryApi>,
@@ -128,7 +136,8 @@ private class KavitaReadingServer(
     /** The chapter of a file as Kavita says it now, kept for the places written next. */
     suspend fun freshChapter(ref: KavitaFileRef): ChapterFacts {
         val chapter = library.forServer(url).chapter(ref.chapterId)
-        return ChapterFacts(chapter.pages, chapter.isEpub()).also { chapters[ref.chapterId] = it }
+        val format = chapter.files.firstOrNull()?.let(::formatOf)
+        return ChapterFacts(chapter.pages, format).also { chapters[ref.chapterId] = it }
     }
 
     /** The chapter of a file as kept, asked only when it is not. */
@@ -189,6 +198,3 @@ private fun placeOf(ref: KavitaFileRef, chapter: ChapterFacts, cfi: String?, per
         libraryId = ref.libraryId,
         bookScrollId = if (chapter.epub) cfi else null,
     )
-
-/** Whether the chapter is read as an EPUB: its first file is one, as Kavita's own readers read the first file. */
-private fun ChapterDto.isEpub(): Boolean = files.firstOrNull()?.let(::formatOf) == "EPUB"
