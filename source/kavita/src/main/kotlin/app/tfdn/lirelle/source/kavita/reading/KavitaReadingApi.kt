@@ -1,6 +1,5 @@
 package app.tfdn.lirelle.source.kavita.reading
 
-import app.tfdn.lirelle.source.kavita.library.dto.LibraryDto
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Response
@@ -38,9 +37,6 @@ internal interface KavitaReadingApi {
     @Streaming
     @GET("api/Download/chapter")
     suspend fun download(@Query("chapterId") chapterId: Int): Response<ResponseBody>
-
-    @GET("api/Library/libraries")
-    suspend fun libraries(): List<LibraryDto>
 
     @GET("api/Stats/reading-history")
     suspend fun history(

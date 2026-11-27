@@ -116,12 +116,13 @@ internal class KavitaHistory(
     private suspend fun load(): List<ReadRecord> {
         val serverUrl = session.session.value.serverUrl
         val api = reading.forServer(serverUrl)
+        val libraryApi = library.forServer(serverUrl)
         // Kavita answers nothing for no library, and the account may see none.
-        val libraries = api.libraries().map { it.id }.ifEmpty { return emptyList() }
+        val libraries = libraryApi.libraries().map { it.id }.ifEmpty { return emptyList() }
         val zoneId = zone().id
         val sessions = wholeList(HistoryBatch, MaxBatches) { page, size -> api.history(libraries, zoneId, page, size) }
         val reads = readsOf(sessions)
-        askSeries(library.forServer(serverUrl), reads)
+        askSeries(libraryApi, reads)
         val mapper = KavitaMapper(serverUrl, titles)
         return reads.mapNotNull { read -> seriesBooks[read.seriesId]?.let { record(mapper, read, it) } }
     }
