@@ -1,0 +1,817 @@
+{
+  "id": "9bbf1b05-7db2-4018-8225-753eadee8fac",
+  "ino": "3441685444496195471",
+  "oldLibraryItemId": null,
+  "libraryId": "daba50e0-b3bf-480f-b04e-9a0687f439ff",
+  "folderId": "ad473c1c-4abc-4c94-96b4-773fa8ebfd47",
+  "path": "/library/comics/Asterix (1961)",
+  "relPath": "Asterix (1961)",
+  "isFile": false,
+  "mtimeMs": 1776228725707,
+  "ctimeMs": 1776228725707,
+  "birthtimeMs": 0,
+  "addedAt": 1795783975097,
+  "updatedAt": 1795783975097,
+  "isMissing": false,
+  "isInvalid": false,
+  "mediaType": "book",
+  "media": {
+    "id": "ef2cf9f1-ff53-4d20-a4fa-9dd326646c5f",
+    "metadata": {
+      "title": "Astérix 1",
+      "subtitle": null,
+      "authors": [],
+      "narrators": [],
+      "series": [
+        {
+          "id": "accf4baa-ab42-43f1-bc04-36e3f4e7295e",
+          "name": "Astérix",
+          "sequence": "1"
+        }
+      ],
+      "genres": [],
+      "publishedYear": null,
+      "publishedDate": null,
+      "publisher": null,
+      "description": "Dans le camp fortifié romain Petibonum, on se pose des questions : comment les Irréductibles Gaulois du village d’Astérix font-ils pour ridiculiser encore et toujours la puissance romaine ? Décidé à percer à jour le mystère de la force surhumaine de nos héros, le centurion Caius Bonus envoie un espion déguisé en Gaulois.\n\nC’est Caligula Minus qui s’y colle, et découvre bien vite l’existence de la potion magique préparée par Panoramix. Sans attendre, le centurion Caius Bonus fait enlever le druide pour s’emparer de la recette du fameux breuvage histoire, qui sait, de devenir César à la place de Jules ! Une première occasion pour Astérix de démontrer son courage et ses talents de stratège.",
+      "isbn": null,
+      "asin": null,
+      "language": null,
+      "explicit": false,
+      "abridged": false,
+      "titleIgnorePrefix": "Astérix 1",
+      "authorName": "",
+      "authorNameLF": "",
+      "narratorName": "",
+      "seriesName": "Astérix #1",
+      "descriptionPlain": "Dans le camp fortifié romain Petibonum, on se pose des questions : comment les Irréductibles Gaulois du village d’Astérix font-ils pour ridiculiser encore et toujours la puissance romaine ? Décidé à percer à jour le mystère de la force surhumaine de nos héros, le centurion Caius Bonus envoie un espion déguisé en Gaulois.\n\nC’est Caligula Minus qui s’y colle, et découvre bien vite l’existence de la potion magique préparée par Panoramix. Sans attendre, le centurion Caius Bonus fait enlever le druide pour s’emparer de la recette du fameux breuvage histoire, qui sait, de devenir César à la place de Jules ! Une première occasion pour Astérix de démontrer son courage et ses talents de stratège."
+    },
+    "coverPath": "/library/comics/Asterix (1961)/cover.jpg",
+    "tags": [],
+    "numTracks": 0,
+    "numAudioFiles": 0,
+    "numChapters": 0,
+    "duration": 0,
+    "size": 90730953,
+    "ebookFormat": "cbz",
+    "libraryItemId": "9bbf1b05-7db2-4018-8225-753eadee8fac",
+    "audioFiles": [],
+    "chapters": [],
+    "ebookFile": {
+      "ino": "-4370261800997802559",
+      "metadata": {
+        "filename": "Astérix 001 (1961).cbz",
+        "ext": ".cbz",
+        "path": "/library/comics/Asterix (1961)/Astérix 001 (1961).cbz",
+        "relPath": "Astérix 001 (1961).cbz",
+        "size": 90730953,
+        "mtimeMs": 1615452291419,
+        "ctimeMs": 1795675879508,
+        "birthtimeMs": 0
+      },
+      "isSupplementary": null,
+      "addedAt": 1795783951282,
+      "updatedAt": 1795783951282,
+      "fileType": "ebook",
+      "ebookFormat": "cbz"
+    },
+    "tracks": []
+  },
+  "numFiles": 43,
+  "size": 3439247684,
+  "lastScan": 1795783975097,
+  "scanVersion": "2.38.0",
+  "libraryFiles": [
+    {
+      "ino": "-4370261800997802559",
+      "metadata": {
+        "filename": "Astérix 001 (1961).cbz",
+        "ext": ".cbz",
+        "path": "/library/comics/Asterix (1961)/Astérix 001 (1961).cbz",
+        "relPath": "Astérix 001 (1961).cbz",
+        "size": 90730953,
+        "mtimeMs": 1615452291419,
+        "ctimeMs": 1795675879508,
+        "birthtimeMs": 0
+      },
+      "isSupplementary": false,
+      "addedAt": 1795783951282,
+      "updatedAt": 1795783951282,
+      "fileType": "ebook"
+    },
+    {
+      "ino": "6602122222507313759",
+      "metadata": {
+        "filename": "Astérix 002 (1962).cbz",
+        "ext": ".cbz",
+        "path": "/library/comics/Asterix (1961)/Astérix 002 (1962).cbz",
+        "relPath": "Astérix 002 (1962).cbz",
+        "size": 71658938,
+        "mtimeMs": 1615452311383,
+        "ctimeMs": 1795675879538,
+        "birthtimeMs": 0
+      },
+      "isSupplementary": true,
+      "addedAt": 1795783951282,
+      "updatedAt": 1795783951282,
+      "fileType": "ebook"
+    },
+    {
+      "ino": "-7487776137845900495",
+      "metadata": {
+        "filename": "Astérix 003 (1963).cbz",
+        "ext": ".cbz",
+        "path": "/library/comics/Asterix (1961)/Astérix 003 (1963).cbz",
+        "relPath": "Astérix 003 (1963).cbz",
+        "size": 87961659,
+        "mtimeMs": 1615452335270,
+        "ctimeMs": 1795675879542,
+        "birthtimeMs": 0
+      },
+      "isSupplementary": true,
+      "addedAt": 1795783951282,
+      "updatedAt": 1795783951282,
+      "fileType": "ebook"
+    },
+    {
+      "ino": "-2579931563562179769",
+      "metadata": {
+        "filename": "Astérix 004 (1964).cbz",
+        "ext": ".cbz",
+        "path": "/library/comics/Asterix (1961)/Astérix 004 (1964).cbz",
+        "relPath": "Astérix 004 (1964).cbz",
+        "size": 92887059,
+        "mtimeMs": 1615452357322,
+        "ctimeMs": 1795675879582,
+        "birthtimeMs": 0
+      },
+      "isSupplementary": true,
+      "addedAt": 1795783951282,
+      "updatedAt": 1795783951282,
+      "fileType": "ebook"
+    },
+    {
+      "ino": "-8653796792063452878",
+      "metadata": {
+        "filename": "Astérix 005 (1965).cbz",
+        "ext": ".cbz",
+        "path": "/library/comics/Asterix (1961)/Astérix 005 (1965).cbz",
+        "relPath": "Astérix 005 (1965).cbz",
+        "size": 102353256,
+        "mtimeMs": 1615452381533,
+        "ctimeMs": 1795675879585,
+        "birthtimeMs": 0
+      },
+      "isSupplementary": true,
+      "addedAt": 1795783951282,
+      "updatedAt": 1795783951282,
+      "fileType": "ebook"
+    },
+    {
+      "ino": "-4364906474367715951",
+      "metadata": {
+        "filename": "Astérix 006 (1965).cbz",
+        "ext": ".cbz",
+        "path": "/library/comics/Asterix (1961)/Astérix 006 (1965).cbz",
+        "relPath": "Astérix 006 (1965).cbz",
+        "size": 74284616,
+        "mtimeMs": 1615452401419,
+        "ctimeMs": 1795675879597,
+        "birthtimeMs": 0
+      },
+      "isSupplementary": true,
+      "addedAt": 1795783951282,
+      "updatedAt": 1795783951282,
+      "fileType": "ebook"
+    },
+    {
+      "ino": "6319728278206819679",
+      "metadata": {
+        "filename": "Astérix 007 (1966).cbz",
+        "ext": ".cbz",
+        "path": "/library/comics/Asterix (1961)/Astérix 007 (1966).cbz",
+        "relPath": "Astérix 007 (1966).cbz",
+        "size": 76140485,
+        "mtimeMs": 1615452420644,
+        "ctimeMs": 1795675879598,
+        "birthtimeMs": 0
+      },
+      "isSupplementary": true,
+      "addedAt": 1795783951282,
+      "updatedAt": 1795783951282,
+      "fileType": "ebook"
+    },
+    {
+      "ino": "-3109955807901480603",
+      "metadata": {
+        "filename": "Astérix 008 (1966).cbz",
+        "ext": ".cbz",
+        "path": "/library/comics/Asterix (1961)/Astérix 008 (1966).cbz",
+        "relPath": "Astérix 008 (1966).cbz",
+        "size": 92005733,
+        "mtimeMs": 1615452444553,
+        "ctimeMs": 1795675879602,
+        "birthtimeMs": 0
+      },
+      "isSupplementary": true,
+      "addedAt": 1795783951282,
+      "updatedAt": 1795783951282,
+      "fileType": "ebook"
+    },
+    {
+      "ino": "7057945863178753227",
+      "metadata": {
+        "filename": "Astérix 009 (1966).cbz",
+        "ext": ".cbz",
+        "path": "/library/comics/Asterix (1961)/Astérix 009 (1966).cbz",
+        "relPath": "Astérix 009 (1966).cbz",
+        "size": 92089210,
+        "mtimeMs": 1615452466617,
+        "ctimeMs": 1795675879544,
+        "birthtimeMs": 0
+      },
+      "isSupplementary": true,
+      "addedAt": 1795783951282,
+      "updatedAt": 1795783951282,
+      "fileType": "ebook"
+    },
+    {
+      "ino": "6545345339614001417",
+      "metadata": {
+        "filename": "Astérix 010 (1967).cbz",
+        "ext": ".cbz",
+        "path": "/library/comics/Asterix (1961)/Astérix 010 (1967).cbz",
+        "relPath": "Astérix 010 (1967).cbz",
+        "size": 76495349,
+        "mtimeMs": 1615452485398,
+        "ctimeMs": 1795675879505,
+        "birthtimeMs": 0
+      },
+      "isSupplementary": true,
+      "addedAt": 1795783951282,
+      "updatedAt": 1795783951282,
+      "fileType": "ebook"
+    },
+    {
+      "ino": "4681062411934691729",
+      "metadata": {
+        "filename": "Astérix 011 (1968).cbz",
+        "ext": ".cbz",
+        "path": "/library/comics/Asterix (1961)/Astérix 011 (1968).cbz",
+        "relPath": "Astérix 011 (1968).cbz",
+        "size": 76286993,
+        "mtimeMs": 1615452504470,
+        "ctimeMs": 1795675879512,
+        "birthtimeMs": 0
+      },
+      "isSupplementary": true,
+      "addedAt": 1795783951282,
+      "updatedAt": 1795783951282,
+      "fileType": "ebook"
+    },
+    {
+      "ino": "729407602522546138",
+      "metadata": {
+        "filename": "Astérix 012 (1968).cbz",
+        "ext": ".cbz",
+        "path": "/library/comics/Asterix (1961)/Astérix 012 (1968).cbz",
+        "relPath": "Astérix 012 (1968).cbz",
+        "size": 74985037,
+        "mtimeMs": 1615452523188,
+        "ctimeMs": 1795675879605,
+        "birthtimeMs": 0
+      },
+      "isSupplementary": true,
+      "addedAt": 1795783951282,
+      "updatedAt": 1795783951282,
+      "fileType": "ebook"
+    },
+    {
+      "ino": "-2803143470255695641",
+      "metadata": {
+        "filename": "Astérix 013 (1969).cbz",
+        "ext": ".cbz",
+        "path": "/library/comics/Asterix (1961)/Astérix 013 (1969).cbz",
+        "relPath": "Astérix 013 (1969).cbz",
+        "size": 94393637,
+        "mtimeMs": 1615452545991,
+        "ctimeMs": 1795675879547,
+        "birthtimeMs": 0
+      },
+      "isSupplementary": true,
+      "addedAt": 1795783951282,
+      "updatedAt": 1795783951282,
+      "fileType": "ebook"
+    },
+    {
+      "ino": "7208054144852610521",
+      "metadata": {
+        "filename": "Astérix 014 (1969).cbz",
+        "ext": ".cbz",
+        "path": "/library/comics/Asterix (1961)/Astérix 014 (1969).cbz",
+        "relPath": "Astérix 014 (1969).cbz",
+        "size": 92752751,
+        "mtimeMs": 1615452568589,
+        "ctimeMs": 1795675879514,
+        "birthtimeMs": 0
+      },
+      "isSupplementary": true,
+      "addedAt": 1795783951282,
+      "updatedAt": 1795783951282,
+      "fileType": "ebook"
+    },
+    {
+      "ino": "-3754575980986863936",
+      "metadata": {
+        "filename": "Astérix 015 (1970).cbz",
+        "ext": ".cbz",
+        "path": "/library/comics/Asterix (1961)/Astérix 015 (1970).cbz",
+        "relPath": "Astérix 015 (1970).cbz",
+        "size": 76011114,
+        "mtimeMs": 1615452588299,
+        "ctimeMs": 1795675879548,
+        "birthtimeMs": 0
+      },
+      "isSupplementary": true,
+      "addedAt": 1795783951282,
+      "updatedAt": 1795783951282,
+      "fileType": "ebook"
+    },
+    {
+      "ino": "8056425223192357615",
+      "metadata": {
+        "filename": "Astérix 016 (1970).cbz",
+        "ext": ".cbz",
+        "path": "/library/comics/Asterix (1961)/Astérix 016 (1970).cbz",
+        "relPath": "Astérix 016 (1970).cbz",
+        "size": 90275850,
+        "mtimeMs": 1615452610311,
+        "ctimeMs": 1795675879607,
+        "birthtimeMs": 0
+      },
+      "isSupplementary": true,
+      "addedAt": 1795783951282,
+      "updatedAt": 1795783951282,
+      "fileType": "ebook"
+    },
+    {
+      "ino": "-4803948883022881832",
+      "metadata": {
+        "filename": "Astérix 017 (1971).cbz",
+        "ext": ".cbz",
+        "path": "/library/comics/Asterix (1961)/Astérix 017 (1971).cbz",
+        "relPath": "Astérix 017 (1971).cbz",
+        "size": 101048016,
+        "mtimeMs": 1615452636447,
+        "ctimeMs": 1795675879515,
+        "birthtimeMs": 0
+      },
+      "isSupplementary": true,
+      "addedAt": 1795783951282,
+      "updatedAt": 1795783951282,
+      "fileType": "ebook"
+    },
+    {
+      "ino": "-810379134236530988",
+      "metadata": {
+        "filename": "Astérix 018 (1972).cbz",
+        "ext": ".cbz",
+        "path": "/library/comics/Asterix (1961)/Astérix 018 (1972).cbz",
+        "relPath": "Astérix 018 (1972).cbz",
+        "size": 74485195,
+        "mtimeMs": 1615452655291,
+        "ctimeMs": 1795675879552,
+        "birthtimeMs": 0
+      },
+      "isSupplementary": true,
+      "addedAt": 1795783951282,
+      "updatedAt": 1795783951282,
+      "fileType": "ebook"
+    },
+    {
+      "ino": "-4451834074074776789",
+      "metadata": {
+        "filename": "Astérix 019 (1972).cbz",
+        "ext": ".cbz",
+        "path": "/library/comics/Asterix (1961)/Astérix 019 (1972).cbz",
+        "relPath": "Astérix 019 (1972).cbz",
+        "size": 72372628,
+        "mtimeMs": 1615452673468,
+        "ctimeMs": 1795675879554,
+        "birthtimeMs": 0
+      },
+      "isSupplementary": true,
+      "addedAt": 1795783951282,
+      "updatedAt": 1795783951282,
+      "fileType": "ebook"
+    },
+    {
+      "ino": "5902974818664399203",
+      "metadata": {
+        "filename": "Astérix 020 (1973).cbz",
+        "ext": ".cbz",
+        "path": "/library/comics/Asterix (1961)/Astérix 020 (1973).cbz",
+        "relPath": "Astérix 020 (1973).cbz",
+        "size": 74030480,
+        "mtimeMs": 1615452694011,
+        "ctimeMs": 1795675879557,
+        "birthtimeMs": 0
+      },
+      "isSupplementary": true,
+      "addedAt": 1795783951282,
+      "updatedAt": 1795783951282,
+      "fileType": "ebook"
+    },
+    {
+      "ino": "3386914977660650755",
+      "metadata": {
+        "filename": "Astérix 021 (1974).cbz",
+        "ext": ".cbz",
+        "path": "/library/comics/Asterix (1961)/Astérix 021 (1974).cbz",
+        "relPath": "Astérix 021 (1974).cbz",
+        "size": 73409764,
+        "mtimeMs": 1615452712909,
+        "ctimeMs": 1795675879558,
+        "birthtimeMs": 0
+      },
+      "isSupplementary": true,
+      "addedAt": 1795783951282,
+      "updatedAt": 1795783951282,
+      "fileType": "ebook"
+    },
+    {
+      "ino": "-286658129316540955",
+      "metadata": {
+        "filename": "Astérix 022 (1975).cbz",
+        "ext": ".cbz",
+        "path": "/library/comics/Asterix (1961)/Astérix 022 (1975).cbz",
+        "relPath": "Astérix 022 (1975).cbz",
+        "size": 67739228,
+        "mtimeMs": 1615452731642,
+        "ctimeMs": 1795675879519,
+        "birthtimeMs": 0
+      },
+      "isSupplementary": true,
+      "addedAt": 1795783951282,
+      "updatedAt": 1795783951282,
+      "fileType": "ebook"
+    },
+    {
+      "ino": "-7431760584173080354",
+      "metadata": {
+        "filename": "Astérix 023 (1976).cbz",
+        "ext": ".cbz",
+        "path": "/library/comics/Asterix (1961)/Astérix 023 (1976).cbz",
+        "relPath": "Astérix 023 (1976).cbz",
+        "size": 90570334,
+        "mtimeMs": 1615452754064,
+        "ctimeMs": 1795675879562,
+        "birthtimeMs": 0
+      },
+      "isSupplementary": true,
+      "addedAt": 1795783951282,
+      "updatedAt": 1795783951282,
+      "fileType": "ebook"
+    },
+    {
+      "ino": "8190470484430249446",
+      "metadata": {
+        "filename": "Astérix 024 (1979).cbz",
+        "ext": ".cbz",
+        "path": "/library/comics/Asterix (1961)/Astérix 024 (1979).cbz",
+        "relPath": "Astérix 024 (1979).cbz",
+        "size": 88377724,
+        "mtimeMs": 1615452776302,
+        "ctimeMs": 1795675879587,
+        "birthtimeMs": 0
+      },
+      "isSupplementary": true,
+      "addedAt": 1795783951282,
+      "updatedAt": 1795783951282,
+      "fileType": "ebook"
+    },
+    {
+      "ino": "-3360460842698520480",
+      "metadata": {
+        "filename": "Astérix 025 (1980).cbz",
+        "ext": ".cbz",
+        "path": "/library/comics/Asterix (1961)/Astérix 025 (1980).cbz",
+        "relPath": "Astérix 025 (1980).cbz",
+        "size": 91895499,
+        "mtimeMs": 1615452799026,
+        "ctimeMs": 1795675879521,
+        "birthtimeMs": 0
+      },
+      "isSupplementary": true,
+      "addedAt": 1795783951282,
+      "updatedAt": 1795783951282,
+      "fileType": "ebook"
+    },
+    {
+      "ino": "-7998434670743621131",
+      "metadata": {
+        "filename": "Astérix 026 (1981).cbz",
+        "ext": ".cbz",
+        "path": "/library/comics/Asterix (1961)/Astérix 026 (1981).cbz",
+        "relPath": "Astérix 026 (1981).cbz",
+        "size": 91026989,
+        "mtimeMs": 1615452821680,
+        "ctimeMs": 1795675879524,
+        "birthtimeMs": 0
+      },
+      "isSupplementary": true,
+      "addedAt": 1795783951282,
+      "updatedAt": 1795783951282,
+      "fileType": "ebook"
+    },
+    {
+      "ino": "-3353814555785486715",
+      "metadata": {
+        "filename": "Astérix 027 (1983).cbz",
+        "ext": ".cbz",
+        "path": "/library/comics/Asterix (1961)/Astérix 027 (1983).cbz",
+        "relPath": "Astérix 027 (1983).cbz",
+        "size": 92575283,
+        "mtimeMs": 1615452845885,
+        "ctimeMs": 1795675879525,
+        "birthtimeMs": 0
+      },
+      "isSupplementary": true,
+      "addedAt": 1795783951282,
+      "updatedAt": 1795783951282,
+      "fileType": "ebook"
+    },
+    {
+      "ino": "-5149335527329522684",
+      "metadata": {
+        "filename": "Astérix 028 (1987).cbz",
+        "ext": ".cbz",
+        "path": "/library/comics/Asterix (1961)/Astérix 028 (1987).cbz",
+        "relPath": "Astérix 028 (1987).cbz",
+        "size": 96831290,
+        "mtimeMs": 1615452868678,
+        "ctimeMs": 1795675879608,
+        "birthtimeMs": 0
+      },
+      "isSupplementary": true,
+      "addedAt": 1795783951282,
+      "updatedAt": 1795783951282,
+      "fileType": "ebook"
+    },
+    {
+      "ino": "-3205450119528332544",
+      "metadata": {
+        "filename": "Astérix 029 (1991).cbz",
+        "ext": ".cbz",
+        "path": "/library/comics/Asterix (1961)/Astérix 029 (1991).cbz",
+        "relPath": "Astérix 029 (1991).cbz",
+        "size": 94374956,
+        "mtimeMs": 1615452892985,
+        "ctimeMs": 1795675879529,
+        "birthtimeMs": 0
+      },
+      "isSupplementary": true,
+      "addedAt": 1795783951282,
+      "updatedAt": 1795783951282,
+      "fileType": "ebook"
+    },
+    {
+      "ino": "-5547216418085880685",
+      "metadata": {
+        "filename": "Astérix 030 (1996).cbz",
+        "ext": ".cbz",
+        "path": "/library/comics/Asterix (1961)/Astérix 030 (1996).cbz",
+        "relPath": "Astérix 030 (1996).cbz",
+        "size": 95624905,
+        "mtimeMs": 1615452916767,
+        "ctimeMs": 1795675879588,
+        "birthtimeMs": 0
+      },
+      "isSupplementary": true,
+      "addedAt": 1795783951282,
+      "updatedAt": 1795783951282,
+      "fileType": "ebook"
+    },
+    {
+      "ino": "-7319046506350000397",
+      "metadata": {
+        "filename": "Astérix 031 (2003).cbz",
+        "ext": ".cbz",
+        "path": "/library/comics/Asterix (1961)/Astérix 031 (2003).cbz",
+        "relPath": "Astérix 031 (2003).cbz",
+        "size": 88773191,
+        "mtimeMs": 1615452938839,
+        "ctimeMs": 1795675879565,
+        "birthtimeMs": 0
+      },
+      "isSupplementary": true,
+      "addedAt": 1795783951282,
+      "updatedAt": 1795783951282,
+      "fileType": "ebook"
+    },
+    {
+      "ino": "-6305068635826429309",
+      "metadata": {
+        "filename": "Astérix 032 (2003).cbz",
+        "ext": ".cbz",
+        "path": "/library/comics/Asterix (1961)/Astérix 032 (2003).cbz",
+        "relPath": "Astérix 032 (2003).cbz",
+        "size": 101113804,
+        "mtimeMs": 1615452966315,
+        "ctimeMs": 1795675879568,
+        "birthtimeMs": 0
+      },
+      "isSupplementary": true,
+      "addedAt": 1795783951282,
+      "updatedAt": 1795783951282,
+      "fileType": "ebook"
+    },
+    {
+      "ino": "7387721359882355994",
+      "metadata": {
+        "filename": "Astérix 033 (2005).cbz",
+        "ext": ".cbz",
+        "path": "/library/comics/Asterix (1961)/Astérix 033 (2005).cbz",
+        "relPath": "Astérix 033 (2005).cbz",
+        "size": 84900461,
+        "mtimeMs": 1615452987289,
+        "ctimeMs": 1795675879532,
+        "birthtimeMs": 0
+      },
+      "isSupplementary": true,
+      "addedAt": 1795783951282,
+      "updatedAt": 1795783951282,
+      "fileType": "ebook"
+    },
+    {
+      "ino": "-1743748408157405483",
+      "metadata": {
+        "filename": "Astérix 034 (2009).cbz",
+        "ext": ".cbz",
+        "path": "/library/comics/Asterix (1961)/Astérix 034 (2009).cbz",
+        "relPath": "Astérix 034 (2009).cbz",
+        "size": 81489065,
+        "mtimeMs": 1615453007901,
+        "ctimeMs": 1795675879570,
+        "birthtimeMs": 0
+      },
+      "isSupplementary": true,
+      "addedAt": 1795783951282,
+      "updatedAt": 1795783951282,
+      "fileType": "ebook"
+    },
+    {
+      "ino": "5146145310896390284",
+      "metadata": {
+        "filename": "Astérix 035 (2013).cbz",
+        "ext": ".cbz",
+        "path": "/library/comics/Asterix (1961)/Astérix 035 (2013).cbz",
+        "relPath": "Astérix 035 (2013).cbz",
+        "size": 84630421,
+        "mtimeMs": 1615453028689,
+        "ctimeMs": 1795675879611,
+        "birthtimeMs": 0
+      },
+      "isSupplementary": true,
+      "addedAt": 1795783951282,
+      "updatedAt": 1795783951282,
+      "fileType": "ebook"
+    },
+    {
+      "ino": "6502067905155417700",
+      "metadata": {
+        "filename": "Astérix 036 (2015).cbz",
+        "ext": ".cbz",
+        "path": "/library/comics/Asterix (1961)/Astérix 036 (2015).cbz",
+        "relPath": "Astérix 036 (2015).cbz",
+        "size": 76122754,
+        "mtimeMs": 1615453048791,
+        "ctimeMs": 1795675879594,
+        "birthtimeMs": 0
+      },
+      "isSupplementary": true,
+      "addedAt": 1795783951282,
+      "updatedAt": 1795783951282,
+      "fileType": "ebook"
+    },
+    {
+      "ino": "3723907694416500805",
+      "metadata": {
+        "filename": "Astérix 037 (2017).cbz",
+        "ext": ".cbz",
+        "path": "/library/comics/Asterix (1961)/Astérix 037 (2017).cbz",
+        "relPath": "Astérix 037 (2017).cbz",
+        "size": 85975493,
+        "mtimeMs": 1615453070997,
+        "ctimeMs": 1795675879507,
+        "birthtimeMs": 0
+      },
+      "isSupplementary": true,
+      "addedAt": 1795783951282,
+      "updatedAt": 1795783951282,
+      "fileType": "ebook"
+    },
+    {
+      "ino": "-3418329014988523790",
+      "metadata": {
+        "filename": "Astérix 038 (2019).cbz",
+        "ext": ".cbz",
+        "path": "/library/comics/Asterix (1961)/Astérix 038 (2019).cbz",
+        "relPath": "Astérix 038 (2019).cbz",
+        "size": 66174715,
+        "mtimeMs": 1700312006457,
+        "ctimeMs": 1795675879534,
+        "birthtimeMs": 0
+      },
+      "isSupplementary": true,
+      "addedAt": 1795783951282,
+      "updatedAt": 1795783951282,
+      "fileType": "ebook"
+    },
+    {
+      "ino": "-251627596234804858",
+      "metadata": {
+        "filename": "Astérix 039 (2021).cbz",
+        "ext": ".cbz",
+        "path": "/library/comics/Asterix (1961)/Astérix 039 (2021).cbz",
+        "relPath": "Astérix 039 (2021).cbz",
+        "size": 71106194,
+        "mtimeMs": 1639470318545,
+        "ctimeMs": 1795675879537,
+        "birthtimeMs": 0
+      },
+      "isSupplementary": true,
+      "addedAt": 1795783951282,
+      "updatedAt": 1795783951282,
+      "fileType": "ebook"
+    },
+    {
+      "ino": "135655804523203982",
+      "metadata": {
+        "filename": "Astérix 040 (2023).cbz",
+        "ext": ".cbz",
+        "path": "/library/comics/Asterix (1961)/Astérix 040 (2023).cbz",
+        "relPath": "Astérix 040 (2023).cbz",
+        "size": 68602397,
+        "mtimeMs": 1698314068024,
+        "ctimeMs": 1795675879571,
+        "birthtimeMs": 0
+      },
+      "isSupplementary": true,
+      "addedAt": 1795783951282,
+      "updatedAt": 1795783951282,
+      "fileType": "ebook"
+    },
+    {
+      "ino": "-2594329494923929509",
+      "metadata": {
+        "filename": "Astérix 041 (2025).cbz",
+        "ext": ".cbz",
+        "path": "/library/comics/Asterix (1961)/Astérix 041 (2025).cbz",
+        "relPath": "Astérix 041 (2025).cbz",
+        "size": 64546502,
+        "mtimeMs": 1765440878448,
+        "ctimeMs": 1795675879592,
+        "birthtimeMs": 0
+      },
+      "isSupplementary": true,
+      "addedAt": 1795783951283,
+      "updatedAt": 1795783951283,
+      "fileType": "ebook"
+    },
+    {
+      "ino": "-217395273448749193",
+      "metadata": {
+        "filename": "cover.jpg",
+        "ext": ".jpg",
+        "path": "/library/comics/Asterix (1961)/cover.jpg",
+        "relPath": "cover.jpg",
+        "size": 137706,
+        "mtimeMs": 1642832886952,
+        "ctimeMs": 1795675879575,
+        "birthtimeMs": 0
+      },
+      "isSupplementary": null,
+      "addedAt": 1795783951283,
+      "updatedAt": 1795783951283,
+      "fileType": "image"
+    },
+    {
+      "ino": "-6424468019184073098",
+      "metadata": {
+        "filename": "cvinfo",
+        "ext": "",
+        "path": "/library/comics/Asterix (1961)/cvinfo",
+        "relPath": "cvinfo",
+        "size": 50,
+        "mtimeMs": 1642832894335,
+        "ctimeMs": 1795675879578,
+        "birthtimeMs": 0
+      },
+      "isSupplementary": null,
+      "addedAt": 1795783951283,
+      "updatedAt": 1795783951283,
+      "fileType": "unknown"
+    }
+  ]
+}
