@@ -1,5 +1,7 @@
 package app.tfdn.lirelle.source.audiobookshelf.library
 
+import app.tfdn.lirelle.core.library.model.CoverShape
+import app.tfdn.lirelle.core.library.model.ServerLibrary
 import app.tfdn.lirelle.source.audiobookshelf.library.dto.AbsItemDto
 import app.tfdn.lirelle.source.audiobookshelf.library.dto.AbsLibraryDto
 import kotlinx.coroutines.sync.Mutex
@@ -26,6 +28,13 @@ internal class AbsWholeLibrary {
         libraries.valueFor(refresh) ?: remote.bookLibraries().also { libraries = Kept(it, refresh) }
     }
 
+    /**
+     * The shape of the covers of the library [libraryId], as its settings say; a book's for a library the account
+     * has not among its book libraries, or none.
+     */
+    suspend fun coverShape(remote: AbsRemote, libraryId: String?): CoverShape =
+        libraries(remote, refresh = null).coverShapeOf(libraryId)
+
     /** The whole list of the library [libraryId]'s items, in the server's order. */
     suspend fun items(remote: AbsRemote, libraryId: String, refresh: Refresh?): List<AbsItemDto> = lock.withLock {
         items[libraryId].valueFor(refresh)
@@ -41,6 +50,16 @@ internal class AbsWholeLibrary {
     /** What is kept, unless it was kept before [refresh]. */
     private fun <T> Kept<T>?.valueFor(refresh: Refresh?): T? =
         this?.takeIf { refresh == null || it.readFor === refresh }?.value
+}
+
+/**
+ * The library a list shows among the account's book [libraries]: [library], else the first. A library the account
+ * no longer has is asked all the same, and the server says it is not there. Null when there is nothing to show.
+ */
+internal fun shownLibrary(libraries: List<AbsLibraryDto>, library: ServerLibrary?): AbsLibraryDto? {
+    if (library == null) return libraries.firstOrNull()
+    val id = library.id.absId ?: return null
+    return libraries.firstOrNull { it.id == id } ?: AbsLibraryDto(id, library.name)
 }
 
 /** What the server is asked for a whole list: `limit=0` is everything. */

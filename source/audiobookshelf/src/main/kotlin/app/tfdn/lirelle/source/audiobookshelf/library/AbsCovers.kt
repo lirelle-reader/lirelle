@@ -29,6 +29,12 @@ internal class AbsCovers(private val serverUrl: String) {
 internal val AbsLibraryDto.coverShape: CoverShape
     get() = if (settings?.coverAspectRatio == SquareCovers) CoverShape.Square else CoverShape.Portrait
 
+/**
+ * The shape of the covers of the library [libraryId] among these: a book's for one not among them, or none.
+ */
+internal fun List<AbsLibraryDto>.coverShapeOf(libraryId: String?): CoverShape =
+    firstOrNull { it.id == libraryId }?.coverShape ?: CoverShape.Portrait
+
 /** The width a list's tile asks for, in pixels: enough for the widest tile on a tablet. */
 private const val TileWidth = 400
 

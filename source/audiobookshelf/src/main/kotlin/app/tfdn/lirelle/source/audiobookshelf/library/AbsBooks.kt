@@ -20,6 +20,9 @@ internal class AbsBooks(serverUrl: String) {
 
     private val covers = AbsCovers(serverUrl)
 
+    /** The cover of an item in a list; null for an item without one. */
+    fun cover(item: AbsItemDto): String? = covers.tile(item)
+
     /** An item in a list. */
     fun summary(item: AbsItemDto, readings: AbsReadings, coverShape: CoverShape = CoverShape.Portrait): BookSummary {
         val metadata = item.media.metadata
@@ -80,7 +83,7 @@ internal class AbsBooks(serverUrl: String) {
 }
 
 /** The book's authors: a whole item's linked ones, else the names a list's item joins in one text. */
-private fun AbsMetadataDto.authorNames(): List<String> = authors.map { it.name }.ifEmpty { authorName.names() }
+internal fun AbsMetadataDto.authorNames(): List<String> = authors.map { it.name }.ifEmpty { authorName.names() }
 
 /**
  * The book's series: the first a whole item, or a series' list, links, with its place; else the first a list's item

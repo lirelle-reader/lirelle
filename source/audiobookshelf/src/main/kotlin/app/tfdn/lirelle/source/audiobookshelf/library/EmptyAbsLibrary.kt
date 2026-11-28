@@ -38,7 +38,7 @@ internal val NotFound = ApiResult.Failure(ApiError.NotFound)
 internal fun <T> none(): ApiResult<List<T>> = ApiResult.Success(emptyList())
 
 /** A paged list that is there and empty: no page, and none in all. */
-private fun <T : Any> emptyPages() = PagedList(flowOf(PagingData.empty<T>()), MutableStateFlow(0))
+internal fun <T : Any> emptyPages() = PagedList(flowOf(PagingData.empty<T>()), MutableStateFlow(0))
 
 /**
  * The lists of an Audiobookshelf profile's library until it is browsed (#67): each is there, with nothing in it. The

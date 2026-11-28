@@ -7,9 +7,7 @@ import app.tfdn.lirelle.core.library.PageResult
 import app.tfdn.lirelle.core.library.PagedList
 import app.tfdn.lirelle.core.library.model.BookListRequest
 import app.tfdn.lirelle.core.library.model.BookSummary
-import app.tfdn.lirelle.core.library.model.ServerLibrary
 import app.tfdn.lirelle.core.network.ApiResult
-import app.tfdn.lirelle.source.audiobookshelf.library.dto.AbsLibraryDto
 import java.util.concurrent.atomic.AtomicInteger
 import kotlinx.coroutines.flow.MutableStateFlow
 
@@ -80,7 +78,7 @@ internal class AbsBookList(
         page: Int,
         size: Int,
     ): PageResult<BookSummary> {
-        val library = shown(whole.libraries(remote, refresh), request.library)
+        val library = shownLibrary(whole.libraries(remote, refresh), request.library)
             ?: return PageResult(emptyList(), 0)
         val answer = request.genre?.takeIf { it.isNotBlank() }
             ?.let { genre ->
@@ -109,7 +107,11 @@ internal class AbsBookList(
         refresh: AbsWholeLibrary.Refresh?,
     ): List<BookSummary> {
         val libraries = whole.libraries(remote, refresh)
-        val shown = if (request.isOfGenreEverywhere) libraries else listOfNotNull(shown(libraries, request.library))
+        val shown = if (request.isOfGenreEverywhere) {
+            libraries
+        } else {
+            listOfNotNull(shownLibrary(libraries, request.library))
+        }
         val readings = progress.readings()
         val kept = shown.flatMap { library ->
             whole.items(remote, library.id, refresh)
@@ -119,16 +121,6 @@ internal class AbsBookList(
         return AbsBookSorts.sorted(kept, request.sort, request.direction) { it.first }
             .map { (item, shape) -> remote.books.summary(item, readings, shape) }
     }
-}
-
-/**
- * The library a list shows among the account's book [libraries]: [library], else the first. A library the account
- * no longer has is asked all the same, and the server says it is not there. Null when there is nothing to show.
- */
-private fun shown(libraries: List<AbsLibraryDto>, library: ServerLibrary?): AbsLibraryDto? {
-    if (library == null) return libraries.firstOrNull()
-    val id = library.id.absId ?: return null
-    return libraries.firstOrNull { it.id == id } ?: AbsLibraryDto(id, library.name)
 }
 
 /** The request is for a genre's books in every book library: no library narrows it. */
