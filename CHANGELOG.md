@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.0.0](https://github.com/lirelle-reader/lirelle/compare/v0.8.0...v1.0.0) (2026-11-28)
+
+
+### ⚠ BREAKING CHANGES
+
+* Kavita servers: books, comics and manga ([#62](https://github.com/lirelle-reader/lirelle/issues/62))
+
+### Features
+
+* Kavita books and comics can be kept offline ([#63](https://github.com/lirelle-reader/lirelle/issues/63)) ([5a1d686](https://github.com/lirelle-reader/lirelle/commit/5a1d686c48637791715a744d89c1a0c5541022c0))
+* Kavita servers: books, comics and manga ([#62](https://github.com/lirelle-reader/lirelle/issues/62)) ([ef601f1](https://github.com/lirelle-reader/lirelle/commit/ef601f19d753c488db067eb56e8230a0eca827fb))
+* requests name Lirelle in their User-Agent ([#56](https://github.com/lirelle-reader/lirelle/issues/56)) ([c802fbb](https://github.com/lirelle-reader/lirelle/commit/c802fbbd5a505ffc828759ee811fdf574884f3ea))
+
 ## [0.8.0](https://github.com/lirelle-reader/lirelle/compare/v0.7.0...v0.8.0) (2026-11-26)
 
 
