@@ -16,12 +16,15 @@ import app.tfdn.lirelle.source.audiobookshelf.testing.RecordedOn
 import app.tfdn.lirelle.source.audiobookshelf.testing.answerRecordedHome
 import app.tfdn.lirelle.source.audiobookshelf.testing.personalizedPath
 import app.tfdn.lirelle.source.audiobookshelf.testing.recordedObject
+import app.tfdn.lirelle.source.audiobookshelf.testing.with
 import com.google.common.truth.Truth.assertThat
 import java.time.Instant
 import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.json.JsonArray
 import kotlinx.serialization.json.JsonObject
+import kotlinx.serialization.json.JsonPrimitive
 import kotlinx.serialization.json.jsonArray
+import kotlinx.serialization.json.jsonObject
 import mockwebserver3.MockWebServer
 import org.junit.After
 import org.junit.Before
@@ -29,12 +32,15 @@ import org.junit.Test
 
 private const val H2g2 = "4c18e748-4cde-4876-8cac-4d20a40e0da7"
 
+/** A library that is not among the account's. */
+private const val ClosedLibrary = "0d9f3c1e-7a52-4b8e-9f61-3c2a8e4d7b10"
+
 /** When the reader last listened to The Hitchhiker's Guide to the Galaxy, as items-in-progress says. */
 private const val H2g2LastUpdate = 1_795_697_669_090L
 
 /**
- * Home's Continue row: the items the account has started, of every library, in the server's order, a podcast's
- * episode left out; Want to read, which Audiobookshelf has not.
+ * Home's Continue row: the items the account has started, of its book libraries, in the server's order, a
+ * podcast's episode left out; Want to read, which Audiobookshelf has not.
  */
 class AbsHomeTest {
 
@@ -90,6 +96,25 @@ class AbsHomeTest {
 
         assertThat(row.books).hasSize(20)
         assertThat(row.hasMore).isTrue()
+    }
+
+    @Test
+    fun `Continue leaves out the books of a library the account cannot open`() = runBlocking<Unit> {
+        // 2.26.3 does not check the account's access to the libraries of the items in progress.
+        val items = recordedObject("items-in-progress").getValue("libraryItems").jsonArray.map { it.jsonObject }
+        val elsewhere = items.mapIndexed { index, item ->
+            when (index) {
+                0 -> item.with("libraryId", JsonPrimitive(ClosedLibrary))
+                2 -> JsonObject(item - "libraryId")
+                else -> item
+            }
+        }
+        routes.answer(InProgressPath, JsonObject(mapOf("libraryItems" to JsonArray(elsewhere))).toString())
+
+        val row = row(HomeRowKind.Continue)
+
+        assertThat(row.books.map { it.title })
+            .containsExactly("Les Indes noires", "Astérix 1", "Parlons Espéranto [fr] (1998)").inOrder()
     }
 
     @Test

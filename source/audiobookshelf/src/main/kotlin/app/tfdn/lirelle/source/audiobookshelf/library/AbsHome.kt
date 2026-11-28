@@ -22,7 +22,7 @@ internal val HomeRowExtent.size: Int
 
 /**
  * Home's rows, asked of [server] across its book libraries (spec §3). Continue is the items the account has started,
- * of every library, in the server's order (the latest first), a podcast's episode left out. Up next is each book
+ * of its book libraries, in the server's order (the latest first), a podcast's episode left out. Up next is each book
  * library's `continue-series` shelf, joined in the libraries' order: the server only makes it for a series with a
  * book finished and none in progress. Recently added is each book library's `recently-added` shelf, merged newest
  * first. Each row is cut at its size. The shelves of the libraries are asked at once, and shared between Up next and
@@ -50,15 +50,17 @@ internal class AbsHome(
     }
 
     /**
-     * The [size] latest items the account has started, books alone: being in progress, each is being read, as
-     * lately as the server says, whatever the account's progress, read a few seconds before, says of it. The server
-     * holds more when it gave as many as were asked.
+     * The [size] latest items the account has started, books of its book libraries alone: 2.26 does not check the
+     * account's access to their libraries, and a podcast library is none of them. Being in progress, each is being
+     * read, as lately as the server says, whatever the account's progress, read a few seconds before, says of it.
+     * The server holds more when it gave as many as were asked.
      */
     private suspend fun inProgress(remote: AbsRemote, size: Int): HomeRow = coroutineScope {
         val readings = async { progress.readings() }
         val libraries = async { whole.libraries(remote, refresh = null) }
         val items = remote.api.itemsInProgress(size).libraryItems
-        val books = items.filter { it.mediaType != PodcastMedia }.map { item ->
+        val bookLibraries = libraries.await().map { it.id }.toSet()
+        val books = items.filter { it.mediaType != PodcastMedia && it.libraryId in bookLibraries }.map { item ->
             val book = remote.books.summary(item, readings.await(), libraries.await().coverShapeOf(item.libraryId))
             book.copy(
                 readState = ReadState.Reading,
