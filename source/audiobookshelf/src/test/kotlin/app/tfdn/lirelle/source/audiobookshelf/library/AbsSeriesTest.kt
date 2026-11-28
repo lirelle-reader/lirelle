@@ -1,8 +1,10 @@
 package app.tfdn.lirelle.source.audiobookshelf.library
 
+import app.tfdn.lirelle.core.ids.LibraryId
 import app.tfdn.lirelle.core.library.model.ReadState
 import app.tfdn.lirelle.core.library.model.Series
 import app.tfdn.lirelle.core.library.model.SeriesBooks
+import app.tfdn.lirelle.core.library.model.ServerLibrary
 import app.tfdn.lirelle.core.network.ApiError
 import app.tfdn.lirelle.core.network.ApiResult
 import app.tfdn.lirelle.source.audiobookshelf.testing.BrowseRig
@@ -21,6 +23,7 @@ import app.tfdn.lirelle.source.audiobookshelf.testing.routeAnswer
 import app.tfdn.lirelle.source.audiobookshelf.testing.seriesPath
 import app.tfdn.lirelle.source.audiobookshelf.testing.with
 import com.google.common.truth.Truth.assertThat
+import com.google.common.truth.Truth.assertWithMessage
 import java.util.Base64
 import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.json.JsonArray
@@ -112,6 +115,33 @@ class AbsSeriesTest {
         assertThat(names(" CHRONIQUÉ ")).containsExactly("Chronique du tueur de roi")
         assertThat(names("series")).containsExactly("A Series of Unfortunate Events")
         assertThat(names("  ")).hasSize(5)
+    }
+
+    @Test
+    fun `the series list reads the same on 2_38_0 and 2_26_3`() {
+        RecordedOn.entries.forEach { on ->
+            val series = runBlocking {
+                routes = LibraryRoutes(server)
+                answerRecordedAccount(routes, on)
+                routes.answer(seriesPath(livresId(on)), pagedSeries(recordedSeries(on = on)))
+                rig = BrowseRig(server)
+                val livres = ServerLibrary(LibraryId(livresId(on)), "Livres")
+                (seriesOf().series(text = null, library = livres) as ApiResult.Success).value
+            }
+
+            assertWithMessage(on.name).that(series.map { it.name }).containsExactly(
+                "A Game of Thrones",
+                "A Series of Unfortunate Events",
+                "Cantos d'Hyperion",
+                "Charlie",
+                "Chronique du tueur de roi",
+            ).inOrder()
+            val thrones = series.first()
+            assertWithMessage(on.name).that(thrones.bookCount).isEqualTo(5)
+            assertWithMessage(on.name).that(thrones.authors).containsExactly("George R.R. Martin")
+            assertWithMessage(on.name).that(thrones.coverUrls).hasSize(3)
+            assertWithMessage(on.name).that(thrones.lastAddedAt).isNotNull()
+        }
     }
 
     @Test

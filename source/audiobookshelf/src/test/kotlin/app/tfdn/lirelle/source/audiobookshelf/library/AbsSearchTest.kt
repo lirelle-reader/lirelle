@@ -175,5 +175,16 @@ class AbsSearchTest {
         assertThat(found.series.items.map { it.bookCount }).containsExactly(9, 8, 4, 1).inOrder()
     }
 
+    @Test
+    fun `2_26_3's search finds authors as 2_38_0's does`() = runBlocking<Unit> {
+        answer(RecordedOn.Minimum)
+        routes.answer(searchPath(livresId(RecordedOn.Minimum)), fixtureBody("search-herbert", RecordedOn.Minimum))
+
+        val herbert = found("herbert").authors.items.single()
+
+        assertThat(herbert.name).isEqualTo("Frank Herbert")
+        assertThat(herbert.bookCount).isEqualTo(17)
+    }
+
     private fun searchPath(libraryId: String) = "/api/libraries/$libraryId/search"
 }

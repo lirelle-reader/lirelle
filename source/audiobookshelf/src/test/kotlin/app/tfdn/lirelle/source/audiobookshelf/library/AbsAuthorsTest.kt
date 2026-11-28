@@ -1,11 +1,13 @@
 package app.tfdn.lirelle.source.audiobookshelf.library
 
 import androidx.paging.testing.asSnapshot
+import app.tfdn.lirelle.core.ids.LibraryId
 import app.tfdn.lirelle.core.library.model.Author
 import app.tfdn.lirelle.core.library.model.AuthorDetail
 import app.tfdn.lirelle.core.library.model.AuthorSort
 import app.tfdn.lirelle.core.library.model.BookSummary
 import app.tfdn.lirelle.core.library.model.ReadState
+import app.tfdn.lirelle.core.library.model.ServerLibrary
 import app.tfdn.lirelle.core.library.model.SortDirection
 import app.tfdn.lirelle.core.network.ApiError
 import app.tfdn.lirelle.core.network.ApiResult
@@ -16,9 +18,11 @@ import app.tfdn.lirelle.source.audiobookshelf.testing.LivresId
 import app.tfdn.lirelle.source.audiobookshelf.testing.RecordedOn
 import app.tfdn.lirelle.source.audiobookshelf.testing.answerRecordedAccount
 import app.tfdn.lirelle.source.audiobookshelf.testing.fixtureBody
+import app.tfdn.lirelle.source.audiobookshelf.testing.livresId
 import app.tfdn.lirelle.source.audiobookshelf.testing.recordedObject
 import app.tfdn.lirelle.source.audiobookshelf.testing.with
 import com.google.common.truth.Truth.assertThat
+import com.google.common.truth.Truth.assertWithMessage
 import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.json.JsonArray
 import kotlinx.serialization.json.JsonObject
@@ -101,6 +105,25 @@ class AbsAuthorsTest {
         assertThat(names(AuthorSort.Name, SortDirection.Ascending, " EXUPERY")).containsExactly(
             "Antoine de Saint-Exupéry",
         )
+    }
+
+    @Test
+    fun `the authors list reads the same on 2_38_0 and 2_26_3`() {
+        RecordedOn.entries.forEach { on ->
+            val authors = runBlocking {
+                routes = LibraryRoutes(server)
+                answerRecordedAccount(routes, on)
+                routes.answer("/api/libraries/${livresId(on)}/authors", fixtureBody("authors-livres", on))
+                rig = BrowseRig(server)
+                val livres = ServerLibrary(LibraryId(livresId(on)), "Livres")
+                authorsOf().authors(AuthorSort.BookCount, SortDirection.Descending, text = null, library = livres)
+                    .items.asSnapshot { appendScrollWhile { true } }
+            }
+
+            assertWithMessage(on.name).that(authors).hasSize(10)
+            assertWithMessage(on.name).that(authors.map { it.name to it.bookCount }.take(2))
+                .containsExactly("Jules Verne" to 53, "Edgar Allan Poe" to 52).inOrder()
+        }
     }
 
     @Test
