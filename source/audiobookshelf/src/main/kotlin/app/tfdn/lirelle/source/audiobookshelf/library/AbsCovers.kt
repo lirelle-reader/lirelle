@@ -25,7 +25,7 @@ internal class AbsCovers(private val serverUrl: String) {
     }
 }
 
-/** The shape of the covers of this library, as its settings say: square, or a book's (the default). */
+/** The shape of the covers of this library, as its settings say: square (1), or a book's (0, the default). */
 internal val AbsLibraryDto.coverShape: CoverShape
     get() = if (settings?.coverAspectRatio == SquareCovers) CoverShape.Square else CoverShape.Portrait
 
@@ -41,5 +41,5 @@ private const val TileWidth = 400
 /** The width a book's page asks for, in pixels. */
 private const val PageWidth = 800
 
-/** What a library's settings say of square covers. */
-private const val SquareCovers = 0
+/** What a library's settings say of square covers (`BookCoverAspectRatio.SQUARE`); 0 is a book's, 1.6:1. */
+private const val SquareCovers = 1

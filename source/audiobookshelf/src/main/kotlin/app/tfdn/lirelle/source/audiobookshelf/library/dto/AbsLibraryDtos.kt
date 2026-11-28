@@ -32,7 +32,7 @@ internal data class AbsLibraryDto(
     val settings: AbsLibrarySettingsDto? = null,
 )
 
-/** How a library is shown. @property coverAspectRatio 0 for square covers, 1 for a book's (the default). */
+/** How a library is shown. @property coverAspectRatio 1 for square covers, 0 for a book's (the default). */
 @Serializable
 internal data class AbsLibrarySettingsDto(val coverAspectRatio: Int? = null)
 

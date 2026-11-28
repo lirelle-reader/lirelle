@@ -58,7 +58,8 @@ class AbsBookListTest {
 
         assertThat(all).hasSize(40)
         assertThat(all.first().title).isEqualTo("Mostly Harmless")
-        assertThat(all.first().coverShape).isEqualTo(CoverShape.Portrait)
+        // The test server's libraries show square covers.
+        assertThat(all.first().coverShape).isEqualTo(CoverShape.Square)
         assertThat(books.total.value).isEqualTo(40)
         val pages = routes.requests(itemsPath(LivresId))
         assertThat(pages.map { it.url.queryParameter("page") }).containsExactlyElementsIn((0..7).map { "$it" })
