@@ -20,6 +20,7 @@ import app.tfdn.lirelle.source.audiobookshelf.network.MeRoute
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
+import retrofit2.http.QueryMap
 
 /**
  * Audiobookshelf's routes the library reads, relative to the server's address. A list is asked by page, the first
@@ -44,7 +45,9 @@ internal interface AbsLibraryApi : AbsBrowseApi {
 
     /**
      * A page of a library's items of one group, [filter] `genres.<base64>`, `series.<base64>` or `authors.<base64>`,
-     * by [sort] when one is given (`sequence` for a series).
+     * in the [order] given, if any: `sort` (`sequence` for a series) and `desc` (1 for descending), as
+     * [AbsBookSorts.serverOrder] says them. The filter goes as it is given and Retrofit escapes it: a `+` of the
+     * base64 is sent `%2B`, which the server would otherwise read as a space.
      */
     @GET("api/libraries/{libraryId}/items")
     suspend fun groupItems(
@@ -52,7 +55,7 @@ internal interface AbsLibraryApi : AbsBrowseApi {
         @Query("filter") filter: String,
         @Query("limit") limit: Int,
         @Query("page") page: Int,
-        @Query("sort") sort: String? = null,
+        @QueryMap order: Map<String, String> = emptyMap(),
     ): AbsItemsPageDto
 
     /** A whole item, its authors and series linked. 403 for an item the account may not see. */
