@@ -18,7 +18,8 @@ import java.util.Base64
  * whole, as every source's, sorted and narrowed on the device: the server is asked it by name, [pageSize] series at a
  * time until its total is reached, as it answers no series to `limit=0`. Each series comes with its books, in their
  * order, which are what it counts and what its tile shows; the read ones are those the account's [progress] says
- * are. A list given no library shows the first book library ([whole] keeps them), as the Library always shows one.
+ * are. A list given no library, as Search's "See all" asks, is every book library's ([whole] keeps them): their
+ * lists one after the other in the server's order of the libraries, each series once, which the screen then sorts.
  */
 internal class AbsSeries(
     private val server: AbsProfileServer,
@@ -27,12 +28,16 @@ internal class AbsSeries(
     private val pageSize: Int = SeriesPageSize,
 ) {
 
-    /** Every series of [library], narrowed on the device to the names holding [text] when given. */
+    /**
+     * Every series of [library] (of every book library when given none), narrowed on the device to the names holding
+     * [text] when given.
+     */
     suspend fun series(text: String?, library: ServerLibrary?): ApiResult<List<Series>> = server.call { remote ->
-        val shown = shownLibrary(whole.libraries(remote, refresh = null), library) ?: return@call emptyList()
+        val shown = shownLibraries(whole.libraries(remote, refresh = null), library)
         val matching = AbsText.of(text)
         val readings = progress.readings()
-        allSeries(remote, shown.id)
+        shown.flatMap { allSeries(remote, it.id) }
+            .distinctBy { it.id }
             .filter { matching == null || matching.isIn(it.name) }
             .map { remote.series(it, it.books, readings) }
     }

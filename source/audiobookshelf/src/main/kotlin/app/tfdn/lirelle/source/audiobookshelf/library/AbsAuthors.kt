@@ -21,8 +21,9 @@ import kotlinx.coroutines.flow.MutableStateFlow
 
 /**
  * The authors of the library the Library shows, and an author's page, asked of [server] (spec §4 and §5). A
- * library's authors come whole in one answer, then are sorted, narrowed and paged on the device, [pageSize] at a time;
- * a list given no library shows the first book library's ([whole] keeps them). An author is shown without a picture
+ * library's authors come whole in one answer, then are sorted, narrowed and paged on the device, [pageSize] at a time.
+ * A list given no library, as Search's "See all" asks, is every book library's ([whole] keeps them): their authors
+ * joined, each once, then sorted together. An author is shown without a picture
  * for now. An author's page and books come from one answer, the author with the author's items and series, read as
  * the account's [progress] says.
  */
@@ -33,7 +34,10 @@ internal class AbsAuthors(
     private val pageSize: Int = AuthorPageSize,
 ) {
 
-    /** The authors of [library] in [sort]'s order, narrowed to the names holding [text] when given, by pages. */
+    /**
+     * The authors of [library] (of every book library when given none) in [sort]'s order, narrowed to the names
+     * holding [text] when given, by pages.
+     */
     fun authors(sort: AuthorSort, direction: SortDirection, text: String?, library: ServerLibrary?): PagedList<Author> {
         val total = MutableStateFlow<Int?>(null)
         val loads = AtomicInteger()
@@ -44,8 +48,9 @@ internal class AbsAuthors(
             var listed: List<Author>? = null
             IndexPagingSource(pageSize, onTotal = { total.value = it }) { page, size ->
                 val all = listed ?: server.loaded { remote ->
-                    val shown = shownLibrary(whole.libraries(remote, refresh), library)
-                    shown?.let { remote.api.authors(it.id).authors }.orEmpty()
+                    shownLibraries(whole.libraries(remote, refresh), library)
+                        .flatMap { remote.api.authors(it.id).authors }
+                        .distinctBy { it.id }
                         .filter { matching == null || matching.isIn(it.name) }
                         .sortedWith(authorOrder(sort, direction))
                         .map { Author(it.id.asAuthorId(), it.name, it.numBooks ?: 0, portraitUrl = null) }

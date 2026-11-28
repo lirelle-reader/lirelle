@@ -15,9 +15,12 @@ import kotlinx.coroutines.flow.MutableStateFlow
  * The Books list of the library the Library shows (spec §4), asked of [server]. While nothing narrows it, the server
  * pages it, in the sort asked; a genre is the server's filter too. With a status, a format or a text, the library's
  * whole list, kept by the profile ([whole]), is narrowed ([AbsBookFilters]) and sorted ([AbsBookSorts]) on the
- * device, then paged there. The read states come from the account's [progress]. A list given no library shows the
- * first book library, as the Library always shows one; a genre given none is each book library's
- * ([AbsGenreBooks]).
+ * device, then paged there. The read states come from the account's [progress].
+ *
+ * A list given no library, as Search's "See all" and its genres ask, is every book library's: while nothing narrows
+ * it, each library's pages one library after the other, each sorted by the server on its own
+ * ([AbsEveryLibraryBooks]); narrowed, the libraries' whole lists joined, then sorted together on the device. The
+ * Library's tabs always name their library.
  *
  * A pull to refresh of a list reads again what it uses: the libraries, and the whole list it narrows. The screens
  * keep a list's pages while they show it, so its pager is collected once: each load of the list after its first is
@@ -30,12 +33,12 @@ internal class AbsBookList(
     private val pageSize: Int = BookPageSize,
 ) {
 
-    private val genres = AbsGenreBooks(server, progress, whole, pageSize)
+    private val everywhere = AbsEveryLibraryBooks(server, progress, whole, pageSize)
 
     /** The books [request] asks for, loaded as the list scrolls. */
     fun books(request: BookListRequest): PagedList<BookSummary> {
         val filters = AbsBookFilters.of(request)
-        if (!filters.isActive && request.isOfGenreEverywhere) return genres.books(request)
+        if (!filters.isActive && request.library == null) return everywhere.books(request)
         val total = MutableStateFlow<Int?>(null)
         val loads = AtomicInteger()
         val pager = Pager(PagingConfig(pageSize, initialLoadSize = pageSize, enablePlaceholders = true)) {
@@ -48,7 +51,7 @@ internal class AbsBookList(
                         val all = narrowed ?: narrowed(remote, request, filters, refresh).also { narrowed = it }
                         all.pageOf(page, size)
                     } else {
-                        served(remote, request, refresh, page, size)
+                        served(remote, request, page, size, refresh)
                     }
                 }
             }
@@ -65,40 +68,32 @@ internal class AbsBookList(
             val filters = AbsBookFilters.of(request)
             when {
                 filters.isActive -> narrowed(remote, request, filters, refresh = null).pageOf(page, size)
-                request.isOfGenreEverywhere -> genres.page(remote, request, page, size)
-                else -> served(remote, request, refresh = null, page, size)
+                request.library == null -> everywhere.page(remote, request, page, size)
+                else -> served(remote, request, page, size)
             }
         }
 
-    /** The page [page] of [size] of the library's books, or of its genre's, as the server sorts and pages them. */
+    /**
+     * The page [page] of [size] of the books of [request]'s library, or of its genre's, as the server sorts and pages
+     * them. [refresh] reads the libraries again, for their covers' shapes.
+     */
     private suspend fun served(
         remote: AbsRemote,
         request: BookListRequest,
-        refresh: AbsWholeLibrary.Refresh?,
         page: Int,
         size: Int,
+        refresh: AbsWholeLibrary.Refresh? = null,
     ): PageResult<BookSummary> {
-        val library = shownLibrary(whole.libraries(remote, refresh), request.library)
+        val shown = request.library?.let { shownLibrary(whole.libraries(remote, refresh), it) }
             ?: return PageResult(emptyList(), 0)
-        val answer = request.genre?.takeIf { it.isNotBlank() }
-            ?.let { genre ->
-                val order = AbsBookSorts.serverOrder(request.sort, request.direction)
-                remote.api.groupItems(library.id, genreFilter(genre), size, page, order)
-            }
-            ?: remote.api.items(
-                library.id,
-                size,
-                page,
-                AbsBookSorts.serverField(request.sort),
-                AbsBookSorts.serverDesc(request.direction),
-            )
+        val answer = remote.libraryItems(shown.id, request, size, page)
         val readings = progress.readings()
-        return PageResult(answer.results.map { remote.books.summary(it, readings, library.coverShape) }, answer.total)
+        return PageResult(answer.results.map { remote.books.summary(it, readings, shown.coverShape) }, answer.total)
     }
 
     /**
-     * Every book of the library (of each book library for a genre given none) that [filters] keep, sorted as
-     * [request] asks, from the whole lists the profile keeps.
+     * Every book of the library (of every book library when given none) that [filters] keep, sorted as [request]
+     * asks, from the whole lists the profile keeps.
      */
     private suspend fun narrowed(
         remote: AbsRemote,
@@ -106,12 +101,7 @@ internal class AbsBookList(
         filters: AbsBookFilters,
         refresh: AbsWholeLibrary.Refresh?,
     ): List<BookSummary> {
-        val libraries = whole.libraries(remote, refresh)
-        val shown = if (request.isOfGenreEverywhere) {
-            libraries
-        } else {
-            listOfNotNull(shownLibrary(libraries, request.library))
-        }
+        val shown = shownLibraries(whole.libraries(remote, refresh), request.library)
         val readings = progress.readings()
         val kept = shown.flatMap { library ->
             whole.items(remote, library.id, refresh)
@@ -122,10 +112,6 @@ internal class AbsBookList(
             .map { (item, shape) -> remote.books.summary(item, readings, shape) }
     }
 }
-
-/** The request is for a genre's books in every book library: no library narrows it. */
-private val BookListRequest.isOfGenreEverywhere: Boolean
-    get() = !genre.isNullOrBlank() && library == null
 
 /** How many books a page of the Books list holds, as on the other servers. */
 private const val BookPageSize = 60

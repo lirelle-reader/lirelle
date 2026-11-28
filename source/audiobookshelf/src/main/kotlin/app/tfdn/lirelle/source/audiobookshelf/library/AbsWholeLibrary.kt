@@ -53,11 +53,15 @@ internal class AbsWholeLibrary {
 }
 
 /**
- * The library a list shows among the account's book [libraries]: [library], else the first. A library the account
- * no longer has is asked all the same, and the server says it is not there. Null when there is nothing to show.
+ * The libraries a list shows among the account's book [libraries]: [library] alone, or every book library when given
+ * none, as Search's "See all" asks. A library the account no longer has is asked all the same, and the server says
+ * it is not there.
  */
-internal fun shownLibrary(libraries: List<AbsLibraryDto>, library: ServerLibrary?): AbsLibraryDto? {
-    if (library == null) return libraries.firstOrNull()
+internal fun shownLibraries(libraries: List<AbsLibraryDto>, library: ServerLibrary?): List<AbsLibraryDto> =
+    if (library == null) libraries else listOfNotNull(shownLibrary(libraries, library))
+
+/** The account's book library [library], as [libraries] know it; null for an id that is not Audiobookshelf's. */
+internal fun shownLibrary(libraries: List<AbsLibraryDto>, library: ServerLibrary): AbsLibraryDto? {
     val id = library.id.absId ?: return null
     return libraries.firstOrNull { it.id == id } ?: AbsLibraryDto(id, library.name)
 }

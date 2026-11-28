@@ -104,13 +104,6 @@ class AbsAuthorsTest {
     }
 
     @Test
-    fun `the authors of no library are the first book library's`() = runBlocking<Unit> {
-        authorsOf().authors(AuthorSort.Name, SortDirection.Ascending, text = null, library = null).items.asSnapshot()
-
-        assertThat(routes.requests(AuthorsPath)).hasSize(1)
-    }
-
-    @Test
     fun `an author's page has the author's name, biography and number of books`() = runBlocking<Unit> {
         val described = recordedObject("author-adams").with("description", JsonPrimitive("Wrote about towels."))
         routes.answer(AdamsPath, described.toString())

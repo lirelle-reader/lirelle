@@ -73,30 +73,6 @@ class AbsLibrariesTest {
     }
 
     @Test
-    fun `a list given no library shows the first book library`() = runBlocking {
-        server.enqueueJson(Unordered)
-
-        val first = remote.call { it.libraryOrFirst(null) }
-
-        assertThat(first).isEqualTo(ApiResult.Success(ServerLibrary(LibraryId("lib-a"), "Livres")))
-    }
-
-    @Test
-    fun `a list given a library shows it, and the server is not asked`() = runBlocking {
-        val chosen = ServerLibrary(LibraryId("lib-b"), "BD")
-
-        assertThat(remote.call { it.libraryOrFirst(chosen) }).isEqualTo(ApiResult.Success(chosen))
-        assertThat(server.requestCount).isEqualTo(0)
-    }
-
-    @Test
-    fun `a server with no book library gives no library to show`() = runBlocking {
-        server.enqueueJson("""{"libraries":[{"id":"lib-p","name":"Podcasts","mediaType":"podcast"}]}""")
-
-        assertThat(remote.call { it.libraryOrFirst(null) }).isEqualTo(ApiResult.Success(null))
-    }
-
-    @Test
     fun `what the account may not see is not found`() = runBlocking {
         server.enqueueText("Forbidden", code = 403)
         server.enqueueText("Not found", code = 404)

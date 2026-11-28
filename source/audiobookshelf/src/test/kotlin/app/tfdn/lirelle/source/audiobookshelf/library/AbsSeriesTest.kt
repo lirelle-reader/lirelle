@@ -115,14 +115,6 @@ class AbsSeriesTest {
     }
 
     @Test
-    fun `the series of no library are the first book library's`() = runBlocking<Unit> {
-        val series = (seriesOf().series(text = null, library = null) as ApiResult.Success).value
-
-        assertThat(series).hasSize(5)
-        assertThat(routes.requests(seriesPath(LivresId))).hasSize(1)
-    }
-
-    @Test
     fun `a library the account may not see is not found`() = runBlocking<Unit> {
         routes.fail(seriesPath(LivresId), 403)
 

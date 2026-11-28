@@ -95,13 +95,6 @@ class AbsBookListTest {
     }
 
     @Test
-    fun `a list given no library shows the first book library`() = runBlocking<Unit> {
-        list.books(BookListRequest()).items.asSnapshot()
-
-        assertThat(routes.requests(itemsPath(LivresId))).isNotEmpty()
-    }
-
-    @Test
     fun `a status asks the whole library once and keeps its books on the device`() = runBlocking<Unit> {
         val request = BookListRequest(filters = BookFilters(statuses = setOf(StatusFilter.Read)), library = Livres)
         val books = list.books(request)

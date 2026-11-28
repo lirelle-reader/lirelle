@@ -21,13 +21,6 @@ internal class AbsRemote(val api: AbsLibraryApi, val books: AbsBooks) {
     suspend fun bookLibraries(): List<AbsLibraryDto> =
         api.libraries().libraries.filter { it.mediaType == BookMedia }.sortedBy { it.displayOrder }
 
-    /**
-     * The library a list shows: [library], else the first book library. The Library always shows one of them, as
-     * Audiobookshelf lists nothing across its libraries; a list given none is shown the first. Null when the server
-     * has no book library the account can open.
-     */
-    suspend fun libraryOrFirst(library: ServerLibrary?): ServerLibrary? =
-        library ?: bookLibraries().firstOrNull()?.serverLibrary()
 }
 
 /**
