@@ -1,0 +1,1018 @@
+{
+  "results": [
+    {
+      "id": "2bffab16-8cc2-41e9-bfb5-fb0640571fcf",
+      "libraryId": "e70c1745-3cd9-4d47-bc40-6790ca8174d2",
+      "name": "Classiques",
+      "description": "Trois classiques en français",
+      "books": [
+        {
+          "id": "f7168176-f295-4fee-b0cc-37e190ef167c",
+          "ino": "-1511084267564117006",
+          "oldLibraryItemId": null,
+          "libraryId": "e70c1745-3cd9-4d47-bc40-6790ca8174d2",
+          "folderId": "21492865-2e3a-4611-a5bd-3d3758c76b06",
+          "path": "/library/books/Antoine de Saint-Exupéry/Le Petit Prince [fr] (1943)",
+          "relPath": "Antoine de Saint-Exupéry/Le Petit Prince [fr] (1943)",
+          "isFile": false,
+          "mtimeMs": 1794401730591,
+          "ctimeMs": 1794624298646,
+          "birthtimeMs": 0,
+          "addedAt": 1795783749934,
+          "updatedAt": 1795783749934,
+          "isMissing": false,
+          "isInvalid": false,
+          "mediaType": "book",
+          "media": {
+            "id": "607343b8-0c55-490a-aff7-5b41a136a891",
+            "metadata": {
+              "title": "Le Petit Prince",
+              "subtitle": null,
+              "authors": [
+                {
+                  "id": "72d005ae-beb1-467b-b7a2-777df163c87d",
+                  "name": "Antoine de Saint-Exupéry"
+                }
+              ],
+              "narrators": [
+                "Bernard Giraudeau"
+              ],
+              "series": [],
+              "genres": [
+                "Classiques",
+                "Jeunesse"
+              ],
+              "publishedYear": "1943",
+              "publishedDate": null,
+              "publisher": "Folio Junior",
+              "description": "<p>Imaginez-vous perdu dans le désert, loin de tout lieu habité, et face à un petit garçon tout blond, surgi de nulle part. Si de surcroît ce petit garçon vous demande avec insistance de dessiner un mouton, vous voilà plus qu'étonné ! À partir de là, vous n'aurez plus qu'une seule interrogation : savoir d'où vient cet étrange petit bonhomme et connaître son histoire.<br />S'ouvre alors un monde étrange et poétique, peuplé de métaphores, décrit à travers les paroles d'un \"petit prince\" qui porte aussi sur notre monde à nous un regard tout neuf, empli de naïveté, de fraîcheur et de gravité. Très vite, vous découvrez d'étranges planètes, peuplées d'hommes d'affaires, de buveurs, de vaniteux, d'allumeurs de réverbères.<br /><br />Cette évocation onirique, à laquelle participent les aquarelles de l'auteur, a tout d'un parcours initiatique, où l'enfant apprendra les richesses essentielles des rapports humains et le secret qui les régit : \"On ne voit bien qu'avec le coeur, l'essentiel est invisible pour les yeux.\"<br /><br />Oeuvre essentielle de la littérature, ce livre de Saint-Exupéry est un ouvrage que l'on aura à coeur de raconter à son enfant, page après page, histoire aussi de redécouvrir l'enfant que l'on était autrefois, avant de devenir une grande personne !</p>",
+              "isbn": null,
+              "asin": "B00YN5VOVM",
+              "language": "fr",
+              "explicit": false,
+              "abridged": false,
+              "titleIgnorePrefix": "Le Petit Prince",
+              "authorName": "Antoine de Saint-Exupéry",
+              "authorNameLF": "de Saint-Exupéry, Antoine",
+              "narratorName": "Bernard Giraudeau",
+              "seriesName": "",
+              "descriptionPlain": "Imaginez-vous perdu dans le désert, loin de tout lieu habité, et face à un petit garçon tout blond, surgi de nulle part. Si de surcroît ce petit garçon vous demande avec insistance de dessiner un mouton, vous voilà plus qu'étonné ! À partir de là, vous n'aurez plus qu'une seule interrogation : savoir d'où vient cet étrange petit bonhomme et connaître son histoire.S'ouvre alors un monde étrange et poétique, peuplé de métaphores, décrit à travers les paroles d'un \"petit prince\" qui porte aussi sur notre monde à nous un regard tout neuf, empli de naïveté, de fraîcheur et de gravité. Très vite, vous découvrez d'étranges planètes, peuplées d'hommes d'affaires, de buveurs, de vaniteux, d'allumeurs de réverbères.Cette évocation onirique, à laquelle participent les aquarelles de l'auteur, a tout d'un parcours initiatique, où l'enfant apprendra les richesses essentielles des rapports humains et le secret qui les régit : \"On ne voit bien qu'avec le coeur, l'essentiel est invisible pour les yeux.\"Oeuvre essentielle de la littérature, ce livre de Saint-Exupéry est un ouvrage que l'on aura à coeur de raconter à son enfant, page après page, histoire aussi de redécouvrir l'enfant que l'on était autrefois, avant de devenir une grande personne !"
+            },
+            "coverPath": "/library/books/Antoine de Saint-Exupéry/Le Petit Prince [fr] (1943)/cover.jpg",
+            "tags": [],
+            "numTracks": 1,
+            "numAudioFiles": 1,
+            "numChapters": 27,
+            "duration": 6521.934,
+            "size": 104829995,
+            "ebookFormat": "epub",
+            "libraryItemId": "f7168176-f295-4fee-b0cc-37e190ef167c",
+            "audioFiles": [
+              {
+                "index": 1,
+                "ino": "-7296498923081887959",
+                "metadata": {
+                  "filename": "Le Petit Prince [fr] (1943).m4b",
+                  "ext": ".m4b",
+                  "path": "/library/books/Antoine de Saint-Exupéry/Le Petit Prince [fr] (1943)/Le Petit Prince [fr] (1943).m4b",
+                  "relPath": "Le Petit Prince [fr] (1943).m4b",
+                  "size": 104321748,
+                  "mtimeMs": 1794401729501,
+                  "ctimeMs": 1794614956057,
+                  "birthtimeMs": 0
+                },
+                "addedAt": 1795783749907,
+                "updatedAt": 1795783749907,
+                "trackNumFromMeta": 1,
+                "discNumFromMeta": null,
+                "trackNumFromFilename": null,
+                "discNumFromFilename": null,
+                "manuallyVerified": false,
+                "exclude": false,
+                "error": null,
+                "format": "QuickTime / MOV",
+                "duration": 6521.934,
+                "bitRate": 125588,
+                "language": null,
+                "codec": "aac",
+                "timeBase": "1/44100",
+                "channels": 2,
+                "channelLayout": "stereo",
+                "chapters": [
+                  {
+                    "start": 0,
+                    "end": 199.644,
+                    "title": "Chapitre 1",
+                    "id": 0
+                  },
+                  {
+                    "start": 199.644,
+                    "end": 533.012,
+                    "title": "Chapitre 2",
+                    "id": 1
+                  },
+                  {
+                    "start": 533.012,
+                    "end": 718.33,
+                    "title": "Chapitre 3",
+                    "id": 2
+                  },
+                  {
+                    "start": 718.33,
+                    "end": 997.41,
+                    "title": "Chapitre 4",
+                    "id": 3
+                  },
+                  {
+                    "start": 997.41,
+                    "end": 1240.964,
+                    "title": "Chapitre 5",
+                    "id": 4
+                  },
+                  {
+                    "start": 1240.964,
+                    "end": 1342.272,
+                    "title": "Chapitre 6",
+                    "id": 5
+                  },
+                  {
+                    "start": 1342.272,
+                    "end": 1617.428,
+                    "title": "Chapitre 7",
+                    "id": 6
+                  },
+                  {
+                    "start": 1617.428,
+                    "end": 1958.32,
+                    "title": "Chapitre 8",
+                    "id": 7
+                  },
+                  {
+                    "start": 1958.32,
+                    "end": 2105.766,
+                    "title": "Chapitre 9",
+                    "id": 8
+                  },
+                  {
+                    "start": 2105.766,
+                    "end": 2564.406,
+                    "title": "Chapitre 10",
+                    "id": 9
+                  },
+                  {
+                    "start": 2564.406,
+                    "end": 2685.985,
+                    "title": "Chapitre 11",
+                    "id": 10
+                  },
+                  {
+                    "start": 2685.985,
+                    "end": 2758.268,
+                    "title": "Chapitre 12",
+                    "id": 11
+                  },
+                  {
+                    "start": 2758.268,
+                    "end": 3071.11,
+                    "title": "Chapitre 13",
+                    "id": 12
+                  },
+                  {
+                    "start": 3071.11,
+                    "end": 3323.162,
+                    "title": "Chapitre 14",
+                    "id": 13
+                  },
+                  {
+                    "start": 3323.162,
+                    "end": 3634.03,
+                    "title": "Chapitre 15",
+                    "id": 14
+                  },
+                  {
+                    "start": 3634.03,
+                    "end": 3763.736,
+                    "title": "Chapitre 16",
+                    "id": 15
+                  },
+                  {
+                    "start": 3763.736,
+                    "end": 3978.311,
+                    "title": "Chapitre 17",
+                    "id": 16
+                  },
+                  {
+                    "start": 3978.311,
+                    "end": 4063.876,
+                    "title": "Chapitre 18",
+                    "id": 17
+                  },
+                  {
+                    "start": 4063.876,
+                    "end": 4124.456,
+                    "title": "Chapitre 19",
+                    "id": 18
+                  },
+                  {
+                    "start": 4124.456,
+                    "end": 4262.498,
+                    "title": "Chapitre 20",
+                    "id": 19
+                  },
+                  {
+                    "start": 4262.498,
+                    "end": 4780.651,
+                    "title": "Chapitre 21",
+                    "id": 20
+                  },
+                  {
+                    "start": 4780.651,
+                    "end": 4859.691,
+                    "title": "Chapitre 22",
+                    "id": 21
+                  },
+                  {
+                    "start": 4859.691,
+                    "end": 4901.533,
+                    "title": "Chapitre 23",
+                    "id": 22
+                  },
+                  {
+                    "start": 4901.533,
+                    "end": 5214.073,
+                    "title": "Chapitre 24",
+                    "id": 23
+                  },
+                  {
+                    "start": 5214.073,
+                    "end": 5526.102,
+                    "title": "Chapitre 25",
+                    "id": 24
+                  },
+                  {
+                    "start": 5526.102,
+                    "end": 6208.791,
+                    "title": "Chapitre 26",
+                    "id": 25
+                  },
+                  {
+                    "start": 6208.791,
+                    "end": 6521.934,
+                    "title": "Chapitre 27",
+                    "id": 26
+                  }
+                ],
+                "embeddedCoverArt": "mjpeg",
+                "metaTags": {
+                  "tagAlbum": "Le Petit Prince",
+                  "tagArtist": "Antoine de Saint-Exupéry",
+                  "tagGenre": "Classiques; Jeunesse",
+                  "tagTitle": "Le Petit Prince",
+                  "tagTrack": "1",
+                  "tagAlbumArtist": "Antoine de Saint-Exupéry",
+                  "tagDate": "1943",
+                  "tagComposer": "Bernard Giraudeau",
+                  "tagPublisher": "Folio Junior",
+                  "tagComment": "<p>Imaginez-vous perdu dans le désert, loin de tout lieu habité, et face à un petit garçon tout blond, surgi de nulle part. Si de surcroît ce petit garçon vous demande avec insistance de dessiner un mouton, vous voilà plus qu'étonné ! À partir de là, vous n'aurez plus qu'une seule interrogation : savoir d'où vient cet étrange petit bonhomme et connaître son histoire.<br>S'ouvre alors un monde étrange et poétique, peuplé de métaphores, décrit à travers les paroles d'un \"petit prince\" qui porte aussi sur notre monde à nous un regard tout neuf, empli de naïveté, de fraîcheur et de gravité. Très vite, vous découvrez d'étranges planètes, peuplées d'hommes d'affaires, de buveurs, de vaniteux, d'allumeurs de réverbères.<br><br>Cette évocation onirique, à laquelle participent les aquarelles de l'auteur, a tout d'un parcours initiatique, où l'enfant apprendra les richesses essentielles des rapports humains et le secret qui les régit : \"On ne voit bien qu'avec le coeur, l'essentiel est invisible pour les yeux.\"<br><br>Oeuvre essentielle de la littérature, ce livre de Saint-Exupéry est un ouvrage que l'on aura à coeur de raconter à son enfant, page après page, histoire aussi de redécouvrir l'enfant que l'on était autrefois, avant de devenir une grande personne !</p>",
+                  "tagDescription": "<p>Imaginez-vous perdu dans le désert, loin de tout lieu habité, et face à un petit garçon tout blond, surgi de nulle part. Si de surcroît ce petit garçon vous demande avec insistance de dessiner un mouton, vous voilà plus qu'étonné ! À partir de là, vous n'aurez plus qu'une seule interrogation : savoir d'où vient cet étrange petit bonhomme et connaître son histoire.<br>S'ouvre alors un monde étrange et poétique, peuplé de métaphores, décrit à travers les paroles d'un \"petit prince\" qui porte aussi sur notre monde à nous un regard tout neuf, empli de naïveté, de fraîcheur et de gravité. Très vite, vous découvrez d'étranges planètes, peuplées d'hommes d'affaires, de buveurs, de vaniteux, d'allumeurs de réverbères.<br><br>Cette évocation onirique, à laquelle participent les aquarelles de l'auteur, a tout d'un parcours initiatique, où l'enfant apprendra les richesses essentielles des rapports humains et le secret qui les régit : \"On ne voit bien qu'avec le coeur, l'essentiel est invisible pour les yeux.\"<br><br>Oeuvre essentielle de la littérature, ce livre de Saint-Exupéry est un ouvrage que l'on aura à coeur de raconter à son enfant, page après page, histoire aussi de redécouvrir l'enfant que l'on était autrefois, avant de devenir une grande personne !</p>",
+                  "tagEncoder": "Lavf62.3.100",
+                  "tagLanguage": "fr",
+                  "tagASIN": "B00YN5VOVM"
+                },
+                "mimeType": "audio/mp4"
+              }
+            ],
+            "chapters": [
+              {
+                "start": 0,
+                "end": 199.644,
+                "title": "Chapitre 1",
+                "id": 0
+              },
+              {
+                "start": 199.644,
+                "end": 533.012,
+                "title": "Chapitre 2",
+                "id": 1
+              },
+              {
+                "start": 533.012,
+                "end": 718.33,
+                "title": "Chapitre 3",
+                "id": 2
+              },
+              {
+                "start": 718.33,
+                "end": 997.41,
+                "title": "Chapitre 4",
+                "id": 3
+              },
+              {
+                "start": 997.41,
+                "end": 1240.964,
+                "title": "Chapitre 5",
+                "id": 4
+              },
+              {
+                "start": 1240.964,
+                "end": 1342.272,
+                "title": "Chapitre 6",
+                "id": 5
+              },
+              {
+                "start": 1342.272,
+                "end": 1617.428,
+                "title": "Chapitre 7",
+                "id": 6
+              },
+              {
+                "start": 1617.428,
+                "end": 1958.32,
+                "title": "Chapitre 8",
+                "id": 7
+              },
+              {
+                "start": 1958.32,
+                "end": 2105.766,
+                "title": "Chapitre 9",
+                "id": 8
+              },
+              {
+                "start": 2105.766,
+                "end": 2564.406,
+                "title": "Chapitre 10",
+                "id": 9
+              },
+              {
+                "start": 2564.406,
+                "end": 2685.985,
+                "title": "Chapitre 11",
+                "id": 10
+              },
+              {
+                "start": 2685.985,
+                "end": 2758.268,
+                "title": "Chapitre 12",
+                "id": 11
+              },
+              {
+                "start": 2758.268,
+                "end": 3071.11,
+                "title": "Chapitre 13",
+                "id": 12
+              },
+              {
+                "start": 3071.11,
+                "end": 3323.162,
+                "title": "Chapitre 14",
+                "id": 13
+              },
+              {
+                "start": 3323.162,
+                "end": 3634.03,
+                "title": "Chapitre 15",
+                "id": 14
+              },
+              {
+                "start": 3634.03,
+                "end": 3763.736,
+                "title": "Chapitre 16",
+                "id": 15
+              },
+              {
+                "start": 3763.736,
+                "end": 3978.311,
+                "title": "Chapitre 17",
+                "id": 16
+              },
+              {
+                "start": 3978.311,
+                "end": 4063.876,
+                "title": "Chapitre 18",
+                "id": 17
+              },
+              {
+                "start": 4063.876,
+                "end": 4124.456,
+                "title": "Chapitre 19",
+                "id": 18
+              },
+              {
+                "start": 4124.456,
+                "end": 4262.498,
+                "title": "Chapitre 20",
+                "id": 19
+              },
+              {
+                "start": 4262.498,
+                "end": 4780.651,
+                "title": "Chapitre 21",
+                "id": 20
+              },
+              {
+                "start": 4780.651,
+                "end": 4859.691,
+                "title": "Chapitre 22",
+                "id": 21
+              },
+              {
+                "start": 4859.691,
+                "end": 4901.533,
+                "title": "Chapitre 23",
+                "id": 22
+              },
+              {
+                "start": 4901.533,
+                "end": 5214.073,
+                "title": "Chapitre 24",
+                "id": 23
+              },
+              {
+                "start": 5214.073,
+                "end": 5526.102,
+                "title": "Chapitre 25",
+                "id": 24
+              },
+              {
+                "start": 5526.102,
+                "end": 6208.791,
+                "title": "Chapitre 26",
+                "id": 25
+              },
+              {
+                "start": 6208.791,
+                "end": 6521.934,
+                "title": "Chapitre 27",
+                "id": 26
+              }
+            ],
+            "ebookFile": {
+              "ino": "4271701071466068414",
+              "metadata": {
+                "filename": "Le Petit Prince [fr] (1943).epub",
+                "ext": ".epub",
+                "path": "/library/books/Antoine de Saint-Exupéry/Le Petit Prince [fr] (1943)/Le Petit Prince [fr] (1943).epub",
+                "relPath": "Le Petit Prince [fr] (1943).epub",
+                "size": 508247,
+                "mtimeMs": 1794401728491,
+                "ctimeMs": 1794614954928,
+                "birthtimeMs": 0
+              },
+              "isSupplementary": null,
+              "addedAt": 1795783700818,
+              "updatedAt": 1795783700818,
+              "fileType": "ebook",
+              "ebookFormat": "epub"
+            },
+            "tracks": [
+              {
+                "index": 1,
+                "ino": "-7296498923081887959",
+                "metadata": {
+                  "filename": "Le Petit Prince [fr] (1943).m4b",
+                  "ext": ".m4b",
+                  "path": "/library/books/Antoine de Saint-Exupéry/Le Petit Prince [fr] (1943)/Le Petit Prince [fr] (1943).m4b",
+                  "relPath": "Le Petit Prince [fr] (1943).m4b",
+                  "size": 104321748,
+                  "mtimeMs": 1794401729501,
+                  "ctimeMs": 1794614956057,
+                  "birthtimeMs": 0
+                },
+                "addedAt": 1795783749907,
+                "updatedAt": 1795783749907,
+                "trackNumFromMeta": 1,
+                "discNumFromMeta": null,
+                "trackNumFromFilename": null,
+                "discNumFromFilename": null,
+                "manuallyVerified": false,
+                "exclude": false,
+                "error": null,
+                "format": "QuickTime / MOV",
+                "duration": 6521.934,
+                "bitRate": 125588,
+                "language": null,
+                "codec": "aac",
+                "timeBase": "1/44100",
+                "channels": 2,
+                "channelLayout": "stereo",
+                "chapters": [
+                  {
+                    "start": 0,
+                    "end": 199.644,
+                    "title": "Chapitre 1",
+                    "id": 0
+                  },
+                  {
+                    "start": 199.644,
+                    "end": 533.012,
+                    "title": "Chapitre 2",
+                    "id": 1
+                  },
+                  {
+                    "start": 533.012,
+                    "end": 718.33,
+                    "title": "Chapitre 3",
+                    "id": 2
+                  },
+                  {
+                    "start": 718.33,
+                    "end": 997.41,
+                    "title": "Chapitre 4",
+                    "id": 3
+                  },
+                  {
+                    "start": 997.41,
+                    "end": 1240.964,
+                    "title": "Chapitre 5",
+                    "id": 4
+                  },
+                  {
+                    "start": 1240.964,
+                    "end": 1342.272,
+                    "title": "Chapitre 6",
+                    "id": 5
+                  },
+                  {
+                    "start": 1342.272,
+                    "end": 1617.428,
+                    "title": "Chapitre 7",
+                    "id": 6
+                  },
+                  {
+                    "start": 1617.428,
+                    "end": 1958.32,
+                    "title": "Chapitre 8",
+                    "id": 7
+                  },
+                  {
+                    "start": 1958.32,
+                    "end": 2105.766,
+                    "title": "Chapitre 9",
+                    "id": 8
+                  },
+                  {
+                    "start": 2105.766,
+                    "end": 2564.406,
+                    "title": "Chapitre 10",
+                    "id": 9
+                  },
+                  {
+                    "start": 2564.406,
+                    "end": 2685.985,
+                    "title": "Chapitre 11",
+                    "id": 10
+                  },
+                  {
+                    "start": 2685.985,
+                    "end": 2758.268,
+                    "title": "Chapitre 12",
+                    "id": 11
+                  },
+                  {
+                    "start": 2758.268,
+                    "end": 3071.11,
+                    "title": "Chapitre 13",
+                    "id": 12
+                  },
+                  {
+                    "start": 3071.11,
+                    "end": 3323.162,
+                    "title": "Chapitre 14",
+                    "id": 13
+                  },
+                  {
+                    "start": 3323.162,
+                    "end": 3634.03,
+                    "title": "Chapitre 15",
+                    "id": 14
+                  },
+                  {
+                    "start": 3634.03,
+                    "end": 3763.736,
+                    "title": "Chapitre 16",
+                    "id": 15
+                  },
+                  {
+                    "start": 3763.736,
+                    "end": 3978.311,
+                    "title": "Chapitre 17",
+                    "id": 16
+                  },
+                  {
+                    "start": 3978.311,
+                    "end": 4063.876,
+                    "title": "Chapitre 18",
+                    "id": 17
+                  },
+                  {
+                    "start": 4063.876,
+                    "end": 4124.456,
+                    "title": "Chapitre 19",
+                    "id": 18
+                  },
+                  {
+                    "start": 4124.456,
+                    "end": 4262.498,
+                    "title": "Chapitre 20",
+                    "id": 19
+                  },
+                  {
+                    "start": 4262.498,
+                    "end": 4780.651,
+                    "title": "Chapitre 21",
+                    "id": 20
+                  },
+                  {
+                    "start": 4780.651,
+                    "end": 4859.691,
+                    "title": "Chapitre 22",
+                    "id": 21
+                  },
+                  {
+                    "start": 4859.691,
+                    "end": 4901.533,
+                    "title": "Chapitre 23",
+                    "id": 22
+                  },
+                  {
+                    "start": 4901.533,
+                    "end": 5214.073,
+                    "title": "Chapitre 24",
+                    "id": 23
+                  },
+                  {
+                    "start": 5214.073,
+                    "end": 5526.102,
+                    "title": "Chapitre 25",
+                    "id": 24
+                  },
+                  {
+                    "start": 5526.102,
+                    "end": 6208.791,
+                    "title": "Chapitre 26",
+                    "id": 25
+                  },
+                  {
+                    "start": 6208.791,
+                    "end": 6521.934,
+                    "title": "Chapitre 27",
+                    "id": 26
+                  }
+                ],
+                "embeddedCoverArt": "mjpeg",
+                "metaTags": {
+                  "tagAlbum": "Le Petit Prince",
+                  "tagArtist": "Antoine de Saint-Exupéry",
+                  "tagGenre": "Classiques; Jeunesse",
+                  "tagTitle": "Le Petit Prince",
+                  "tagTrack": "1",
+                  "tagAlbumArtist": "Antoine de Saint-Exupéry",
+                  "tagDate": "1943",
+                  "tagComposer": "Bernard Giraudeau",
+                  "tagPublisher": "Folio Junior",
+                  "tagComment": "<p>Imaginez-vous perdu dans le désert, loin de tout lieu habité, et face à un petit garçon tout blond, surgi de nulle part. Si de surcroît ce petit garçon vous demande avec insistance de dessiner un mouton, vous voilà plus qu'étonné ! À partir de là, vous n'aurez plus qu'une seule interrogation : savoir d'où vient cet étrange petit bonhomme et connaître son histoire.<br>S'ouvre alors un monde étrange et poétique, peuplé de métaphores, décrit à travers les paroles d'un \"petit prince\" qui porte aussi sur notre monde à nous un regard tout neuf, empli de naïveté, de fraîcheur et de gravité. Très vite, vous découvrez d'étranges planètes, peuplées d'hommes d'affaires, de buveurs, de vaniteux, d'allumeurs de réverbères.<br><br>Cette évocation onirique, à laquelle participent les aquarelles de l'auteur, a tout d'un parcours initiatique, où l'enfant apprendra les richesses essentielles des rapports humains et le secret qui les régit : \"On ne voit bien qu'avec le coeur, l'essentiel est invisible pour les yeux.\"<br><br>Oeuvre essentielle de la littérature, ce livre de Saint-Exupéry est un ouvrage que l'on aura à coeur de raconter à son enfant, page après page, histoire aussi de redécouvrir l'enfant que l'on était autrefois, avant de devenir une grande personne !</p>",
+                  "tagDescription": "<p>Imaginez-vous perdu dans le désert, loin de tout lieu habité, et face à un petit garçon tout blond, surgi de nulle part. Si de surcroît ce petit garçon vous demande avec insistance de dessiner un mouton, vous voilà plus qu'étonné ! À partir de là, vous n'aurez plus qu'une seule interrogation : savoir d'où vient cet étrange petit bonhomme et connaître son histoire.<br>S'ouvre alors un monde étrange et poétique, peuplé de métaphores, décrit à travers les paroles d'un \"petit prince\" qui porte aussi sur notre monde à nous un regard tout neuf, empli de naïveté, de fraîcheur et de gravité. Très vite, vous découvrez d'étranges planètes, peuplées d'hommes d'affaires, de buveurs, de vaniteux, d'allumeurs de réverbères.<br><br>Cette évocation onirique, à laquelle participent les aquarelles de l'auteur, a tout d'un parcours initiatique, où l'enfant apprendra les richesses essentielles des rapports humains et le secret qui les régit : \"On ne voit bien qu'avec le coeur, l'essentiel est invisible pour les yeux.\"<br><br>Oeuvre essentielle de la littérature, ce livre de Saint-Exupéry est un ouvrage que l'on aura à coeur de raconter à son enfant, page après page, histoire aussi de redécouvrir l'enfant que l'on était autrefois, avant de devenir une grande personne !</p>",
+                  "tagEncoder": "Lavf62.3.100",
+                  "tagLanguage": "fr",
+                  "tagASIN": "B00YN5VOVM"
+                },
+                "mimeType": "audio/mp4",
+                "title": "Le Petit Prince [fr] (1943).m4b",
+                "startOffset": 0,
+                "contentUrl": "/api/items/f7168176-f295-4fee-b0cc-37e190ef167c/file/-7296498923081887959"
+              }
+            ]
+          },
+          "numFiles": 4,
+          "size": 209080057,
+          "lastScan": 1795783749933,
+          "scanVersion": "2.38.0",
+          "libraryFiles": [
+            {
+              "ino": "4271701071466068414",
+              "metadata": {
+                "filename": "Le Petit Prince [fr] (1943).epub",
+                "ext": ".epub",
+                "path": "/library/books/Antoine de Saint-Exupéry/Le Petit Prince [fr] (1943)/Le Petit Prince [fr] (1943).epub",
+                "relPath": "Le Petit Prince [fr] (1943).epub",
+                "size": 508247,
+                "mtimeMs": 1794401728491,
+                "ctimeMs": 1794614954928,
+                "birthtimeMs": 0
+              },
+              "isSupplementary": false,
+              "addedAt": 1795783700818,
+              "updatedAt": 1795783700818,
+              "fileType": "ebook"
+            },
+            {
+              "ino": "-7296498923081887959",
+              "metadata": {
+                "filename": "Le Petit Prince [fr] (1943).m4b",
+                "ext": ".m4b",
+                "path": "/library/books/Antoine de Saint-Exupéry/Le Petit Prince [fr] (1943)/Le Petit Prince [fr] (1943).m4b",
+                "relPath": "Le Petit Prince [fr] (1943).m4b",
+                "size": 104321748,
+                "mtimeMs": 1794401729501,
+                "ctimeMs": 1794614956057,
+                "birthtimeMs": 0
+              },
+              "isSupplementary": null,
+              "addedAt": 1795783700818,
+              "updatedAt": 1795783700818,
+              "fileType": "audio"
+            },
+            {
+              "ino": "-5114958411028282594",
+              "metadata": {
+                "filename": "Le Petit Prince [fr] (1943).readaloud.epub",
+                "ext": ".epub",
+                "path": "/library/books/Antoine de Saint-Exupéry/Le Petit Prince [fr] (1943)/Le Petit Prince [fr] (1943).readaloud.epub",
+                "relPath": "Le Petit Prince [fr] (1943).readaloud.epub",
+                "size": 104216369,
+                "mtimeMs": 1794401730591,
+                "ctimeMs": 1794614957227,
+                "birthtimeMs": 0
+              },
+              "isSupplementary": true,
+              "addedAt": 1795783700818,
+              "updatedAt": 1795783700818,
+              "fileType": "ebook"
+            },
+            {
+              "ino": "1645732443563076730",
+              "metadata": {
+                "filename": "cover.jpg",
+                "ext": ".jpg",
+                "path": "/library/books/Antoine de Saint-Exupéry/Le Petit Prince [fr] (1943)/cover.jpg",
+                "relPath": "cover.jpg",
+                "size": 33693,
+                "mtimeMs": 1636035946154,
+                "ctimeMs": 1794375460516,
+                "birthtimeMs": 0
+              },
+              "isSupplementary": null,
+              "addedAt": 1795783700818,
+              "updatedAt": 1795783700818,
+              "fileType": "image"
+            }
+          ]
+        },
+        {
+          "id": "8a515631-f823-4154-a134-ba098e7c3d23",
+          "ino": "7287630834977621624",
+          "oldLibraryItemId": null,
+          "libraryId": "e70c1745-3cd9-4d47-bc40-6790ca8174d2",
+          "folderId": "21492865-2e3a-4611-a5bd-3d3758c76b06",
+          "path": "/library/books/Jules Verne/Les Indes noires [fr] (1877)",
+          "relPath": "Jules Verne/Les Indes noires [fr] (1877)",
+          "isFile": false,
+          "mtimeMs": 1794402034569,
+          "ctimeMs": 1794624299983,
+          "birthtimeMs": 0,
+          "addedAt": 1795783719841,
+          "updatedAt": 1795783719841,
+          "isMissing": false,
+          "isInvalid": false,
+          "mediaType": "book",
+          "media": {
+            "id": "9d06757c-51b7-4f86-845c-918ca26fda16",
+            "metadata": {
+              "title": "Les Indes noires",
+              "subtitle": null,
+              "authors": [
+                {
+                  "id": "b84d03b4-c573-4f2a-9b6c-01806492bfc2",
+                  "name": "Jules Verne"
+                }
+              ],
+              "narrators": [],
+              "series": [],
+              "genres": [
+                "Aventure",
+                "Classiques"
+              ],
+              "publishedYear": "1877",
+              "publishedDate": null,
+              "publisher": "J'ai lu",
+              "description": "Chaudière éventrée, pistons tordus, passerelles brisées... Les vieilles houillères d'Aberfoyle, en Écosse, sont bien mortes. De mystérieux événements continuent pourtant de s'…",
+              "isbn": null,
+              "asin": null,
+              "language": "fr",
+              "explicit": false,
+              "abridged": false,
+              "titleIgnorePrefix": "Les Indes noires",
+              "authorName": "Jules Verne",
+              "authorNameLF": "Verne, Jules",
+              "narratorName": "",
+              "seriesName": "",
+              "descriptionPlain": "Chaudière éventrée, pistons tordus, passerelles brisées... Les vieilles houillères d'Aberfoyle, en Écosse, sont bien mortes. De mystérieux événements continuent pourtant de s'…"
+            },
+            "coverPath": "/library/books/Jules Verne/Les Indes noires [fr] (1877)/cover.jpg",
+            "tags": [],
+            "numTracks": 0,
+            "numAudioFiles": 0,
+            "numChapters": 0,
+            "duration": 0,
+            "size": 411464,
+            "ebookFormat": "epub",
+            "libraryItemId": "8a515631-f823-4154-a134-ba098e7c3d23",
+            "audioFiles": [],
+            "chapters": [],
+            "ebookFile": {
+              "ino": "-53017402817058268",
+              "metadata": {
+                "filename": "Les Indes noires [fr] (1877).epub",
+                "ext": ".epub",
+                "path": "/library/books/Jules Verne/Les Indes noires [fr] (1877)/Les Indes noires [fr] (1877).epub",
+                "relPath": "Les Indes noires [fr] (1877).epub",
+                "size": 411464,
+                "mtimeMs": 1794402034565,
+                "ctimeMs": 1794615945470,
+                "birthtimeMs": 0
+              },
+              "isSupplementary": null,
+              "addedAt": 1795783700796,
+              "updatedAt": 1795783700796,
+              "fileType": "ebook",
+              "ebookFormat": "epub"
+            },
+            "tracks": []
+          },
+          "numFiles": 2,
+          "size": 468163,
+          "lastScan": 1795783719841,
+          "scanVersion": "2.38.0",
+          "libraryFiles": [
+            {
+              "ino": "-53017402817058268",
+              "metadata": {
+                "filename": "Les Indes noires [fr] (1877).epub",
+                "ext": ".epub",
+                "path": "/library/books/Jules Verne/Les Indes noires [fr] (1877)/Les Indes noires [fr] (1877).epub",
+                "relPath": "Les Indes noires [fr] (1877).epub",
+                "size": 411464,
+                "mtimeMs": 1794402034565,
+                "ctimeMs": 1794615945470,
+                "birthtimeMs": 0
+              },
+              "isSupplementary": false,
+              "addedAt": 1795783700796,
+              "updatedAt": 1795783700796,
+              "fileType": "ebook"
+            },
+            {
+              "ino": "-4593773016993448875",
+              "metadata": {
+                "filename": "cover.jpg",
+                "ext": ".jpg",
+                "path": "/library/books/Jules Verne/Les Indes noires [fr] (1877)/cover.jpg",
+                "relPath": "cover.jpg",
+                "size": 56699,
+                "mtimeMs": 1497984051274,
+                "ctimeMs": 1794375461093,
+                "birthtimeMs": 0
+              },
+              "isSupplementary": null,
+              "addedAt": 1795783700796,
+              "updatedAt": 1795783700796,
+              "fileType": "image"
+            }
+          ]
+        },
+        {
+          "id": "9d7ab335-e25c-4d47-88cd-c78618cc9557",
+          "ino": "-5360453154795695612",
+          "oldLibraryItemId": null,
+          "libraryId": "e70c1745-3cd9-4d47-bc40-6790ca8174d2",
+          "folderId": "21492865-2e3a-4611-a5bd-3d3758c76b06",
+          "path": "/library/books/Edgar Allan Poe/Le scarabée d'or [fr] (1856)",
+          "relPath": "Edgar Allan Poe/Le scarabée d'or [fr] (1856)",
+          "isFile": false,
+          "mtimeMs": 1794401770961,
+          "ctimeMs": 1794624298980,
+          "birthtimeMs": 0,
+          "addedAt": 1795783735169,
+          "updatedAt": 1795783735169,
+          "isMissing": false,
+          "isInvalid": false,
+          "mediaType": "book",
+          "media": {
+            "id": "3be3bdc5-47fc-467b-b573-5b45302da1cb",
+            "metadata": {
+              "title": "Le scarabée d'or",
+              "subtitle": null,
+              "authors": [
+                {
+                  "id": "0e7a58da-a456-4eaa-9c62-c9ee96f0988d",
+                  "name": "Edgar Allan Poe"
+                }
+              ],
+              "narrators": [],
+              "series": [],
+              "genres": [
+                "Aventure",
+                "Classiques",
+                "Nouvelles",
+                "Policier"
+              ],
+              "publishedYear": "1856",
+              "publishedDate": null,
+              "publisher": "Books on Demand",
+              "description": "El escarabajo de oro (título original en inglé The Gold Bug) es uno de los cuentos más conocidos del escritor estadounidense Edgar Allan Poe, publicado por primera vez en juni…",
+              "isbn": null,
+              "asin": null,
+              "language": "fr",
+              "explicit": false,
+              "abridged": false,
+              "titleIgnorePrefix": "Le scarabée d'or",
+              "authorName": "Edgar Allan Poe",
+              "authorNameLF": "Poe, Edgar Allan",
+              "narratorName": "",
+              "seriesName": "",
+              "descriptionPlain": "El escarabajo de oro (título original en inglé The Gold Bug) es uno de los cuentos más conocidos del escritor estadounidense Edgar Allan Poe, publicado por primera vez en juni…"
+            },
+            "coverPath": "/library/books/Edgar Allan Poe/Le scarabée d'or [fr] (1856)/cover.jpg",
+            "tags": [],
+            "numTracks": 0,
+            "numAudioFiles": 0,
+            "numChapters": 0,
+            "duration": 0,
+            "size": 1174186,
+            "ebookFormat": "epub",
+            "libraryItemId": "9d7ab335-e25c-4d47-88cd-c78618cc9557",
+            "audioFiles": [],
+            "chapters": [],
+            "ebookFile": {
+              "ino": "-4003232009526330150",
+              "metadata": {
+                "filename": "Le scarabée d'or [fr] (1856).epub",
+                "ext": ".epub",
+                "path": "/library/books/Edgar Allan Poe/Le scarabée d'or [fr] (1856)/Le scarabée d'or [fr] (1856).epub",
+                "relPath": "Le scarabée d'or [fr] (1856).epub",
+                "size": 1174186,
+                "mtimeMs": 1794401770961,
+                "ctimeMs": 1794615034906,
+                "birthtimeMs": 0
+              },
+              "isSupplementary": null,
+              "addedAt": 1795783700807,
+              "updatedAt": 1795783700807,
+              "fileType": "ebook",
+              "ebookFormat": "epub"
+            },
+            "tracks": []
+          },
+          "numFiles": 2,
+          "size": 1262135,
+          "lastScan": 1795783735169,
+          "scanVersion": "2.38.0",
+          "libraryFiles": [
+            {
+              "ino": "-4003232009526330150",
+              "metadata": {
+                "filename": "Le scarabée d'or [fr] (1856).epub",
+                "ext": ".epub",
+                "path": "/library/books/Edgar Allan Poe/Le scarabée d'or [fr] (1856)/Le scarabée d'or [fr] (1856).epub",
+                "relPath": "Le scarabée d'or [fr] (1856).epub",
+                "size": 1174186,
+                "mtimeMs": 1794401770961,
+                "ctimeMs": 1794615034906,
+                "birthtimeMs": 0
+              },
+              "isSupplementary": false,
+              "addedAt": 1795783700807,
+              "updatedAt": 1795783700807,
+              "fileType": "ebook"
+            },
+            {
+              "ino": "-1896514474509010349",
+              "metadata": {
+                "filename": "cover.jpg",
+                "ext": ".jpg",
+                "path": "/library/books/Edgar Allan Poe/Le scarabée d'or [fr] (1856)/cover.jpg",
+                "relPath": "cover.jpg",
+                "size": 87949,
+                "mtimeMs": 1500617420884,
+                "ctimeMs": 1794375460700,
+                "birthtimeMs": 0
+              },
+              "isSupplementary": null,
+              "addedAt": 1795783700807,
+              "updatedAt": 1795783700807,
+              "fileType": "image"
+            }
+          ]
+        }
+      ],
+      "lastUpdate": 1795784068750,
+      "createdAt": 1795784068750
+    }
+  ],
+  "total": 1,
+  "limit": 0,
+  "page": 0,
+  "sortDesc": false,
+  "minified": false,
+  "include": ""
+}

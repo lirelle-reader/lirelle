@@ -1,0 +1,20 @@
+{
+  "book": [],
+  "narrators": [],
+  "tags": [],
+  "genres": [],
+  "series": [],
+  "authors": [
+    {
+      "id": "bab4d332-c996-4190-b351-6ac8a4920864",
+      "asin": null,
+      "name": "Frank Herbert",
+      "description": null,
+      "imagePath": null,
+      "libraryId": "f1546f4b-c414-4f51-b96f-60765f3eb845",
+      "addedAt": 1795789799557,
+      "updatedAt": 1795789799557,
+      "numBooks": 17
+    }
+  ]
+}

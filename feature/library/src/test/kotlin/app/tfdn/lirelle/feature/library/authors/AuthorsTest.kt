@@ -19,6 +19,7 @@ import app.tfdn.lirelle.core.designsystem.LirelleTheme
 import app.tfdn.lirelle.core.ids.AuthorId
 import app.tfdn.lirelle.core.ids.LibraryId
 import app.tfdn.lirelle.core.library.LibraryChoiceState
+import app.tfdn.lirelle.core.library.SourceCapabilities
 import app.tfdn.lirelle.core.library.model.Author
 import app.tfdn.lirelle.core.library.model.AuthorSort
 import app.tfdn.lirelle.core.library.model.ServerLibrary
@@ -63,7 +64,7 @@ class AuthorsTest {
     private val choice = FakeLibraryChoice(LibraryChoiceState(listOf(comics, manga)))
     private val idle = LoadState.NotLoading(endOfPaginationReached = true)
 
-    private fun viewModel() = AuthorsViewModel(repository, preferences, choice)
+    private fun viewModel() = AuthorsViewModel(SourceCapabilities.Everything, repository, preferences, choice)
 
     private fun text(id: Int, vararg args: Any) = context.getString(id, *args)
 

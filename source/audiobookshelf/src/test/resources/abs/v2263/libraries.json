@@ -1,0 +1,114 @@
+{
+  "libraries": [
+    {
+      "id": "f1546f4b-c414-4f51-b96f-60765f3eb845",
+      "name": "Livres",
+      "folders": [
+        {
+          "id": "3116f1f5-0e24-4835-932e-64661e20d066",
+          "fullPath": "/library/books",
+          "libraryId": "f1546f4b-c414-4f51-b96f-60765f3eb845",
+          "addedAt": 1795789766266
+        }
+      ],
+      "displayOrder": 1,
+      "icon": "books-1",
+      "mediaType": "book",
+      "provider": "google",
+      "settings": {
+        "coverAspectRatio": 1,
+        "disableWatcher": true,
+        "autoScanCronExpression": null,
+        "skipMatchingMediaWithAsin": false,
+        "skipMatchingMediaWithIsbn": false,
+        "audiobooksOnly": false,
+        "epubsAllowScriptedContent": false,
+        "hideSingleBookSeries": false,
+        "onlyShowLaterBooksInContinueSeries": false,
+        "metadataPrecedence": [
+          "folderStructure",
+          "audioMetatags",
+          "nfoFile",
+          "txtFiles",
+          "opfFile",
+          "absMetadata"
+        ],
+        "markAsFinishedPercentComplete": null,
+        "markAsFinishedTimeRemaining": 10
+      },
+      "lastScan": 1795789984395,
+      "lastScanVersion": "2.26.3",
+      "createdAt": 1795789766231,
+      "lastUpdate": 1795789984395
+    },
+    {
+      "id": "04c36841-fc5c-4c09-9920-fa33496a3d11",
+      "name": "BD",
+      "folders": [
+        {
+          "id": "48217fd4-da40-4cfc-8eb6-f077b4d2f928",
+          "fullPath": "/library/comics",
+          "libraryId": "04c36841-fc5c-4c09-9920-fa33496a3d11",
+          "addedAt": 1795789766350
+        }
+      ],
+      "displayOrder": 2,
+      "icon": "books-1",
+      "mediaType": "book",
+      "provider": "google",
+      "settings": {
+        "coverAspectRatio": 1,
+        "disableWatcher": true,
+        "autoScanCronExpression": null,
+        "skipMatchingMediaWithAsin": false,
+        "skipMatchingMediaWithIsbn": false,
+        "audiobooksOnly": false,
+        "epubsAllowScriptedContent": false,
+        "hideSingleBookSeries": false,
+        "onlyShowLaterBooksInContinueSeries": false,
+        "metadataPrecedence": [
+          "folderStructure",
+          "audioMetatags",
+          "nfoFile",
+          "txtFiles",
+          "opfFile",
+          "absMetadata"
+        ],
+        "markAsFinishedPercentComplete": null,
+        "markAsFinishedTimeRemaining": 10
+      },
+      "lastScan": 1795790067798,
+      "lastScanVersion": "2.26.3",
+      "createdAt": 1795789766312,
+      "lastUpdate": 1795790067798
+    },
+    {
+      "id": "a3b42334-2562-414b-9b89-08bda9a91a6f",
+      "name": "Podcasts",
+      "folders": [
+        {
+          "id": "6928f0c7-8857-41b1-805c-0db824917111",
+          "fullPath": "/library/podcasts",
+          "libraryId": "a3b42334-2562-414b-9b89-08bda9a91a6f",
+          "addedAt": 1795789766481
+        }
+      ],
+      "displayOrder": 3,
+      "icon": "podcast",
+      "mediaType": "podcast",
+      "provider": "google",
+      "settings": {
+        "coverAspectRatio": 1,
+        "disableWatcher": true,
+        "autoScanCronExpression": null,
+        "podcastSearchRegion": "us",
+        "markAsFinishedPercentComplete": null,
+        "markAsFinishedTimeRemaining": 10
+      },
+      "lastScan": null,
+      "lastScanVersion": null,
+      "createdAt": 1795789766416,
+      "lastUpdate": 1795789766416
+    }
+  ]
+}

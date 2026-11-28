@@ -17,6 +17,7 @@ import app.tfdn.lirelle.core.session.profile.SourceOf
 import app.tfdn.lirelle.source.audiobookshelf.comics.NoAbsPages
 import app.tfdn.lirelle.source.audiobookshelf.downloads.AbsDownloadRefusals
 import app.tfdn.lirelle.source.audiobookshelf.downloads.NoAbsDownloadLocations
+import app.tfdn.lirelle.source.audiobookshelf.library.AbsLibraryApi
 import app.tfdn.lirelle.source.audiobookshelf.network.AbsAccountApi
 import app.tfdn.lirelle.source.audiobookshelf.network.AbsAccountPictures
 import app.tfdn.lirelle.source.audiobookshelf.network.AbsAccountRepository
@@ -54,6 +55,12 @@ internal object AbsNetworkProfileModule {
     @ProfileScoped
     fun accountApi(@AuthenticatedClient client: OkHttpClient): AbsApis<AbsAccountApi> =
         AbsApis(client, AbsJson, AbsAccountApi::class.java)
+
+    /** The library's routes, on the profile's client: its token goes with each call, and is renewed. */
+    @Provides
+    @ProfileScoped
+    fun libraryApi(@AuthenticatedClient client: OkHttpClient): AbsApis<AbsLibraryApi> =
+        AbsApis(client, AbsJson, AbsLibraryApi::class.java)
 
     /** The account is read with the profile's client: a session the server refuses to renew marks the profile there. */
     @Provides

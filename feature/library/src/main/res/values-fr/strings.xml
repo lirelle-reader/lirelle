@@ -119,4 +119,5 @@
     <string name="shelf_empty">Cette étagère est vide.</string>
     <string name="shelves_smart_lists">Listes intelligentes</string>
     <string name="shelves_collections">Collections</string>
+    <string name="shelves_playlists">Listes de lecture</string>
 </resources>

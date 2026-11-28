@@ -86,11 +86,12 @@ internal class AbsErrors(private val log: () -> NetworkLog = { NetworkDiagnostic
 
     /**
      * What a refusal of a call made with the profile's access token means: one the server no longer takes ended the
-     * session (the profile's authorizer marks it when it cannot be renewed); something it does not have is not found.
+     * session (the profile's authorizer marks it when it cannot be renewed); something it does not have, or that the
+     * account may not see (an item or a library outside its rights), is not found.
      */
     private fun authenticatedStatus(code: Int): ApiError = when (code) {
         Unauthorized -> ApiError.SessionExpired
-        NotFound -> ApiError.NotFound
+        Forbidden, NotFound -> ApiError.NotFound
         else -> ApiError.Unexpected
     }
 

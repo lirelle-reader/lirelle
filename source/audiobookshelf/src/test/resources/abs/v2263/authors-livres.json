@@ -1,0 +1,124 @@
+{
+  "authors": [
+    {
+      "id": "e2c8c150-2037-4965-97a0-1ef2737f5352",
+      "asin": null,
+      "name": "Jules Verne",
+      "description": null,
+      "imagePath": null,
+      "libraryId": "f1546f4b-c414-4f51-b96f-60765f3eb845",
+      "addedAt": 1795789785552,
+      "updatedAt": 1795789785552,
+      "numBooks": 53,
+      "lastFirst": "Verne, Jules"
+    },
+    {
+      "id": "bab4d332-c996-4190-b351-6ac8a4920864",
+      "asin": null,
+      "name": "Frank Herbert",
+      "description": null,
+      "imagePath": null,
+      "libraryId": "f1546f4b-c414-4f51-b96f-60765f3eb845",
+      "addedAt": 1795789799557,
+      "updatedAt": 1795789799557,
+      "numBooks": 17,
+      "lastFirst": "Herbert, Frank"
+    },
+    {
+      "id": "2f0348b4-a3f5-4803-ac5a-b95fab8bfeae",
+      "asin": null,
+      "name": "Edgar Allan Poe",
+      "description": null,
+      "imagePath": null,
+      "libraryId": "f1546f4b-c414-4f51-b96f-60765f3eb845",
+      "addedAt": 1795789801614,
+      "updatedAt": 1795789801614,
+      "numBooks": 52,
+      "lastFirst": "Poe, Edgar Allan"
+    },
+    {
+      "id": "5ab8afed-0cf8-423d-b35e-9b0f15ae6c61",
+      "asin": null,
+      "name": "Antoine de Saint-Exupéry",
+      "description": null,
+      "imagePath": null,
+      "libraryId": "f1546f4b-c414-4f51-b96f-60765f3eb845",
+      "addedAt": 1795789819616,
+      "updatedAt": 1795789819616,
+      "numBooks": 3,
+      "lastFirst": "de Saint-Exupéry, Antoine"
+    },
+    {
+      "id": "73363c79-b316-45ec-814c-229a3a8f493a",
+      "asin": null,
+      "name": "Andy Weir",
+      "description": null,
+      "imagePath": null,
+      "libraryId": "f1546f4b-c414-4f51-b96f-60765f3eb845",
+      "addedAt": 1795789820700,
+      "updatedAt": 1795789820700,
+      "numBooks": 4,
+      "lastFirst": "Weir, Andy"
+    },
+    {
+      "id": "042541b5-a597-4ddd-80b2-d159e4e29a36",
+      "asin": null,
+      "name": "Stieg Larsson",
+      "description": null,
+      "imagePath": null,
+      "libraryId": "f1546f4b-c414-4f51-b96f-60765f3eb845",
+      "addedAt": 1795789849473,
+      "updatedAt": 1795789849473,
+      "numBooks": 3,
+      "lastFirst": "Larsson, Stieg"
+    },
+    {
+      "id": "a5918153-24de-4c49-8a29-677ae821ceda",
+      "asin": null,
+      "name": "Martha Wells",
+      "description": null,
+      "imagePath": null,
+      "libraryId": "f1546f4b-c414-4f51-b96f-60765f3eb845",
+      "addedAt": 1795789876122,
+      "updatedAt": 1795789876122,
+      "numBooks": 8,
+      "lastFirst": "Wells, Martha"
+    },
+    {
+      "id": "301ca2f3-b1b3-4f07-b6b9-139e9ef7d45d",
+      "asin": null,
+      "name": "Kim Stanley Robinson",
+      "description": null,
+      "imagePath": null,
+      "libraryId": "f1546f4b-c414-4f51-b96f-60765f3eb845",
+      "addedAt": 1795789892165,
+      "updatedAt": 1795789892165,
+      "numBooks": 3,
+      "lastFirst": "Robinson, Kim Stanley"
+    },
+    {
+      "id": "cb28f46b-d558-4b78-af11-bcec4c6606cf",
+      "asin": null,
+      "name": "J.K. Rowling",
+      "description": null,
+      "imagePath": null,
+      "libraryId": "f1546f4b-c414-4f51-b96f-60765f3eb845",
+      "addedAt": 1795789895387,
+      "updatedAt": 1795789895387,
+      "numBooks": 17,
+      "lastFirst": "Rowling, J.K."
+    },
+    {
+      "id": "2863aa95-c4f2-438c-a2ba-3286a8efc9ec",
+      "asin": null,
+      "name": "Douglas Adams",
+      "description": null,
+      "imagePath": null,
+      "libraryId": "f1546f4b-c414-4f51-b96f-60765f3eb845",
+      "addedAt": 1795789954831,
+      "updatedAt": 1795789954831,
+      "numBooks": 11,
+      "lastFirst": "Adams, Douglas"
+    }
+  ]
+}

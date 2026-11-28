@@ -7,12 +7,14 @@ import app.tfdn.lirelle.core.library.LibraryChoiceState
 import app.tfdn.lirelle.core.library.LibraryRepository
 import app.tfdn.lirelle.core.library.SourceCapabilities
 import app.tfdn.lirelle.core.library.model.ServerLibrary
+import app.tfdn.lirelle.core.library.shownLibrary
 import app.tfdn.lirelle.core.network.ApiResult
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
@@ -29,9 +31,16 @@ class LibraryViewModel @Inject constructor(
     val tabs: List<LibraryTab> = capabilities.libraryTabs()
     val startTab: LibraryTab = capabilities.libraryStartTab()
 
-    /** The libraries as last read, kept on the device, and the one chosen: shown before the server answers. */
-    val libraries: StateFlow<LibraryChoiceState> =
-        choice.state.stateIn(viewModelScope, SharingStarted.Eagerly, LibraryChoiceState())
+    /** Whether the title's menu offers all libraries at once: not for a source that always shows one of them. */
+    val offersAllLibraries: Boolean = !capabilities.libraryAlwaysChosen
+
+    /**
+     * The libraries as last read, kept on the device, and the one shown: shown before the server answers. The one
+     * shown is the choice, or the first library for a source that always shows one (the choice stays as it is).
+     */
+    val libraries: StateFlow<LibraryChoiceState> = choice.state
+        .map { it.copy(chosen = it.shownLibrary(capabilities)) }
+        .stateIn(viewModelScope, SharingStarted.Eagerly, LibraryChoiceState())
 
     private var reading: Job? = null
 
@@ -52,7 +61,10 @@ class LibraryViewModel @Inject constructor(
         }
     }
 
-    /** Shows [library] alone in the Books, Series and Authors tabs; null shows every library. */
+    /**
+     * Shows [library] alone in the Books, Series and Authors tabs; null shows every library, or the first for a
+     * source that always shows one.
+     */
     fun onChoose(library: ServerLibrary?) {
         viewModelScope.launch { choice.choose(library) }
     }

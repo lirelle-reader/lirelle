@@ -29,7 +29,10 @@ class LibraryViewModelTest {
     }
     private val choice = FakeLibraryChoice()
 
-    private fun viewModel() = LibraryViewModel(SourceCapabilities.Everything, repository, choice)
+    private fun viewModel(capabilities: SourceCapabilities = SourceCapabilities.Everything) =
+        LibraryViewModel(capabilities, repository, choice)
+
+    private val alwaysOne = SourceCapabilities.Everything.copy(libraryAlwaysChosen = true)
 
     private fun reads() = repository.calls.count { it == "libraries" }
 
@@ -126,5 +129,43 @@ class LibraryViewModelTest {
 
         viewModel.onChoose(null)
         assertThat(choice.state.value.chosen).isNull()
+    }
+
+    @Test
+    fun `a source that can show all libraries offers all of them`() {
+        assertThat(viewModel().offersAllLibraries).isTrue()
+    }
+
+    @Test
+    fun `a source whose Library always shows one library offers no all`() {
+        assertThat(viewModel(alwaysOne).offersAllLibraries).isFalse()
+    }
+
+    @Test
+    fun `with nothing chosen, the first library is shown, and the choice stays none`() = runTest(mainRule.dispatcher) {
+        val viewModel = viewModel(alwaysOne)
+
+        assertThat(viewModel.libraries.value).isEqualTo(LibraryChoiceState(listOf(comics, manga), chosen = comics))
+        assertThat(choice.state.value.chosen).isNull()
+    }
+
+    @Test
+    fun `a chosen library no longer in the list shows the first one`() = runTest(mainRule.dispatcher) {
+        choice.state.value = LibraryChoiceState(listOf(comics, manga), chosen = novels)
+        repository.gate = CompletableDeferred()
+
+        val viewModel = viewModel(alwaysOne)
+
+        assertThat(viewModel.libraries.value.chosen).isEqualTo(comics)
+        assertThat(choice.state.value.chosen).isEqualTo(novels)
+    }
+
+    @Test
+    fun `a library chosen is shown when the Library always shows one`() = runTest(mainRule.dispatcher) {
+        val viewModel = viewModel(alwaysOne)
+
+        viewModel.onChoose(manga)
+
+        assertThat(viewModel.libraries.value.chosen).isEqualTo(manga)
     }
 }

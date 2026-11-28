@@ -8,6 +8,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.outlined.PlaylistPlay
 import androidx.compose.material.icons.outlined.AutoAwesome
 import androidx.compose.material.icons.outlined.CollectionsBookmark
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -19,6 +20,7 @@ import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
@@ -36,12 +38,13 @@ import app.tfdn.lirelle.core.ui.EmptyMessage
 import app.tfdn.lirelle.core.ui.LoadableContent
 import app.tfdn.lirelle.feature.library.R
 
+/** A playlist opens as a collection does: the source tells them apart by the shelf's id. */
 fun Shelf.source(): BookListSource = when (kind) {
     ShelfKind.SmartList -> BookListSource.SmartList(id)
-    ShelfKind.Collection -> BookListSource.Collection(id)
+    ShelfKind.Collection, ShelfKind.Playlist -> BookListSource.Collection(id)
 }
 
-/** Smart lists, then collections, in the order the server gives them. */
+/** Smart lists, then collections, then playlists, in the order the server gives them. */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ShelvesTab(
@@ -58,6 +61,7 @@ fun ShelvesTab(
                 LazyColumn(contentPadding = PaddingValues(vertical = 8.dp)) {
                     group(R.string.shelves_smart_lists, shelves.smartLists, onOpenShelf)
                     group(R.string.shelves_collections, shelves.collections, onOpenShelf)
+                    group(R.string.shelves_playlists, shelves.playlists, onOpenShelf)
                 }
             }
         }
@@ -84,7 +88,6 @@ private fun GroupTitle(@StringRes title: Int) {
 
 @Composable
 private fun ShelfRow(shelf: Shelf, onClick: () -> Unit) {
-    val isSmartList = shelf.kind == ShelfKind.SmartList
     ListItem(
         headlineContent = { Text(shelf.name, maxLines = 1, overflow = TextOverflow.Ellipsis) },
         supportingContent = shelf.bookCount?.let { count ->
@@ -97,14 +100,17 @@ private fun ShelfRow(shelf: Shelf, onClick: () -> Unit) {
             }
         },
         leadingContent = {
-            Icon(
-                if (isSmartList) Icons.Outlined.AutoAwesome else Icons.Outlined.CollectionsBookmark,
-                contentDescription = null,
-            )
+            Icon(shelf.kind.icon(), contentDescription = null)
         },
         modifier = Modifier
             .testTag("shelf-${shelf.kind}-${shelf.id}")
             // A button: the row keeps its height, so its texts are one-line labels.
             .clickable(role = Role.Button, onClick = onClick),
     )
+}
+
+private fun ShelfKind.icon(): ImageVector = when (this) {
+    ShelfKind.SmartList -> Icons.Outlined.AutoAwesome
+    ShelfKind.Collection -> Icons.Outlined.CollectionsBookmark
+    ShelfKind.Playlist -> Icons.AutoMirrored.Outlined.PlaylistPlay
 }

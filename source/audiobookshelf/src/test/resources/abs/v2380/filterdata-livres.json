@@ -1,0 +1,983 @@
+{
+  "filterdata": {
+    "authors": [
+      {
+        "id": "c92f4ecd-9100-4268-b419-2bf5f4ae5617",
+        "name": "Agatha Christie"
+      },
+      {
+        "id": "6c706754-a8aa-4235-993b-00855d9ece4f",
+        "name": "Ahmadou Kourouma"
+      },
+      {
+        "id": "ec48e3ea-a9d7-45bf-9746-290c80972c63",
+        "name": "Alain Damasio"
+      },
+      {
+        "id": "a759b369-3445-4fa2-87cf-a81518eb5b95",
+        "name": "Alexandre Dumas"
+      },
+      {
+        "id": "acec3ecb-50ae-4dda-8542-8f6d2f648344",
+        "name": "Alixe"
+      },
+      {
+        "id": "bc1cdf35-b91e-460e-beff-cb655aba459c",
+        "name": "Andrea Marcolongo"
+      },
+      {
+        "id": "8aaede2e-eb67-44a6-b9ba-1f8a04d9c8c1",
+        "name": "Andrzej Sapkowski"
+      },
+      {
+        "id": "151582b8-cb90-4285-9624-48c6c9c7f4c5",
+        "name": "Andy Weir"
+      },
+      {
+        "id": "b89d32a7-0c8c-4156-b8dc-bd9167cb36e4",
+        "name": "Anne Frank"
+      },
+      {
+        "id": "d370d574-22ed-4470-beee-bdd787718511",
+        "name": "Annie Ernaux"
+      },
+      {
+        "id": "72d005ae-beb1-467b-b7a2-777df163c87d",
+        "name": "Antoine de Saint-Exupéry"
+      },
+      {
+        "id": "a7affe6d-6275-4755-85a9-a6b8b41a9dd3",
+        "name": "Aslak Nore"
+      },
+      {
+        "id": "0407d9f4-6041-4f85-aa0b-d512dccee748",
+        "name": "Benedetta Rossi"
+      },
+      {
+        "id": "8d23a381-cce1-4126-a011-17e933f78a3a",
+        "name": "Betty Edwards"
+      },
+      {
+        "id": "1483ecf0-7c29-4e08-817e-151fea080ac0",
+        "name": "Bruno Patino"
+      },
+      {
+        "id": "63a2c455-2681-4ba6-9e6f-5f5d0a0a2caa",
+        "name": "Cécile Vidal"
+      },
+      {
+        "id": "8d056302-f2fe-46e3-a144-9be8f874d409",
+        "name": "Charles Péguy"
+      },
+      {
+        "id": "e150d5c3-ae49-4f37-9f82-f9c6603d2cbe",
+        "name": "Colette"
+      },
+      {
+        "id": "20baadf1-29d3-42cd-9d12-193ff5a1c142",
+        "name": "Daisy Johnson"
+      },
+      {
+        "id": "c2d5fa7b-209e-413d-ae7e-690179e8b105",
+        "name": "Dan Simmons"
+      },
+      {
+        "id": "0ac4bfc6-1a73-47f5-a57d-2ee5cef87c54",
+        "name": "David Eddings"
+      },
+      {
+        "id": "4dfb0cea-c2f0-41d4-984e-2bbb80bb0148",
+        "name": "David Lagercrantz"
+      },
+      {
+        "id": "8248d1dd-fb82-4780-9656-7bceb156f0d9",
+        "name": "Dolores Redondo"
+      },
+      {
+        "id": "12e39226-c963-4028-9146-db276d8a0f05",
+        "name": "Douglas Adams"
+      },
+      {
+        "id": "0e7a58da-a456-4eaa-9c62-c9ee96f0988d",
+        "name": "Edgar Allan Poe"
+      },
+      {
+        "id": "569c644c-f3a0-40c7-a159-28a5cb8ba161",
+        "name": "Elena Ferrante"
+      },
+      {
+        "id": "e20e551d-5454-4532-972c-d522a199aa45",
+        "name": "Émile Zola"
+      },
+      {
+        "id": "92752cf1-4f42-4ec4-b4e2-ae770dca4145",
+        "name": "Emily Brontë"
+      },
+      {
+        "id": "176e6745-3fd8-49a8-b4a9-5d5ed17e7ec2",
+        "name": "Emily St. John Mandel"
+      },
+      {
+        "id": "118b796b-ceea-49de-a315-236cc3b447e9",
+        "name": "Eoin Colfer"
+      },
+      {
+        "id": "a044af1a-5479-4572-916f-d218b8ccd890",
+        "name": "Éric Fouassier"
+      },
+      {
+        "id": "c9efd947-8b06-4358-96a4-f3611f4bbdb8",
+        "name": "Erik L'Homme"
+      },
+      {
+        "id": "2cc3ef39-941a-40ea-8d3d-58999e35beeb",
+        "name": "Erin Hunter"
+      },
+      {
+        "id": "84e0ba76-f7bb-40a9-8e85-b1fd9ab86b0e",
+        "name": "Ernest Hemingway"
+      },
+      {
+        "id": "8a14ebb6-b28e-4471-9547-cf708d700d73",
+        "name": "Erri De Luca"
+      },
+      {
+        "id": "f9f574b5-70ba-434a-9985-05f24b938bc4",
+        "name": "Fedor Dostoievski"
+      },
+      {
+        "id": "4a1223d9-60fd-49d5-96e8-a9800e1cff44",
+        "name": "Franck Thilliez"
+      },
+      {
+        "id": "a3237774-87e7-43ec-b6e9-6232d75df95e",
+        "name": "François Rabelais"
+      },
+      {
+        "id": "d56cb268-ed16-499e-84de-68bac508bb7d",
+        "name": "Frank Conroy"
+      },
+      {
+        "id": "f71dd78d-d90a-4750-af66-8e76d0ad31d7",
+        "name": "Frank Herbert"
+      },
+      {
+        "id": "5c7b0741-f21d-4b5f-90bf-e23a7f38dd84",
+        "name": "Frederick Forsyth"
+      },
+      {
+        "id": "552a5be3-1d6e-4f45-82d9-05b889c4ca8c",
+        "name": "Freida McFadden"
+      },
+      {
+        "id": "64cf555c-07c6-41b1-b2f2-d898e8d2bd88",
+        "name": "George Orwell"
+      },
+      {
+        "id": "92ec0bdc-c3bc-4813-bcf7-34f36da36a33",
+        "name": "George R.R. Martin"
+      },
+      {
+        "id": "5200ad0c-b4c9-45fc-b0e4-e481b5562c40",
+        "name": "Gerald M. Kilby"
+      },
+      {
+        "id": "e02a60c4-9864-48a5-b67d-aeb052ad76cc",
+        "name": "Gérard Horny"
+      },
+      {
+        "id": "dea8a98e-a3cd-4331-aa67-63c4d4534e55",
+        "name": "Gilles-François Crestien"
+      },
+      {
+        "id": "8bdf8c4a-8d5a-4583-b3b1-5d78b18fc58f",
+        "name": "Goliarda Sapienza"
+      },
+      {
+        "id": "763e5dc7-7941-40c2-b248-fd5ad2691239",
+        "name": "Guillaume Musso"
+      },
+      {
+        "id": "82c8f580-5668-4e04-a248-317e8237dbce",
+        "name": "H. P. Lovecraft"
+      },
+      {
+        "id": "38cda826-286b-4237-8bf0-72b4c2e6e4dd",
+        "name": "Hugh Howey"
+      },
+      {
+        "id": "d6b27e67-e463-4402-9e12-d8e7b9f8dc27",
+        "name": "Isaac Asimov"
+      },
+      {
+        "id": "35d59f5e-740f-4ed5-a489-494243112681",
+        "name": "J. R. R. Tolkien"
+      },
+      {
+        "id": "53768095-0bb3-41d9-81a2-f83fd55abbdf",
+        "name": "J.D. Salinger"
+      },
+      {
+        "id": "779bceee-2d29-4255-ad51-5a5ba358356b",
+        "name": "J.K. Rowling"
+      },
+      {
+        "id": "a8960c2d-f54b-4f4a-a7bd-f0c1fb6ed13a",
+        "name": "Jack Thorne"
+      },
+      {
+        "id": "b99021c9-0eda-42e1-b143-162aaff80d21",
+        "name": "Jacques Joguin"
+      },
+      {
+        "id": "d60cd66d-aaa7-4bce-a337-782943d6a63b",
+        "name": "Jakub Szamalek"
+      },
+      {
+        "id": "ad77739c-17c4-493c-8fb7-11c9ffe75e0f",
+        "name": "Jean-Luc Mélenchon"
+      },
+      {
+        "id": "ca543e4c-5af4-464f-933d-15052b2b9518",
+        "name": "Jean-Marie Duprez"
+      },
+      {
+        "id": "ca6f2357-dfac-4263-9ea2-a6524fbe3d66",
+        "name": "Jérémy Fel"
+      },
+      {
+        "id": "bcd54c08-6558-4daa-9031-ce481c5a5d07",
+        "name": "Jérôme Leroy"
+      },
+      {
+        "id": "c8e36738-df9d-4eb2-9166-1da92c02f658",
+        "name": "Joël Dicker"
+      },
+      {
+        "id": "3188e47f-4b8d-46bc-a530-562f2c4dcaf5",
+        "name": "John Lang"
+      },
+      {
+        "id": "74737575-deaf-428f-b745-e7494656bef7",
+        "name": "John Tiffany"
+      },
+      {
+        "id": "f495a145-d824-4759-bc3f-b0990d5c32ed",
+        "name": "Jonathan Swan"
+      },
+      {
+        "id": "b84d03b4-c573-4f2a-9b6c-01806492bfc2",
+        "name": "Jules Verne"
+      },
+      {
+        "id": "fe697a47-81d8-441a-8dd2-bd4d82af9c57",
+        "name": "Kenneth Fearing"
+      },
+      {
+        "id": "c8c050ee-a11d-4b62-83b9-c1ba4f689244",
+        "name": "Kim Stanley Robinson"
+      },
+      {
+        "id": "0a62c49e-ea0c-4eef-9676-a9e7b3967ef9",
+        "name": "Lemony Snicket"
+      },
+      {
+        "id": "dc03e69b-1286-40d6-9996-1288a1970305",
+        "name": "Léonora Miano"
+      },
+      {
+        "id": "a8bf069e-7eaf-4f54-8494-41367119fea0",
+        "name": "Liu Cixin"
+      },
+      {
+        "id": "3c6765a9-092d-465b-b35d-9d4c7df7644d",
+        "name": "Madame de La Fayette"
+      },
+      {
+        "id": "9c2e66e7-af8c-4a1e-808b-043396b02f46",
+        "name": "Maggie Haberman"
+      },
+      {
+        "id": "1b348c98-4c09-4715-bca9-537d140ba39a",
+        "name": "Marcel Pagnol"
+      },
+      {
+        "id": "125e07c4-4326-4849-875d-6ad8b7f9ce50",
+        "name": "Margaret Atwood"
+      },
+      {
+        "id": "981bc92a-dc67-433f-bcdf-5e5b813de607",
+        "name": "Martha Wells"
+      },
+      {
+        "id": "9ead873f-2346-4951-b228-c04618d3e594",
+        "name": "Mattias Köping"
+      },
+      {
+        "id": "e1300a72-1470-40a2-b076-66fc2d39cd46",
+        "name": "Maurice G. Dantec"
+      },
+      {
+        "id": "1e106349-dc65-4554-ab50-2767b71b6fa3",
+        "name": "Mick Herron"
+      },
+      {
+        "id": "8bee376c-1401-4ad6-9f24-5e04bc52768e",
+        "name": "Mickaëlle Paty"
+      },
+      {
+        "id": "994e6ea7-d3b8-44f3-98c7-9d8e9211d880",
+        "name": "Mikhaïl Roubine"
+      },
+      {
+        "id": "debe7eee-0cc5-4fdf-8df7-0878086b99ac",
+        "name": "N. K. Jemisin"
+      },
+      {
+        "id": "4c73b482-8379-4d26-a967-895eaffc0303",
+        "name": "Nathalie Guibert"
+      },
+      {
+        "id": "937901a8-95f5-4a3e-83e9-01c3df52a709",
+        "name": "Nicolas Furno"
+      },
+      {
+        "id": "6622d0d3-c3a0-4ef3-92b7-599280b97af0",
+        "name": "Nina Allan"
+      },
+      {
+        "id": "6e0b6e79-e0e6-414e-b240-32345c12d854",
+        "name": "Olivier Norek"
+      },
+      {
+        "id": "47f2a564-c268-49cc-ba6e-f83ef04a1945",
+        "name": "Olivier Pérou"
+      },
+      {
+        "id": "e2e518a2-fd17-4f65-a275-74f93123677b",
+        "name": "Orson Scott Card"
+      },
+      {
+        "id": "840afc66-6fdc-4793-951f-c89040a8c30d",
+        "name": "Patrick Rothfuss"
+      },
+      {
+        "id": "3af24625-f2c0-4531-b20d-bf89ee385c63",
+        "name": "Patrick Süskind"
+      },
+      {
+        "id": "a01833e3-909b-4a0d-bffe-1d79ddfb1f63",
+        "name": "Paul Benita"
+      },
+      {
+        "id": "76b52fa7-bdc4-43a6-bd51-606bcded4225",
+        "name": "Paulin Ismard"
+      },
+      {
+        "id": "1af62981-ed9a-433e-bbeb-5378d13966cf",
+        "name": "Pelham Grenville Wodehouse"
+      },
+      {
+        "id": "d0b084a9-701c-46a1-a83a-94618cf58970",
+        "name": "Peter Watts"
+      },
+      {
+        "id": "801a35c9-8a0a-4560-bf7d-eb3442bc58fe",
+        "name": "Philip K. Dick"
+      },
+      {
+        "id": "14c36d34-eaf8-4090-b690-9d2a929eb91c",
+        "name": "Pierre Boulle"
+      },
+      {
+        "id": "507b0ea9-e929-4844-9a90-777ff772d6b4",
+        "name": "Rachel Reid"
+      },
+      {
+        "id": "652fb92a-8e65-4e48-a900-d5ba751da6d9",
+        "name": "Ray Bradbury"
+      },
+      {
+        "id": "1274e8dd-008e-430f-bd64-bdf2788d35eb",
+        "name": "Rebecca Yarros"
+      },
+      {
+        "id": "f6513147-230a-47db-97df-c064eac2f933",
+        "name": "René Barjavel"
+      },
+      {
+        "id": "3d0bcb46-00a9-483c-96fb-90a5bce27dfd",
+        "name": "Rick Riordan"
+      },
+      {
+        "id": "aa3c5898-bb3c-49df-a2d3-b332cd5abc38",
+        "name": "Roald Dahl"
+      },
+      {
+        "id": "2b4943d6-acce-436d-8951-d82500af7dd7",
+        "name": "Robert Louis Stevenson"
+      },
+      {
+        "id": "9f753d1f-a747-47d0-85e3-c07927e27a0a",
+        "name": "Robert Merle"
+      },
+      {
+        "id": "ee16a651-de53-40c0-bae4-0038baf146da",
+        "name": "Robert Seethaler"
+      },
+      {
+        "id": "f94eda10-1468-468b-80dd-cf9428e062c8",
+        "name": "Roman Badanine"
+      },
+      {
+        "id": "6f989e6f-67f1-49bf-ae7b-7a52dcab9b68",
+        "name": "Roselyne Guilloux"
+      },
+      {
+        "id": "294d27a6-a2c6-4bca-a82c-d3aab30ab991",
+        "name": "Salman Rushdie"
+      },
+      {
+        "id": "5f7d3245-dc4b-45fc-be96-3b9d35e60423",
+        "name": "Stendhal"
+      },
+      {
+        "id": "6ad632de-83fb-46a2-bf55-b5280d263be4",
+        "name": "Stephen King"
+      },
+      {
+        "id": "9d96b288-848f-4a80-8f3a-0ea4f2341337",
+        "name": "Stieg Larsson"
+      },
+      {
+        "id": "ba9a6629-5e73-4faa-a1fd-c96a91f361cd",
+        "name": "Thomas Pynchon"
+      },
+      {
+        "id": "0217eb1d-e12e-4ec8-95d0-e86c80b84cc1",
+        "name": "Tobias Wolff"
+      },
+      {
+        "id": "843e2479-3cb0-45fc-aa01-afd298e9cb38",
+        "name": "Tom Clancy"
+      },
+      {
+        "id": "9cc5dd2b-6cab-4c17-800d-42c9464cbd8f",
+        "name": "Valérie Perrin"
+      },
+      {
+        "id": "bb5f6516-8929-43d3-a0a4-6a032e664b59",
+        "name": "Virginie Despentes"
+      },
+      {
+        "id": "f3dc8820-6e4c-4470-8482-204807acca3d",
+        "name": "Viveca Sten"
+      },
+      {
+        "id": "cc4e9e70-ee5a-4f67-ae39-86a44e53eb74",
+        "name": "Walter Isaacson"
+      }
+    ],
+    "genres": [
+      "Arts",
+      "Aventure",
+      "Biographie",
+      "Classiques",
+      "Essai",
+      "Fantastique",
+      "Fantasy",
+      "Histoire",
+      "Horreur",
+      "Humour",
+      "Jeunesse",
+      "Littérature générale",
+      "Nouvelles",
+      "Poésie",
+      "Policier",
+      "Roman historique",
+      "Romance",
+      "Science-fiction",
+      "Sciences et techniques",
+      "Théâtre",
+      "Thriller",
+      "Vie pratique",
+      "Voyage"
+    ],
+    "tags": [],
+    "series": [
+      {
+        "id": "28d0f741-d775-4934-8884-25fd4271a1c3",
+        "name": "A Game of Thrones"
+      },
+      {
+        "id": "55b914f2-d72d-4e8c-8588-25eab8f68083",
+        "name": "A Series of Unfortunate Events"
+      },
+      {
+        "id": "4134db2e-9c06-41f6-92eb-7537ed46b556",
+        "name": "Cantos d'Hyperion"
+      },
+      {
+        "id": "e26bab7d-d919-4cdb-9be6-a3c58c9a68d3",
+        "name": "Charlie"
+      },
+      {
+        "id": "9d39c322-0c0c-4906-896a-f13da2c6f10a",
+        "name": "Chronique du tueur de roi"
+      },
+      {
+        "id": "a96488d6-b911-480b-8185-3417cd9533c6",
+        "name": "Colonel Race"
+      },
+      {
+        "id": "c2e39545-1fbd-4fa8-9760-ff581d1cc81d",
+        "name": "Colony Mars"
+      },
+      {
+        "id": "8764873b-0f4d-44b4-b2f7-1a690d9d5530",
+        "name": "Cycle des Robots"
+      },
+      {
+        "id": "35ca71ee-ce87-46e2-907a-fc3d1760f86f",
+        "name": "Dune"
+      },
+      {
+        "id": "4c9b94e8-dd0d-4387-a9cf-24e7903f9590",
+        "name": "Dune (en)"
+      },
+      {
+        "id": "3862e9f0-451b-4848-8bc5-10c1899affb2",
+        "name": "Empire"
+      },
+      {
+        "id": "dbcd4cc1-aa5e-440f-8d64-b8f997e66369",
+        "name": "Fondation"
+      },
+      {
+        "id": "b8d5e16d-f85f-4228-b72e-0c23a7d0dc66",
+        "name": "Fortune de France"
+      },
+      {
+        "id": "e5d62f25-b46b-4e59-8dca-f353c96ab28c",
+        "name": "H2G2"
+      },
+      {
+        "id": "a6b2b174-320e-47cb-9001-180f8eff2c75",
+        "name": "Harry Potter (en)"
+      },
+      {
+        "id": "3737dc9e-8721-4979-a05c-437c5e64b3ee",
+        "name": "Harry Potter (fr)"
+      },
+      {
+        "id": "8e391de6-898d-41fe-b302-0e6c76b7ab25",
+        "name": "Harry Potter 7 3/4"
+      },
+      {
+        "id": "145311c1-ede0-4d11-9d97-865be14da220",
+        "name": "Hercule Poirot"
+      },
+      {
+        "id": "216187c2-625f-4ac7-a128-5b09296826f1",
+        "name": "Hitchhiker's Guide to the Galaxy"
+      },
+      {
+        "id": "4373ce62-a3e7-4c03-854c-8f929c6b5f15",
+        "name": "Hyperion"
+      },
+      {
+        "id": "e22cf868-d210-471d-a1d8-6909ac6ec20e",
+        "name": "Ilium"
+      },
+      {
+        "id": "9af56ee4-c51b-4787-b5c4-8a1ff99c272f",
+        "name": "Impressions de voyage dans le royaume de Naples"
+      },
+      {
+        "id": "4fe8bacc-f5b5-4912-922f-ae0f5f1d7492",
+        "name": "Jack Ryan (en)"
+      },
+      {
+        "id": "9cbe36fb-eaeb-4509-b126-81daf7c7315e",
+        "name": "Jack Ryan (fr)"
+      },
+      {
+        "id": "ea1ded25-919f-48dc-a1a4-673479d3a96c",
+        "name": "Joe Kurtz"
+      },
+      {
+        "id": "1c1f37f1-21b2-4cce-bd76-38e5915ec818",
+        "name": "L'Eau des collines"
+      },
+      {
+        "id": "06b6163e-5c2a-4875-b19f-f50a75ca4c08",
+        "name": "La Belgariade"
+      },
+      {
+        "id": "750d15b2-2223-47b0-b2d5-fb2c543cc890",
+        "name": "La guerre des clans"
+      },
+      {
+        "id": "2b263be3-065e-4a88-8385-cce64ee0e6d6",
+        "name": "La Mallorée"
+      },
+      {
+        "id": "a5f4a615-4291-443f-8c94-649956057400",
+        "name": "La Tour Sombre"
+      },
+      {
+        "id": "ae28fa6e-1a90-4369-83d3-27827d93f9ac",
+        "name": "La Trilogie des Valois"
+      },
+      {
+        "id": "663760f4-9909-4e65-909e-0b66ed505e51",
+        "name": "La Trilogie Divine"
+      },
+      {
+        "id": "e64d5654-dbb8-4d2b-8767-2b9c8edb5473",
+        "name": "Le Bureau des affaires occultes"
+      },
+      {
+        "id": "f2eade3f-d797-4021-9afc-28528e19d45f",
+        "name": "Le Donjon de Naheulbeuk (Romans)"
+      },
+      {
+        "id": "d4e15cae-48b4-47d4-885c-9fb8a6dffd80",
+        "name": "Le Trône de Fer"
+      },
+      {
+        "id": "e45e4076-1c9f-44ef-a623-c1691d0c3371",
+        "name": "Les Aventures de Sharko et Henebelle"
+      },
+      {
+        "id": "42f33755-ebbc-420d-abf3-52fcc633dd89",
+        "name": "Les désastreuses aventures des Orphelins Baudelaire"
+      },
+      {
+        "id": "75a1036b-69b9-4b45-a9fc-bc8a41972415",
+        "name": "Les Mémoires d'un médecin"
+      },
+      {
+        "id": "11ada4b2-854b-4ff9-89e7-e00dc2e199c4",
+        "name": "Les Rougon-Macquart"
+      },
+      {
+        "id": "2be06d9e-ef48-453a-bee1-e8e0ae3e70ac",
+        "name": "Les Saboteurs"
+      },
+      {
+        "id": "05cf4be6-5001-4479-ba65-251e5a676f8e",
+        "name": "Les trois mousquetaires"
+      },
+      {
+        "id": "77e98507-5141-4c09-b26f-d3bb27484daa",
+        "name": "Lord of the Rings"
+      },
+      {
+        "id": "b8cc77bd-eae4-4891-be9b-19e0d8e5716e",
+        "name": "Mars Trilogy"
+      },
+      {
+        "id": "b9d49208-8930-4201-92f8-c93c04345805",
+        "name": "Millénium"
+      },
+      {
+        "id": "b424c6b1-2106-42c0-b77b-946cd5d46f2a",
+        "name": "Miss Marple"
+      },
+      {
+        "id": "f8da678d-8ac1-479b-a2dd-91107007b60a",
+        "name": "Percy Jackson and the Olympians"
+      },
+      {
+        "id": "68b13f5c-0aac-4b16-89c9-3fd892017ebb",
+        "name": "Roald Dahl's Tales of the Unexpected"
+      },
+      {
+        "id": "09710156-61bc-45f8-a92f-fa9b1a24b87b",
+        "name": "Seasons of Horror"
+      },
+      {
+        "id": "8d3c8830-850a-44c6-affb-86ab9a53afb0",
+        "name": "Seigneur des Anneaux"
+      },
+      {
+        "id": "3ec76b43-1638-493a-94de-8500f2d9c68e",
+        "name": "Silo"
+      },
+      {
+        "id": "264959fa-042f-4d72-9fed-00b47074d349",
+        "name": "Silo (en)"
+      },
+      {
+        "id": "a57bac4b-3989-4274-8e8b-f88f4a744a96",
+        "name": "Slough House"
+      },
+      {
+        "id": "7816dc15-e08a-458e-9b43-9a8e5d898ec9",
+        "name": "Souvenirs d'enfance"
+      },
+      {
+        "id": "86a41740-7688-48cd-9ba4-089f6a0e88a6",
+        "name": "Superintendant Battle"
+      },
+      {
+        "id": "6cf7d13a-f5e7-4741-ba5d-04a3422b9c3a",
+        "name": "Terre Dragon"
+      },
+      {
+        "id": "69e76338-a09c-4224-9044-6f4633dac8f7",
+        "name": "The Broken Earth"
+      },
+      {
+        "id": "05b3a2b2-522a-4def-9515-ec8f4d09ea75",
+        "name": "The Empyrean"
+      },
+      {
+        "id": "5f4fc9a3-a523-4944-8f6b-335b3b511539",
+        "name": "The Falck Saga"
+      },
+      {
+        "id": "7af6c4fd-0760-47d2-925a-91f12a793645",
+        "name": "The Housemaid"
+      },
+      {
+        "id": "31c087a8-d2e1-4687-b86e-5e29a80f51d3",
+        "name": "The Kingkiller Chronicle"
+      },
+      {
+        "id": "aa949aea-bac8-42c8-b2f1-b795e0c1dadb",
+        "name": "The Murderbot Diaries"
+      },
+      {
+        "id": "d99ac330-49a3-4248-a6af-20359ca7fc52",
+        "name": "Tommy et Tuppence"
+      },
+      {
+        "id": "fa3de78c-7574-412e-86c1-db0b37ebf8cf",
+        "name": "Trilogie marseillaise"
+      },
+      {
+        "id": "52432350-8d1e-4273-a665-dac91a2e24f9",
+        "name": "Trois corps"
+      },
+      {
+        "id": "ea8adfc0-d1b8-4445-994a-27d2127a699b",
+        "name": "Vernon Subutex"
+      }
+    ],
+    "narrators": [
+      "Benjamin Jungers",
+      "Bernard Gabay",
+      "Bernard Giraudeau",
+      "Bernard Métraux",
+      "Caroline Victoria",
+      "Didier Brice",
+      "Dominique Collignon-Maurin",
+      "Emmanuel Dekoninck",
+      "Eric Herson-Macarel",
+      "François Montagut",
+      "Kevin R. Free",
+      "Marie Zidi",
+      "Martin Freeman",
+      "Michel Demuth",
+      "Olivia Bonamy",
+      "Pierre Tissot",
+      "Ray Porter",
+      "Richard Ferrone",
+      "Robin Miles",
+      "Roy Dotrice",
+      "Simon Jones",
+      "Stéphane Ronchewski",
+      "Stephen Fry",
+      "Wil Wheaton"
+    ],
+    "languages": [
+      "en",
+      "fr"
+    ],
+    "publishers": [
+      "12-21",
+      "Ace",
+      "Actes Sud",
+      "Albin Michel",
+      "Alexandriz",
+      "Amaranthia",
+      "AMT Edition",
+      "Arléa",
+      "Arvensa",
+      "Astra Publishing House",
+      "Audible Originals",
+      "Audiolib",
+      "Bay Bay Online Books | L&D edition",
+      "Berkley",
+      "Bibebook",
+      "Bookouture",
+      "Books on Demand",
+      "BookSurge Classics",
+      "Bragelonne",
+      "Broad Reach Publishing",
+      "Calmann-Lévy",
+      "Carina Press",
+      "Charpentier",
+      "Christian Bourgois",
+      "Classic Books Forever",
+      "CreateSpace",
+      "Créations de fans",
+      "Creative Education",
+      "Crown",
+      "D. David Éditeur",
+      "DAW Books",
+      "Del Rey",
+      "Delagrave",
+      "Denoël",
+      "DigiCat",
+      "Disney-Hyperion",
+      "Disney-Hyperion Books",
+      "Dodo Press",
+      "e-artnow",
+      "E-BOOKARAMA",
+      "Ebooks libres et gratuits",
+      "Éditions de Fallois",
+      "Éditions de Midi",
+      "Éditions de Provence",
+      "Éditions Marques",
+      "Éditions MKDC",
+      "Éditions Octobre",
+      "Éditions Paulsen",
+      "EISENBRAUNS",
+      "Entangled Publishing",
+      "Entangled: Red Tower Books",
+      "Fayard",
+      "Feedbooks",
+      "Ferenczi",
+      "First",
+      "Flammarion",
+      "Fleuve Éditions",
+      "Folio",
+      "Folio Junior",
+      "France Loisirs",
+      "G. P. Putnam's Sons",
+      "Gallimard",
+      "Gallimard Éducation",
+      "Gallimard Jeunesse",
+      "Gollancz",
+      "Grand Central Publishing",
+      "Grasset",
+      "Hachette",
+      "Hachette Education",
+      "Hachette UK",
+      "Harper Voyager",
+      "HarperCollins",
+      "Hetzel",
+      "Inculte",
+      "Independently published",
+      "J'ai lu",
+      "John Murray",
+      "Julliard",
+      "Klett Ernst /Schulbuch",
+      "Knopf Doubleday Publishing Group",
+      "La Dispute",
+      "La Manufacture de livres",
+      "La vie du rail",
+      "Le Bruit du Monde",
+      "Le Livre de Poche",
+      "Le Masque",
+      "Le passage",
+      "Le Siècle",
+      "Legrand et Crouzet",
+      "Lepetit",
+      "Les Arènes",
+      "Les Belles Lettres",
+      "Les Editions de Londres",
+      "Les Editions Desjonquères",
+      "Library of Alexandria",
+      "Librorium Editions",
+      "Little, Brown",
+      "Lizzie",
+      "Lulu.com",
+      "MacGeneration",
+      "Mardaga",
+      "McClelland & Stewart",
+      "Meline, Cans et Cie",
+      "Mercure de France",
+      "Métailié",
+      "Michel Lafon",
+      "Michel Lévy frères",
+      "Mille et une nuits",
+      "Namaskar Books",
+      "Nathan",
+      "OBG Classics",
+      "Ombres",
+      "Open Road Media",
+      "Orbit",
+      "Outer Planet Media",
+      "Penguin",
+      "Place des éditeurs",
+      "Plon",
+      "Pocket",
+      "Pocket Jeunesse",
+      "Pottermore Publishing",
+      "Presses de la Cité",
+      "Project Gutenberg",
+      "PUBLICATIONS GRAND PUBLIC",
+      "Pygmalion",
+      "Random House",
+      "Random House Worlds",
+      "Read Books",
+      "Red Tower Books",
+      "Retz",
+      "Rivages",
+      "Robert Laffont",
+      "Rosie & Wolfe",
+      "Sabine Wespieser",
+      "SAGA Egmont",
+      "SAMPI Books",
+      "Scribner",
+      "Seuil",
+      "Signet",
+      "Simon & Schuster",
+      "Simon & Schuster Audio",
+      "Soho Press",
+      "St. Martin's Press",
+      "Tachyon Publications",
+      "Thriller Editions",
+      "Tiers Livre Éditeur",
+      "Tor",
+      "Tor.com",
+      "Vintage",
+      "Viviane Hamy",
+      "Warner Books"
+    ],
+    "publishedDecades": [
+      "1550",
+      "1670",
+      "1830",
+      "1840",
+      "1850",
+      "1860",
+      "1870",
+      "1880",
+      "1890",
+      "1900",
+      "1910",
+      "1920",
+      "1930",
+      "1940",
+      "1950",
+      "1960",
+      "1970",
+      "1980",
+      "1990",
+      "2000",
+      "2010",
+      "2020"
+    ],
+    "bookCount": 721,
+    "authorCount": 119,
+    "seriesCount": 65,
+    "podcastCount": 0,
+    "numIssues": 0,
+    "loadedAt": 1795848049432
+  }
+}

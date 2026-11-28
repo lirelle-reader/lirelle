@@ -2,6 +2,7 @@ package app.tfdn.lirelle.feature.library.shelves
 
 import android.content.Context
 import androidx.compose.ui.test.assertIsDisplayed
+import androidx.compose.ui.test.getUnclippedBoundsInRoot
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
@@ -48,11 +49,15 @@ class ShelvesTest {
     private val smart = Shelf(ShelfKind.SmartList, ShelfId("3"), "To read soon", 14)
     private val uncounted = Shelf(ShelfKind.SmartList, ShelfId("4"), "Broken rule", null)
     private val collection = Shelf(ShelfKind.Collection, ShelfId("7"), "Favourites", 1)
+    private val playlist = Shelf(ShelfKind.Playlist, ShelfId("p:9"), "Road trip", 3)
     private val opened = mutableListOf<Shelf>()
 
     private fun text(id: Int) = context.getString(id)
 
-    private fun showTab(capabilities: SourceCapabilities = SourceCapabilities.Everything) {
+    /** Every kind of shelf, playlists too, which no source but Audiobookshelf has. */
+    private val everyShelf = SourceCapabilities.Everything.copy(shelfKinds = ShelfKind.entries.toSet())
+
+    private fun showTab(capabilities: SourceCapabilities = everyShelf) {
         val viewModel = ShelvesViewModel(repository, capabilities)
         compose.setContent { LirelleTheme { ShelvesTab(onOpenShelf = { opened += it }, viewModel = viewModel) } }
     }
@@ -132,6 +137,63 @@ class ShelvesTest {
     fun `sources follow the kind of shelf`() {
         assertThat(smart.source()).isEqualTo(BookListSource.SmartList(ShelfId("3")))
         assertThat(collection.source()).isEqualTo(BookListSource.Collection(ShelfId("7")))
+    }
+
+    @Test
+    fun `playlists are a section of their own, after the collections`() {
+        repository.shelvesResult = ApiResult.Success(Shelves(listOf(smart), listOf(collection), listOf(playlist)))
+        showTab()
+
+        val collections = compose.onNodeWithText(text(R.string.shelves_collections)).getUnclippedBoundsInRoot()
+        val playlists = compose.onNodeWithText(text(R.string.shelves_playlists)).assertIsDisplayed()
+            .getUnclippedBoundsInRoot()
+        compose.onNodeWithText("Road trip").assertIsDisplayed()
+        compose.onNodeWithText(context.resources.getQuantityString(R.plurals.books_count, 3, 3)).assertIsDisplayed()
+        assertThat(playlists.top).isGreaterThan(collections.top)
+        assertThat(compose.onNodeWithText("Road trip").getUnclippedBoundsInRoot().top)
+            .isGreaterThan(compose.onNodeWithText("Favourites").getUnclippedBoundsInRoot().top)
+    }
+
+    @Test
+    fun `no playlists, no Playlists section`() {
+        repository.shelvesResult = ApiResult.Success(Shelves(listOf(smart), listOf(collection)))
+        showTab()
+
+        compose.onNodeWithText(text(R.string.shelves_playlists)).assertDoesNotExist()
+    }
+
+    @Test
+    fun `playlists alone are shown, not the empty message`() {
+        repository.shelvesResult = ApiResult.Success(Shelves(emptyList(), emptyList(), listOf(playlist)))
+        showTab()
+
+        compose.onNodeWithText(text(R.string.shelves_playlists)).assertIsDisplayed()
+        compose.onNodeWithText(text(R.string.shelves_empty)).assertDoesNotExist()
+    }
+
+    @Test
+    fun `a source without playlists shows none, even if listed`() {
+        repository.shelvesResult = ApiResult.Success(Shelves(emptyList(), listOf(collection), listOf(playlist)))
+        showTab(KomgaLikeCapabilities)
+
+        compose.onNodeWithText("Favourites").assertIsDisplayed()
+        compose.onNodeWithText(text(R.string.shelves_playlists)).assertDoesNotExist()
+        compose.onNodeWithText("Road trip").assertDoesNotExist()
+    }
+
+    @Test
+    fun `tapping a playlist opens it`() {
+        repository.shelvesResult = ApiResult.Success(Shelves(emptyList(), listOf(collection), listOf(playlist)))
+        showTab()
+
+        compose.onNodeWithTag("shelf-Playlist-p:9").performClick()
+
+        assertThat(opened).containsExactly(playlist)
+    }
+
+    @Test
+    fun `a playlist opens its books as a collection does, told apart by its id`() {
+        assertThat(playlist.source()).isEqualTo(BookListSource.Collection(ShelfId("p:9")))
     }
 
     @Test

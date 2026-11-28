@@ -113,4 +113,5 @@
     <string name="shelf_empty">This shelf is empty.</string>
     <string name="shelves_smart_lists">Smart lists</string>
     <string name="shelves_collections">Collections</string>
+    <string name="shelves_playlists">Playlists</string>
 </resources>

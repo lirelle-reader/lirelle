@@ -1,0 +1,752 @@
+{
+  "id": "f7168176-f295-4fee-b0cc-37e190ef167c",
+  "ino": "-1511084267564117006",
+  "oldLibraryItemId": null,
+  "libraryId": "e70c1745-3cd9-4d47-bc40-6790ca8174d2",
+  "folderId": "21492865-2e3a-4611-a5bd-3d3758c76b06",
+  "path": "/library/books/Antoine de Saint-Exupéry/Le Petit Prince [fr] (1943)",
+  "relPath": "Antoine de Saint-Exupéry/Le Petit Prince [fr] (1943)",
+  "isFile": false,
+  "mtimeMs": 1794401730591,
+  "ctimeMs": 1794624298646,
+  "birthtimeMs": 0,
+  "addedAt": 1795783749934,
+  "updatedAt": 1795783749934,
+  "isMissing": false,
+  "isInvalid": false,
+  "mediaType": "book",
+  "media": {
+    "id": "607343b8-0c55-490a-aff7-5b41a136a891",
+    "metadata": {
+      "title": "Le Petit Prince",
+      "subtitle": null,
+      "authors": [
+        {
+          "id": "72d005ae-beb1-467b-b7a2-777df163c87d",
+          "name": "Antoine de Saint-Exupéry"
+        }
+      ],
+      "narrators": [
+        "Bernard Giraudeau"
+      ],
+      "series": [],
+      "genres": [
+        "Classiques",
+        "Jeunesse"
+      ],
+      "publishedYear": "1943",
+      "publishedDate": null,
+      "publisher": "Folio Junior",
+      "description": "<p>Imaginez-vous perdu dans le désert, loin de tout lieu habité, et face à un petit garçon tout blond, surgi de nulle part. Si de surcroît ce petit garçon vous demande avec insistance de dessiner un mouton, vous voilà plus qu'étonné ! À partir de là, vous n'aurez plus qu'une seule interrogation : savoir d'où vient cet étrange petit bonhomme et connaître son histoire.<br />S'ouvre alors un monde étrange et poétique, peuplé de métaphores, décrit à travers les paroles d'un \"petit prince\" qui porte aussi sur notre monde à nous un regard tout neuf, empli de naïveté, de fraîcheur et de gravité. Très vite, vous découvrez d'étranges planètes, peuplées d'hommes d'affaires, de buveurs, de vaniteux, d'allumeurs de réverbères.<br /><br />Cette évocation onirique, à laquelle participent les aquarelles de l'auteur, a tout d'un parcours initiatique, où l'enfant apprendra les richesses essentielles des rapports humains et le secret qui les régit : \"On ne voit bien qu'avec le coeur, l'essentiel est invisible pour les yeux.\"<br /><br />Oeuvre essentielle de la littérature, ce livre de Saint-Exupéry est un ouvrage que l'on aura à coeur de raconter à son enfant, page après page, histoire aussi de redécouvrir l'enfant que l'on était autrefois, avant de devenir une grande personne !</p>",
+      "isbn": null,
+      "asin": "B00YN5VOVM",
+      "language": "fr",
+      "explicit": false,
+      "abridged": false,
+      "titleIgnorePrefix": "Le Petit Prince",
+      "authorName": "Antoine de Saint-Exupéry",
+      "authorNameLF": "de Saint-Exupéry, Antoine",
+      "narratorName": "Bernard Giraudeau",
+      "seriesName": "",
+      "descriptionPlain": "Imaginez-vous perdu dans le désert, loin de tout lieu habité, et face à un petit garçon tout blond, surgi de nulle part. Si de surcroît ce petit garçon vous demande avec insistance de dessiner un mouton, vous voilà plus qu'étonné ! À partir de là, vous n'aurez plus qu'une seule interrogation : savoir d'où vient cet étrange petit bonhomme et connaître son histoire.S'ouvre alors un monde étrange et poétique, peuplé de métaphores, décrit à travers les paroles d'un \"petit prince\" qui porte aussi sur notre monde à nous un regard tout neuf, empli de naïveté, de fraîcheur et de gravité. Très vite, vous découvrez d'étranges planètes, peuplées d'hommes d'affaires, de buveurs, de vaniteux, d'allumeurs de réverbères.Cette évocation onirique, à laquelle participent les aquarelles de l'auteur, a tout d'un parcours initiatique, où l'enfant apprendra les richesses essentielles des rapports humains et le secret qui les régit : \"On ne voit bien qu'avec le coeur, l'essentiel est invisible pour les yeux.\"Oeuvre essentielle de la littérature, ce livre de Saint-Exupéry est un ouvrage que l'on aura à coeur de raconter à son enfant, page après page, histoire aussi de redécouvrir l'enfant que l'on était autrefois, avant de devenir une grande personne !"
+    },
+    "coverPath": "/library/books/Antoine de Saint-Exupéry/Le Petit Prince [fr] (1943)/cover.jpg",
+    "tags": [],
+    "numTracks": 1,
+    "numAudioFiles": 1,
+    "numChapters": 27,
+    "duration": 6521.934,
+    "size": 104829995,
+    "ebookFormat": "epub",
+    "libraryItemId": "f7168176-f295-4fee-b0cc-37e190ef167c",
+    "audioFiles": [
+      {
+        "index": 1,
+        "ino": "-7296498923081887959",
+        "metadata": {
+          "filename": "Le Petit Prince [fr] (1943).m4b",
+          "ext": ".m4b",
+          "path": "/library/books/Antoine de Saint-Exupéry/Le Petit Prince [fr] (1943)/Le Petit Prince [fr] (1943).m4b",
+          "relPath": "Le Petit Prince [fr] (1943).m4b",
+          "size": 104321748,
+          "mtimeMs": 1794401729501,
+          "ctimeMs": 1794614956057,
+          "birthtimeMs": 0
+        },
+        "addedAt": 1795783749907,
+        "updatedAt": 1795783749907,
+        "trackNumFromMeta": 1,
+        "discNumFromMeta": null,
+        "trackNumFromFilename": null,
+        "discNumFromFilename": null,
+        "manuallyVerified": false,
+        "exclude": false,
+        "error": null,
+        "format": "QuickTime / MOV",
+        "duration": 6521.934,
+        "bitRate": 125588,
+        "language": null,
+        "codec": "aac",
+        "timeBase": "1/44100",
+        "channels": 2,
+        "channelLayout": "stereo",
+        "chapters": [
+          {
+            "start": 0,
+            "end": 199.644,
+            "title": "Chapitre 1",
+            "id": 0
+          },
+          {
+            "start": 199.644,
+            "end": 533.012,
+            "title": "Chapitre 2",
+            "id": 1
+          },
+          {
+            "start": 533.012,
+            "end": 718.33,
+            "title": "Chapitre 3",
+            "id": 2
+          },
+          {
+            "start": 718.33,
+            "end": 997.41,
+            "title": "Chapitre 4",
+            "id": 3
+          },
+          {
+            "start": 997.41,
+            "end": 1240.964,
+            "title": "Chapitre 5",
+            "id": 4
+          },
+          {
+            "start": 1240.964,
+            "end": 1342.272,
+            "title": "Chapitre 6",
+            "id": 5
+          },
+          {
+            "start": 1342.272,
+            "end": 1617.428,
+            "title": "Chapitre 7",
+            "id": 6
+          },
+          {
+            "start": 1617.428,
+            "end": 1958.32,
+            "title": "Chapitre 8",
+            "id": 7
+          },
+          {
+            "start": 1958.32,
+            "end": 2105.766,
+            "title": "Chapitre 9",
+            "id": 8
+          },
+          {
+            "start": 2105.766,
+            "end": 2564.406,
+            "title": "Chapitre 10",
+            "id": 9
+          },
+          {
+            "start": 2564.406,
+            "end": 2685.985,
+            "title": "Chapitre 11",
+            "id": 10
+          },
+          {
+            "start": 2685.985,
+            "end": 2758.268,
+            "title": "Chapitre 12",
+            "id": 11
+          },
+          {
+            "start": 2758.268,
+            "end": 3071.11,
+            "title": "Chapitre 13",
+            "id": 12
+          },
+          {
+            "start": 3071.11,
+            "end": 3323.162,
+            "title": "Chapitre 14",
+            "id": 13
+          },
+          {
+            "start": 3323.162,
+            "end": 3634.03,
+            "title": "Chapitre 15",
+            "id": 14
+          },
+          {
+            "start": 3634.03,
+            "end": 3763.736,
+            "title": "Chapitre 16",
+            "id": 15
+          },
+          {
+            "start": 3763.736,
+            "end": 3978.311,
+            "title": "Chapitre 17",
+            "id": 16
+          },
+          {
+            "start": 3978.311,
+            "end": 4063.876,
+            "title": "Chapitre 18",
+            "id": 17
+          },
+          {
+            "start": 4063.876,
+            "end": 4124.456,
+            "title": "Chapitre 19",
+            "id": 18
+          },
+          {
+            "start": 4124.456,
+            "end": 4262.498,
+            "title": "Chapitre 20",
+            "id": 19
+          },
+          {
+            "start": 4262.498,
+            "end": 4780.651,
+            "title": "Chapitre 21",
+            "id": 20
+          },
+          {
+            "start": 4780.651,
+            "end": 4859.691,
+            "title": "Chapitre 22",
+            "id": 21
+          },
+          {
+            "start": 4859.691,
+            "end": 4901.533,
+            "title": "Chapitre 23",
+            "id": 22
+          },
+          {
+            "start": 4901.533,
+            "end": 5214.073,
+            "title": "Chapitre 24",
+            "id": 23
+          },
+          {
+            "start": 5214.073,
+            "end": 5526.102,
+            "title": "Chapitre 25",
+            "id": 24
+          },
+          {
+            "start": 5526.102,
+            "end": 6208.791,
+            "title": "Chapitre 26",
+            "id": 25
+          },
+          {
+            "start": 6208.791,
+            "end": 6521.934,
+            "title": "Chapitre 27",
+            "id": 26
+          }
+        ],
+        "embeddedCoverArt": "mjpeg",
+        "metaTags": {
+          "tagAlbum": "Le Petit Prince",
+          "tagArtist": "Antoine de Saint-Exupéry",
+          "tagGenre": "Classiques; Jeunesse",
+          "tagTitle": "Le Petit Prince",
+          "tagTrack": "1",
+          "tagAlbumArtist": "Antoine de Saint-Exupéry",
+          "tagDate": "1943",
+          "tagComposer": "Bernard Giraudeau",
+          "tagPublisher": "Folio Junior",
+          "tagComment": "<p>Imaginez-vous perdu dans le désert, loin de tout lieu habité, et face à un petit garçon tout blond, surgi de nulle part. Si de surcroît ce petit garçon vous demande avec insistance de dessiner un mouton, vous voilà plus qu'étonné ! À partir de là, vous n'aurez plus qu'une seule interrogation : savoir d'où vient cet étrange petit bonhomme et connaître son histoire.<br>S'ouvre alors un monde étrange et poétique, peuplé de métaphores, décrit à travers les paroles d'un \"petit prince\" qui porte aussi sur notre monde à nous un regard tout neuf, empli de naïveté, de fraîcheur et de gravité. Très vite, vous découvrez d'étranges planètes, peuplées d'hommes d'affaires, de buveurs, de vaniteux, d'allumeurs de réverbères.<br><br>Cette évocation onirique, à laquelle participent les aquarelles de l'auteur, a tout d'un parcours initiatique, où l'enfant apprendra les richesses essentielles des rapports humains et le secret qui les régit : \"On ne voit bien qu'avec le coeur, l'essentiel est invisible pour les yeux.\"<br><br>Oeuvre essentielle de la littérature, ce livre de Saint-Exupéry est un ouvrage que l'on aura à coeur de raconter à son enfant, page après page, histoire aussi de redécouvrir l'enfant que l'on était autrefois, avant de devenir une grande personne !</p>",
+          "tagDescription": "<p>Imaginez-vous perdu dans le désert, loin de tout lieu habité, et face à un petit garçon tout blond, surgi de nulle part. Si de surcroît ce petit garçon vous demande avec insistance de dessiner un mouton, vous voilà plus qu'étonné ! À partir de là, vous n'aurez plus qu'une seule interrogation : savoir d'où vient cet étrange petit bonhomme et connaître son histoire.<br>S'ouvre alors un monde étrange et poétique, peuplé de métaphores, décrit à travers les paroles d'un \"petit prince\" qui porte aussi sur notre monde à nous un regard tout neuf, empli de naïveté, de fraîcheur et de gravité. Très vite, vous découvrez d'étranges planètes, peuplées d'hommes d'affaires, de buveurs, de vaniteux, d'allumeurs de réverbères.<br><br>Cette évocation onirique, à laquelle participent les aquarelles de l'auteur, a tout d'un parcours initiatique, où l'enfant apprendra les richesses essentielles des rapports humains et le secret qui les régit : \"On ne voit bien qu'avec le coeur, l'essentiel est invisible pour les yeux.\"<br><br>Oeuvre essentielle de la littérature, ce livre de Saint-Exupéry est un ouvrage que l'on aura à coeur de raconter à son enfant, page après page, histoire aussi de redécouvrir l'enfant que l'on était autrefois, avant de devenir une grande personne !</p>",
+          "tagEncoder": "Lavf62.3.100",
+          "tagLanguage": "fr",
+          "tagASIN": "B00YN5VOVM"
+        },
+        "mimeType": "audio/mp4"
+      }
+    ],
+    "chapters": [
+      {
+        "start": 0,
+        "end": 199.644,
+        "title": "Chapitre 1",
+        "id": 0
+      },
+      {
+        "start": 199.644,
+        "end": 533.012,
+        "title": "Chapitre 2",
+        "id": 1
+      },
+      {
+        "start": 533.012,
+        "end": 718.33,
+        "title": "Chapitre 3",
+        "id": 2
+      },
+      {
+        "start": 718.33,
+        "end": 997.41,
+        "title": "Chapitre 4",
+        "id": 3
+      },
+      {
+        "start": 997.41,
+        "end": 1240.964,
+        "title": "Chapitre 5",
+        "id": 4
+      },
+      {
+        "start": 1240.964,
+        "end": 1342.272,
+        "title": "Chapitre 6",
+        "id": 5
+      },
+      {
+        "start": 1342.272,
+        "end": 1617.428,
+        "title": "Chapitre 7",
+        "id": 6
+      },
+      {
+        "start": 1617.428,
+        "end": 1958.32,
+        "title": "Chapitre 8",
+        "id": 7
+      },
+      {
+        "start": 1958.32,
+        "end": 2105.766,
+        "title": "Chapitre 9",
+        "id": 8
+      },
+      {
+        "start": 2105.766,
+        "end": 2564.406,
+        "title": "Chapitre 10",
+        "id": 9
+      },
+      {
+        "start": 2564.406,
+        "end": 2685.985,
+        "title": "Chapitre 11",
+        "id": 10
+      },
+      {
+        "start": 2685.985,
+        "end": 2758.268,
+        "title": "Chapitre 12",
+        "id": 11
+      },
+      {
+        "start": 2758.268,
+        "end": 3071.11,
+        "title": "Chapitre 13",
+        "id": 12
+      },
+      {
+        "start": 3071.11,
+        "end": 3323.162,
+        "title": "Chapitre 14",
+        "id": 13
+      },
+      {
+        "start": 3323.162,
+        "end": 3634.03,
+        "title": "Chapitre 15",
+        "id": 14
+      },
+      {
+        "start": 3634.03,
+        "end": 3763.736,
+        "title": "Chapitre 16",
+        "id": 15
+      },
+      {
+        "start": 3763.736,
+        "end": 3978.311,
+        "title": "Chapitre 17",
+        "id": 16
+      },
+      {
+        "start": 3978.311,
+        "end": 4063.876,
+        "title": "Chapitre 18",
+        "id": 17
+      },
+      {
+        "start": 4063.876,
+        "end": 4124.456,
+        "title": "Chapitre 19",
+        "id": 18
+      },
+      {
+        "start": 4124.456,
+        "end": 4262.498,
+        "title": "Chapitre 20",
+        "id": 19
+      },
+      {
+        "start": 4262.498,
+        "end": 4780.651,
+        "title": "Chapitre 21",
+        "id": 20
+      },
+      {
+        "start": 4780.651,
+        "end": 4859.691,
+        "title": "Chapitre 22",
+        "id": 21
+      },
+      {
+        "start": 4859.691,
+        "end": 4901.533,
+        "title": "Chapitre 23",
+        "id": 22
+      },
+      {
+        "start": 4901.533,
+        "end": 5214.073,
+        "title": "Chapitre 24",
+        "id": 23
+      },
+      {
+        "start": 5214.073,
+        "end": 5526.102,
+        "title": "Chapitre 25",
+        "id": 24
+      },
+      {
+        "start": 5526.102,
+        "end": 6208.791,
+        "title": "Chapitre 26",
+        "id": 25
+      },
+      {
+        "start": 6208.791,
+        "end": 6521.934,
+        "title": "Chapitre 27",
+        "id": 26
+      }
+    ],
+    "ebookFile": {
+      "ino": "4271701071466068414",
+      "metadata": {
+        "filename": "Le Petit Prince [fr] (1943).epub",
+        "ext": ".epub",
+        "path": "/library/books/Antoine de Saint-Exupéry/Le Petit Prince [fr] (1943)/Le Petit Prince [fr] (1943).epub",
+        "relPath": "Le Petit Prince [fr] (1943).epub",
+        "size": 508247,
+        "mtimeMs": 1794401728491,
+        "ctimeMs": 1794614954928,
+        "birthtimeMs": 0
+      },
+      "isSupplementary": null,
+      "addedAt": 1795783700818,
+      "updatedAt": 1795783700818,
+      "fileType": "ebook",
+      "ebookFormat": "epub"
+    },
+    "tracks": [
+      {
+        "index": 1,
+        "ino": "-7296498923081887959",
+        "metadata": {
+          "filename": "Le Petit Prince [fr] (1943).m4b",
+          "ext": ".m4b",
+          "path": "/library/books/Antoine de Saint-Exupéry/Le Petit Prince [fr] (1943)/Le Petit Prince [fr] (1943).m4b",
+          "relPath": "Le Petit Prince [fr] (1943).m4b",
+          "size": 104321748,
+          "mtimeMs": 1794401729501,
+          "ctimeMs": 1794614956057,
+          "birthtimeMs": 0
+        },
+        "addedAt": 1795783749907,
+        "updatedAt": 1795783749907,
+        "trackNumFromMeta": 1,
+        "discNumFromMeta": null,
+        "trackNumFromFilename": null,
+        "discNumFromFilename": null,
+        "manuallyVerified": false,
+        "exclude": false,
+        "error": null,
+        "format": "QuickTime / MOV",
+        "duration": 6521.934,
+        "bitRate": 125588,
+        "language": null,
+        "codec": "aac",
+        "timeBase": "1/44100",
+        "channels": 2,
+        "channelLayout": "stereo",
+        "chapters": [
+          {
+            "start": 0,
+            "end": 199.644,
+            "title": "Chapitre 1",
+            "id": 0
+          },
+          {
+            "start": 199.644,
+            "end": 533.012,
+            "title": "Chapitre 2",
+            "id": 1
+          },
+          {
+            "start": 533.012,
+            "end": 718.33,
+            "title": "Chapitre 3",
+            "id": 2
+          },
+          {
+            "start": 718.33,
+            "end": 997.41,
+            "title": "Chapitre 4",
+            "id": 3
+          },
+          {
+            "start": 997.41,
+            "end": 1240.964,
+            "title": "Chapitre 5",
+            "id": 4
+          },
+          {
+            "start": 1240.964,
+            "end": 1342.272,
+            "title": "Chapitre 6",
+            "id": 5
+          },
+          {
+            "start": 1342.272,
+            "end": 1617.428,
+            "title": "Chapitre 7",
+            "id": 6
+          },
+          {
+            "start": 1617.428,
+            "end": 1958.32,
+            "title": "Chapitre 8",
+            "id": 7
+          },
+          {
+            "start": 1958.32,
+            "end": 2105.766,
+            "title": "Chapitre 9",
+            "id": 8
+          },
+          {
+            "start": 2105.766,
+            "end": 2564.406,
+            "title": "Chapitre 10",
+            "id": 9
+          },
+          {
+            "start": 2564.406,
+            "end": 2685.985,
+            "title": "Chapitre 11",
+            "id": 10
+          },
+          {
+            "start": 2685.985,
+            "end": 2758.268,
+            "title": "Chapitre 12",
+            "id": 11
+          },
+          {
+            "start": 2758.268,
+            "end": 3071.11,
+            "title": "Chapitre 13",
+            "id": 12
+          },
+          {
+            "start": 3071.11,
+            "end": 3323.162,
+            "title": "Chapitre 14",
+            "id": 13
+          },
+          {
+            "start": 3323.162,
+            "end": 3634.03,
+            "title": "Chapitre 15",
+            "id": 14
+          },
+          {
+            "start": 3634.03,
+            "end": 3763.736,
+            "title": "Chapitre 16",
+            "id": 15
+          },
+          {
+            "start": 3763.736,
+            "end": 3978.311,
+            "title": "Chapitre 17",
+            "id": 16
+          },
+          {
+            "start": 3978.311,
+            "end": 4063.876,
+            "title": "Chapitre 18",
+            "id": 17
+          },
+          {
+            "start": 4063.876,
+            "end": 4124.456,
+            "title": "Chapitre 19",
+            "id": 18
+          },
+          {
+            "start": 4124.456,
+            "end": 4262.498,
+            "title": "Chapitre 20",
+            "id": 19
+          },
+          {
+            "start": 4262.498,
+            "end": 4780.651,
+            "title": "Chapitre 21",
+            "id": 20
+          },
+          {
+            "start": 4780.651,
+            "end": 4859.691,
+            "title": "Chapitre 22",
+            "id": 21
+          },
+          {
+            "start": 4859.691,
+            "end": 4901.533,
+            "title": "Chapitre 23",
+            "id": 22
+          },
+          {
+            "start": 4901.533,
+            "end": 5214.073,
+            "title": "Chapitre 24",
+            "id": 23
+          },
+          {
+            "start": 5214.073,
+            "end": 5526.102,
+            "title": "Chapitre 25",
+            "id": 24
+          },
+          {
+            "start": 5526.102,
+            "end": 6208.791,
+            "title": "Chapitre 26",
+            "id": 25
+          },
+          {
+            "start": 6208.791,
+            "end": 6521.934,
+            "title": "Chapitre 27",
+            "id": 26
+          }
+        ],
+        "embeddedCoverArt": "mjpeg",
+        "metaTags": {
+          "tagAlbum": "Le Petit Prince",
+          "tagArtist": "Antoine de Saint-Exupéry",
+          "tagGenre": "Classiques; Jeunesse",
+          "tagTitle": "Le Petit Prince",
+          "tagTrack": "1",
+          "tagAlbumArtist": "Antoine de Saint-Exupéry",
+          "tagDate": "1943",
+          "tagComposer": "Bernard Giraudeau",
+          "tagPublisher": "Folio Junior",
+          "tagComment": "<p>Imaginez-vous perdu dans le désert, loin de tout lieu habité, et face à un petit garçon tout blond, surgi de nulle part. Si de surcroît ce petit garçon vous demande avec insistance de dessiner un mouton, vous voilà plus qu'étonné ! À partir de là, vous n'aurez plus qu'une seule interrogation : savoir d'où vient cet étrange petit bonhomme et connaître son histoire.<br>S'ouvre alors un monde étrange et poétique, peuplé de métaphores, décrit à travers les paroles d'un \"petit prince\" qui porte aussi sur notre monde à nous un regard tout neuf, empli de naïveté, de fraîcheur et de gravité. Très vite, vous découvrez d'étranges planètes, peuplées d'hommes d'affaires, de buveurs, de vaniteux, d'allumeurs de réverbères.<br><br>Cette évocation onirique, à laquelle participent les aquarelles de l'auteur, a tout d'un parcours initiatique, où l'enfant apprendra les richesses essentielles des rapports humains et le secret qui les régit : \"On ne voit bien qu'avec le coeur, l'essentiel est invisible pour les yeux.\"<br><br>Oeuvre essentielle de la littérature, ce livre de Saint-Exupéry est un ouvrage que l'on aura à coeur de raconter à son enfant, page après page, histoire aussi de redécouvrir l'enfant que l'on était autrefois, avant de devenir une grande personne !</p>",
+          "tagDescription": "<p>Imaginez-vous perdu dans le désert, loin de tout lieu habité, et face à un petit garçon tout blond, surgi de nulle part. Si de surcroît ce petit garçon vous demande avec insistance de dessiner un mouton, vous voilà plus qu'étonné ! À partir de là, vous n'aurez plus qu'une seule interrogation : savoir d'où vient cet étrange petit bonhomme et connaître son histoire.<br>S'ouvre alors un monde étrange et poétique, peuplé de métaphores, décrit à travers les paroles d'un \"petit prince\" qui porte aussi sur notre monde à nous un regard tout neuf, empli de naïveté, de fraîcheur et de gravité. Très vite, vous découvrez d'étranges planètes, peuplées d'hommes d'affaires, de buveurs, de vaniteux, d'allumeurs de réverbères.<br><br>Cette évocation onirique, à laquelle participent les aquarelles de l'auteur, a tout d'un parcours initiatique, où l'enfant apprendra les richesses essentielles des rapports humains et le secret qui les régit : \"On ne voit bien qu'avec le coeur, l'essentiel est invisible pour les yeux.\"<br><br>Oeuvre essentielle de la littérature, ce livre de Saint-Exupéry est un ouvrage que l'on aura à coeur de raconter à son enfant, page après page, histoire aussi de redécouvrir l'enfant que l'on était autrefois, avant de devenir une grande personne !</p>",
+          "tagEncoder": "Lavf62.3.100",
+          "tagLanguage": "fr",
+          "tagASIN": "B00YN5VOVM"
+        },
+        "mimeType": "audio/mp4",
+        "title": "Le Petit Prince [fr] (1943).m4b",
+        "startOffset": 0,
+        "contentUrl": "/api/items/f7168176-f295-4fee-b0cc-37e190ef167c/file/-7296498923081887959"
+      }
+    ]
+  },
+  "numFiles": 4,
+  "size": 209080057,
+  "lastScan": 1795783749933,
+  "scanVersion": "2.38.0",
+  "libraryFiles": [
+    {
+      "ino": "4271701071466068414",
+      "metadata": {
+        "filename": "Le Petit Prince [fr] (1943).epub",
+        "ext": ".epub",
+        "path": "/library/books/Antoine de Saint-Exupéry/Le Petit Prince [fr] (1943)/Le Petit Prince [fr] (1943).epub",
+        "relPath": "Le Petit Prince [fr] (1943).epub",
+        "size": 508247,
+        "mtimeMs": 1794401728491,
+        "ctimeMs": 1794614954928,
+        "birthtimeMs": 0
+      },
+      "isSupplementary": false,
+      "addedAt": 1795783700818,
+      "updatedAt": 1795783700818,
+      "fileType": "ebook"
+    },
+    {
+      "ino": "-7296498923081887959",
+      "metadata": {
+        "filename": "Le Petit Prince [fr] (1943).m4b",
+        "ext": ".m4b",
+        "path": "/library/books/Antoine de Saint-Exupéry/Le Petit Prince [fr] (1943)/Le Petit Prince [fr] (1943).m4b",
+        "relPath": "Le Petit Prince [fr] (1943).m4b",
+        "size": 104321748,
+        "mtimeMs": 1794401729501,
+        "ctimeMs": 1794614956057,
+        "birthtimeMs": 0
+      },
+      "isSupplementary": null,
+      "addedAt": 1795783700818,
+      "updatedAt": 1795783700818,
+      "fileType": "audio"
+    },
+    {
+      "ino": "-5114958411028282594",
+      "metadata": {
+        "filename": "Le Petit Prince [fr] (1943).readaloud.epub",
+        "ext": ".epub",
+        "path": "/library/books/Antoine de Saint-Exupéry/Le Petit Prince [fr] (1943)/Le Petit Prince [fr] (1943).readaloud.epub",
+        "relPath": "Le Petit Prince [fr] (1943).readaloud.epub",
+        "size": 104216369,
+        "mtimeMs": 1794401730591,
+        "ctimeMs": 1794614957227,
+        "birthtimeMs": 0
+      },
+      "isSupplementary": true,
+      "addedAt": 1795783700818,
+      "updatedAt": 1795783700818,
+      "fileType": "ebook"
+    },
+    {
+      "ino": "1645732443563076730",
+      "metadata": {
+        "filename": "cover.jpg",
+        "ext": ".jpg",
+        "path": "/library/books/Antoine de Saint-Exupéry/Le Petit Prince [fr] (1943)/cover.jpg",
+        "relPath": "cover.jpg",
+        "size": 33693,
+        "mtimeMs": 1636035946154,
+        "ctimeMs": 1794375460516,
+        "birthtimeMs": 0
+      },
+      "isSupplementary": null,
+      "addedAt": 1795783700818,
+      "updatedAt": 1795783700818,
+      "fileType": "image"
+    }
+  ]
+}
