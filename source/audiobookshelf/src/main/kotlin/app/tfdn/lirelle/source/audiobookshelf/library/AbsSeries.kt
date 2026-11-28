@@ -89,7 +89,7 @@ private fun AbsRemote.series(series: AbsSeriesDto, books: List<AbsItemDto>, read
 )
 
 /** The order a series' books are asked in: their places in it. */
-private val BySequence = mapOf("sort" to "sequence")
+internal val BySequence = mapOf("sort" to "sequence")
 
 /** The order the series are asked in, which the device sorts again anyway. */
 private const val ByName = "name"

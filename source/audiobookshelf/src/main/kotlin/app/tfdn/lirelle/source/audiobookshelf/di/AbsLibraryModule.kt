@@ -15,9 +15,12 @@ import app.tfdn.lirelle.core.session.profile.ProfileComponent
 import app.tfdn.lirelle.core.session.profile.ProfileScoped
 import app.tfdn.lirelle.core.session.profile.SourceOf
 import app.tfdn.lirelle.source.audiobookshelf.history.EmptyAbsHistory
+import app.tfdn.lirelle.source.audiobookshelf.library.AbsLibrary
+import app.tfdn.lirelle.source.audiobookshelf.library.AbsProfileServer
+import app.tfdn.lirelle.source.audiobookshelf.library.AbsProgress
+import app.tfdn.lirelle.source.audiobookshelf.library.AbsWholeLibrary
 import app.tfdn.lirelle.source.audiobookshelf.library.EmptyAbsAudio
 import app.tfdn.lirelle.source.audiobookshelf.library.EmptyAbsAudioBookmarks
-import app.tfdn.lirelle.source.audiobookshelf.library.EmptyAbsLibrary
 import app.tfdn.lirelle.source.audiobookshelf.library.EmptyAbsMarks
 import app.tfdn.lirelle.source.audiobookshelf.library.EmptyAbsReadAlong
 import app.tfdn.lirelle.source.audiobookshelf.library.EmptyAbsReader
@@ -56,17 +59,19 @@ private val AbsCapabilities = SourceCapabilities(
 
 /**
  * What the open profile's Audiobookshelf server says of its books, its readings, its listenings and its history —
- * nothing until the library is browsed (#67), listened to (#68) and read (#69) — and what it can do, the same for
- * every Audiobookshelf server. Made with the profile, and gone with it.
+ * its library from its server, nothing more until it is listened to (#68) and read (#69) — and what it can do, the
+ * same for every Audiobookshelf server. Made with the profile, and gone with it.
  */
 @Module
 @InstallIn(ProfileComponent::class)
 internal object AbsLibraryModule {
 
+    /** The library, from the profile's way to its server, its progress and what it keeps ([AbsLibraryStateModule]). */
     @Provides
     @ProfileScoped
     @SourceOf(ServerKind.Audiobookshelf)
-    fun library(): LibraryRepository = EmptyAbsLibrary()
+    fun library(server: AbsProfileServer, progress: AbsProgress, whole: AbsWholeLibrary): LibraryRepository =
+        AbsLibrary(server, progress, whole)
 
     @Provides
     @ProfileScoped
