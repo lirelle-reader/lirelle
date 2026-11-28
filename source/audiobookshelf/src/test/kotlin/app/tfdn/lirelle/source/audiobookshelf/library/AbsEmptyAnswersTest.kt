@@ -117,7 +117,8 @@ class AbsEmptyAnswersTest {
         assertThat(refusals.refusal(response(503))).isEqualTo(ApiError.ServerFailed)
         assertThat(refusals.refusal(response(429))).isEqualTo(ApiError.TooManyAttempts)
         assertThat(refusals.refusal(response(401))).isEqualTo(ApiError.SessionExpired)
-        assertThat(refusals.refusal(response(403))).isEqualTo(ApiError.Unexpected)
+        // What the account may not see is not found, as everywhere else the profile's token is refused it.
+        assertThat(refusals.refusal(response(403))).isEqualTo(ApiError.NotFound)
     }
 
     @Test
