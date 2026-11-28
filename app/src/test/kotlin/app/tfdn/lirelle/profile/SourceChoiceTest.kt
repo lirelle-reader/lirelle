@@ -104,7 +104,7 @@ private val AbsSession = Session(
  * collections and playlists, Search, the Books list's sorts and filters, a Library that opens on its books and always
  * shows one library; nothing of listening or reading yet.
  */
-private val AbsCapabilities = SourceCapabilities(
+internal val AbsCapabilities = SourceCapabilities(
     audiobooks = false,
     readAlong = false,
     annotations = false,
@@ -129,7 +129,7 @@ private val AbsCapabilities = SourceCapabilities(
  * or series counts, a Library that opens on its series, its reading sessions and History, and its text files read
  * only with the account's right to download.
  */
-private val KavitaCapabilities = SourceCapabilities(
+internal val KavitaCapabilities = SourceCapabilities(
     audiobooks = false,
     readAlong = false,
     annotations = false,

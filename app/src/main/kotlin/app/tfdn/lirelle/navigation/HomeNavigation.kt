@@ -58,7 +58,7 @@ fun NavGraphBuilder.homeDestinations(
         val onOpenBook = entry.ifResumedWith<BookId> { navController.navigate(BookDestination(it.value)) }
         val asRow = hiltViewModel<HomeListViewModel>().seesAllAsRow(kind)
         // Null whenever the row opens its own screen: always for Continue and Up next, for every row when the
-        // source cannot list all its books.
+        // source cannot list all its books or lists them one library at a time.
         when (kind.takeUnless { asRow }) {
             null, HomeRowKind.Continue, HomeRowKind.UpNext -> HomeRowScreen(kind, onBack, onOpenBook)
             HomeRowKind.WantToRead -> BookListDetailScreen(
@@ -82,7 +82,9 @@ private const val WantToReadKey = "want-to-read"
 
 /**
  * Whether "See all" of a Home row opens the row's own screen rather than a list of the library's books: always for
- * Continue and Up next, and for every row when the source cannot list its books.
+ * Continue and Up next, and for every row when the source cannot list its books, or lists them one library at a time
+ * while its rows span every library (Audiobookshelf's Recently added, merged newest first).
  */
 internal fun HomeRowKind.seeAllAsRow(capabilities: SourceCapabilities): Boolean =
-    this == HomeRowKind.Continue || this == HomeRowKind.UpNext || !capabilities.libraryBooks
+    this == HomeRowKind.Continue || this == HomeRowKind.UpNext || !capabilities.libraryBooks ||
+        capabilities.libraryAlwaysChosen

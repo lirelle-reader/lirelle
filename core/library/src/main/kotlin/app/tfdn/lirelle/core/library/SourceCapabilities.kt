@@ -52,11 +52,14 @@ data class SourceCapabilities(
     val libraryAlwaysChosen: Boolean = false,
 ) {
     companion object {
-        /** A source that can do everything the app shows, whose Library opens on its books. */
+        /**
+         * A source that can do everything the app shows but playlists, whose Library opens on its books: BookOrbit,
+         * which has none.
+         */
         val Everything = SourceCapabilities(
             audiobooks = true, readAlong = true, annotations = true, audioBookmarks = true, ratings = true,
             readingSessions = true, genres = true, authors = true, history = true,
-            homeRows = HomeRowKind.entries.toSet(), shelfKinds = ShelfKind.entries.toSet(),
+            homeRows = HomeRowKind.entries.toSet(), shelfKinds = ShelfKind.entries.toSet() - ShelfKind.Playlist,
             searchKinds = SearchKind.entries.toSet(), bookSorts = BookSort.entries.toSet(),
             statusFilters = StatusFilter.entries.toSet(), formatFilters = FormatFilter.entries.toSet(),
             libraryStart = LibraryStart.Books,

@@ -54,7 +54,10 @@ class ShelvesTest {
 
     private fun text(id: Int) = context.getString(id)
 
-    private fun showTab(capabilities: SourceCapabilities = SourceCapabilities.Everything) {
+    /** Every kind of shelf, playlists too, which no source but Audiobookshelf has. */
+    private val everyShelf = SourceCapabilities.Everything.copy(shelfKinds = ShelfKind.entries.toSet())
+
+    private fun showTab(capabilities: SourceCapabilities = everyShelf) {
         val viewModel = ShelvesViewModel(repository, capabilities)
         compose.setContent { LirelleTheme { ShelvesTab(onOpenShelf = { opened += it }, viewModel = viewModel) } }
     }

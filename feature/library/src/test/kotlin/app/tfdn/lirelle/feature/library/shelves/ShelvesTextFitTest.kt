@@ -42,7 +42,10 @@ class ShelvesTextFitTest(language: String, fontScale: Float) {
     @Test
     fun `smart lists, collections and playlists`() {
         val repository = FakeLibraryRepository().apply { shelvesResult = ApiResult.Success(shelves) }
-        val viewModel = ShelvesViewModel(repository, SourceCapabilities.Everything)
+        val viewModel = ShelvesViewModel(
+            repository,
+            SourceCapabilities.Everything.copy(shelfKinds = ShelfKind.entries.toSet()),
+        )
         compose.setContent { LirelleTheme { ShelvesTab(onOpenShelf = {}, viewModel = viewModel) } }
 
         compose.onNodeWithText(compose.activity.getString(R.string.shelves_playlists)).assertIsDisplayed()
