@@ -22,6 +22,7 @@ import app.tfdn.lirelle.core.network.ApiResult
 import app.tfdn.lirelle.core.network.LoginOptions
 import app.tfdn.lirelle.core.network.OidcProvider
 import app.tfdn.lirelle.core.network.OidcRedirectRelay
+import app.tfdn.lirelle.core.network.OidcStart
 import app.tfdn.lirelle.core.testing.FakeAuthRepository
 import app.tfdn.lirelle.core.testing.TestUserAgent
 import com.google.common.truth.Truth.assertThat
@@ -134,6 +135,30 @@ class SignInRouteTest {
         // No browser is known to have Auth Tab here: whatever handles the link gets it.
         assertThat(request.`package`).isNull()
         providerButton().assertIsNotEnabled()
+    }
+
+    @Test
+    fun `the auth tab watches for the scheme the server's kind returns on`() {
+        auth.beginOidcResult = ApiResult.Success(OidcStart("https://auth.example.com/authorize", "audiobookshelf"))
+        installBrowser(authTab = true)
+        show()
+
+        val request = startSignIn()
+
+        assertThat(request.dataString).isEqualTo("https://auth.example.com/authorize")
+        assertThat(request.getStringExtra(AuthTabIntent.EXTRA_REDIRECT_SCHEME)).isEqualTo("audiobookshelf")
+    }
+
+    @Test
+    fun `a start that names no return scheme is not opened in the browser`() {
+        auth.beginOidcResult = ApiResult.Success(OidcStart("https://auth.example.com/authorize", redirectScheme = null))
+        show()
+
+        providerButton().performClick()
+
+        compose.onNodeWithText(application.getString(R.string.error_browser_unavailable)).assertIsDisplayed()
+        assertThat(shadowOf(compose.activity).nextStartedActivityForResult).isNull()
+        assertThat(auth.calls).contains("cancelOidc")
     }
 
     @Test

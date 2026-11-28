@@ -8,6 +8,7 @@ import app.tfdn.lirelle.core.network.AuthRepository
 import app.tfdn.lirelle.core.network.LoginOptions
 import app.tfdn.lirelle.core.network.OidcProvider
 import app.tfdn.lirelle.core.network.OidcRedirectRelay
+import app.tfdn.lirelle.core.network.OidcStart
 import app.tfdn.lirelle.core.network.ProviderFlow
 import app.tfdn.lirelle.core.network.UserAgent
 import app.tfdn.lirelle.core.session.ServerKind
@@ -135,10 +136,10 @@ class SignInViewModel @AssistedInject constructor(
     /** The sign-in with a key the user pasted, on a server that takes one. */
     val pastedKey: KeySignIn
 
-    private val browserChannel = Channel<String>(Channel.BUFFERED)
+    private val browserChannel = Channel<OidcStart>(Channel.BUFFERED)
 
-    /** Authorization URLs to open in a browser tab. */
-    val browserUrls: Flow<String> = browserChannel.receiveAsFlow()
+    /** Sign-ins to open in a browser tab: the authorization URL, and the scheme its redirect comes back on. */
+    val browserUrls: Flow<OidcStart> = browserChannel.receiveAsFlow()
 
     private val signedInChannel = Channel<Unit>(Channel.BUFFERED)
 
@@ -245,7 +246,7 @@ class SignInViewModel @AssistedInject constructor(
             when (val result = auth.beginOidc(state.value.serverUrl, kind, provider)) {
                 is ApiResult.Success -> when (provider.signsInBy) {
                     ProviderFlow.WebView -> providerPage.open(
-                        ProviderPage(state.value.serverUrl, kind, result.value, provider.displayName),
+                        ProviderPage(state.value.serverUrl, kind, result.value.url, provider.displayName),
                     )
                     ProviderFlow.Browser -> {
                         oidc.begin()

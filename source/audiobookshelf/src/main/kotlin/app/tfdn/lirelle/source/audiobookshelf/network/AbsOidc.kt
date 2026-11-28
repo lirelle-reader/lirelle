@@ -3,6 +3,7 @@ package app.tfdn.lirelle.source.audiobookshelf.network
 import app.tfdn.lirelle.core.network.ApiError
 import app.tfdn.lirelle.core.network.ApiErrorException
 import app.tfdn.lirelle.core.network.ApiResult
+import app.tfdn.lirelle.core.network.OidcStart
 import app.tfdn.lirelle.core.network.Pkce
 import app.tfdn.lirelle.core.session.PendingOidcRequest
 import app.tfdn.lirelle.core.session.PendingOidcStore
@@ -44,9 +45,10 @@ internal class AbsOidc(
 
     /**
      * Begins a sign-in on [serverUrl], returning to Lirelle's own address when the server allows it and to the
-     * official app's otherwise; the provider's page to open in the browser, as the server gave it.
+     * official app's otherwise; the provider's page to open in the browser, as the server gave it, with the scheme of
+     * the address taken: the browser must watch for that one, the return comes nowhere else.
      */
-    suspend fun begin(serverUrl: String): ApiResult<String> = errors.call(AbsCall.Other) {
+    suspend fun begin(serverUrl: String): ApiResult<OidcStart> = errors.call(AbsCall.Other) {
         val state = Pkce.randomToken()
         val verifier = Pkce.randomToken()
         val challenge = Pkce.challenge(verifier)
@@ -57,7 +59,7 @@ internal class AbsOidc(
         pendingOidc.save(
             PendingOidcRequest(serverUrl, ProviderSlug, state, verifier, "", begunAt, begun.address, begun.cookies),
         )
-        begun.providerPage
+        OidcStart(begun.providerPage, redirectScheme = begun.address.substringBefore(':'))
     }
 
     /** The first call returning to [address]; null when the server does not allow that address. */

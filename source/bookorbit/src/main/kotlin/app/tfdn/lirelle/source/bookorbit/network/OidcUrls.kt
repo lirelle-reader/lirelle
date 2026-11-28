@@ -6,6 +6,9 @@ import okhttp3.HttpUrl.Companion.toHttpUrl
 /** The only redirect URI the BookOrbit server accepts from native clients. */
 internal const val OidcRedirectUri = "bookorbit://oauth2-callback"
 
+/** The scheme of [OidcRedirectUri], which the browser's Auth Tab watches for. */
+internal const val OidcRedirectScheme = "bookorbit"
+
 // The six parameters are the OAuth authorization request itself.
 @Suppress("LongParameterList")
 internal fun buildAuthorizationUrl(

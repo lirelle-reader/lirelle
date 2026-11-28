@@ -4,6 +4,7 @@ import app.cash.turbine.test
 import app.tfdn.lirelle.core.network.ApiError
 import app.tfdn.lirelle.core.network.ApiResult
 import app.tfdn.lirelle.core.network.OidcProvider
+import app.tfdn.lirelle.core.network.OidcStart
 import app.tfdn.lirelle.core.network.OidcRedirectRelay
 import app.tfdn.lirelle.core.network.ProviderFlow
 import app.tfdn.lirelle.core.session.ServerKind
@@ -32,7 +33,7 @@ class ProviderPageSignInTest {
     private val auth = FakeAuthRepository().apply {
         serverUrl.value = Server
         serverKind.value = ServerKind.Komga
-        beginOidcResult = ApiResult.Success(Start)
+        beginOidcResult = ApiResult.Success(OidcStart(Start, redirectScheme = null))
     }
     private val provider = OidcProvider("authentik", "Authentik", "", "", ProviderFlow.WebView)
 

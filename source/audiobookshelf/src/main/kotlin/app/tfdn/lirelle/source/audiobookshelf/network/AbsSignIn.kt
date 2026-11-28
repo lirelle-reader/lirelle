@@ -5,6 +5,7 @@ import app.tfdn.lirelle.core.network.ApiResult
 import app.tfdn.lirelle.core.network.LoginOptions
 import app.tfdn.lirelle.core.network.NoPastedKey
 import app.tfdn.lirelle.core.network.OidcProvider
+import app.tfdn.lirelle.core.network.OidcStart
 import app.tfdn.lirelle.core.network.PastedKeySignIn
 import app.tfdn.lirelle.core.network.ProviderFlow
 import app.tfdn.lirelle.core.network.SignInIdentifier
@@ -82,7 +83,7 @@ internal class AbsSignIn(
         }
 
     /** The server has one provider, [ProviderSlug]: whichever [provider] is asked for, it is that one. */
-    override suspend fun beginOidc(serverUrl: String, provider: OidcProvider): ApiResult<String> =
+    override suspend fun beginOidc(serverUrl: String, provider: OidcProvider): ApiResult<OidcStart> =
         oidc.begin(serverUrl)
 
     override suspend fun completeOidc(redirectUri: String): ApiResult<Unit> = oidc.complete(redirectUri)

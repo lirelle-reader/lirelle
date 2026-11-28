@@ -7,6 +7,7 @@ import app.tfdn.lirelle.core.network.DeviceLabelProvider
 import app.tfdn.lirelle.core.network.LoginOptions
 import app.tfdn.lirelle.core.network.NoPastedKey
 import app.tfdn.lirelle.core.network.OidcProvider
+import app.tfdn.lirelle.core.network.OidcStart
 import app.tfdn.lirelle.core.network.PastedKeySignIn
 import app.tfdn.lirelle.core.network.Pkce
 import app.tfdn.lirelle.core.network.ProviderFlow
@@ -94,14 +95,15 @@ internal class BookOrbitSignIn(
             store.saveAndEndReplaced(dto.toSession(serverUrl), publicApi)
         }
 
-    override suspend fun beginOidc(serverUrl: String, provider: OidcProvider): ApiResult<String> =
+    /** The provider's page, to open in the browser, which comes back on [OidcRedirectScheme]. */
+    override suspend fun beginOidc(serverUrl: String, provider: OidcProvider): ApiResult<OidcStart> =
         errors.call(CallKind.Other) {
             val dto = publicApi.forServer(serverUrl).oidcState(provider.slug)
             val verifier = Pkce.randomToken()
             val nonce = Pkce.randomToken()
             val begunAt = now().toEpochMilli()
             pendingOidc.save(PendingOidcRequest(serverUrl, provider.slug, dto.state, verifier, nonce, begunAt))
-            buildAuthorizationUrl(
+            val url = buildAuthorizationUrl(
                 authorizationEndpoint = dto.authorizationEndpoint,
                 clientId = provider.clientId,
                 scopes = provider.scopes,
@@ -109,6 +111,7 @@ internal class BookOrbitSignIn(
                 nonce = nonce,
                 codeChallenge = Pkce.challenge(verifier),
             )
+            OidcStart(url, OidcRedirectScheme)
         }
 
     override suspend fun completeOidc(redirectUri: String): ApiResult<Unit> {

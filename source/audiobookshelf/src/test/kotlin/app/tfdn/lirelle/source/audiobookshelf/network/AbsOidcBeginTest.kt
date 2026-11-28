@@ -3,6 +3,7 @@ package app.tfdn.lirelle.source.audiobookshelf.network
 import app.tfdn.lirelle.core.network.ApiError
 import app.tfdn.lirelle.core.network.ApiResult
 import app.tfdn.lirelle.core.network.OidcProvider
+import app.tfdn.lirelle.core.network.OidcStart
 import app.tfdn.lirelle.core.network.Pkce
 import app.tfdn.lirelle.core.network.ProviderFlow
 import app.tfdn.lirelle.source.audiobookshelf.testing.AbsOidcServer
@@ -58,7 +59,8 @@ class AbsOidcBeginTest {
         val begun = signIn.beginOidc(url, Provider)
 
         val pending = pendingOidc.pending!!
-        assertThat(begun).isEqualTo(ApiResult.Success(providerPage(pending.state)))
+        // The Auth Tab watches for Lirelle's own scheme: the return comes there.
+        assertThat(begun).isEqualTo(ApiResult.Success(OidcStart(providerPage(pending.state), "lirelle")))
         val first = server.takeRequest()
         assertThat(first.method).isEqualTo("GET")
         assertThat(first.pathText()).isEqualTo("/auth/openid")
@@ -98,7 +100,8 @@ class AbsOidcBeginTest {
         val begun = signIn.beginOidc(url, Provider)
 
         val pending = pendingOidc.pending!!
-        assertThat(begun).isEqualTo(ApiResult.Success(providerPage(pending.state)))
+        // The Auth Tab watches for the official app's scheme: the return comes there, not to Lirelle's.
+        assertThat(begun).isEqualTo(ApiResult.Success(OidcStart(providerPage(pending.state), "audiobookshelf")))
         val first = server.takeRequest()
         val second = server.takeRequest()
         assertThat(first.query("redirect_uri")).isEqualTo("lirelle://oauth")

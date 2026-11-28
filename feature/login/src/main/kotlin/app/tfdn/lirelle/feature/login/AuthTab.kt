@@ -7,15 +7,13 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.browser.auth.AuthTabIntent
 import androidx.browser.customtabs.CustomTabsClient
 import androidx.core.net.toUri
-
-/** Scheme of the only redirect URI the BookOrbit server accepts, `bookorbit://oauth2-callback`. */
-internal const val OidcRedirectScheme = "bookorbit"
+import app.tfdn.lirelle.core.network.OidcStart
 
 /**
  * The package of the default browser when it can open an Auth Tab, else null.
  *
  * An Auth Tab watches for the redirect itself and hands it back as an activity result. A
- * plain Custom Tab has to navigate to the `bookorbit:` link instead, which Chromium blocks
+ * plain Custom Tab has to navigate to the redirect link instead, which Chromium blocks
  * when the provider's page gets there by script, as Authentik's does.
  */
 internal fun authTabBrowser(context: Context): String? =
@@ -23,16 +21,23 @@ internal fun authTabBrowser(context: Context): String? =
         ?.takeIf { CustomTabsClient.isAuthTabSupported(context, it) }
 
 /**
- * Opens [url] for sign-in: in an Auth Tab of [authTabBrowser] when there is one, else in
- * whatever answers, where browsers without Auth Tab show a Custom Tab. Returns false when
- * nothing on the device can open [url].
+ * Opens the URL of [start] for sign-in: in an Auth Tab of [authTabBrowser] when there is one,
+ * watching for the scheme its redirect comes back on, else in whatever answers, where browsers
+ * without Auth Tab show a Custom Tab. Returns false when nothing on the device can open it, and
+ * when [start] names no scheme to come back on: such a sign-in ends in a WebView of the app.
  */
-internal fun openForSignIn(launcher: ActivityResultLauncher<Intent>, url: String, authTabBrowser: String?): Boolean {
+internal fun openForSignIn(
+    launcher: ActivityResultLauncher<Intent>,
+    start: OidcStart,
+    authTabBrowser: String?,
+): Boolean {
+    val redirectScheme = start.redirectScheme ?: return false
     val authTab = AuthTabIntent.Builder().build()
     // The browser that was checked is the one that must answer, not another handler of the link.
     authTabBrowser?.let(authTab.intent::setPackage)
     return try {
-        authTab.launch(launcher, url.toUri(), OidcRedirectScheme)
+        // A tab watching another scheme would let the redirect go by and answer "cancelled".
+        authTab.launch(launcher, start.url.toUri(), redirectScheme)
         true
     } catch (_: ActivityNotFoundException) {
         false

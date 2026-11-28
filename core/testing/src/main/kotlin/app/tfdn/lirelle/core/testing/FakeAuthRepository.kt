@@ -5,6 +5,7 @@ import app.tfdn.lirelle.core.network.ApiResult
 import app.tfdn.lirelle.core.network.AuthRepository
 import app.tfdn.lirelle.core.network.LoginOptions
 import app.tfdn.lirelle.core.network.OidcProvider
+import app.tfdn.lirelle.core.network.OidcStart
 import app.tfdn.lirelle.core.session.Credential
 import app.tfdn.lirelle.core.session.ServerKind
 import app.tfdn.lirelle.core.session.SessionState
@@ -39,7 +40,8 @@ class FakeAuthRepository : AuthRepository {
         ApiResult.Success(LoginOptions(passwordEnabled = true, oidcProviders = emptyList()))
     var signInResult: ApiResult<Unit> = ApiResult.Success(Unit)
     var signInWithKeyResult: ApiResult<Unit> = ApiResult.Success(Unit)
-    var beginOidcResult: ApiResult<String> = ApiResult.Success("https://auth.example.com/authorize?state=state-1")
+    var beginOidcResult: ApiResult<OidcStart> =
+        ApiResult.Success(OidcStart("https://auth.example.com/authorize?state=state-1", redirectScheme = "bookorbit"))
     var completeOidcResult: ApiResult<Unit> = ApiResult.Success(Unit)
     var completeWithSessionResult: ApiResult<Unit> = ApiResult.Success(Unit)
 
@@ -102,7 +104,7 @@ class FakeAuthRepository : AuthRepository {
         return signInWithKeyResult
     }
 
-    override suspend fun beginOidc(serverUrl: String, kind: ServerKind, provider: OidcProvider): ApiResult<String> {
+    override suspend fun beginOidc(serverUrl: String, kind: ServerKind, provider: OidcProvider): ApiResult<OidcStart> {
         calls += "beginOidc $serverUrl ${provider.slug}"
         kinds += kind
         gate?.await()

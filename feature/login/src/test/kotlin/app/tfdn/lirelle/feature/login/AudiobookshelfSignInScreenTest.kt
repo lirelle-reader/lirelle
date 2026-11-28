@@ -9,9 +9,11 @@ import androidx.test.core.app.ApplicationProvider
 import app.cash.turbine.test
 import app.tfdn.lirelle.core.designsystem.LirelleTheme
 import app.tfdn.lirelle.core.network.ApiError
+import app.tfdn.lirelle.core.network.ApiResult
 import app.tfdn.lirelle.core.network.LoginOptions
 import app.tfdn.lirelle.core.network.OidcProvider
 import app.tfdn.lirelle.core.network.OidcRedirectRelay
+import app.tfdn.lirelle.core.network.OidcStart
 import app.tfdn.lirelle.core.network.ProviderFlow
 import app.tfdn.lirelle.core.session.ServerKind
 import app.tfdn.lirelle.core.testing.FakeAuthRepository
@@ -124,7 +126,11 @@ class AudiobookshelfSignInScreenTest {
     @Test
     fun `the provider is begun on the Audiobookshelf kind and its address is sent to the browser`() =
         runTest(mainRule.dispatcher) {
-            val auth = FakeAuthRepository().apply { serverUrl.value = "https://abs.example.com" }
+            val start = OidcStart("https://auth.example.com/authorize?state=state-1", redirectScheme = "audiobookshelf")
+            val auth = FakeAuthRepository().apply {
+                serverUrl.value = "https://abs.example.com"
+                beginOidcResult = ApiResult.Success(start)
+            }
             val viewModel = SignInViewModel(
                 auth,
                 OidcRedirectRelay(),
@@ -135,7 +141,8 @@ class AudiobookshelfSignInScreenTest {
 
             viewModel.browserUrls.test {
                 viewModel.onOidc(openId)
-                assertThat(awaitItem()).isEqualTo("https://auth.example.com/authorize?state=state-1")
+                // With the scheme of the return address the server took, for the Auth Tab to watch.
+                assertThat(awaitItem()).isEqualTo(start)
             }
 
             assertThat(auth.calls).contains("beginOidc https://abs.example.com openid")

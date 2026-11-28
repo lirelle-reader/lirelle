@@ -93,9 +93,9 @@ fun SignInRoute(
             ?.let(viewModel::onAuthTabResult)
     }
     LaunchedEffect(viewModel, launcher) {
-        viewModel.browserUrls.collect { url ->
+        viewModel.browserUrls.collect { start ->
             val browser = authTabBrowser(context)
-            if (openForSignIn(launcher, url, browser)) {
+            if (openForSignIn(launcher, start, browser)) {
                 viewModel.onBrowserOpened(authTab = browser != null)
             } else {
                 viewModel.onBrowserUnavailable()

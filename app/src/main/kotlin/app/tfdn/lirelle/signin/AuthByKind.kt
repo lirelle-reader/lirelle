@@ -5,6 +5,7 @@ import app.tfdn.lirelle.core.network.ApiResult
 import app.tfdn.lirelle.core.network.AuthRepository
 import app.tfdn.lirelle.core.network.LoginOptions
 import app.tfdn.lirelle.core.network.OidcProvider
+import app.tfdn.lirelle.core.network.OidcStart
 import app.tfdn.lirelle.core.network.ProbeAnswer
 import app.tfdn.lirelle.core.network.ServerProbe
 import app.tfdn.lirelle.core.network.SourceSignIn
@@ -72,7 +73,7 @@ internal class AuthByKind(
     override suspend fun signInWithKey(serverUrl: String, kind: ServerKind, key: String): ApiResult<Unit> =
         signIns.on(kind) { it.signInWithKey(serverUrl, key) }
 
-    override suspend fun beginOidc(serverUrl: String, kind: ServerKind, provider: OidcProvider): ApiResult<String> =
+    override suspend fun beginOidc(serverUrl: String, kind: ServerKind, provider: OidcProvider): ApiResult<OidcStart> =
         signIns.on(kind) { it.beginOidc(serverUrl, provider) }
 
     override suspend fun completeWithSession(serverUrl: String, kind: ServerKind, cookies: String): ApiResult<Unit> =

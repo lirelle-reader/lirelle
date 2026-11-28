@@ -6,6 +6,7 @@ import app.tfdn.lirelle.core.network.ApiResult
 import app.tfdn.lirelle.core.network.LoginOptions
 import app.tfdn.lirelle.core.network.OidcProvider
 import app.tfdn.lirelle.core.network.OidcRedirectRelay
+import app.tfdn.lirelle.core.network.OidcStart
 import app.tfdn.lirelle.core.session.ServerKind
 import app.tfdn.lirelle.core.testing.FakeAuthRepository
 import app.tfdn.lirelle.core.testing.MainDispatcherRule
@@ -308,11 +309,23 @@ class SignInViewModelTest {
 
         viewModel.browserUrls.test {
             viewModel.onOidc(provider)
-            assertThat(awaitItem()).isEqualTo("https://auth.example.com/authorize?state=state-1")
+            assertThat(awaitItem())
+                .isEqualTo(OidcStart("https://auth.example.com/authorize?state=state-1", redirectScheme = "bookorbit"))
         }
 
         assertThat(auth.calls).contains("beginOidc https://books.example.com authentik")
         assertThat(viewModel.state.value.isBusy).isTrue()
+    }
+
+    @Test
+    fun `the browser is asked to watch for the scheme the server's kind returns on`() = runTest(mainRule.dispatcher) {
+        auth.beginOidcResult = ApiResult.Success(OidcStart("https://auth.example.com/authorize", "lirelle"))
+        val viewModel = viewModel()
+
+        viewModel.browserUrls.test {
+            viewModel.onOidc(provider)
+            assertThat(awaitItem().redirectScheme).isEqualTo("lirelle")
+        }
     }
 
     @Test

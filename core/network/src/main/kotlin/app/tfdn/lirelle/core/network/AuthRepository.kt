@@ -4,6 +4,7 @@ import app.tfdn.lirelle.core.session.Credential
 import app.tfdn.lirelle.core.session.ServerKind
 import app.tfdn.lirelle.core.session.SessionState
 import kotlinx.coroutines.flow.StateFlow
+import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
 
 /**
  * An identity provider the server offers to sign in with.
@@ -25,6 +26,18 @@ enum class ProviderFlow {
 
     /** In a WebView of the app, which reads the end of the flow itself. */
     WebView,
+}
+
+/**
+ * The start of a sign-in through a provider: the [url] to open, and the [redirectScheme] its answer comes back to the
+ * app on — the scheme of the return address the server took, which the browser's Auth Tab must watch for: one that
+ * watches another lets the answer go by, as a link the system offers to open. Null for a provider shown in a WebView
+ * of the app ([ProviderFlow.WebView]), whose flow never comes back through a redirect.
+ */
+data class OidcStart(val url: String, val redirectScheme: String?) {
+    /** Only the host of [url]: its query holds the sign-in's state, and this text may end up in logs. */
+    override fun toString(): String =
+        "OidcStart(host=${url.toHttpUrlOrNull()?.host ?: "<redacted>"}, redirectScheme=$redirectScheme)"
 }
 
 /** What the account is named by when it signs in with a password: the field's label, keyboard and autofill. */
@@ -90,10 +103,11 @@ interface AuthRepository {
     suspend fun signInWithKey(serverUrl: String, kind: ServerKind, key: String): ApiResult<Unit>
 
     /**
-     * Prepares an OIDC sign-in and returns the URL to open: in the browser, or in a WebView of the app for a
-     * provider that signs in that way ([OidcProvider.signsInBy]).
+     * Prepares an OIDC sign-in and returns where it starts: the URL to open, in the browser — with the scheme its
+     * redirect comes back on — or in a WebView of the app for a provider that signs in that way
+     * ([OidcProvider.signsInBy]).
      */
-    suspend fun beginOidc(serverUrl: String, kind: ServerKind, provider: OidcProvider): ApiResult<String>
+    suspend fun beginOidc(serverUrl: String, kind: ServerKind, provider: OidcProvider): ApiResult<OidcStart>
 
     /**
      * Finishes the sign-in of a provider shown in a WebView ([ProviderFlow.WebView]) once its page has reached the
