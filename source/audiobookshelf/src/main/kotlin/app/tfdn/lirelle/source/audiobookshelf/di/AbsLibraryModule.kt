@@ -10,6 +10,11 @@ import app.tfdn.lirelle.core.library.ReadAlongRepository
 import app.tfdn.lirelle.core.library.ReaderRepository
 import app.tfdn.lirelle.core.library.SourceCapabilities
 import app.tfdn.lirelle.core.library.model.BookSort
+import app.tfdn.lirelle.core.library.model.FormatFilter
+import app.tfdn.lirelle.core.library.model.HomeRowKind
+import app.tfdn.lirelle.core.library.model.SearchKind
+import app.tfdn.lirelle.core.library.model.ShelfKind
+import app.tfdn.lirelle.core.library.model.StatusFilter
 import app.tfdn.lirelle.core.session.ServerKind
 import app.tfdn.lirelle.core.session.profile.ProfileComponent
 import app.tfdn.lirelle.core.session.profile.ProfileScoped
@@ -29,14 +34,15 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 
 /**
- * What Audiobookshelf can do, the same for every Audiobookshelf server: nothing yet, but connect. Read-along and
- * ratings stay off for good: Audiobookshelf aligns no narration with a book's text, and rates nothing. The rest is
- * turned on by the pull request that makes it work, as the table of the spec says
- * (2026-11-27-066-audiobookshelf-connect-design, §5): browsing with #67, listening with #68, reading as #69 decides.
- * Its Library opens on its books.
+ * What Audiobookshelf can do, the same for every Audiobookshelf server (spec 2026-11-28-067, §9): it can be browsed.
+ * Genres, authors, Home's Continue, Up next and Recently added, its collections and playlists, Search's books, series
+ * and authors, the Books list's sorts (Audiobookshelf sorts by series only within one) and its filters of status and
+ * format. Its Library opens on its books and always shows one library, as Audiobookshelf lists nothing across its
+ * libraries: its selector offers no "All".
  *
- * One sort is declared, the one an empty list of books is in: the Books tab shows its sort whatever the source
- * offers, and a sort with nothing to choose from would open an empty menu.
+ * Read-along and ratings stay off for good: Audiobookshelf aligns no narration with a book's text, and rates nothing.
+ * Listening (#68) turns on audiobooks, their bookmarks, the reading sessions and the History; reading (#69) decides
+ * the annotations.
  */
 private val AbsCapabilities = SourceCapabilities(
     audiobooks = false,
@@ -45,22 +51,24 @@ private val AbsCapabilities = SourceCapabilities(
     audioBookmarks = false,
     ratings = false,
     readingSessions = false,
-    genres = false,
-    authors = false,
+    genres = true,
+    authors = true,
     history = false,
-    homeRows = emptySet(),
-    shelfKinds = emptySet(),
-    searchKinds = emptySet(),
-    bookSorts = setOf(BookSort.Added),
-    statusFilters = emptySet(),
-    formatFilters = emptySet(),
+    homeRows = setOf(HomeRowKind.Continue, HomeRowKind.UpNext, HomeRowKind.RecentlyAdded),
+    shelfKinds = setOf(ShelfKind.Collection, ShelfKind.Playlist),
+    searchKinds = setOf(SearchKind.Books, SearchKind.Series, SearchKind.Authors),
+    bookSorts = setOf(BookSort.Added, BookSort.Title, BookSort.Author, BookSort.Published),
+    statusFilters = setOf(StatusFilter.Unread, StatusFilter.Reading, StatusFilter.Read),
+    formatFilters = setOf(FormatFilter.Audio, FormatFilter.Epub, FormatFilter.Pdf, FormatFilter.Comics),
     libraryStart = LibraryStart.Books,
+    libraryAlwaysChosen = true,
 )
 
 /**
  * What the open profile's Audiobookshelf server says of its books, its readings, its listenings and its history —
- * its library from its server, nothing more until it is listened to (#68) and read (#69) — and what it can do, the
- * same for every Audiobookshelf server. Made with the profile, and gone with it.
+ * its library from its server, nothing more until it is listened to (#68) and read (#69): the reader, the audio,
+ * the bookmarks, the marks, the read-along and the History are empty until then — and what it can do, the same for
+ * every Audiobookshelf server. Made with the profile, and gone with it.
  */
 @Module
 @InstallIn(ProfileComponent::class)

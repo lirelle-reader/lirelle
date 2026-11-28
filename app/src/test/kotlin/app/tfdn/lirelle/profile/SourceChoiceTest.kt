@@ -100,8 +100,9 @@ private val AbsSession = Session(
 )
 
 /**
- * What Audiobookshelf declares once a profile is connected and nothing more (spec 066, §5): nothing, but the one sort
- * its empty list of books is in, and a Library that opens on its books.
+ * What Audiobookshelf declares once its profile can be browsed (spec 067, §9): genres, authors, Home's rows, its
+ * collections and playlists, Search, the Books list's sorts and filters, a Library that opens on its books and always
+ * shows one library; nothing of listening or reading yet.
  */
 private val AbsCapabilities = SourceCapabilities(
     audiobooks = false,
@@ -110,16 +111,17 @@ private val AbsCapabilities = SourceCapabilities(
     audioBookmarks = false,
     ratings = false,
     readingSessions = false,
-    genres = false,
-    authors = false,
+    genres = true,
+    authors = true,
     history = false,
-    homeRows = emptySet(),
-    shelfKinds = emptySet(),
-    searchKinds = emptySet(),
-    bookSorts = setOf(BookSort.Added),
-    statusFilters = emptySet(),
-    formatFilters = emptySet(),
+    homeRows = setOf(HomeRowKind.Continue, HomeRowKind.UpNext, HomeRowKind.RecentlyAdded),
+    shelfKinds = setOf(ShelfKind.Collection, ShelfKind.Playlist),
+    searchKinds = SearchKind.entries.toSet(),
+    bookSorts = setOf(BookSort.Added, BookSort.Title, BookSort.Author, BookSort.Published),
+    statusFilters = setOf(StatusFilter.Unread, StatusFilter.Reading, StatusFilter.Read),
+    formatFilters = FormatFilter.entries.toSet(),
     libraryStart = LibraryStart.Books,
+    libraryAlwaysChosen = true,
 )
 
 /**
