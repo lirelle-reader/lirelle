@@ -15,6 +15,7 @@ import app.tfdn.lirelle.core.network.ApiError
 import app.tfdn.lirelle.core.network.ApiResult
 import app.tfdn.lirelle.source.audiobookshelf.testing.BdId
 import app.tfdn.lirelle.source.audiobookshelf.testing.BrowseRig
+import app.tfdn.lirelle.source.audiobookshelf.testing.InProgressPath
 import app.tfdn.lirelle.source.audiobookshelf.testing.LibraryRoutes
 import app.tfdn.lirelle.source.audiobookshelf.testing.Livres
 import app.tfdn.lirelle.source.audiobookshelf.testing.LivresId
@@ -43,7 +44,7 @@ private const val Classiques = "2bffab16-8cc2-41e9-bfb5-fb0640571fcf"
 
 /**
  * An Audiobookshelf profile's library answers each of the library's questions from its server: its libraries, its
- * books, series, authors and shelves, a series', an author's and a book's page. Home's rows, the search and the
+ * books, series, authors and shelves, Home's rows, a series', an author's and a book's page. The search and the
  * genres stay empty for now, and ask nothing.
  */
 class AbsLibraryTest {
@@ -75,6 +76,7 @@ class AbsLibraryTest {
         routes.answer("/api/collections/$Classiques", fixtureBody("collection-classiques"))
         routes.answer("/api/playlists", fixtureBody("playlists"))
         routes.answer("/api/items/$H2g2", fixtureBody("item-h2g2-expanded"))
+        routes.answer(InProgressPath, fixtureBody("items-in-progress"))
         val rig = BrowseRig(server)
         library = AbsLibrary(rig.profileServer, rig.progress, rig.whole)
     }
@@ -99,6 +101,7 @@ class AbsLibraryTest {
             .containsExactly("Classiques")
         val shelf = BookListSource.Collection(ShelfId("c:$Classiques"))
         assertThat(library.books(shelf, BookListRequest()).items.asSnapshot()).hasSize(3)
+        assertThat((library.homeRow(HomeRowKind.Continue) as ApiResult.Success).value.books).hasSize(5)
     }
 
     @Test
@@ -114,8 +117,7 @@ class AbsLibraryTest {
     }
 
     @Test
-    fun `Home, the search and the genres are empty for now, and ask nothing`() = runBlocking<Unit> {
-        assertThat((library.homeRow(HomeRowKind.Continue) as ApiResult.Success).value.books).isEmpty()
+    fun `the search and the genres are empty for now, and ask nothing`() = runBlocking<Unit> {
         assertThat((library.search("dune") as ApiResult.Success).value.isEmpty).isTrue()
         assertThat(library.genres()).isEqualTo(ApiResult.Success(emptyList<Any>()))
         assertThat(routes.requests()).isEmpty()

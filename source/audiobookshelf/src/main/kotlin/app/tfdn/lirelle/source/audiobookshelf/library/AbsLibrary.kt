@@ -13,6 +13,9 @@ import app.tfdn.lirelle.core.library.model.BookListRequest
 import app.tfdn.lirelle.core.library.model.BookListSource
 import app.tfdn.lirelle.core.library.model.BookReading
 import app.tfdn.lirelle.core.library.model.BookSummary
+import app.tfdn.lirelle.core.library.model.HomeRow
+import app.tfdn.lirelle.core.library.model.HomeRowExtent
+import app.tfdn.lirelle.core.library.model.HomeRowKind
 import app.tfdn.lirelle.core.library.model.RelatedBooks
 import app.tfdn.lirelle.core.library.model.Series
 import app.tfdn.lirelle.core.library.model.SeriesBooks
@@ -25,8 +28,8 @@ import app.tfdn.lirelle.core.network.ApiResult
 /**
  * The lists of an Audiobookshelf profile's library asked of its [server]: its book libraries, the Books list of the
  * one the Library shows ([AbsBookList]), its series ([AbsSeries]), its authors ([people]) and its collections and
- * playlists ([AbsShelves]). Home's rows, the search and the genres stay empty for now ([EmptyAbsLists]);
- * [AbsLibrary] answers the pages.
+ * playlists ([AbsShelves]). The search and the genres stay empty for now ([EmptyAbsLists]); [AbsLibrary]
+ * answers Home's rows and the pages.
  */
 internal abstract class AbsLibraryLists(
     protected val server: AbsProfileServer,
@@ -70,18 +73,23 @@ internal abstract class AbsLibraryLists(
 
 /**
  * An Audiobookshelf profile's library, asked of its server with the profile's token: a library item is a book. Its
- * lists come from [AbsLibraryLists], an author's page from [AbsAuthors], a book's page, reading and related books
- * from [AbsBookPages]. The account's [progress] and what the profile keeps of its server ([whole]) are the profile's
- * own, shared with whatever else of it reads them. Whatever a list's load throws is shown as the error a call with
- * the profile's token meets.
+ * lists come from [AbsLibraryLists], Home's rows from [AbsHome] (whose time [clock] tells, in milliseconds), an
+ * author's page from [AbsAuthors], a book's page, reading and related books from [AbsBookPages]. The account's
+ * [progress] and what the profile keeps of its server ([whole]) are the profile's own, shared with whatever else of
+ * it reads them. Whatever a list's load throws is shown as the error a call with the profile's token meets.
  */
 internal class AbsLibrary(
     server: AbsProfileServer,
     progress: AbsProgress,
     whole: AbsWholeLibrary,
+    clock: () -> Long = ::monotonicMillis,
 ) : AbsLibraryLists(server, progress, whole) {
 
     private val bookPages = AbsBookPages(server, progress, whole)
+    private val home = AbsHome(server, progress, whole, clock)
+
+    override suspend fun homeRow(kind: HomeRowKind, extent: HomeRowExtent): ApiResult<HomeRow> =
+        home.homeRow(kind, extent)
 
     override suspend fun author(authorId: AuthorId): ApiResult<AuthorDetail> = people.author(authorId)
 

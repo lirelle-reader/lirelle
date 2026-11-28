@@ -36,13 +36,17 @@ internal data class AbsInProgressDto(val libraryItems: List<AbsItemDto> = emptyL
 
 /**
  * One of a library's Home shelves (`GET api/libraries/:id/personalized`): `continue-listening`, `recently-added`…
- * Its [entities] are of its [type]: `book` (items), `series` or `authors`, read as such.
+ * Its [entities] are of its [type]: `book` (items), `series` or `authors`, read as such. A shelf with nothing in it
+ * is left out of the answer.
+ *
+ * @property total how many the server holds for the shelf, of which [entities] are the first, as many as asked.
  */
 @Serializable
 internal data class AbsShelfDto(
     val id: String,
     val type: String? = null,
     val entities: List<JsonObject> = emptyList(),
+    val total: Int? = null,
 )
 
 /** A page of a library's series (`GET api/libraries/:id/series`), from page 0; [total] counts them all. */

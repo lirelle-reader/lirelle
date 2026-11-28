@@ -45,6 +45,8 @@ internal data class AbsItemsPageDto(val results: List<AbsItemDto> = emptyList(),
  *
  * @property addedAt when it was added, in milliseconds since the epoch.
  * @property updatedAt when it last changed, in milliseconds since the epoch: a new cover changes it.
+ * @property progressLastUpdate when the account's progress in it last moved, in milliseconds since the epoch: on an
+ *   item the account has started (`GET api/me/items-in-progress`) alone.
  */
 @Serializable
 internal data class AbsItemDto(
@@ -54,6 +56,7 @@ internal data class AbsItemDto(
     val addedAt: Long? = null,
     val updatedAt: Long? = null,
     val media: AbsMediaDto = AbsMediaDto(),
+    val progressLastUpdate: Long? = null,
 )
 
 /**
