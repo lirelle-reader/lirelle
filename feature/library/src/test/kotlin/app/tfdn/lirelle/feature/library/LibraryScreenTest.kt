@@ -16,7 +16,10 @@ import androidx.compose.ui.test.performTouchInput
 import androidx.compose.ui.test.swipeLeft
 import androidx.test.core.app.ApplicationProvider
 import app.tfdn.lirelle.core.designsystem.LirelleTheme
+import app.tfdn.lirelle.core.ids.LibraryId
+import app.tfdn.lirelle.core.library.LibraryChoiceState
 import app.tfdn.lirelle.core.library.SourceCapabilities
+import app.tfdn.lirelle.core.library.model.ServerLibrary
 import app.tfdn.lirelle.core.testing.FakeLibraryChoice
 import app.tfdn.lirelle.core.testing.FakeLibraryRepository
 import app.tfdn.lirelle.core.testing.KomgaLikeCapabilities
@@ -40,6 +43,21 @@ class LibraryScreenTest {
     private fun showTabs(tabs: () -> List<LibraryTab>) {
         compose.setContent {
             LirelleTheme { LibraryScreen(tabs = tabs(), page = { tab -> Text("page of ${tab.name}") }) }
+        }
+    }
+
+    private val comics = ServerLibrary(LibraryId("1"), "Comics")
+    private val manga = ServerLibrary(LibraryId("2"), "Manga")
+
+    private fun showLibraries(libraries: LibraryChoiceState, offersAll: Boolean) {
+        compose.setContent {
+            LirelleTheme {
+                LibraryScreen(
+                    libraries = libraries,
+                    offersAllLibraries = offersAll,
+                    page = { tab -> Text("page of ${tab.name}") },
+                )
+            }
         }
     }
 
@@ -188,5 +206,35 @@ class LibraryScreenTest {
 
         compose.onNodeWithTag("tab-Series").assertIsSelected()
         compose.onNodeWithText("page of Series").assertIsDisplayed()
+    }
+
+    @Test
+    fun `the menu of a Library that can show all libraries offers all of them`() {
+        showLibraries(LibraryChoiceState(listOf(comics, manga)), offersAll = true)
+
+        compose.onNodeWithTag(LibrarySelectorTag).performClick()
+
+        compose.onNodeWithTag("library-choice-all").assertIsSelected()
+        compose.onNodeWithTag("library-choice-1").assertIsDisplayed()
+    }
+
+    @Test
+    fun `the menu of a Library that always shows one library has no all`() {
+        showLibraries(LibraryChoiceState(listOf(comics, manga), chosen = comics), offersAll = false)
+        compose.onNodeWithText("Comics").assertIsDisplayed()
+
+        compose.onNodeWithTag(LibrarySelectorTag).performClick()
+
+        compose.onNodeWithTag("library-choice-all").assertDoesNotExist()
+        compose.onNodeWithTag("library-choice-1").assertIsSelected()
+        compose.onNodeWithTag("library-choice-2").assertIsDisplayed()
+    }
+
+    @Test
+    fun `a single library has no selector, even when the Library always shows one`() {
+        showLibraries(LibraryChoiceState(listOf(comics), chosen = comics), offersAll = false)
+
+        compose.onNodeWithTag(LibrarySelectorTag).assertDoesNotExist()
+        compose.onNodeWithText(context.getString(R.string.library_title)).assertIsDisplayed()
     }
 }

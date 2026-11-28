@@ -12,6 +12,7 @@ import app.tfdn.lirelle.core.library.model.SeriesSort
 import app.tfdn.lirelle.core.library.model.ServerLibrary
 import app.tfdn.lirelle.core.library.model.SortDirection
 import app.tfdn.lirelle.core.library.model.arranged
+import app.tfdn.lirelle.core.library.shownLibrary
 import app.tfdn.lirelle.core.network.ApiResult
 import app.tfdn.lirelle.core.ui.Loadable
 import app.tfdn.lirelle.core.ui.toLoadable
@@ -24,9 +25,7 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -79,8 +78,8 @@ class SeriesListViewModel @Inject constructor(
     private val filter = MutableStateFlow<SeriesProgressFilter?>(null)
     private val refreshing = MutableStateFlow(false)
 
-    /** The library the profile chose, null for all. */
-    private val library: Flow<ServerLibrary?> = choice.state.map { it.chosen }.distinctUntilChanged()
+    /** The library shown, null for all. */
+    private val library: Flow<ServerLibrary?> = choice.shownLibrary(capabilities)
 
     val state: StateFlow<SeriesListUiState> = combine(
         loaded,

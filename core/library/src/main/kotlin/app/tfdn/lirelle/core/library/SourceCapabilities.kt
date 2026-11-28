@@ -26,6 +26,8 @@ enum class LibraryStart { Books, Series }
  *   series tiles' progress line, the sorts and the filter made of them, a series' book count in Search.
  * @property downloadToRead whether reading a book's text file needs the account's right to download (Kavita serves
  *   an EPUB only as a download): without it the reader says so before asking the server.
+ * @property libraryAlwaysChosen the source cannot list books, series or authors across its libraries: the Library
+ *   destination always shows one of them, and its selector offers no "All".
  */
 data class SourceCapabilities(
     val audiobooks: Boolean,
@@ -47,6 +49,7 @@ data class SourceCapabilities(
     val libraryBooks: Boolean = true,
     val seriesCounts: Boolean = true,
     val downloadToRead: Boolean = false,
+    val libraryAlwaysChosen: Boolean = false,
 ) {
     companion object {
         /** A source that can do everything the app shows, whose Library opens on its books. */

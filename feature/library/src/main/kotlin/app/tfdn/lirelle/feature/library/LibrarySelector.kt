@@ -53,7 +53,7 @@ private val MarkSize = 24.dp
 
 /**
  * The Library's title. With fewer than two libraries it is the plain title of any top-level screen; from two, it
- * is a button that names the library shown and opens the menu to show another, or all of them.
+ * is a button that names the library shown and opens the menu to show another, or all of them when [offersAll].
  *
  * The title's line is at the same place and as high either way: the Library does not move when its libraries
  * arrive.
@@ -63,6 +63,7 @@ private val MarkSize = 24.dp
 @Composable
 internal fun LibraryTitle(
     libraries: LibraryChoiceState,
+    offersAll: Boolean,
     onChoose: (ServerLibrary?) -> Unit,
     roomBelow: Dp,
     modifier: Modifier = Modifier,
@@ -91,10 +92,12 @@ internal fun LibraryTitle(
                 open = false
                 onChoose(library)
             }
-            LibraryLine(stringResource(R.string.library_all), libraries.chosen == null, AllLibrariesTag) {
-                choose(null)
+            if (offersAll) {
+                LibraryLine(stringResource(R.string.library_all), libraries.chosen == null, AllLibrariesTag) {
+                    choose(null)
+                }
+                HorizontalDivider()
             }
-            HorizontalDivider()
             libraries.libraries.forEach { library ->
                 // By its id: the list may have been read again since the choice, with another name for it.
                 LibraryLine(library.name, library.id == libraries.chosen?.id, "library-choice-${library.id}") {

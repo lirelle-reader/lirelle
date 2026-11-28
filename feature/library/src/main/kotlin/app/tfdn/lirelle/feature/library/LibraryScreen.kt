@@ -63,6 +63,7 @@ fun LibraryRoute(
         tabs = viewModel.tabs,
         startTab = viewModel.startTab,
         libraries = libraries,
+        offersAllLibraries = viewModel.offersAllLibraries,
         onChooseLibrary = viewModel::onChoose,
         titleAction = titleAction,
     ) { tab ->
@@ -90,6 +91,7 @@ fun LibraryRoute(
  *   Library shown for the first time opens there: the tab the user left comes back with the pager's saved state.
  * @param libraries the libraries of the server and the one shown: from two libraries, the title chooses among them.
  *   Another choice leaves the tab shown as it is; the lists of the tabs start again by themselves.
+ * @param offersAllLibraries whether the title's menu offers all libraries at once, as well as each of them.
  * @param onChooseLibrary the library chosen in the title's menu, null for all of them.
  * @param titleAction what stands at the end of the title's row, centred on the title as far as the tabs
  *   under it allow; the row is as high with it as without.
@@ -101,6 +103,7 @@ fun LibraryScreen(
     tabs: List<LibraryTab> = LibraryTab.entries,
     startTab: LibraryTab = LibraryTab.Books,
     libraries: LibraryChoiceState = LibraryChoiceState(),
+    offersAllLibraries: Boolean = true,
     onChooseLibrary: (ServerLibrary?) -> Unit = {},
     titleAction: @Composable () -> Unit = {},
     page: @Composable (LibraryTab) -> Unit,
@@ -115,7 +118,7 @@ fun LibraryScreen(
             // The tabs are right under: the action stays clear of them, and so does the title when it is a button.
             roomBelow = TitleToTabs,
             action = titleAction,
-        ) { LibraryTitle(libraries, onChooseLibrary, roomBelow = TitleToTabs) }
+        ) { LibraryTitle(libraries, offersAllLibraries, onChooseLibrary, roomBelow = TitleToTabs) }
         // Other tabs are another pager: a page kept by its place could otherwise be another tab's. Keyed by the
         // tabs' names, whose hash is the same in every process (an enum's is not), so the saved tab and pages
         // come back after the process was stopped.

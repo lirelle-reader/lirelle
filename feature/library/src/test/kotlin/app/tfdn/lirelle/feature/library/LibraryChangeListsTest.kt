@@ -101,7 +101,7 @@ class LibraryChangeListsTest {
     }
 
     private fun showAuthors() {
-        val viewModel = AuthorsViewModel(repository, InMemoryLibraryPreferences(), choice)
+        val viewModel = AuthorsViewModel(Everything, repository, InMemoryLibraryPreferences(), choice)
         compose.setContent {
             LirelleTheme { AuthorsTab(onOpenAuthor = {}, onRefresh = { refreshes++ }, viewModel = viewModel) }
         }

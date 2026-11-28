@@ -17,6 +17,7 @@ import app.tfdn.lirelle.core.library.model.FormatFilter
 import app.tfdn.lirelle.core.library.model.ServerLibrary
 import app.tfdn.lirelle.core.library.model.SortDirection
 import app.tfdn.lirelle.core.library.model.StatusFilter
+import app.tfdn.lirelle.core.library.shownLibrary
 import app.tfdn.lirelle.core.network.ApiError
 import app.tfdn.lirelle.feature.library.LibraryList
 import app.tfdn.lirelle.feature.library.LibraryPages
@@ -78,9 +79,9 @@ class BookListViewModel @AssistedInject constructor(
     private val filters = MutableStateFlow(BookFilters())
     private val stored: Flow<ViewPreferences> = preferences.view(preferencesKey)
 
-    /** The library the list is narrowed to: the profile's choice for a list that follows it, none for any other. */
+    /** The library the list is narrowed to: the one shown for a list that follows it, none for any other. */
     private val library: Flow<ServerLibrary?> =
-        if (scope.followsLibrary) choice.state.map { it.chosen }.distinctUntilChanged() else flowOf(null)
+        if (scope.followsLibrary) choice.shownLibrary(capabilities) else flowOf(null)
 
     // Another library, or the same one under a new name, is another request: a new list, from its top.
     private val request: Flow<BookListRequest> = combine(stored, filters, library) { prefs, filters, library ->

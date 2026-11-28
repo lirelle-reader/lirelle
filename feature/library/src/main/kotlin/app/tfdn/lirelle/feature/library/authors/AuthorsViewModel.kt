@@ -6,10 +6,12 @@ import androidx.paging.PagingData
 import app.tfdn.lirelle.core.library.LibraryChoice
 import app.tfdn.lirelle.core.library.LibraryPreferences
 import app.tfdn.lirelle.core.library.LibraryRepository
+import app.tfdn.lirelle.core.library.SourceCapabilities
 import app.tfdn.lirelle.core.library.model.Author
 import app.tfdn.lirelle.core.library.model.AuthorSort
 import app.tfdn.lirelle.core.library.model.ServerLibrary
 import app.tfdn.lirelle.core.library.model.SortDirection
+import app.tfdn.lirelle.core.library.shownLibrary
 import app.tfdn.lirelle.core.network.ApiError
 import app.tfdn.lirelle.feature.library.LibraryList
 import app.tfdn.lirelle.feature.library.LibraryPages
@@ -43,6 +45,7 @@ private const val PreferencesKey = "authors"
 @OptIn(ExperimentalCoroutinesApi::class)
 @HiltViewModel
 class AuthorsViewModel @Inject constructor(
+    capabilities: SourceCapabilities,
     private val repository: LibraryRepository,
     private val preferences: LibraryPreferences,
     choice: LibraryChoice,
@@ -58,8 +61,8 @@ class AuthorsViewModel @Inject constructor(
         sort to direction
     }.distinctUntilChanged()
 
-    /** The library the profile chose, null for all. */
-    private val library: Flow<ServerLibrary?> = choice.state.map { it.chosen }.distinctUntilChanged()
+    /** The library shown, null for all. */
+    private val library: Flow<ServerLibrary?> = choice.shownLibrary(capabilities)
 
     // Another library, or the same one under a new name, is a new list, from its top.
     private val lists = combine(order, library) { (sort, direction), library ->

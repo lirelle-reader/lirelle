@@ -59,6 +59,7 @@ class ShelvesViewModel @Inject constructor(
             result.value.copy(
                 smartLists = result.value.smartLists.takeIf { ShelfKind.SmartList in kinds }.orEmpty(),
                 collections = result.value.collections.takeIf { ShelfKind.Collection in kinds }.orEmpty(),
+                playlists = result.value.playlists.takeIf { ShelfKind.Playlist in kinds }.orEmpty(),
             ),
         )
         is ApiResult.Failure -> result
