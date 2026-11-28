@@ -78,7 +78,11 @@ internal fun seriesFilter(id: String): String =
  * [series] as a tile shows it, made of its [books] in their order: their number, those read as [readings] say, the
  * covers of the first ones, their authors, and when the last was added.
  */
-private fun AbsRemote.series(series: AbsSeriesDto, books: List<AbsItemDto>, readings: AbsReadings): Series = Series(
+internal fun AbsRemote.series(
+    series: AbsSeriesDto,
+    books: List<AbsItemDto>,
+    readings: AbsReadings,
+): Series = Series(
     id = series.id.asSeriesId(),
     name = series.name,
     authors = books.flatMap { it.media.metadata.authorNames() }.distinct(),

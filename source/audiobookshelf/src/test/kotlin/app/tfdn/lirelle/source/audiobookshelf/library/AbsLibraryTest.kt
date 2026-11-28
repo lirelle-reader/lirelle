@@ -44,8 +44,8 @@ private const val Classiques = "2bffab16-8cc2-41e9-bfb5-fb0640571fcf"
 
 /**
  * An Audiobookshelf profile's library answers each of the library's questions from its server: its libraries, its
- * books, series, authors and shelves, Home's rows, a series', an author's and a book's page. The search and the
- * genres stay empty for now, and ask nothing.
+ * books, series, authors and shelves, Home's rows, a series', an author's and a book's page, the search and the
+ * genres.
  */
 class AbsLibraryTest {
 
@@ -117,10 +117,15 @@ class AbsLibraryTest {
     }
 
     @Test
-    fun `the search and the genres are empty for now, and ask nothing`() = runBlocking<Unit> {
-        assertThat((library.search("dune") as ApiResult.Success).value.isEmpty).isTrue()
-        assertThat(library.genres()).isEqualTo(ApiResult.Success(emptyList<Any>()))
-        assertThat(routes.requests()).isEmpty()
+    fun `the search and the genres come from the server`() = runBlocking<Unit> {
+        routes.answer("/api/libraries/$LivresId/search", fixtureBody("search-herbert"))
+        routes.answer("/api/libraries/$BdId/search", """{"book": [], "series": [], "authors": []}""")
+        routes.answer("/api/libraries/$LivresId", fixtureBody("filterdata-livres"))
+        routes.answer("/api/libraries/$BdId", """{"filterdata": {"genres": []}}""")
+
+        assertThat((library.search("herbert") as ApiResult.Success).value.authors.items.map { it.name })
+            .containsExactly("Frank Herbert")
+        assertThat((library.genres() as ApiResult.Success).value).hasSize(23)
     }
 
     @Test

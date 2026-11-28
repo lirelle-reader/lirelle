@@ -29,9 +29,16 @@ import app.tfdn.lirelle.core.library.model.ServerBookmark
 import app.tfdn.lirelle.core.library.model.ServerHighlight
 import app.tfdn.lirelle.core.library.model.SpineEntry
 import app.tfdn.lirelle.core.library.model.VolumeGroup
+import app.tfdn.lirelle.core.network.ApiError
 import app.tfdn.lirelle.core.network.ApiResult
 import java.io.OutputStream
 import java.time.Instant
+
+/** Nothing of that id: what a library that shows nothing answers to what is asked by its id. */
+internal val NotFound = ApiResult.Failure(ApiError.NotFound)
+
+/** A list that is there and empty. */
+internal fun <T> none(): ApiResult<List<T>> = ApiResult.Success(emptyList())
 
 /**
  * An Audiobookshelf profile's reading until its books are read (#69): no file, no position, nothing to save to — and

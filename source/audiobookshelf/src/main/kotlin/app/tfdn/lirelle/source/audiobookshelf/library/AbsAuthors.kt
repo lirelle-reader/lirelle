@@ -126,7 +126,7 @@ private val BySeriesThenTitle: Comparator<BookSummary> = readerCollator().let { 
 }
 
 /** Titles and names compared as a reader does, case and accents aside. */
-private fun readerCollator(): Collator = Collator.getInstance().apply { strength = Collator.PRIMARY }
+internal fun readerCollator(): Collator = Collator.getInstance().apply { strength = Collator.PRIMARY }
 
 /** How many authors a page of the list holds, as on the other servers. */
 private const val AuthorPageSize = 60

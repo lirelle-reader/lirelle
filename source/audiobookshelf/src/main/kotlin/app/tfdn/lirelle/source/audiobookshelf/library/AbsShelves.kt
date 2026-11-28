@@ -2,6 +2,7 @@ package app.tfdn.lirelle.source.audiobookshelf.library
 
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
+import androidx.paging.PagingData
 import app.tfdn.lirelle.core.library.IndexPagingSource
 import app.tfdn.lirelle.core.library.PagedList
 import app.tfdn.lirelle.core.library.model.BookListRequest
@@ -16,6 +17,7 @@ import app.tfdn.lirelle.core.network.ApiResult
 import app.tfdn.lirelle.source.audiobookshelf.library.dto.AbsItemDto
 import app.tfdn.lirelle.source.audiobookshelf.library.dto.AbsPlaylistDto
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.flowOf
 
 /**
  * The profile's shelves, asked of [server] (spec §4), across the server and not narrowed by the Library's choice:
@@ -94,3 +96,6 @@ private fun ordered(items: List<AbsItemDto>, request: BookListRequest): List<Abs
 
 /** How many books a page of a shelf holds, as on the other servers. */
 private const val ShelfPageSize = 60
+
+/** A paged list that is there and empty: no page, and none in all. */
+internal fun <T : Any> emptyPages() = PagedList(flowOf(PagingData.empty<T>()), MutableStateFlow(0))

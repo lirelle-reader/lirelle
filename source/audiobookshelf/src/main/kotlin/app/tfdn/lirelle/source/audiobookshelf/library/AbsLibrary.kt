@@ -3,6 +3,7 @@ package app.tfdn.lirelle.source.audiobookshelf.library
 import app.tfdn.lirelle.core.ids.AuthorId
 import app.tfdn.lirelle.core.ids.BookId
 import app.tfdn.lirelle.core.ids.SeriesId
+import app.tfdn.lirelle.core.library.LibraryRepository
 import app.tfdn.lirelle.core.library.PageResult
 import app.tfdn.lirelle.core.library.PagedList
 import app.tfdn.lirelle.core.library.model.Author
@@ -13,10 +14,12 @@ import app.tfdn.lirelle.core.library.model.BookListRequest
 import app.tfdn.lirelle.core.library.model.BookListSource
 import app.tfdn.lirelle.core.library.model.BookReading
 import app.tfdn.lirelle.core.library.model.BookSummary
+import app.tfdn.lirelle.core.library.model.Genre
 import app.tfdn.lirelle.core.library.model.HomeRow
 import app.tfdn.lirelle.core.library.model.HomeRowExtent
 import app.tfdn.lirelle.core.library.model.HomeRowKind
 import app.tfdn.lirelle.core.library.model.RelatedBooks
+import app.tfdn.lirelle.core.library.model.SearchResults
 import app.tfdn.lirelle.core.library.model.Series
 import app.tfdn.lirelle.core.library.model.SeriesBooks
 import app.tfdn.lirelle.core.library.model.ServerLibrary
@@ -27,20 +30,22 @@ import app.tfdn.lirelle.core.network.ApiResult
 
 /**
  * The lists of an Audiobookshelf profile's library asked of its [server]: its book libraries, the Books list of the
- * one the Library shows ([AbsBookList]), its series ([AbsSeries]), its authors ([people]) and its collections and
- * playlists ([AbsShelves]). The search and the genres stay empty for now ([EmptyAbsLists]); [AbsLibrary]
- * answers Home's rows and the pages.
+ * one the Library shows ([AbsBookList]), its series ([AbsSeries]), its authors ([people]), its collections and
+ * playlists ([AbsShelves]), the search ([AbsSearch]) and the genres ([AbsGenres]); [AbsLibrary] answers Home's rows
+ * and the pages.
  */
 internal abstract class AbsLibraryLists(
     protected val server: AbsProfileServer,
     progress: AbsProgress,
     whole: AbsWholeLibrary,
-) : EmptyAbsLists() {
+) : LibraryRepository {
 
     private val bookList = AbsBookList(server, progress, whole)
     private val seriesList = AbsSeries(server, progress, whole)
     private val shelves = AbsShelves(server, progress, whole)
     protected val people = AbsAuthors(server, progress, whole)
+    private val finder = AbsSearch(server, progress, whole)
+    private val genreList = AbsGenres(server, whole)
 
     override suspend fun libraries(): ApiResult<List<ServerLibrary>> = server.libraries()
 
@@ -69,6 +74,10 @@ internal abstract class AbsLibraryLists(
     override suspend fun authorBooks(authorId: AuthorId): ApiResult<List<BookSummary>> = people.authorBooks(authorId)
 
     override suspend fun shelves(): ApiResult<Shelves> = shelves.shelves()
+
+    override suspend fun search(text: String): ApiResult<SearchResults> = finder.search(text)
+
+    override suspend fun genres(): ApiResult<List<Genre>> = genreList.genres()
 }
 
 /**
