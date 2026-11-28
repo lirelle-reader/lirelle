@@ -49,7 +49,7 @@ private val KavitaSessionCookie = Regex("""\.AspNetCore\.Cookies(C\d+)?""")
 /** Tells the name of the cookie of a session on a server of this kind; null for a kind whose session is no cookie. */
 private val ServerKind.sessionCookieName: ((String) -> Boolean)?
     get() = when (this) {
-        ServerKind.BookOrbit -> null
+        ServerKind.BookOrbit, ServerKind.Audiobookshelf -> null
         ServerKind.Komga -> { name -> name.startsWith("KOMGA-SESSION") }
         ServerKind.Kavita -> KavitaSessionCookie::matches
     }

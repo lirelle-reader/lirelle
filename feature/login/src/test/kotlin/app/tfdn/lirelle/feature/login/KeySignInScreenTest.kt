@@ -58,6 +58,8 @@ class KeySignInScreenTest {
     private val context: Context = ApplicationProvider.getApplicationContext()
     private val provider = OidcProvider("oidc", "Authentik", "", "", ProviderFlow.WebView)
 
+    private val kavitaTooOld = ApiError.ServerTooOld(ServerKind.Kavita, version = "0.8.6.25", minimum = "0.8.10.12")
+
     private fun kavita(passwords: Boolean = true, providers: List<OidcProvider> = emptyList()) = SignInUiState(
         serverUrl = "https://livres.example.com",
         kind = ServerKind.Kavita,
@@ -323,7 +325,7 @@ class KeySignInScreenTest {
 
     @Test
     fun `a server too old says the version it runs and the one needed`() {
-        show(kavita().copy(keyError = ApiError.ServerTooOld(version = "0.8.6.25", minimum = "0.8.10.12")))
+        show(kavita().copy(keyError = kavitaTooOld))
         compose.onNodeWithText(
             "This Kavita server runs version 0.8.6.25. Lirelle needs version 0.8.10.12 or later.",
             useUnmergedTree = true,
@@ -341,7 +343,7 @@ class KeySignInScreenTest {
     @Test
     @Config(qualifiers = "fr")
     fun `in French, a server too old says the version it runs and the one needed`() {
-        show(kavita().copy(keyError = ApiError.ServerTooOld(version = "0.8.6.25", minimum = "0.8.10.12")))
+        show(kavita().copy(keyError = kavitaTooOld))
         compose.onNodeWithText(
             "Ce serveur Kavita est en version 0.8.6.25. Lirelle a besoin de la version 0.8.10.12 ou plus récente.",
             useUnmergedTree = true,

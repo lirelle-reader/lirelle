@@ -4,6 +4,7 @@ import app.tfdn.lirelle.core.network.ApiError
 import app.tfdn.lirelle.core.network.ApiResult
 import app.tfdn.lirelle.core.network.LoginOptions
 import app.tfdn.lirelle.core.network.OidcProvider
+import app.tfdn.lirelle.core.network.OidcStart
 import app.tfdn.lirelle.core.network.ProviderFlow
 import app.tfdn.lirelle.core.network.SignInIdentifier
 import app.tfdn.lirelle.core.session.Credential
@@ -162,7 +163,7 @@ class KavitaSignInTest {
         enqueueLogin(version = "0.8.8.3")
 
         assertThat(signIn.signInWithPassword(url, Username, Password))
-            .isEqualTo(ApiResult.Failure(ApiError.ServerTooOld("0.8.8.3", "0.8.9")))
+            .isEqualTo(ApiResult.Failure(ApiError.ServerTooOld(ServerKind.Kavita, "0.8.8.3", "0.8.9")))
         assertThat(server.requestCount).isEqualTo(1)
         assertThat(store.saved).isEmpty()
     }
@@ -191,7 +192,7 @@ class KavitaSignInTest {
     fun `a version with a suffix is compared by its numbers, and told as the server said it`() = runBlocking {
         enqueueLogin(version = "0.8.8.3-beta")
         assertThat(signIn.signInWithPassword(url, Username, Password))
-            .isEqualTo(ApiResult.Failure(ApiError.ServerTooOld("0.8.8.3-beta", "0.8.9")))
+            .isEqualTo(ApiResult.Failure(ApiError.ServerTooOld(ServerKind.Kavita, "0.8.8.3-beta", "0.8.9")))
         assertThat(server.requestCount).isEqualTo(1)
         assertThat(store.saved).isEmpty()
 
@@ -455,9 +456,9 @@ class KavitaSignInTest {
     @Test
     fun `the provider's sign-in begins at Kavita's own address for it, under the base path`() = runBlocking {
         assertThat(signIn.beginOidc("https://bd.example.com/kavita", provider))
-            .isEqualTo(ApiResult.Success("https://bd.example.com/kavita/oidc/login"))
+            .isEqualTo(ApiResult.Success(OidcStart("https://bd.example.com/kavita/oidc/login", redirectScheme = null)))
         assertThat(signIn.beginOidc("https://bd.example.com", provider))
-            .isEqualTo(ApiResult.Success("https://bd.example.com/oidc/login"))
+            .isEqualTo(ApiResult.Success(OidcStart("https://bd.example.com/oidc/login", redirectScheme = null)))
         assertThat(server.requestCount).isEqualTo(0)
     }
 

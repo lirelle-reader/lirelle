@@ -5,6 +5,7 @@ import app.tfdn.lirelle.core.network.ApiResult
 import app.tfdn.lirelle.core.network.DeviceLabelProvider
 import app.tfdn.lirelle.core.network.LoginOptions
 import app.tfdn.lirelle.core.network.OidcProvider
+import app.tfdn.lirelle.core.network.OidcStart
 import app.tfdn.lirelle.core.network.ProviderFlow
 import app.tfdn.lirelle.core.network.SignInIdentifier
 import app.tfdn.lirelle.core.network.formatDeviceLabel
@@ -288,13 +289,14 @@ class KomgaSignInTest {
     }
 
     @Test
-    fun `a provider's sign-in begins at Komga's own address for it, under the base path`() = runBlocking {
-        val provider = OidcProvider("authentik", "Authentik", "", "", ProviderFlow.WebView)
+    fun `a provider's sign-in begins at Komga's own address for it, under the base path, and no redirect returns`() =
+        runBlocking {
+            val provider = OidcProvider("authentik", "Authentik", "", "", ProviderFlow.WebView)
+            val start = OidcStart("https://bd.example.com/komga/oauth2/authorization/authentik", redirectScheme = null)
 
-        assertThat(signIn.beginOidc("https://bd.example.com/komga", provider))
-            .isEqualTo(ApiResult.Success("https://bd.example.com/komga/oauth2/authorization/authentik"))
-        assertThat(server.requestCount).isEqualTo(0)
-    }
+            assertThat(signIn.beginOidc("https://bd.example.com/komga", provider)).isEqualTo(ApiResult.Success(start))
+            assertThat(server.requestCount).isEqualTo(0)
+        }
 
     @Test
     fun `no browser redirect is ever Komga's`() = runBlocking {

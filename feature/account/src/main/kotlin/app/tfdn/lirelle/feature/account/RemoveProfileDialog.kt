@@ -52,15 +52,18 @@ private val LineIconSize = 20.dp
 
 /**
  * What the removal of [profile] does, as its opening sentence says it: what the device keeps for it is erased; of
- * the current one only, that it is signed out; and what its server keeps — for BookOrbit nothing changes there (the
- * session of a profile that sleeps lives until it expires), for Komga and Kavita the profile's key is revoked,
- * current or not. Except a key the user pasted ([ProfileRow.usersOwnKey]), which is only forgotten: it is said to
- * stay valid, and the profile, whose server is told nothing, is not said to be signed out.
+ * the current one only, that it is signed out; and what its server keeps — for BookOrbit nothing changes there
+ * (the session of a profile that sleeps lives until it expires), for Audiobookshelf the profile's session is
+ * closed, for Komga and Kavita its key is revoked, current or not. Except a key the user pasted
+ * ([ProfileRow.usersOwnKey]), which is only forgotten: it is said to stay valid, and the profile, whose server is
+ * told nothing, is not said to be signed out.
  */
 @StringRes
 internal fun removalBody(profile: ProfileRow): Int = when (profile.kind) {
     ServerKind.BookOrbit ->
         if (profile.current) R.string.profiles_remove_body else R.string.profiles_remove_body_sleeping
+    ServerKind.Audiobookshelf ->
+        if (profile.current) R.string.profiles_remove_body_session else R.string.profiles_remove_body_sleeping_session
     ServerKind.Komga, ServerKind.Kavita -> when {
         profile.usersOwnKey -> R.string.profiles_remove_body_own_key
         profile.current -> R.string.profiles_remove_body_key

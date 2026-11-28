@@ -12,6 +12,8 @@ import org.junit.Test
 private val ServerSpeech = listOf(
     // A route of a server's API, from the server's root or relative to it: BookOrbit's and Komga's live under these.
     Regex("""\bapi/v[12]\b"""),
+    // Audiobookshelf's account, renewal and provider routes, which carry no version.
+    Regex("""\b(api/me|auth/refresh|auth/openid)\b"""),
     // Retrofit, imported or named in full.
     Regex("""\bretrofit2\."""),
 )
@@ -28,6 +30,12 @@ private val Sources = listOf(
     SourceModule("source/bookorbit/", "\":source:bookorbit\"", "app.tfdn.lirelle.source.bookorbit", fewest = 30),
     SourceModule("source/komga/", "\":source:komga\"", "app.tfdn.lirelle.source.komga", fewest = 5),
     SourceModule("source/kavita/", "\":source:kavita\"", "app.tfdn.lirelle.source.kavita", fewest = 5),
+    SourceModule(
+        "source/audiobookshelf/",
+        "\":source:audiobookshelf\"",
+        "app.tfdn.lirelle.source.audiobookshelf",
+        fewest = 5,
+    ),
 )
 
 /** The one module that may depend on a source, by its Gradle path: the app, which ships them. */
@@ -138,6 +146,10 @@ class EachSourceStaysInItsSourceTest {
             import app.tfdn.lirelle.source.bookorbit.di.*
             val errors = app.tfdn.lirelle.source.bookorbit.network.ErrorMapper(json)
             import app.tfdn.lirelle.source.komga.network.KomgaProbe
+            internal const val MeRoute = "api/me"
+            internal const val RefreshRoute = "auth/refresh"
+            internal const val OidcCallbackRoute = "auth/openid/callback"
+            import app.tfdn.lirelle.source.audiobookshelf.network.AbsProbe
         """.trimIndent()
 
         assertThat(sourceLines(source)).hasSize(source.lines().size)
@@ -154,6 +166,8 @@ class EachSourceStaysInItsSourceTest {
             import app.tfdn.lirelle.core.network.ApiError
             val file = "${'$'}server/files/${'$'}fileId"
             val other = "${'$'}server/api/v10/books"
+            val mine = "${'$'}server/api/members"
+            @SourceOf(ServerKind.Audiobookshelf) audiobookshelf: Provider<LibraryRepository>
             val komgaLike = KomgaLikeCapabilities
             // Retrofit is the sources'.
         """.trimIndent()

@@ -38,6 +38,21 @@
                     android:host="oauth2-callback"
                     android:scheme="bookorbit" />
             </intent-filter>
+            <!--
+                Audiobookshelf's return from its identity provider: Lirelle's own address when the server
+                allows it, else the official app's, which every server allows unless its administrator removed
+                it. Both data elements combine: lirelle://oauth and audiobookshelf://oauth. A filter cannot ask
+                for no path (one with a path refuses a link without any), so the activity compares the whole
+                address before the query (oidcRedirectOf).
+            -->
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="lirelle" />
+                <data android:scheme="audiobookshelf" />
+                <data android:host="oauth" />
+            </intent-filter>
         </activity>
     </application>
 </manifest>

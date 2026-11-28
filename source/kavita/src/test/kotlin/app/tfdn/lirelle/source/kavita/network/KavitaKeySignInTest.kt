@@ -137,7 +137,7 @@ class KavitaKeySignInTest {
         server.enqueueJson(annJson(version = "0.8.8.3"))
 
         assertThat(signIn.signInWithKey(url, Pasted))
-            .isEqualTo(ApiResult.Failure(ApiError.ServerTooOld("0.8.8.3", "0.8.9")))
+            .isEqualTo(ApiResult.Failure(ApiError.ServerTooOld(ServerKind.Kavita, "0.8.8.3", "0.8.9")))
         assertThat(server.requestCount).isEqualTo(1)
         assertThat(store.saved).isEmpty()
     }
@@ -158,7 +158,7 @@ class KavitaKeySignInTest {
     fun `a version with a suffix is compared by its numbers, and told as the server said it`() = runBlocking {
         server.enqueueJson(annJson(version = "0.8.8.3-beta"))
         assertThat(signIn.signInWithKey(url, Pasted))
-            .isEqualTo(ApiResult.Failure(ApiError.ServerTooOld("0.8.8.3-beta", "0.8.9")))
+            .isEqualTo(ApiResult.Failure(ApiError.ServerTooOld(ServerKind.Kavita, "0.8.8.3-beta", "0.8.9")))
         assertThat(server.requestCount).isEqualTo(1)
         assertThat(store.saved).isEmpty()
 

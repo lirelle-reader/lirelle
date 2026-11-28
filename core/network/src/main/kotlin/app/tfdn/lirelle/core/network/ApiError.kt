@@ -1,6 +1,7 @@
 package app.tfdn.lirelle.core.network
 
 import app.tfdn.lirelle.core.ids.BookId
+import app.tfdn.lirelle.core.session.ServerKind
 
 /** Every failure the UI can show. One case per row of the spec's error table. */
 sealed interface ApiError {
@@ -10,6 +11,8 @@ sealed interface ApiError {
     data object UnknownServer : ApiError
     data object InvalidCredentials : ApiError
     data class AccountLocked(val retryAfterSeconds: Long) : ApiError
+
+    /** The server refuses any more attempts for a while (429): too many sign-ins, or calls, from this address. */
     data object TooManyAttempts : ApiError
     data object DefaultPasswordMustChange : ApiError
     data object OidcCancelled : ApiError
@@ -33,10 +36,11 @@ sealed interface ApiError {
     /**
      * The server runs a version the app cannot work with.
      *
+     * @property kind the kind of the server, which its message names.
      * @property version the version the server runs.
      * @property minimum the oldest version the app works with.
      */
-    data class ServerTooOld(val version: String, val minimum: String) : ApiError
+    data class ServerTooOld(val kind: ServerKind, val version: String, val minimum: String) : ApiError
 
     /** No browser on the device can show the identity provider's page. */
     data object BrowserUnavailable : ApiError

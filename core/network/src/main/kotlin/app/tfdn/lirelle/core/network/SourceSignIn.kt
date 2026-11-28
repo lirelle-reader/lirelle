@@ -51,7 +51,7 @@ interface SourceSignIn : PastedKeySignIn {
     suspend fun signInWithPassword(serverUrl: String, identifier: String, password: String): ApiResult<Unit>
 
     /** As [AuthRepository.beginOidc]: for a provider that signs in through the browser. */
-    suspend fun beginOidc(serverUrl: String, provider: OidcProvider): ApiResult<String>
+    suspend fun beginOidc(serverUrl: String, provider: OidcProvider): ApiResult<OidcStart>
 
     /** As [AuthRepository.completeOidc]. */
     suspend fun completeOidc(redirectUri: String): ApiResult<Unit>

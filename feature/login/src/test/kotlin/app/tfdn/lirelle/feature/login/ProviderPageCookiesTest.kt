@@ -121,6 +121,7 @@ class ProviderPageCookiesTest {
     @Test
     fun `a kind whose session is no cookie has none`() {
         assertThat(hasSessionCookie(".AspNetCore.Cookies=a; KOMGA-SESSION=s1", ServerKind.BookOrbit)).isFalse()
+        assertThat(hasSessionCookie("connect.sid=s1; auth_method=openid-mobile", ServerKind.Audiobookshelf)).isFalse()
     }
 
     @Test

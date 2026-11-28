@@ -208,7 +208,10 @@ class BookOrbitSignInTest {
         assertThat(saved.serverUrl).isEqualTo(url)
         assertThat(saved.providerSlug).isEqualTo("authentik")
         assertThat(saved.state).isEqualTo("state-1")
-        val authorizationUrl = (result as ApiResult.Success).value.toHttpUrl()
+        val start = (result as ApiResult.Success).value
+        // The Auth Tab watches for BookOrbit's scheme, that of the only redirect its server takes.
+        assertThat(start.redirectScheme).isEqualTo("bookorbit")
+        val authorizationUrl = start.url.toHttpUrl()
         assertThat(authorizationUrl.host).isEqualTo("auth.example.com")
         assertThat(authorizationUrl.queryParameter("client_id")).isEqualTo("client-id-1")
         assertThat(authorizationUrl.queryParameter("scope")).isEqualTo("openid profile email")

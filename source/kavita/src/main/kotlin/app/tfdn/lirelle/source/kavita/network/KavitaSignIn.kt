@@ -5,6 +5,7 @@ import app.tfdn.lirelle.core.network.ApiResult
 import app.tfdn.lirelle.core.network.DeviceLabelProvider
 import app.tfdn.lirelle.core.network.LoginOptions
 import app.tfdn.lirelle.core.network.OidcProvider
+import app.tfdn.lirelle.core.network.OidcStart
 import app.tfdn.lirelle.core.network.PastedKeySignIn
 import app.tfdn.lirelle.core.network.ProviderFlow
 import app.tfdn.lirelle.core.network.SignInIdentifier
@@ -85,9 +86,15 @@ internal class KavitaSignIn(
         return keys.signInWith(serverUrl, KavitaSessionProof.ofSession(api.forServer(serverUrl), session))
     }
 
-    /** Kavita's own address for its provider's flow, under the server's base path; the WebView takes it from there. */
-    override suspend fun beginOidc(serverUrl: String, provider: OidcProvider): ApiResult<String> = ApiResult.Success(
-        serverUrl.toHttpUrl().newBuilder().addPathSegments(ProviderSignInPage).build().toString(),
+    /**
+     * Kavita's own address for its provider's flow, under the server's base path; the WebView takes it from there, and
+     * no redirect comes back to the app.
+     */
+    override suspend fun beginOidc(serverUrl: String, provider: OidcProvider): ApiResult<OidcStart> = ApiResult.Success(
+        OidcStart(
+            url = serverUrl.toHttpUrl().newBuilder().addPathSegments(ProviderSignInPage).build().toString(),
+            redirectScheme = null,
+        ),
     )
 
     /** No browser comes back to the app for Kavita: its flow ends in the WebView. */

@@ -4,6 +4,7 @@ import app.tfdn.lirelle.core.network.ApiError
 import app.tfdn.lirelle.core.network.ApiResult
 import app.tfdn.lirelle.core.network.LoginOptions
 import app.tfdn.lirelle.core.network.OidcProvider
+import app.tfdn.lirelle.core.network.OidcStart
 import app.tfdn.lirelle.core.network.ProbeAnswer
 import app.tfdn.lirelle.core.network.ServerProbe
 import app.tfdn.lirelle.core.network.SourceSignIn
@@ -147,6 +148,20 @@ class AuthByKindTest {
     }
 
     @Test
+    fun `a sign-in through the browser starts as its kind says, with the scheme its redirect comes back on`() =
+        runTest {
+            val audiobookshelf = RecordingSignIn("audiobookshelf", asked)
+            val signIns = mapOf(ServerKind.BookOrbit to bookOrbit, ServerKind.Audiobookshelf to audiobookshelf)
+            val auth = auth(signIns = signIns)
+            val provider = OidcProvider("openid", "OpenID", "", "")
+
+            assertThat(auth.beginOidc(Typed, ServerKind.Audiobookshelf, provider))
+                .isEqualTo(ApiResult.Success(OidcStart("https://auth.example.com/authorize", "audiobookshelf")))
+            assertThat(auth.beginOidc(Typed, ServerKind.BookOrbit, provider))
+                .isEqualTo(ApiResult.Success(OidcStart("https://auth.example.com/authorize", "bookOrbit")))
+        }
+
+    @Test
     fun `a pasted key goes to the kind it is for, and to no other`() = runTest {
         val kavita = RecordingSignIn("kavita", asked)
         val auth = auth(signIns = mapOf(ServerKind.BookOrbit to bookOrbit, ServerKind.Kavita to kavita))
@@ -254,9 +269,10 @@ private class RecordingSignIn(private val name: String, private val asked: Mutab
         return ApiResult.Success(Unit)
     }
 
-    override suspend fun beginOidc(serverUrl: String, provider: OidcProvider): ApiResult<String> {
+    /** Comes back on a scheme named after the kind. */
+    override suspend fun beginOidc(serverUrl: String, provider: OidcProvider): ApiResult<OidcStart> {
         asked += "$name begins $serverUrl ${provider.slug}"
-        return ApiResult.Success("https://auth.example.com/authorize")
+        return ApiResult.Success(OidcStart("https://auth.example.com/authorize", redirectScheme = name))
     }
 
     override suspend fun completeOidc(redirectUri: String): ApiResult<Unit> {

@@ -65,7 +65,7 @@ internal fun row(
 
 /** The row of a Komga profile, as the view model makes it. */
 internal fun komgaRow(id: String, username: String, server: String, current: Boolean = false) =
-    keyedRow(ServerKind.Komga, id, username, server, current)
+    kindRow(ServerKind.Komga, id, username, server, current)
 
 /**
  * The row of a Kavita profile, as the view model makes it.
@@ -73,9 +73,13 @@ internal fun komgaRow(id: String, username: String, server: String, current: Boo
  * @param usersOwnKey it signs in with a key the user pasted, not one the app made.
  */
 internal fun kavitaRow(id: String, username: String, server: String, usersOwnKey: Boolean, current: Boolean = false) =
-    keyedRow(ServerKind.Kavita, id, username, server, current).copy(usersOwnKey = usersOwnKey)
+    kindRow(ServerKind.Kavita, id, username, server, current).copy(usersOwnKey = usersOwnKey)
 
-private fun keyedRow(kind: ServerKind, id: String, username: String, server: String, current: Boolean) =
+/** The row of an Audiobookshelf profile, as the view model makes it. */
+internal fun audiobookshelfRow(id: String, username: String, server: String, current: Boolean = false) =
+    kindRow(ServerKind.Audiobookshelf, id, username, server, current)
+
+private fun kindRow(kind: ServerKind, id: String, username: String, server: String, current: Boolean) =
     row(id, username, server, current).let {
         it.copy(
             line = "$username · ${kind.name}",

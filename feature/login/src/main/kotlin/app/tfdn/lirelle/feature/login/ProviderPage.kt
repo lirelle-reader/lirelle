@@ -73,8 +73,8 @@ internal fun providerPageOutcome(
     return when (kind) {
         ServerKind.Komga -> komgaPageOutcome(server, page)
         ServerKind.Kavita -> kavitaPageOutcome(server, page, hasSessionCookie)
-        // BookOrbit's providers sign in through the browser: it never opens this page.
-        ServerKind.BookOrbit -> null
+        // BookOrbit's and Audiobookshelf's providers sign in through the browser: they never open this page.
+        ServerKind.BookOrbit, ServerKind.Audiobookshelf -> null
     }
 }
 

@@ -9,6 +9,7 @@ import app.tfdn.lirelle.core.network.LoginOptions
 import app.tfdn.lirelle.core.network.OidcProvider
 import app.tfdn.lirelle.core.network.ProviderFlow
 import app.tfdn.lirelle.core.network.SignInIdentifier
+import app.tfdn.lirelle.core.session.ServerKind
 import app.tfdn.lirelle.core.testing.DeviceRule
 import app.tfdn.lirelle.core.testing.assertAllTextFits
 import com.google.common.truth.Truth.assertThat
@@ -26,7 +27,8 @@ private const val LongServer = "https://bandes-dessinees.bibliotheque-numerique.
  * languages, at the default and the largest text size: the Server screen's title and its unknown server; the
  * sign-in screen that asks for an email address, with each message a Komga sign-in can end on — wrong email or
  * password, a sign-in the server would not finish, a provider's page in cleartext, an unknown server — and those of a
- * pasted key the server does not know and of a server too old. Every text is
+ * pasted key the server does not know, of a server too old (Kavita's and Audiobookshelf's) and of too many sign-in
+ * attempts. Every text is
  * whole and breaks between words; only the server's address has no place to break.
  */
 @RunWith(ParameterizedRobolectricTestRunner::class)
@@ -142,9 +144,44 @@ class KomgaSignInTextFitTest(
 
     @Test
     fun `the email field fits with a server too old`() {
-        showSignIn(ApiError.ServerTooOld(version = "0.8.6.25", minimum = "0.8.10.12"))
+        showSignIn(ApiError.ServerTooOld(ServerKind.Kavita, version = "0.8.6.25", minimum = "0.8.10.12"))
 
-        assertSignInFits(text(R.string.error_server_too_old, "0.8.6.25", "0.8.10.12"))
+        assertSignInFits(text(R.string.error_server_too_old_kavita, "0.8.6.25", "0.8.10.12"))
+    }
+
+    @Test
+    fun `the email field fits with an Audiobookshelf server too old`() {
+        showSignIn(ApiError.ServerTooOld(ServerKind.Audiobookshelf, version = "2.25.1-beta", minimum = "2.26"))
+
+        assertSignInFits(text(R.string.error_server_too_old_audiobookshelf, "2.25.1-beta", "2.26"))
+    }
+
+    @Test
+    fun `the email field fits with too many sign-in attempts`() {
+        showSignIn(ApiError.TooManyAttempts)
+
+        assertSignInFits(text(R.string.error_too_many_attempts))
+    }
+
+    @Test
+    fun `the server screen fits with an Audiobookshelf server too old`() {
+        val tooOld = ApiError.ServerTooOld(ServerKind.Audiobookshelf, version = "2.25.1-beta", minimum = "2.26")
+        compose.setContent {
+            LirelleTheme {
+                ServerScreen(
+                    state = ServerUiState(address = LongServer, error = ServerError.Api(tooOld)),
+                    onAddressChange = {},
+                    onContinue = {},
+                    onCleartextConfirmed = {},
+                    onCleartextDismissed = {},
+                )
+            }
+        }
+
+        val texts = compose.assertAllTextFits()
+
+        assertThat(texts.map { it.text })
+            .contains(text(R.string.error_server_too_old_audiobookshelf, "2.25.1-beta", "2.26"))
     }
 
     companion object {

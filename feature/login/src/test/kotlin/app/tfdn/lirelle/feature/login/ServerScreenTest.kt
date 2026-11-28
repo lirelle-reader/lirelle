@@ -15,6 +15,7 @@ import androidx.compose.ui.test.performClick
 import androidx.test.core.app.ApplicationProvider
 import app.tfdn.lirelle.core.designsystem.LirelleTheme
 import app.tfdn.lirelle.core.network.ApiError
+import app.tfdn.lirelle.core.session.ServerKind
 import com.google.common.truth.Truth.assertThat
 import org.junit.Rule
 import org.junit.Test
@@ -29,6 +30,9 @@ class ServerScreenTest {
     val compose = createComposeRule()
 
     private val context: Context = ApplicationProvider.getApplicationContext()
+
+    private val kavitaTooOld = ApiError.ServerTooOld(ServerKind.Kavita, "0.8.6.2", "0.8.7")
+    private val audiobookshelfTooOld = ApiError.ServerTooOld(ServerKind.Audiobookshelf, "2.25.1", "2.26")
 
     private fun show(
         state: ServerUiState,
@@ -114,7 +118,8 @@ class ServerScreenTest {
         show(ServerUiState(address = "example.com", error = ServerError.Api(ApiError.UnknownServer)))
 
         compose.onNodeWithText("Connect to your server").assertIsDisplayed()
-        compose.onNodeWithText("This address is not a BookOrbit, Komga or Kavita server.").assertIsDisplayed()
+        compose.onNodeWithText("This address is not a BookOrbit, Komga, Audiobookshelf or Kavita server.")
+            .assertIsDisplayed()
     }
 
     @Test
@@ -124,13 +129,14 @@ class ServerScreenTest {
 
         compose.onNodeWithText("Connexion à votre serveur").assertIsDisplayed()
         compose.onNodeWithText(
-            "Cette adresse n'est ni un serveur BookOrbit, ni un serveur Komga, ni un serveur Kavita.",
+            "Cette adresse n'est ni un serveur BookOrbit, ni un serveur Komga, ni un serveur Audiobookshelf, " +
+                "ni un serveur Kavita.",
         ).assertIsDisplayed()
     }
 
     @Test
     fun `a server too old is told with its version and the one needed`() {
-        show(ServerUiState(address = "example.com", error = ServerError.Api(ApiError.ServerTooOld("0.8.6.2", "0.8.7"))))
+        show(ServerUiState(address = "example.com", error = ServerError.Api(kavitaTooOld)))
 
         compose.onNodeWithText("This Kavita server runs version 0.8.6.2. Lirelle needs version 0.8.7 or later.")
             .assertIsDisplayed()
@@ -139,11 +145,45 @@ class ServerScreenTest {
     @Test
     @Config(qualifiers = "fr")
     fun `in French, a server too old is told with its version and the one needed`() {
-        show(ServerUiState(address = "example.com", error = ServerError.Api(ApiError.ServerTooOld("0.8.6.2", "0.8.7"))))
+        show(ServerUiState(address = "example.com", error = ServerError.Api(kavitaTooOld)))
 
         compose.onNodeWithText(
             "Ce serveur Kavita est en version 0.8.6.2. Lirelle a besoin de la version 0.8.7 ou plus récente.",
         ).assertIsDisplayed()
+    }
+
+    @Test
+    fun `an Audiobookshelf server too old is told with its version and the one needed`() {
+        show(ServerUiState(address = "example.com", error = ServerError.Api(audiobookshelfTooOld)))
+
+        compose.onNodeWithText(
+            "This Audiobookshelf server runs version 2.25.1. Lirelle needs version 2.26 or later.",
+        ).assertIsDisplayed()
+    }
+
+    @Test
+    @Config(qualifiers = "fr")
+    fun `in French, an Audiobookshelf server too old is told with its version and the one needed`() {
+        show(ServerUiState(address = "example.com", error = ServerError.Api(audiobookshelfTooOld)))
+
+        compose.onNodeWithText(
+            "Ce serveur Audiobookshelf est en version 2.25.1. Lirelle a besoin de la version 2.26 ou plus récente.",
+        ).assertIsDisplayed()
+    }
+
+    @Test
+    fun `too many sign-in attempts are told as such`() {
+        show(ServerUiState(address = "example.com", error = ServerError.Api(ApiError.TooManyAttempts)))
+
+        compose.onNodeWithText("Too many sign-in attempts. Try again in a few minutes.").assertIsDisplayed()
+    }
+
+    @Test
+    @Config(qualifiers = "fr")
+    fun `in French, too many sign-in attempts are told as such`() {
+        show(ServerUiState(address = "example.com", error = ServerError.Api(ApiError.TooManyAttempts)))
+
+        compose.onNodeWithText("Trop de tentatives de connexion. Réessayez dans quelques minutes.").assertIsDisplayed()
     }
 
     @Test

@@ -250,10 +250,86 @@ class ProfileCredentialTest {
     }
 
     @Test
+    fun `rotating tokens round trip encrypted, with their sign-in and without a session id`() {
+        val codec = ProfileCodec(FakeTokenCipher())
+        val rotating = session.copy(credential = Rotating)
+
+        val stored = codec.encode(rotating)
+
+        assertThat(stored.sessionId).isNull()
+        assertThat(codec.encodeSession(rotating)).doesNotContain("sessionId")
+        assertThat(codec.encodeSession(rotating)).doesNotContain(Rotating.tokens.refreshToken)
+        assertThat(codec.encodeSession(rotating)).doesNotContain(Rotating.signInId)
+        assertThat(codec.decode(stored, CredentialFormat.RotatingTokens)).isEqualTo(rotating)
+    }
+
+    @Test
+    fun `an Audiobookshelf profile's rotating tokens round trip through the registry, encrypted`() = runTest {
+        val dataStore = dataStore()
+        val rotating = session.copy(credential = Rotating)
+
+        loaded(dataStore).save(rotating, ServerKind.Audiobookshelf)
+        val again = loaded(dataStore).profile("p0")!!
+
+        assertThat(again.kind).isEqualTo(ServerKind.Audiobookshelf)
+        assertThat(again.session).isEqualTo(rotating)
+        assertThat(stored(dataStore)).contains("\"kind\":\"Audiobookshelf\"")
+        assertThat(stored(dataStore)).doesNotContain(Rotating.tokens.accessToken)
+        assertThat(stored(dataStore)).doesNotContain("sessionId")
+    }
+
+    @Test
+    fun `renewed rotating tokens are the same sign-in, another sign-in is not`() {
+        val renewed = Rotating.copy(tokens = Sample.tokens.copy(accessToken = "access-2", refreshToken = "refresh-2"))
+        val another = Rotating.copy(signInId = "5d0e6a3b-0c1f-4e27-9a8b-2f6c7d1e9b40")
+
+        assertThat(Rotating.isSameSignIn(renewed)).isTrue()
+        assertThat(renewed.isSameSignIn(Rotating)).isTrue()
+        assertThat(Rotating.isSameSignIn(another)).isFalse()
+        assertThat(Rotating.isSameSignIn(Credential.SessionTokens(sessionId = 42, Rotating.tokens))).isFalse()
+    }
+
+    @Test
+    fun `an Audiobookshelf profile holds rotating tokens, and no other kind does`() {
+        val rotating = session.copy(credential = Rotating)
+
+        assertThat(Profile("p0", ServerKind.Audiobookshelf, rotating).session).isEqualTo(rotating)
+        listOf(session, session.copy(credential = Key)).forEach { other ->
+            val error = runCatching { Profile("p0", ServerKind.Audiobookshelf, other) }.exceptionOrNull()
+            assertThat(error).isInstanceOf(IllegalArgumentException::class.java)
+        }
+        listOf(ServerKind.BookOrbit, ServerKind.Komga, ServerKind.Kavita).forEach { kind ->
+            val error = runCatching { Profile("p0", kind, rotating) }.exceptionOrNull()
+            assertThat(error).isInstanceOf(IllegalArgumentException::class.java)
+        }
+    }
+
+    @Test
+    fun `rotating tokens are read as their sort only, and no other sort as theirs`() {
+        val codec = ProfileCodec(FakeTokenCipher())
+        val rotating = codec.encode(session.copy(credential = Rotating))
+
+        assertThat(codec.decode(rotating, CredentialFormat.SessionTokens)).isNull()
+        assertThat(codec.decode(rotating.copy(sessionId = 42), CredentialFormat.SessionTokens)).isNull()
+        assertThat(codec.decode(rotating, CredentialFormat.ApiKey)).isNull()
+        assertThat(codec.decode(codec.encode(session), CredentialFormat.RotatingTokens)).isNull()
+        assertThat(codec.decode(codec.encode(session.copy(credential = Key)), CredentialFormat.RotatingTokens)).isNull()
+    }
+
+    @Test
+    fun `rotating tokens never print`() {
+        val printed = Rotating.toString()
+
+        assertThat(printed).doesNotContain(Rotating.tokens.accessToken)
+        assertThat(printed).doesNotContain(Rotating.tokens.refreshToken)
+        assertThat(printed).contains(Rotating.signInId)
+    }
+
+    @Test
     fun `a keyed entry of a kind this version does not know stays unread and as it was written`() = runTest {
         val dataStore = dataStore()
         val key = JsonPrimitive(FakeTokenCipher().encrypt("""{"key":"secret","keyId":"0K3Y1D"}"""))
-        val keyed = """{"id":"k1","kind":"Audiobookshelf","session":{"serverUrl":""" +
+        val keyed = """{"id":"k1","kind":"$KindOfLater","session":{"serverUrl":""" +
             """"https://comics.example.com",""" +
             """"user":{"id":"0B5Y2S1Z","username":"ann@example.com","name":"ann@example.com"},""" +
             """"encryptedTokens":$key},"dataFormat":2}"""
@@ -295,6 +371,12 @@ class ProfileCredentialTest {
 
     private companion object {
         val Key = Credential.ApiKey(key = "0123456789abcdef-secret", keyId = "0K3Y1D")
+
+        /** Audiobookshelf's tokens, named by the sign-in the app drew. */
+        val Rotating = Credential.RotatingTokens(signInId = "8c1f2b9e-4d7a-4f0e-b6a1-3e5d9c2f7a18", Sample.tokens)
+
+        /** The name of a kind of server no version knows yet: what a later version might write. */
+        const val KindOfLater = "Calibre"
 
         /** A key, encrypted, as a BookOrbit entry should never hold it. */
         val MismatchedKey = JsonPrimitive(FakeTokenCipher().encrypt("""{"key":"secret","keyId":"0K3Y1D"}"""))

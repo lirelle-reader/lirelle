@@ -183,7 +183,7 @@ class SignInKeyViewModelTest {
 
     @Test
     fun `a server too old, or out of reach, is told as it is`() = runTest(mainRule.dispatcher) {
-        val tooOld = ApiError.ServerTooOld(version = "0.8.6.25", minimum = "0.8.10.12")
+        val tooOld = ApiError.ServerTooOld(ServerKind.Kavita, version = "0.8.6.25", minimum = "0.8.10.12")
         auth.signInWithKeyResult = ApiResult.Failure(tooOld)
         val viewModel = viewModel()
         viewModel.pastedKey.onChange(Pasted)

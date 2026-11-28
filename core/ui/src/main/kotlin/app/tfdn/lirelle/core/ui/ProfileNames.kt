@@ -14,17 +14,18 @@ val ServerKind.nameRes: Int
         ServerKind.BookOrbit -> R.string.server_kind_bookorbit
         ServerKind.Komga -> R.string.server_kind_komga
         ServerKind.Kavita -> R.string.server_kind_kavita
+        ServerKind.Audiobookshelf -> R.string.server_kind_audiobookshelf
     }
 
 /**
  * What is said of a profile of this kind whose server no longer takes its sign-in, "%1$s" being the profile as
- * [profileLine] names it: a session expired for BookOrbit, a key no longer valid for Komga and
- * Kavita, whose keys never expire.
+ * [profileLine] names it: a session expired for BookOrbit and Audiobookshelf, whose sessions are renewed by
+ * tokens, a key no longer valid for Komga and Kavita, whose keys never expire.
  */
 @get:StringRes
 val ServerKind.signInNeededMessageRes: Int
     get() = when (this) {
-        ServerKind.BookOrbit -> R.string.sign_in_needed_message
+        ServerKind.BookOrbit, ServerKind.Audiobookshelf -> R.string.sign_in_needed_message
         ServerKind.Komga, ServerKind.Kavita -> R.string.sign_in_needed_key_message
     }
 

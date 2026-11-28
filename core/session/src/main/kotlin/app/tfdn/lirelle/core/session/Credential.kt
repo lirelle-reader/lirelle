@@ -27,6 +27,17 @@ sealed interface Credential {
     }
 
     /**
+     * A session opened by signing in whose refresh token changes at every renewal: Audiobookshelf's.
+     *
+     * @property signInId drawn by the app at the sign-in (a random UUID) and kept across renewals: it names the
+     *   sign-in, since the refresh token cannot.
+     */
+    data class RotatingTokens(val signInId: String, val tokens: Tokens) : Credential {
+        /** The sign-in's name, not the tokens: a renewal replaces both and is still the same sign-in. */
+        override fun isSameSignIn(other: Credential): Boolean = other is RotatingTokens && other.signInId == signInId
+    }
+
+    /**
      * A key of the account, which never expires and lasts until it is revoked: Komga's, and Kavita's.
      *
      * @property keyId the server's name for the key, by which it is revoked.

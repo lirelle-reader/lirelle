@@ -8,6 +8,7 @@ import app.tfdn.lirelle.core.designsystem.LirelleTheme
 import app.tfdn.lirelle.core.testing.DeviceRule
 import app.tfdn.lirelle.core.testing.assertAllTextFits
 import app.tfdn.lirelle.feature.account.switcher.ProfileRow
+import app.tfdn.lirelle.feature.account.switcher.audiobookshelfRow
 import app.tfdn.lirelle.feature.account.switcher.kavitaRow
 import app.tfdn.lirelle.feature.account.switcher.komgaRow
 import app.tfdn.lirelle.feature.account.switcher.row
@@ -87,6 +88,22 @@ class RemovalTextFitTest(
         assertFits(RemovalCost.Counted(), kavitaRow("p1", LongUsername, LongServer, usersOwnKey = true, current = true))
 
         compose.onNodeWithText(context.getString(R.string.profiles_remove_body_own_key)).assertExists()
+    }
+
+    private val audiobookshelf = audiobookshelfRow("p2", LongUsername, LongServer, current = true)
+
+    @Test
+    fun `the question about the current Audiobookshelf profile, whose session is closed, fits`() {
+        assertFits(RemovalCost.Counted(), audiobookshelf)
+
+        compose.onNodeWithText(context.getString(R.string.profiles_remove_body_session)).assertExists()
+    }
+
+    @Test
+    fun `the question about an Audiobookshelf profile that sleeps, whose session is closed, fits`() {
+        assertFits(RemovalCost.NotCounted, audiobookshelf.copy(current = false))
+
+        compose.onNodeWithText(context.getString(R.string.profiles_remove_body_sleeping_session)).assertExists()
     }
 
     @Test

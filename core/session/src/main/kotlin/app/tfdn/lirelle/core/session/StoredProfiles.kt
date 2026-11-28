@@ -87,19 +87,21 @@ internal data class StoredSession(
 )
 
 /** The sorts of [Credential], as the stored entry holds them. */
-internal enum class CredentialFormat { SessionTokens, ApiKey }
+internal enum class CredentialFormat { SessionTokens, ApiKey, RotatingTokens }
 
 /** The sort of credential a profile of this kind holds. */
 internal val ServerKind.credentialFormat: CredentialFormat
     get() = when (this) {
         ServerKind.BookOrbit -> CredentialFormat.SessionTokens
         ServerKind.Komga, ServerKind.Kavita -> CredentialFormat.ApiKey
+        ServerKind.Audiobookshelf -> CredentialFormat.RotatingTokens
     }
 
 internal val Credential.format: CredentialFormat
     get() = when (this) {
         is Credential.SessionTokens -> CredentialFormat.SessionTokens
         is Credential.ApiKey -> CredentialFormat.ApiKey
+        is Credential.RotatingTokens -> CredentialFormat.RotatingTokens
     }
 
 /**
@@ -160,6 +162,16 @@ internal data class StoredApiKey(val key: String, val keyId: String, val own: Bo
     override fun toString(): String = "StoredApiKey(<redacted>)"
 }
 
+/**
+ * Only ever written encrypted: as it is, it holds the tokens in clear. The sign-in's name is kept with them,
+ * encrypted too: nothing needs it before the credential is read.
+ */
+@Serializable
+internal data class StoredRotatingTokens(val signInId: String, val tokens: StoredTokens) {
+    /** Never prints the tokens: this text ends up in logs and in failed assertions. */
+    override fun toString(): String = "StoredRotatingTokens(<redacted>)"
+}
+
 /** Turns sessions and profiles into what is stored and back. The credentials are encrypted with [cipher]. */
 internal class ProfileCodec(private val cipher: TokenCipher) {
 
@@ -169,6 +181,8 @@ internal class ProfileCodec(private val cipher: TokenCipher) {
             is Credential.SessionTokens -> json.encodeToString(credential.tokens.toStored())
             is Credential.ApiKey ->
                 json.encodeToString(StoredApiKey(credential.key, credential.keyId, credential.ownedByApp))
+            is Credential.RotatingTokens ->
+                json.encodeToString(StoredRotatingTokens(credential.signInId, credential.tokens.toStored()))
         }
         return StoredSession(
             serverUrl = session.serverUrl,
@@ -301,6 +315,8 @@ private fun StoredSession.read(plain: String, format: CredentialFormat): Session
         }
         CredentialFormat.ApiKey ->
             json.decodeFromString<StoredApiKey>(plain).let { Credential.ApiKey(it.key, it.keyId, it.own) }
+        CredentialFormat.RotatingTokens -> json.decodeFromString<StoredRotatingTokens>(plain)
+            .let { Credential.RotatingTokens(it.signInId, it.tokens.toTokens()) }
     }
     credential?.let { Session(serverUrl, it, user.toProfile()) }
 } catch (_: IllegalArgumentException) {

@@ -107,12 +107,14 @@ class ProviderPageKavitaTest {
     }
 
     @Test
-    fun `no page of a BookOrbit server ends a provider's page`() {
-        fun bookOrbit(url: String) = providerPageOutcome(ServerKind.BookOrbit, Server, url) { true }
+    fun `no page of a BookOrbit or an Audiobookshelf server ends a provider's page`() {
+        listOf(ServerKind.BookOrbit, ServerKind.Audiobookshelf).forEach { kind ->
+            fun outcome(url: String) = providerPageOutcome(kind, Server, url) { true }
 
-        assertThat(bookOrbit("$Server/")).isNull()
-        assertThat(bookOrbit("$Server/?server_redirect=Y")).isNull()
-        assertThat(bookOrbit("$Server/login?server_redirect=Y&error=x")).isNull()
-        assertThat(bookOrbit("https://auth.example.com/authorize")).isNull()
+            assertThat(outcome("$Server/")).isNull()
+            assertThat(outcome("$Server/?server_redirect=Y")).isNull()
+            assertThat(outcome("$Server/login?server_redirect=Y&error=x")).isNull()
+            assertThat(outcome("https://auth.example.com/authorize")).isNull()
+        }
     }
 }

@@ -216,6 +216,22 @@ class SignInNeededStateTest {
         compose.onNodeWithText("La connexion de camille · Kavita n'est plus valable.").assertIsDisplayed()
     }
 
+    /** Its session is renewed by tokens, as BookOrbit's: refused, it has expired. */
+    @Test
+    fun `an Audiobookshelf profile is named Audiobookshelf, and its session has expired, as BookOrbit's`() {
+        show(needed = SignInNeeded(profileId = "p5", username = "camille", kind = ServerKind.Audiobookshelf))
+
+        compose.onNodeWithText("The session of camille · Audiobookshelf has expired.").assertIsDisplayed()
+    }
+
+    @Test
+    @Config(qualifiers = "fr")
+    fun `in French, an Audiobookshelf profile's session has expired`() {
+        show(needed = SignInNeeded(profileId = "p5", username = "camille", kind = ServerKind.Audiobookshelf))
+
+        compose.onNodeWithText("La session de camille · Audiobookshelf a expiré.").assertIsDisplayed()
+    }
+
     @Test
     fun `without a network on the device the bar is as before`() {
         show(needed = null) { ServerFailureBar(ApiError.ServerUnreachable, onRetry = { retries++ }) }
