@@ -1,8 +1,6 @@
 package app.tfdn.lirelle.source.audiobookshelf.library
 
-import app.tfdn.lirelle.core.library.model.CoverShape
 import app.tfdn.lirelle.source.audiobookshelf.library.dto.AbsItemDto
-import app.tfdn.lirelle.source.audiobookshelf.library.dto.AbsLibraryDto
 
 /**
  * The covers of the items of the profile's server, at [serverUrl]: its cover route, which asks for no
@@ -25,21 +23,8 @@ internal class AbsCovers(private val serverUrl: String) {
     }
 }
 
-/** The shape of the covers of this library, as its settings say: square (1), or a book's (0, the default). */
-internal val AbsLibraryDto.coverShape: CoverShape
-    get() = if (settings?.coverAspectRatio == SquareCovers) CoverShape.Square else CoverShape.Portrait
-
-/**
- * The shape of the covers of the library [libraryId] among these: a book's for one not among them, or none.
- */
-internal fun List<AbsLibraryDto>.coverShapeOf(libraryId: String?): CoverShape =
-    firstOrNull { it.id == libraryId }?.coverShape ?: CoverShape.Portrait
-
 /** The width a list's tile asks for, in pixels: enough for the widest tile on a tablet. */
 private const val TileWidth = 400
 
 /** The width a book's page asks for, in pixels. */
 private const val PageWidth = 800
-
-/** What a library's settings say of square covers (`BookCoverAspectRatio.SQUARE`); 0 is a book's, 1.6:1. */
-private const val SquareCovers = 1

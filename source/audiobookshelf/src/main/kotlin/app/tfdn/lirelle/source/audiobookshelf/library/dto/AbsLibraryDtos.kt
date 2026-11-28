@@ -29,12 +29,7 @@ internal data class AbsLibraryDto(
     val name: String = "",
     val displayOrder: Int = 0,
     val mediaType: String? = null,
-    val settings: AbsLibrarySettingsDto? = null,
 )
-
-/** How a library is shown. @property coverAspectRatio 1 for square covers, 0 for a book's (the default). */
-@Serializable
-internal data class AbsLibrarySettingsDto(val coverAspectRatio: Int? = null)
 
 /** A page of a library's items (`GET api/libraries/:id/items`), from page 0; [total] counts the whole list. */
 @Serializable

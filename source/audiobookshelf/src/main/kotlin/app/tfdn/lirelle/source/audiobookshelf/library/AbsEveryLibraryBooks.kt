@@ -47,7 +47,7 @@ internal class AbsEveryLibraryBooks(
                     totals[key.part] = answer.total
                     if (totals.size == libraries.size) total.value = totals.values.sum()
                     val readings = progress.readings(refresh)
-                    val books = answer.results.map { remote.books.summary(it, readings, library.coverShape) }
+                    val books = answer.results.map { remote.books.summary(it, readings) }
                     AbsChainedPage(books, nextKey(key, answer.results.size, answer.total, libraries.size))
                 }
             }
@@ -63,7 +63,7 @@ internal class AbsEveryLibraryBooks(
         val readings = progress.readings()
         val all = whole.libraries(remote, refresh = null).flatMap { library ->
             remote.libraryItems(whole, library.id, request, limit = 0, page = 0).results
-                .map { remote.books.summary(it, readings, library.coverShape) }
+                .map { remote.books.summary(it, readings) }
         }
         return all.pageOf(page, size)
     }

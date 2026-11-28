@@ -1,5 +1,6 @@
 package app.tfdn.lirelle.source.audiobookshelf.library
 
+import app.tfdn.lirelle.core.library.model.CoverShape
 import app.tfdn.lirelle.core.library.model.FormatFilter
 import app.tfdn.lirelle.core.library.model.MediaProfile
 import app.tfdn.lirelle.core.library.model.PagedKind
@@ -111,5 +112,56 @@ class AbsFormatsTest {
     fun `an item with nothing in it has no format`() {
         assertWithMessage("formats").that(AbsFormats.of(madeUp(null))).isEmpty()
         assertWithMessage("media").that(AbsFormats.media(madeUp(null))).isEqualTo(MediaProfile.TextOnly)
+    }
+
+    @Test
+    fun `a cover is square for a book that is audio only, on both versions`() {
+        RecordedOn.entries.forEach { on ->
+            val einstein = recordedItem("Albert Einstein. L'homme le plus surveillé d'Amérique", on = on)
+
+            assertWithMessage(on.name).that(AbsFormats.coverShape(einstein)).isEqualTo(CoverShape.Square)
+        }
+        assertWithMessage("made up").that(AbsFormats.coverShape(madeUp(null, tracks = 3))).isEqualTo(CoverShape.Square)
+    }
+
+    @Test
+    fun `a cover is a book's for any ebook, with audio or not, on both versions`() {
+        RecordedOn.entries.forEach { on ->
+            val withAudio = recordedItem("Mostly Harmless", on = on)
+            val epub = recordedItem("Globalement inoffensive", on = on)
+            val pdf = recordedItem("Causeries historiques sur l'île de la Réunion [fr] (1881)", on = on)
+
+            assertWithMessage(on.name).that(AbsFormats.coverShape(withAudio)).isEqualTo(CoverShape.Portrait)
+            assertWithMessage(on.name).that(AbsFormats.coverShape(epub)).isEqualTo(CoverShape.Portrait)
+            assertWithMessage(on.name).that(AbsFormats.coverShape(pdf)).isEqualTo(CoverShape.Portrait)
+            recordedItems("items-bd-added", on).forEach {
+                assertWithMessage(on.name).that(AbsFormats.coverShape(it)).isEqualTo(CoverShape.Portrait)
+            }
+        }
+    }
+
+    @Test
+    fun `a whole item's cover is read from its tracks and its ebook file, on 2_26 too`() {
+        RecordedOn.entries.forEach { on ->
+            val guide = expandedItem("item-h2g2-expanded", on)
+            val asterix = expandedItem("item-asterix-expanded", on)
+
+            assertWithMessage(on.name).that(AbsFormats.coverShape(guide)).isEqualTo(CoverShape.Portrait)
+            assertWithMessage(on.name).that(AbsFormats.coverShape(asterix)).isEqualTo(CoverShape.Portrait)
+        }
+    }
+
+    @Test
+    fun `a CBZ, a CBR and an ebook Lirelle does not read keep a book's cover, with audio or not`() {
+        listOf("cbz", "cbr", "mobi", "azw3", "MOBI").forEach { format ->
+            assertWithMessage(format).that(AbsFormats.coverShape(madeUp(format))).isEqualTo(CoverShape.Portrait)
+            assertWithMessage("$format with audio").that(AbsFormats.coverShape(madeUp(format, tracks = 3)))
+                .isEqualTo(CoverShape.Portrait)
+        }
+    }
+
+    @Test
+    fun `an item with neither audio nor ebook has a book's cover`() {
+        assertWithMessage("shape").that(AbsFormats.coverShape(madeUp(null))).isEqualTo(CoverShape.Portrait)
     }
 }

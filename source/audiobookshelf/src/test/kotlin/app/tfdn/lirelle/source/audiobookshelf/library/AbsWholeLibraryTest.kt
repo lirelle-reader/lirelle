@@ -1,6 +1,5 @@
 package app.tfdn.lirelle.source.audiobookshelf.library
 
-import app.tfdn.lirelle.core.library.model.CoverShape
 import app.tfdn.lirelle.core.network.ApiResult
 import app.tfdn.lirelle.source.audiobookshelf.testing.BdId
 import app.tfdn.lirelle.source.audiobookshelf.testing.BrowseRig
@@ -25,12 +24,12 @@ import org.junit.Test
 
 /** Livres alone, as a server that lost BD would answer. */
 private const val LivresAlone = """{"libraries":[
-    {"id":"$LivresId","name":"Livres","displayOrder":1,"mediaType":"book","settings":{"coverAspectRatio":1}}]}"""
+    {"id":"$LivresId","name":"Livres","displayOrder":1,"mediaType":"book"}]}"""
 
 /** Livres, and a library of books with a book's covers added since. */
 private const val LivresAndNovels = """{"libraries":[
-    {"id":"$LivresId","name":"Livres","displayOrder":1,"mediaType":"book","settings":{"coverAspectRatio":1}},
-    {"id":"novels","name":"Romans","displayOrder":2,"mediaType":"book","settings":{"coverAspectRatio":0}}]}"""
+    {"id":"$LivresId","name":"Livres","displayOrder":1,"mediaType":"book"},
+    {"id":"novels","name":"Romans","displayOrder":2,"mediaType":"book"}]}"""
 
 /**
  * What the profile keeps of its server: the libraries for a minute, replaced by the selector's read; each library's
@@ -80,7 +79,6 @@ class AbsWholeLibraryTest {
 
         assertThat(selector.value.map { it.name }).containsExactly("Livres", "Romans").inOrder()
         assertThat(libraries()).containsExactly("Livres", "Romans").inOrder()
-        assertThat(rig.whole.coverShape(rig.profileServer.remote(), "novels")).isEqualTo(CoverShape.Portrait)
         assertThat(routes.requests("/api/libraries")).hasSize(2)
     }
 
@@ -126,7 +124,6 @@ class AbsWholeLibraryTest {
             withContext(Dispatchers.IO) {
                 withTimeout(3_000) {
                     assertThat(libraries()).containsExactly("Livres", "BD").inOrder()
-                    assertThat(rig.whole.coverShape(remote, BdId)).isEqualTo(CoverShape.Square)
                     assertThat(rig.whole.items(remote, BdId, refresh = null)).isNotEmpty()
                 }
             }

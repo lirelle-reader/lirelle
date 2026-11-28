@@ -3,7 +3,6 @@ package app.tfdn.lirelle.source.audiobookshelf.library
 import app.tfdn.lirelle.core.library.model.AuthorRef
 import app.tfdn.lirelle.core.library.model.BookDetail
 import app.tfdn.lirelle.core.library.model.BookSummary
-import app.tfdn.lirelle.core.library.model.CoverShape
 import app.tfdn.lirelle.core.library.model.SeriesRef
 import app.tfdn.lirelle.source.audiobookshelf.library.dto.AbsItemDto
 import app.tfdn.lirelle.source.audiobookshelf.library.dto.AbsMetadataDto
@@ -13,8 +12,8 @@ import java.time.Instant
  * Turns Audiobookshelf's items into the app's books, against the profile's server at [serverUrl], so the screens
  * never build a URL. An item is a book: its id the item's UUID, its title as the server gives it (some keep their
  * folder's "[fr] (1998)"), its read state and progress from the account's [AbsReadings]. Its cover is drawn in the
- * shape its library's settings say ([coverShape]). What the server does not say is left empty; its paths are never
- * read.
+ * shape its formats say ([AbsFormats.coverShape]): square for an audiobook alone. What the server does not say is
+ * left empty; its paths are never read.
  */
 internal class AbsBooks(serverUrl: String) {
 
@@ -24,7 +23,7 @@ internal class AbsBooks(serverUrl: String) {
     fun cover(item: AbsItemDto): String? = covers.tile(item)
 
     /** An item in a list. */
-    fun summary(item: AbsItemDto, readings: AbsReadings, coverShape: CoverShape = CoverShape.Portrait): BookSummary {
+    fun summary(item: AbsItemDto, readings: AbsReadings): BookSummary {
         val metadata = item.media.metadata
         val reading = readings.of(item.id)
         return BookSummary(
@@ -33,7 +32,7 @@ internal class AbsBooks(serverUrl: String) {
             authors = metadata.authorNames(),
             series = metadata.seriesRef(),
             coverUrl = covers.tile(item),
-            coverShape = coverShape,
+            coverShape = AbsFormats.coverShape(item),
             media = AbsFormats.media(item),
             readState = readings.state(item.id),
             progressPercent = reading?.percent,
@@ -51,7 +50,6 @@ internal class AbsBooks(serverUrl: String) {
         item: AbsItemDto,
         readings: AbsReadings,
         libraryName: String,
-        coverShape: CoverShape = CoverShape.Portrait,
     ): BookDetail {
         val metadata = item.media.metadata
         return BookDetail(
@@ -61,7 +59,7 @@ internal class AbsBooks(serverUrl: String) {
             authors = metadata.authors.map { AuthorRef(it.id.asAuthorId(), it.name) },
             series = metadata.seriesRef(),
             coverUrl = covers.page(item),
-            coverShape = coverShape,
+            coverShape = AbsFormats.coverShape(item),
             media = AbsFormats.media(item),
             description = metadata.description.orNullIfBlank() ?: metadata.descriptionPlain.orNullIfBlank(),
             // Trimmed, as the genres list shows them: Audiobookshelf keeps a genre as it was typed.

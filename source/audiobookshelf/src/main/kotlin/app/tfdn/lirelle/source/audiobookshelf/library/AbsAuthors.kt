@@ -83,10 +83,9 @@ internal class AbsAuthors(
             val author = remote.api.author(id)
             val places = author.seriesPlaces()
             val readings = progress.readings()
-            val shape = whole.coverShape(remote, author.libraryId)
             author.libraryItems
                 .map { item ->
-                    val book = remote.books.summary(item, readings, shape)
+                    val book = remote.books.summary(item, readings)
                     places[item.id]?.let { book.copy(series = it) } ?: book
                 }
                 .sortedWith(BySeriesThenTitle)

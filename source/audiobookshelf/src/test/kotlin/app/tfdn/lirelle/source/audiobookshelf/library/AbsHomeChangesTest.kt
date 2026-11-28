@@ -1,6 +1,5 @@
 package app.tfdn.lirelle.source.audiobookshelf.library
 
-import app.tfdn.lirelle.core.library.model.CoverShape
 import app.tfdn.lirelle.core.library.model.HomeRow
 import app.tfdn.lirelle.core.library.model.HomeRowExtent
 import app.tfdn.lirelle.core.library.model.HomeRowKind
@@ -26,13 +25,13 @@ import org.junit.Test
 
 /** Livres alone, as a server that lost BD would answer. */
 private const val LivresAlone = """{"libraries":[
-    {"id":"$LivresId","name":"Livres","displayOrder":1,"mediaType":"book","settings":{"coverAspectRatio":1}}]}"""
+    {"id":"$LivresId","name":"Livres","displayOrder":1,"mediaType":"book"}]}"""
 
 /** The recorded libraries and a library of books added since. */
 private const val WithNovels = """{"libraries":[
-    {"id":"$LivresId","name":"Livres","displayOrder":1,"mediaType":"book","settings":{"coverAspectRatio":1}},
-    {"id":"$BdId","name":"BD","displayOrder":2,"mediaType":"book","settings":{"coverAspectRatio":1}},
-    {"id":"novels","name":"Romans","displayOrder":3,"mediaType":"book","settings":{"coverAspectRatio":0}}]}"""
+    {"id":"$LivresId","name":"Livres","displayOrder":1,"mediaType":"book"},
+    {"id":"$BdId","name":"BD","displayOrder":2,"mediaType":"book"},
+    {"id":"novels","name":"Romans","displayOrder":3,"mediaType":"book"}]}"""
 
 /**
  * Home's rows as the server changes: a library the account can no longer open is left out, one removed stops being
@@ -114,8 +113,6 @@ class AbsHomeChangesTest {
 
         val books = row(HomeRowKind.RecentlyAdded).books
         assertThat(books.first().id.value).isEqualTo("novel-1")
-        assertThat(books.first().coverShape).isEqualTo(CoverShape.Portrait)
-        assertThat(books.last().coverShape).isEqualTo(CoverShape.Square)
     }
 
     @Test

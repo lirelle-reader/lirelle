@@ -66,7 +66,7 @@ internal class AbsHome(
             val items = remote.api.itemsInProgress(size).libraryItems
             val bookLibraries = libraries.await().map { it.id }.toSet()
             val books = items.filter { it.mediaType != PodcastMedia && it.libraryId in bookLibraries }.map { item ->
-                val book = remote.books.summary(item, readings.await(), libraries.await().coverShapeOf(item.libraryId))
+                val book = remote.books.summary(item, readings.await())
                 book.copy(
                     readState = ReadState.Reading,
                     lastActivityAt = item.progressLastUpdate?.let(Instant::ofEpochMilli) ?: book.lastActivityAt,
@@ -89,8 +89,7 @@ internal class AbsHome(
         val found = all.mapNotNull { library -> library.shelves.firstOrNull { it.id == shelfId } }
         val items = arrange(found.flatMap { it.items() }).distinctBy { it.id }.take(asked.extent.size)
         val readings = progress.readings(asked.refresh)
-        val libraries = all.map { it.library }
-        val books = items.map { remote.books.summary(it, readings, libraries.coverShapeOf(it.libraryId)) }
+        val books = items.map { remote.books.summary(it, readings) }
         return HomeRow(asked.kind, books, hasMore = found.sumOf { it.held() } > books.size)
     }
 

@@ -54,8 +54,7 @@ internal class AbsSeries(
             val items = remote.api.groupItems(libraryId, seriesFilter(id), limit = 0, page = 0, order = BySequence)
                 .results
             val readings = progress.readings()
-            val shape = whole.coverShape(remote, libraryId)
-            SeriesBooks(remote.series(series, items, readings), items.map { remote.books.summary(it, readings, shape) })
+            SeriesBooks(remote.series(series, items, readings), items.map { remote.books.summary(it, readings) })
         }
     }
 

@@ -138,10 +138,18 @@ class AbsBooksTest {
     }
 
     @Test
-    fun `a library of square covers gives square books`() {
-        val book = books.summary(recordedItem("Mostly Harmless"), AbsReadings.None, CoverShape.Square)
+    fun `a book's cover is square only when the book is audio only, in a list and on its page`() {
+        RecordedOn.entries.forEach { on ->
+            val audio = recordedItem("Albert Einstein. L'homme le plus surveillé d'Amérique", on = on)
+            val both = recordedItem("Mostly Harmless", on = on)
 
-        assertThat(book.coverShape).isEqualTo(CoverShape.Square)
+            assertWithMessage(on.name).that(books.summary(audio, AbsReadings.None).coverShape)
+                .isEqualTo(CoverShape.Square)
+            assertWithMessage(on.name).that(books.summary(both, AbsReadings.None).coverShape)
+                .isEqualTo(CoverShape.Portrait)
+            val page = books.detail(expandedItem("item-h2g2-expanded", on), AbsReadings.None, "Livres")
+            assertWithMessage(on.name).that(page.coverShape).isEqualTo(CoverShape.Portrait)
+        }
     }
 
     @Test

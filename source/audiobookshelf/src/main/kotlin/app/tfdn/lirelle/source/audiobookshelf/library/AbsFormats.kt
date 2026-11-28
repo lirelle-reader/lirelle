@@ -1,5 +1,6 @@
 package app.tfdn.lirelle.source.audiobookshelf.library
 
+import app.tfdn.lirelle.core.library.model.CoverShape
 import app.tfdn.lirelle.core.library.model.FormatFilter
 import app.tfdn.lirelle.core.library.model.MediaProfile
 import app.tfdn.lirelle.core.library.model.PagedKind
@@ -37,6 +38,16 @@ internal object AbsFormats {
             else -> MediaProfile.TextOnly
         }
     }
+
+    /**
+     * The shape of the item's cover: square for a book that is audio only, a book's for any other, whatever its
+     * library's settings say. An ebook of any format, one Lirelle does not read (MOBI, AZW3) too, has a portrait
+     * cover, with audio or not, and a library set to square covers would crop it; an item with neither has none to
+     * crop and gets the app's default. The formats are those of [media], so a whole item on 2.26 is read by its
+     * tracks and its ebook file.
+     */
+    fun coverShape(item: AbsItemDto): CoverShape =
+        if (media(item) == MediaProfile.AudioOnly) CoverShape.Square else CoverShape.Portrait
 
     /** What the pages of the item's ebook are, for a PDF or a comic; null for any other item. */
     fun pagedKind(item: AbsItemDto): PagedKind? = pagedKindOf(item.media.ebookFormat())

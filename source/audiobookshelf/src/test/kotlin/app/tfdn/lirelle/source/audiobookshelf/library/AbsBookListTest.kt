@@ -58,8 +58,9 @@ class AbsBookListTest {
 
         assertThat(all).hasSize(40)
         assertThat(all.first().title).isEqualTo("Mostly Harmless")
-        // The test server's libraries show square covers.
-        assertThat(all.first().coverShape).isEqualTo(CoverShape.Square)
+        // An audiobook with an EPUB is not audio only: a book's cover, whatever the library's settings say.
+        assertThat(all.first().coverShape).isEqualTo(CoverShape.Portrait)
+        assertThat(all.single { it.title.startsWith("Albert Einstein") }.coverShape).isEqualTo(CoverShape.Square)
         assertThat(books.total.value).isEqualTo(40)
         val pages = routes.requests(itemsPath(LivresId))
         assertThat(pages.map { it.url.queryParameter("page") }).containsExactlyElementsIn((0..7).map { "$it" })

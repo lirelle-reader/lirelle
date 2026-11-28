@@ -1,12 +1,10 @@
 package app.tfdn.lirelle.source.audiobookshelf.library
 
 import app.tfdn.lirelle.core.ids.LibraryId
-import app.tfdn.lirelle.core.library.model.CoverShape
 import app.tfdn.lirelle.core.library.model.ServerLibrary
 import app.tfdn.lirelle.core.network.ApiError
 import app.tfdn.lirelle.core.network.ApiResult
 import app.tfdn.lirelle.source.audiobookshelf.library.dto.AbsLibraryDto
-import app.tfdn.lirelle.source.audiobookshelf.library.dto.AbsLibrarySettingsDto
 import app.tfdn.lirelle.source.audiobookshelf.testing.RecordedOn
 import app.tfdn.lirelle.source.audiobookshelf.testing.enqueueJson
 import app.tfdn.lirelle.source.audiobookshelf.testing.enqueueRefusal
@@ -73,28 +71,6 @@ class AbsLibrariesTest {
                 listOf(ServerLibrary(LibraryId("lib-a"), "Livres"), ServerLibrary(LibraryId("lib-b"), "BD")),
             ),
         )
-    }
-
-    @Test
-    fun `a library's covers are square when its settings say 1, a book's when they say 0 or nothing`() {
-        fun shape(ratio: Int?) = AbsLibraryDto("lib", settings = AbsLibrarySettingsDto(ratio)).coverShape
-
-        assertThat(shape(1)).isEqualTo(CoverShape.Square)
-        assertThat(shape(0)).isEqualTo(CoverShape.Portrait)
-        assertThat(shape(null)).isEqualTo(CoverShape.Portrait)
-        assertThat(AbsLibraryDto("lib").coverShape).isEqualTo(CoverShape.Portrait)
-    }
-
-    @Test
-    fun `the recorded libraries show square covers, on both versions`() = runBlocking {
-        RecordedOn.entries.forEach { on ->
-            server.enqueueJson(fixtureBody("libraries", on))
-
-            val libraries = (remote.call { it.bookLibraries() } as ApiResult.Success).value
-
-            val shapes = libraries.map { it.coverShape }.distinct()
-            assertWithMessage(on.name).that(shapes).containsExactly(CoverShape.Square)
-        }
     }
 
     @Test

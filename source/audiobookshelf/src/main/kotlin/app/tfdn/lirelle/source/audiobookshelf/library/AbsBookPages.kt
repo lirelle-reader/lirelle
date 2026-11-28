@@ -27,7 +27,7 @@ internal class AbsBookPages(
             val readings = progress.readings()
             val libraries = whole.libraries(remote, refresh = null)
             val libraryName = libraries.firstOrNull { it.id == item.libraryId }?.name.orEmpty()
-            remote.books.detail(item, readings, libraryName, libraries.coverShapeOf(item.libraryId))
+            remote.books.detail(item, readings, libraryName)
         }
     }
 
@@ -62,8 +62,7 @@ internal class AbsBookPages(
             val items = remote.api.groupItems(libraryId, seriesFilter(series.id), limit = 0, page = 0, BySequence)
                 .results
             val readings = progress.readings()
-            val shape = whole.coverShape(remote, libraryId)
-            items.filter { it.id != id }.map { remote.books.summary(it, readings, shape) }.map { book ->
+            items.filter { it.id != id }.map { remote.books.summary(it, readings) }.map { book ->
                 RelatedBook(
                     id = book.id,
                     title = book.title,

@@ -35,7 +35,7 @@ internal class AbsSearch(
                 libraries.map { async { remote.found(it.id, query) } }.awaitAll() to readings.await()
             }
             val books = found.flatMap { it.book }.map { it.libraryItem }.distinctBy { it.id }
-                .map { remote.books.summary(it, readings, libraries.coverShapeOf(it.libraryId)) }
+                .map { remote.books.summary(it, readings) }
             val series = found.flatMap { it.series }.distinctBy { it.series.id }
                 .map { remote.series(it.series, it.books, readings) }
             val authors = found.flatMap { it.authors }.distinctBy { it.id }

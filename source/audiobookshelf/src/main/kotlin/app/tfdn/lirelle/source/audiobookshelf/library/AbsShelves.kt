@@ -93,9 +93,8 @@ internal class AbsShelves(
         }
         val readings = progress.readings(refresh)
         val filters = AbsBookFilters.of(request)
-        val libraries = whole.libraries(remote, refresh)
         return ordered(items.filter { filters.keeps(it, readings) }, request)
-            .map { remote.books.summary(it, readings, libraries.coverShapeOf(it.libraryId)) }
+            .map { remote.books.summary(it, readings) }
     }
 }
 

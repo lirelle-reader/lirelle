@@ -91,7 +91,7 @@ internal class AbsBookList(
         if (refresh != null) whole.markStale(shown.id, refresh)
         val answer = remote.libraryItems(whole, shown.id, request, size, page)
         val readings = progress.readings(refresh)
-        return PageResult(answer.results.map { remote.books.summary(it, readings, shown.coverShape) }, answer.total)
+        return PageResult(answer.results.map { remote.books.summary(it, readings) }, answer.total)
     }
 
     /**
@@ -109,10 +109,9 @@ internal class AbsBookList(
         val kept = shown.flatMap { library ->
             whole.items(remote, library.id, refresh)
                 .filter { filters.keeps(it, readings) }
-                .map { it to library.coverShape }
         }
-        return AbsBookSorts.sorted(kept, request.sort, request.direction) { it.first }
-            .map { (item, shape) -> remote.books.summary(item, readings, shape) }
+        return AbsBookSorts.sorted(kept, request.sort, request.direction) { it }
+            .map { remote.books.summary(it, readings) }
     }
 }
 

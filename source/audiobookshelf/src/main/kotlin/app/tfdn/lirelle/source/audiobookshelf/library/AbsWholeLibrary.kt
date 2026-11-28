@@ -1,6 +1,5 @@
 package app.tfdn.lirelle.source.audiobookshelf.library
 
-import app.tfdn.lirelle.core.library.model.CoverShape
 import app.tfdn.lirelle.core.library.model.ServerLibrary
 import app.tfdn.lirelle.source.audiobookshelf.library.dto.AbsItemDto
 import app.tfdn.lirelle.source.audiobookshelf.library.dto.AbsLibraryDto
@@ -47,13 +46,6 @@ internal class AbsWholeLibrary(private val now: () -> Instant = Instant::now) {
     suspend fun readLibraries(remote: AbsRemote): List<AbsLibraryDto> = librariesLock.withLock {
         readAndKeep(remote, refresh = null)
     }
-
-    /**
-     * The shape of the covers of the library [libraryId], as its settings say; a book's for a library the account
-     * has not among its book libraries, or none.
-     */
-    suspend fun coverShape(remote: AbsRemote, libraryId: String?): CoverShape =
-        libraries(remote, refresh = null).coverShapeOf(libraryId)
 
     /** The whole list of the library [libraryId]'s items, in the server's order. */
     suspend fun items(remote: AbsRemote, libraryId: String, refresh: Refresh?): List<AbsItemDto> {
