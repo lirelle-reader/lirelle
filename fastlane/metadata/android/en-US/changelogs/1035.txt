@@ -1,0 +1,4 @@
+Features
+• Kavita books and comics can be kept offline
+• Kavita servers: books, comics and manga
+• Requests name Lirelle in their User-Agent
