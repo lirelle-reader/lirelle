@@ -18,8 +18,8 @@ import org.junit.Test
 private val Start: Instant = Instant.parse("2026-11-28T10:00:00Z")
 
 /**
- * The account's progress, all of it in `GET api/me`: no record is unread, a record not finished is reading, a
- * finished one read; the furthest of the audio's and the ebook's progress is shown; a podcast's is not a book's.
+ * The account's progress, all of it in `GET api/me`: no record, or one at nothing yet, is unread, a record moved and
+ * not finished is reading, a finished one read; the furthest of the audio's and the ebook's progress is shown; a podcast's is not a book's.
  * It is read again when what was read is more than ten seconds old.
  */
 class AbsProgressTest {
@@ -54,11 +54,34 @@ class AbsProgressTest {
     }
 
     @Test
-    fun `a record at nothing yet is reading, with no progress to show`() {
-        val readings = AbsReadings.of(listOf(record("a", progress = 0.0, ebookProgress = null)))
+    fun `a record not finished at nothing yet is unread, as the server's not-started filter says`() {
+        val readings = AbsReadings.of(
+            listOf(
+                record("nothing", progress = 0.0, ebookProgress = null),
+                record("zero", progress = 0.0, ebookProgress = 0.0, currentTime = 0.0),
+                record("empty", progress = null, ebookProgress = null),
+            ),
+        )
 
-        assertThat(readings.of("a")!!.state).isEqualTo(ReadState.Reading)
-        assertThat(readings.of("a")!!.percent).isNull()
+        listOf("nothing", "zero", "empty").forEach { id ->
+            assertWithMessage(id).that(readings.state(id)).isEqualTo(ReadState.Unread)
+            assertWithMessage(id).that(readings.of(id)!!.percent).isNull()
+        }
+    }
+
+    @Test
+    fun `a record moved in its audio or its ebook is reading, as the server's in-progress filter says`() {
+        val readings = AbsReadings.of(
+            listOf(
+                record("audio", progress = 0.0, currentTime = 12.0),
+                record("ebook", progress = 0.0, ebookProgress = 0.001),
+                record("finished", progress = 0.0, finished = true),
+            ),
+        )
+
+        assertThat(readings.state("audio")).isEqualTo(ReadState.Reading)
+        assertThat(readings.state("ebook")).isEqualTo(ReadState.Reading)
+        assertThat(readings.state("finished")).isEqualTo(ReadState.Read)
     }
 
     @Test
@@ -125,10 +148,12 @@ private fun record(
     ebookProgress: Double? = 0.0,
     episodeId: String? = null,
     finished: Boolean = false,
+    currentTime: Double? = null,
 ) = AbsMediaProgressDto(
     libraryItemId = itemId,
     episodeId = episodeId,
     progress = progress,
     ebookProgress = ebookProgress,
     isFinished = finished,
+    currentTime = currentTime,
 )

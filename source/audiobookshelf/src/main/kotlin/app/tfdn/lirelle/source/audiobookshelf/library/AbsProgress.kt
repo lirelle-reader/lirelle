@@ -37,8 +37,10 @@ internal class AbsReadings private constructor(private val byItem: Map<String, A
         val None = AbsReadings(emptyMap())
 
         /**
-         * The readings the account's [records] say: a record not finished is a book being read, a finished one a
-         * book read. A podcast episode's record ([AbsMediaProgressDto.episodeId] set) is no book's.
+         * The readings the account's [records] say, as the server's own filters and shelves tell them: a finished
+         * record is a book read; one not finished whose audio or ebook has moved a book being read (`in-progress`,
+         * Continue); one not finished at nothing yet a book not started (`not-started`), unread. A podcast
+         * episode's record ([AbsMediaProgressDto.episodeId] set) is no book's.
          */
         fun of(records: List<AbsMediaProgressDto>): AbsReadings = AbsReadings(
             records.filter { it.episodeId == null }.associate { it.libraryItemId to it.reading() },
@@ -78,8 +80,13 @@ private const val FullPercent = 100
 
 private fun AbsMediaProgressDto.reading(): AbsReading {
     val furthest = maxOf(progress ?: 0.0, ebookProgress ?: 0.0)
+    val moved = (currentTime ?: 0.0) > 0.0 || furthest > 0.0
     return AbsReading(
-        state = if (isFinished) ReadState.Read else ReadState.Reading,
+        state = when {
+            isFinished -> ReadState.Read
+            moved -> ReadState.Reading
+            else -> ReadState.Unread
+        },
         percent = (furthest * FullPercent).toInt().coerceIn(0, FullPercent).takeIf { it > 0 },
         lastUpdate = lastUpdate?.let(Instant::ofEpochMilli),
         startedAt = startedAt?.let(Instant::ofEpochMilli),
