@@ -14,9 +14,19 @@ import app.tfdn.lirelle.source.audiobookshelf.testing.LivresId
 import app.tfdn.lirelle.source.audiobookshelf.testing.answerRecordedLibrary
 import app.tfdn.lirelle.source.audiobookshelf.testing.bookListOn
 import app.tfdn.lirelle.source.audiobookshelf.testing.itemsPath
+import app.tfdn.lirelle.source.audiobookshelf.testing.libraryPath
 import app.tfdn.lirelle.source.audiobookshelf.testing.pagedItems
+import app.tfdn.lirelle.source.audiobookshelf.testing.recordedObject
+import app.tfdn.lirelle.source.audiobookshelf.testing.title
+import app.tfdn.lirelle.source.audiobookshelf.testing.with
 import com.google.common.truth.Truth.assertThat
+import java.text.Collator
 import kotlinx.coroutines.runBlocking
+import kotlinx.serialization.json.JsonArray
+import kotlinx.serialization.json.JsonObject
+import kotlinx.serialization.json.JsonPrimitive
+import kotlinx.serialization.json.jsonArray
+import kotlinx.serialization.json.jsonObject
 import mockwebserver3.MockWebServer
 import org.junit.After
 import org.junit.Before
@@ -112,6 +122,41 @@ class AbsGenreBooksTest {
     }
 
     @Test
+    fun `a genre the library writes with a stray space is asked of the server by the library's own name`() =
+        runBlocking<Unit> {
+            routes.answer(libraryPath(LivresId), """{"filterdata": {"genres": ["Humour ", "Essai"]}}""")
+
+            list.bookPage(BookListRequest(genre = "Humour", library = Livres), page = 0, size = 5)
+
+            // "Humour " is SHVtb3VyIA== in base64.
+            val query = routes.requests(itemsPath(LivresId)).single().url.encodedQuery
+            assertThat(query).contains("filter=genres.SHVtb3VyIA%3D%3D")
+            assertThat(routes.requests(libraryPath(LivresId)).single().url.queryParameter("include"))
+                .isEqualTo("filterdata")
+        }
+
+    @Test
+    fun `a genre the library writes several ways narrows its whole list on the device`() = runBlocking<Unit> {
+        routes.answer(libraryPath(LivresId), """{"filterdata": {"genres": ["Humour", "Humour ", "Essai"]}}""")
+        val all = recordedObject("items-livres-all").getValue("results").jsonArray.map { it.jsonObject }
+        val spaced = all.first { it.title == "Project Hail Mary" }.withGenres("Humour ")
+        val items = all.map { if (it.title == "Project Hail Mary") spaced else it }
+        val answer = JsonObject(mapOf("results" to JsonArray(items), "total" to JsonPrimitive(items.size)))
+        routes.answer(itemsPath(LivresId), answer.toString())
+        val request = BookListRequest(BookSort.Title, SortDirection.Ascending, genre = "Humour", library = Livres)
+
+        val books = list.books(request).items.asSnapshot { appendScrollWhile { true } }
+
+        val humour = items.filter { item -> item.genres.any { it.trim() == "Humour" } }.map { it.title }
+        assertThat(books.map { it.title }).containsExactlyElementsIn(humour)
+        assertThat(books.map { it.title }).contains("Project Hail Mary")
+        assertThat(books.map { it.title }).isInOrder(readerOrder())
+        val asked = routes.requests(itemsPath(LivresId)).map { it.url }
+        assertThat(asked.map { it.queryParameter("limit") }.distinct()).containsExactly("0")
+        assertThat(asked.mapNotNull { it.queryParameter("filter") }).isEmpty()
+    }
+
+    @Test
     fun `a genre with a filter narrows the library's whole list on the device`() = runBlocking<Unit> {
         val request = BookListRequest(
             BookSort.Title,
@@ -137,3 +182,19 @@ class AbsGenreBooksTest {
         assertThat(whole.url.queryParameter("filter")).isNull()
     }
 }
+
+/** The genres of a recorded item. */
+private val JsonObject.genres: List<String>
+    get() = getValue("media").jsonObject.getValue("metadata").jsonObject["genres"]?.jsonArray
+        ?.map { (it as JsonPrimitive).content }.orEmpty()
+
+/** A recorded item of the genres [names] alone. */
+private fun JsonObject.withGenres(vararg names: String): JsonObject {
+    val media = getValue("media").jsonObject
+    val metadata = media.getValue("metadata").jsonObject
+    return with("media", media.with("metadata", metadata.with("genres", JsonArray(names.map(::JsonPrimitive)))))
+}
+
+/** Titles as a reader sorts them, case and accents aside. */
+private fun readerOrder(): Comparator<String> = Collator.getInstance().apply { strength = Collator.PRIMARY }
+    .let { collator -> Comparator { a, b -> collator.compare(a, b) } }

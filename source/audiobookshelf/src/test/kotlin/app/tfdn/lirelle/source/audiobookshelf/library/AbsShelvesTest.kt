@@ -22,15 +22,21 @@ import app.tfdn.lirelle.source.audiobookshelf.testing.answerRecordedAccount
 import app.tfdn.lirelle.source.audiobookshelf.testing.fixtureBody
 import app.tfdn.lirelle.source.audiobookshelf.testing.livresId
 import app.tfdn.lirelle.source.audiobookshelf.testing.recordedObject
+import app.tfdn.lirelle.source.audiobookshelf.testing.routeAnswer
 import app.tfdn.lirelle.source.audiobookshelf.testing.with
 import com.google.common.truth.Truth.assertThat
+import java.util.concurrent.CountDownLatch
+import java.util.concurrent.TimeUnit
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withContext
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonArray
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
 import kotlinx.serialization.json.jsonArray
 import kotlinx.serialization.json.jsonObject
+import mockwebserver3.MockResponse
 import mockwebserver3.MockWebServer
 import org.junit.After
 import org.junit.Before
@@ -126,6 +132,36 @@ class AbsShelvesTest {
             "/api/libraries/$BdId/collections",
         ).inOrder()
         assertThat(asked.map { it.url.queryParameter("limit") }.distinct()).containsExactly("0")
+    }
+
+    @Test
+    fun `a library whose collections the account may not open, or that is not there, is left out`() =
+        runBlocking<Unit> {
+            listOf(403, 404).forEach { code ->
+                routes.fail("/api/libraries/$BdId/collections", code)
+
+                val shelves = shelvesOf().shelves() as ApiResult.Success
+
+                assertThat(shelves.value.collections.map { it.name }).containsExactly("Classiques")
+            }
+        }
+
+    @Test
+    fun `the collections of the book libraries are asked at once`() = runBlocking<Unit> {
+        // Livres' answer waits for BD's request, which only comes while it waits if both are asked at once.
+        val bdAsked = CountDownLatch(1)
+        val livres = fixtureBody("collections-livres")
+        routes.answer("/api/libraries/$LivresId/collections") {
+            if (bdAsked.await(5, TimeUnit.SECONDS)) routeAnswer(livres) else MockResponse(code = 500)
+        }
+        routes.answer("/api/libraries/$BdId/collections") {
+            bdAsked.countDown()
+            routeAnswer(NoCollections)
+        }
+
+        val shelves = withContext(Dispatchers.IO) { shelvesOf().shelves() } as ApiResult.Success
+
+        assertThat(shelves.value.collections.map { it.name }).containsExactly("Classiques")
     }
 
     private suspend fun titles(id: ShelfId, request: BookListRequest = BookListRequest()): List<String> =

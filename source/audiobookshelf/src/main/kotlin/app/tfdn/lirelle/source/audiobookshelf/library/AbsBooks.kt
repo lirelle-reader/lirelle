@@ -64,7 +64,8 @@ internal class AbsBooks(serverUrl: String) {
             coverShape = coverShape,
             media = AbsFormats.media(item),
             description = metadata.description.orNullIfBlank() ?: metadata.descriptionPlain.orNullIfBlank(),
-            genres = metadata.genres,
+            // Trimmed, as the genres list shows them: Audiobookshelf keeps a genre as it was typed.
+            genres = metadata.genres.map { it.trim() }.filter { it.isNotEmpty() }.distinct(),
             rating = null,
             pageCount = null,
             publishedYear = yearOf(metadata.publishedYear),

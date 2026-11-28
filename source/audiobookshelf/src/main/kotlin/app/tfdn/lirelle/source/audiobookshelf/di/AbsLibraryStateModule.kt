@@ -35,8 +35,8 @@ internal object AbsLibraryStateModule {
     fun progress(server: AbsProfileServer): AbsProgress =
         AbsProgress(read = { server.remote().api.me().mediaProgress }, now = Instant::now)
 
-    /** The libraries and the whole lists the profile keeps of its server. */
+    /** The libraries and the whole lists the profile keeps of its server, the libraries for a minute. */
     @Provides
     @ProfileScoped
-    fun wholeLibrary(): AbsWholeLibrary = AbsWholeLibrary()
+    fun wholeLibrary(): AbsWholeLibrary = AbsWholeLibrary(now = Instant::now)
 }

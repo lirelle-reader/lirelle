@@ -22,9 +22,10 @@ import kotlinx.coroutines.flow.MutableStateFlow
  * ([AbsEveryLibraryBooks]); narrowed, the libraries' whole lists joined, then sorted together on the device. The
  * Library's tabs always name their library.
  *
- * A pull to refresh of a list reads again what it uses: the libraries, and the whole list it narrows. The screens
- * keep a list's pages while they show it, so its pager is collected once: each load of the list after its first is
- * a refresh.
+ * A pull to refresh of a list reads again what it uses: the libraries, the account's progress, and the whole list
+ * it narrows. One of a list the server pages says the library's whole list may have changed: the next filter reads
+ * it again. The screens keep a list's pages while they show it, so its pager is collected once: each load of the list
+ * after its first is a refresh.
  */
 internal class AbsBookList(
     private val server: AbsProfileServer,
@@ -75,7 +76,8 @@ internal class AbsBookList(
 
     /**
      * The page [page] of [size] of the books of [request]'s library, or of its genre's, as the server sorts and pages
-     * them. [refresh] reads the libraries again, for their covers' shapes.
+     * them. [refresh] reads the libraries again, for their covers' shapes, and the progress, and says the library's
+     * whole list stale.
      */
     private suspend fun served(
         remote: AbsRemote,
@@ -86,8 +88,9 @@ internal class AbsBookList(
     ): PageResult<BookSummary> {
         val shown = request.library?.let { shownLibrary(whole.libraries(remote, refresh), it) }
             ?: return PageResult(emptyList(), 0)
-        val answer = remote.libraryItems(shown.id, request, size, page)
-        val readings = progress.readings()
+        if (refresh != null) whole.markStale(shown.id, refresh)
+        val answer = remote.libraryItems(whole, shown.id, request, size, page)
+        val readings = progress.readings(refresh)
         return PageResult(answer.results.map { remote.books.summary(it, readings, shown.coverShape) }, answer.total)
     }
 
@@ -102,7 +105,7 @@ internal class AbsBookList(
         refresh: AbsWholeLibrary.Refresh?,
     ): List<BookSummary> {
         val shown = shownLibraries(whole.libraries(remote, refresh), request.library)
-        val readings = progress.readings()
+        val readings = progress.readings(refresh)
         val kept = shown.flatMap { library ->
             whole.items(remote, library.id, refresh)
                 .filter { filters.keeps(it, readings) }

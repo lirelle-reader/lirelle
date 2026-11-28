@@ -40,10 +40,37 @@ internal class AbsPersonalized(private val clock: () -> Long) {
     private data class Kept(val at: Long, val shelves: List<LibraryShelves>, val loadedBy: HomeRowKind)
 }
 
+/**
+ * Home's loads, told apart by the rows they ask: Home asks each of its rows once per load (its first, a pull to
+ * refresh, or Home shown again), so a row asked again begins the next load, which the other rows asked less than
+ * [SharedFor] milliseconds later join. Each load names its refresh ([AbsWholeLibrary.Refresh]), for which the
+ * account's progress is read again, once. [clock] tells the time in milliseconds, from any start.
+ */
+internal class AbsHomeLoads(private val clock: () -> Long) {
+
+    private var current: Load? = null
+
+    /** The refresh of the load [kind]'s row as long as [extent] asks belongs to. */
+    @Synchronized
+    fun refreshFor(kind: HomeRowKind, extent: HomeRowExtent): AbsWholeLibrary.Refresh {
+        val row = kind to extent
+        val load = current?.takeIf { row !in it.rows && clock() - it.at < SharedFor }
+            ?: Load(clock()).also { current = it }
+        load.rows += row
+        return load.refresh
+    }
+
+    /** A load begun [at] that time, and the rows it asked. */
+    private class Load(val at: Long) {
+        val refresh = AbsWholeLibrary.Refresh()
+        val rows = mutableSetOf<Pair<HomeRowKind, HomeRowExtent>>()
+    }
+}
+
 /** The time in milliseconds from a start of its own, which only moves forward. */
 internal fun monotonicMillis(): Long = System.nanoTime() / NanosPerMilli
 
-/** How long the shelves one row loaded may serve the other. */
+/** How long the shelves one row loaded may serve the other, and a load of Home's rows lasts. */
 private const val SharedFor = 10_000L
 
 private const val NanosPerMilli = 1_000_000L

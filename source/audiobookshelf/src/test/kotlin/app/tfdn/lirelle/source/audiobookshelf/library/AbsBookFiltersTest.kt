@@ -99,6 +99,16 @@ class AbsBookFiltersTest {
     }
 
     @Test
+    fun `a genre's name and the book's are compared trimmed`() {
+        val spaced = item("h", metadata = AbsMetadataDto(genres = listOf("Humour ", "Science-fiction")))
+        val audio = BookFilters(formats = setOf(FormatFilter.Audio))
+
+        assertThat(kept(audio, genre = "Humour").keeps(spaced, AbsReadings.None)).isTrue()
+        assertThat(kept(audio, genre = " Humour ").keeps(spaced, AbsReadings.None)).isTrue()
+        assertThat(kept(audio, genre = "Humour").keeps(item("x"), AbsReadings.None)).isFalse()
+    }
+
+    @Test
     fun `by title as a reader sorts them, by author by last name, by date added`() {
         val items = listOf(
             item("1", addedAt = 3, AbsMetadataDto(title = "fondation", authorNameLF = "Asimov, Isaac")),

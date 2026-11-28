@@ -62,10 +62,24 @@ internal class AbsProfileServer(
     /** The error to show for a list that failed to load. */
     fun errorOf(throwable: Throwable): ApiError = errors.map(throwable, AbsCall.Authenticated)
 
-    /** The account's book libraries, in the server's order. */
-    suspend fun libraries(): ApiResult<List<ServerLibrary>> = call { remote ->
-        remote.bookLibraries().map { it.serverLibrary() }
+    /**
+     * The account's book libraries, in the server's order, read now: what the profile keeps of them ([whole]) is
+     * replaced with them.
+     */
+    suspend fun libraries(whole: AbsWholeLibrary): ApiResult<List<ServerLibrary>> = call { remote ->
+        whole.readLibraries(remote).map { it.serverLibrary() }
     }
+}
+
+/**
+ * What [block] answers of one of the account's book libraries; null when the server says the account may not open
+ * it (403) or that it is not there (404): a library hidden or removed since the libraries were read is left out.
+ */
+internal suspend fun <T> unlessLibraryGone(block: suspend () -> T): T? = try {
+    block()
+} catch (exception: HttpException) {
+    if (exception.code() != Forbidden && exception.code() != NotThere) throw exception
+    null
 }
 
 /** A library as the app shows it. */
@@ -73,3 +87,9 @@ internal fun AbsLibraryDto.serverLibrary(): ServerLibrary = ServerLibrary(id.asL
 
 /** The media type of a book library; the other is `podcast`. */
 private const val BookMedia = "book"
+
+/** What the server answers for a library the account may not open. */
+private const val Forbidden = 403
+
+/** What the server answers for a library that is not there. */
+private const val NotThere = 404

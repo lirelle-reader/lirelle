@@ -175,6 +175,37 @@ class AbsBookListTest {
     }
 
     @Test
+    fun `a pull to refresh of the list the server pages has the next filter read the whole list again`() =
+        runBlocking<Unit> {
+            val read = BookListRequest(filters = BookFilters(statuses = setOf(StatusFilter.Read)), library = Livres)
+            fun wholeLists() = routes.requests(itemsPath(LivresId)).filter { it.url.queryParameter("limit") == "0" }
+
+            list.books(read).items.asSnapshot()
+            assertThat(wholeLists()).hasSize(1)
+
+            // The filter cleared: the server pages the list, which is pulled to refresh.
+            list.books(BookListRequest(library = Livres)).items.asSnapshot { refresh() }
+            assertThat(wholeLists()).hasSize(1)
+
+            list.books(read).items.asSnapshot()
+            assertThat(wholeLists()).hasSize(2)
+        }
+
+    @Test
+    fun `a pull to refresh reads the account's progress again, once`() = runBlocking<Unit> {
+        val pdf = BookListRequest(filters = BookFilters(formats = setOf(FormatFilter.Pdf)), library = Livres)
+
+        list.books(BookListRequest(library = Livres)).items.asSnapshot { appendScrollWhile { true } }
+        assertThat(routes.requests("/api/me")).hasSize(1)
+
+        list.books(BookListRequest(library = Livres)).items.asSnapshot { refresh() }
+        assertThat(routes.requests("/api/me")).hasSize(2)
+
+        list.books(pdf).items.asSnapshot { refresh() }
+        assertThat(routes.requests("/api/me")).hasSize(3)
+    }
+
+    @Test
     fun `a page without a filter is the server's page, with one the device's slice`() = runBlocking<Unit> {
         val served = list.bookPage(BookListRequest(library = Livres), page = 2, size = 5) as ApiResult.Success
 

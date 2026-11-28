@@ -54,6 +54,9 @@ internal class LibraryRoutes(server: MockWebServer) {
 internal fun routeAnswer(body: String): MockResponse =
     MockResponse(code = 200, headers = headersOf("Content-Type", "application/json"), body = body)
 
+/** The path of a library, which answers its filter data (`include=filterdata`). */
+internal fun libraryPath(libraryId: String): String = "/api/libraries/$libraryId"
+
 /** The path of a library's items. */
 internal fun itemsPath(libraryId: String): String = "/api/libraries/$libraryId/items"
 

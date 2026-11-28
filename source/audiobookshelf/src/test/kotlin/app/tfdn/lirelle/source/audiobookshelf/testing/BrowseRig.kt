@@ -16,12 +16,14 @@ import mockwebserver3.RecordedRequest
 
 /**
  * What the series, authors and shelves of the profile's server on [server] are made with: its way to the server, the
- * account's progress read once (the clock does not move), and the whole lists the profile keeps.
+ * account's progress, and the libraries and whole lists the profile keeps, both by the clock [instant], which does
+ * not move unless the test moves it.
  */
 internal class BrowseRig(server: MockWebServer) {
+    var instant: Instant = Instant.EPOCH
     val profileServer: AbsProfileServer = libraryServer(server)
-    val progress = AbsProgress(read = { profileServer.remote().api.me().mediaProgress }, now = { Instant.EPOCH })
-    val whole = AbsWholeLibrary()
+    val progress = AbsProgress(read = { profileServer.remote().api.me().mediaProgress }, now = { instant })
+    val whole = AbsWholeLibrary(now = { instant })
 }
 
 /** The recorded server's library of books on 2.26.3. */

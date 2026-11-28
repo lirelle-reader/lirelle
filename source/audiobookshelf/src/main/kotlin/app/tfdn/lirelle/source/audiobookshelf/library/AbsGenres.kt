@@ -8,9 +8,10 @@ import kotlinx.coroutines.coroutineScope
 
 /**
  * The genres of the profile's server, asked of [server] (spec §4): each book library's filter data ([whole] keeps
- * the libraries), all at once, their genres joined. Each name is trimmed and comes once, a blank one left out; they
- * are sorted as a reader sorts them, two names sorted alike keeping the libraries' order. Audiobookshelf does not
- * count a genre's books. A failure fails them all.
+ * the libraries, and the names as each library writes them), all at once, their genres joined. Each name is trimmed
+ * and comes once, a blank one left out; they are sorted as a reader sorts them, two names sorted alike keeping the
+ * libraries' order. Audiobookshelf does not count a genre's books. A library the account may not open (403) or no
+ * longer has (404) is left out; any other failure fails them all.
  */
 internal class AbsGenres(private val server: AbsProfileServer, private val whole: AbsWholeLibrary) {
 
@@ -18,7 +19,9 @@ internal class AbsGenres(private val server: AbsProfileServer, private val whole
     suspend fun genres(): ApiResult<List<Genre>> = server.call { remote ->
         val libraries = whole.libraries(remote, refresh = null)
         val names = coroutineScope {
-            libraries.map { async { remote.api.filterData(it.id).filterdata.genres } }.awaitAll().flatten()
+            libraries.map { library ->
+                async { unlessLibraryGone { whole.genreNames.read(remote, library.id) }.orEmpty() }
+            }.awaitAll().flatten()
         }
         names.map { it.trim() }
             .filter { it.isNotEmpty() }

@@ -9,8 +9,8 @@ import app.tfdn.lirelle.source.audiobookshelf.library.dto.AbsItemDto
 /**
  * What narrows a library's books on the device, since Audiobookshelf's own filters take one value at a time and know
  * nothing of formats as Lirelle groups them: the read [states] (several add up), the [formats] (several add up), a
- * [text] looked for in the title, subtitle, authors, narrators and series, and, with any of those, the [genre]. A
- * genre alone narrows nothing here: the server lists a genre's books by itself.
+ * [text] looked for in the title, subtitle, authors, narrators and series, and, with any of those, the [genre], its
+ * name and the book's trimmed. A genre alone narrows nothing here: the server lists a genre's books by itself.
  *
  * Audiobookshelf keeps no "want to read" and no "abandoned" state and aligns no narration with a text: those are
  * never offered for it, and are left out when asked all the same.
@@ -30,7 +30,7 @@ internal class AbsBookFilters private constructor(
         val metadata = item.media.metadata
         return (states.isEmpty() || readings.state(item.id) in states) &&
             (formats.isEmpty() || AbsFormats.of(item).any { it in formats }) &&
-            (genre == null || genre in metadata.genres) &&
+            (genre == null || item.hasGenre(genre)) &&
             (text == null || metadata.let {
                 text.isIn(it.title, it.subtitle, it.authorName, it.narratorName, it.seriesName)
             })
@@ -42,7 +42,7 @@ internal class AbsBookFilters private constructor(
             states = request.filters.statuses.mapNotNull { it.readState }.toSet(),
             formats = request.filters.formats,
             text = AbsText.of(request.text),
-            genre = request.genre?.takeIf { it.isNotBlank() },
+            genre = request.genre?.trim()?.takeIf { it.isNotEmpty() },
         )
     }
 }

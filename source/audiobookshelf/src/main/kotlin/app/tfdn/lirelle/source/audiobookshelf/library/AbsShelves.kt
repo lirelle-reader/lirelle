@@ -16,18 +16,24 @@ import app.tfdn.lirelle.core.library.model.SortDirection
 import app.tfdn.lirelle.core.network.ApiResult
 import app.tfdn.lirelle.source.audiobookshelf.library.dto.AbsItemDto
 import app.tfdn.lirelle.source.audiobookshelf.library.dto.AbsPlaylistDto
+import java.util.concurrent.atomic.AtomicInteger
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.flowOf
 
 /**
  * The profile's shelves, asked of [server] (spec §4), across the server and not narrowed by the Library's choice:
- * each book library's collections, and the account's playlists, a section of their own. A podcast's episode in a
+ * each book library's collections, asked at once (a library the account may not open, 403, or no longer has, 404,
+ * is left out), and the account's playlists, a section of their own. A podcast's episode in a
  * playlist is no book: it is neither counted nor listed, and a podcast library's playlist is not shown. Audiobookshelf
  * has no smart lists.
  *
  * A shelf opens on its books, all asked in one call, narrowed ([AbsBookFilters]) and sorted on the device, then paged
  * there, [pageSize] at a time. A shelf's own order stands for "Recently added, newest first", the default, as no date
- * a book was put on it is told; turned around is the other way. The read states come from the account's [progress].
+ * a book was put on it is told; turned around is the other way. The read states come from the account's [progress],
+ * which a pull to refresh reads again.
  */
 internal class AbsShelves(
     private val server: AbsProfileServer,
@@ -39,7 +45,11 @@ internal class AbsShelves(
     suspend fun shelves(): ApiResult<Shelves> = server.call { remote ->
         val libraries = whole.libraries(remote, refresh = null)
         val ofBooks = libraries.map { it.id }.toSet()
-        val collections = libraries.flatMap { remote.api.collections(it.id).results }
+        val collections = coroutineScope {
+            libraries.map { library ->
+                async { unlessLibraryGone { remote.api.collections(library.id).results }.orEmpty() }
+            }.awaitAll().flatten()
+        }
         val playlists = remote.api.playlists().playlists.filter { it.libraryId == null || it.libraryId in ofBooks }
         Shelves(
             smartLists = emptyList(),
@@ -56,26 +66,34 @@ internal class AbsShelves(
     fun books(source: BookListSource, request: BookListRequest): PagedList<BookSummary> {
         val shelf = (source as? BookListSource.Collection)?.id?.absShelf() ?: return emptyPages()
         val total = MutableStateFlow<Int?>(null)
+        val loads = AtomicInteger()
         val pager = Pager(PagingConfig(pageSize, initialLoadSize = pageSize, enablePlaceholders = true)) {
+            val refresh = AbsWholeLibrary.Refresh().takeIf { loads.getAndIncrement() > 0 }
             // The shelf is asked once per load of it (a refresh asks again), then paged here.
             var books: List<BookSummary>? = null
             IndexPagingSource(pageSize, onTotal = { total.value = it }) { page, size ->
-                val all = books ?: server.loaded { remote -> arranged(remote, shelf, request) }.also { books = it }
+                val all = books ?: server.loaded { remote -> arranged(remote, shelf, request, refresh) }
+                    .also { books = it }
                 all.pageOf(page, size)
             }
         }
         return PagedList(pager.flow, total)
     }
 
-    /** The books of [shelf] that [request] keeps, in its order. */
-    private suspend fun arranged(remote: AbsRemote, shelf: AbsShelf, request: BookListRequest): List<BookSummary> {
+    /** The books of [shelf] that [request] keeps, in its order; [refresh] reads the progress again. */
+    private suspend fun arranged(
+        remote: AbsRemote,
+        shelf: AbsShelf,
+        request: BookListRequest,
+        refresh: AbsWholeLibrary.Refresh?,
+    ): List<BookSummary> {
         val items = when (shelf) {
             is AbsShelf.Collection -> remote.api.collection(shelf.id).books
             is AbsShelf.Playlist -> remote.api.playlist(shelf.id).books()
         }
-        val readings = progress.readings()
+        val readings = progress.readings(refresh)
         val filters = AbsBookFilters.of(request)
-        val libraries = whole.libraries(remote, refresh = null)
+        val libraries = whole.libraries(remote, refresh)
         return ordered(items.filter { filters.keeps(it, readings) }, request)
             .map { remote.books.summary(it, readings, libraries.coverShapeOf(it.libraryId)) }
     }

@@ -51,8 +51,9 @@ internal class AbsReadings private constructor(private val byItem: Map<String, A
 /**
  * The account's progress, all of it in one answer ([read], `GET api/me`), merged into every list. What was read is
  * kept [Freshness] long by the clock [now], so that one screen's load, which asks it for each of its lists, makes
- * one call; asked again later, it is read again. Asked by several at once, it is read once. A read that fails is
- * thrown to whoever asked, and nothing is kept of it.
+ * one call; asked again later, it is read again. A pull to refresh names its refresh ([AbsWholeLibrary.Refresh]):
+ * what was read before it is read again once for it, then kept. Asked by several at once, it is read once. A read
+ * that fails is thrown to whoever asked, and nothing is kept of it.
  */
 internal class AbsProgress(
     private val read: suspend () -> List<AbsMediaProgressDto>,
@@ -61,14 +62,16 @@ internal class AbsProgress(
     private val lock = Mutex()
     private var known: AbsReadings? = null
     private var readAt: Instant = Instant.MIN
+    private var readFor: AbsWholeLibrary.Refresh? = null
 
-    /** The account's readings, as read less than [Freshness] ago, or now. */
-    suspend fun readings(): AbsReadings = lock.withLock {
+    /** The account's readings, as read less than [Freshness] ago (and for [refresh], when given), or now. */
+    suspend fun readings(refresh: AbsWholeLibrary.Refresh? = null): AbsReadings = lock.withLock {
         val asked = now()
-        known?.takeIf { Duration.between(readAt, asked) <= Freshness }
+        known?.takeIf { Duration.between(readAt, asked) <= Freshness && (refresh == null || readFor === refresh) }
             ?: AbsReadings.of(read()).also {
                 known = it
                 readAt = asked
+                readFor = refresh
             }
     }
 }

@@ -9,6 +9,7 @@ import app.tfdn.lirelle.source.audiobookshelf.testing.RecordedOn
 import app.tfdn.lirelle.source.audiobookshelf.testing.answerRecordedAccount
 import app.tfdn.lirelle.source.audiobookshelf.testing.bdId
 import app.tfdn.lirelle.source.audiobookshelf.testing.fixtureBody
+import app.tfdn.lirelle.source.audiobookshelf.testing.libraryPath
 import app.tfdn.lirelle.source.audiobookshelf.testing.livresId
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.runBlocking
@@ -81,12 +82,22 @@ class AbsGenresTest {
     }
 
     @Test
+    fun `a library the account may not open, or that is not there, is left out of the genres`() = runBlocking<Unit> {
+        listOf(403, 404).forEach { code ->
+            routes.fail(libraryPath(bdId(RecordedOn.Latest)), code)
+
+            val names = names()
+
+            assertThat(names).contains("Humour")
+            assertThat(names).doesNotContain("Bande dessinée")
+        }
+    }
+
+    @Test
     fun `2_26_3's filter data is read`() = runBlocking<Unit> {
         answer(RecordedOn.Minimum)
 
         assertThat(names()).contains("Science-fiction")
         assertThat((genres.genres() as ApiResult.Success).value.first()).isEqualTo(Genre("Arts", bookCount = null))
     }
-
-    private fun libraryPath(libraryId: String) = "/api/libraries/$libraryId"
 }

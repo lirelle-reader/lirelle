@@ -6,6 +6,7 @@ import app.tfdn.lirelle.core.library.PageResult
 import app.tfdn.lirelle.core.library.PagedList
 import app.tfdn.lirelle.core.library.model.BookListRequest
 import app.tfdn.lirelle.core.library.model.BookSummary
+import app.tfdn.lirelle.source.audiobookshelf.library.dto.AbsItemDto
 import app.tfdn.lirelle.source.audiobookshelf.library.dto.AbsItemsPageDto
 import java.util.Base64
 import java.util.concurrent.ConcurrentHashMap
@@ -17,7 +18,8 @@ import kotlinx.coroutines.flow.MutableStateFlow
  * Each library's books (or its genre's, by the server's genre filter) are paged by the server, one library after the
  * other in the server's order. The sort asked is the server's, so it applies within each library: the whole list is
  * not sorted as one, which is accepted for what Search opens. How many there are is known once the last library was
- * reached. The libraries come from what the profile keeps ([whole]); a pull to refresh reads them again.
+ * reached. The libraries come from what the profile keeps ([whole]); a pull to refresh reads them and the progress
+ * again, and says each library's whole list stale.
  */
 internal class AbsEveryLibraryBooks(
     private val server: AbsProfileServer,
@@ -40,10 +42,11 @@ internal class AbsEveryLibraryBooks(
                         total.value = totals.values.sum()
                         return@loaded AbsChainedPage(emptyList(), next = null)
                     }
-                    val answer = remote.libraryItems(library.id, request, limit = pageSize, page = key.page)
+                    if (refresh != null) whole.markStale(library.id, refresh)
+                    val answer = remote.libraryItems(whole, library.id, request, pageSize, key.page)
                     totals[key.part] = answer.total
                     if (totals.size == libraries.size) total.value = totals.values.sum()
-                    val readings = progress.readings()
+                    val readings = progress.readings(refresh)
                     val books = answer.results.map { remote.books.summary(it, readings, library.coverShape) }
                     AbsChainedPage(books, nextKey(key, answer.results.size, answer.total, libraries.size))
                 }
@@ -59,7 +62,7 @@ internal class AbsEveryLibraryBooks(
     suspend fun page(remote: AbsRemote, request: BookListRequest, page: Int, size: Int): PageResult<BookSummary> {
         val readings = progress.readings()
         val all = whole.libraries(remote, refresh = null).flatMap { library ->
-            remote.libraryItems(library.id, request, limit = 0, page = 0).results
+            remote.libraryItems(whole, library.id, request, limit = 0, page = 0).results
                 .map { remote.books.summary(it, readings, library.coverShape) }
         }
         return all.pageOf(page, size)
@@ -75,15 +78,19 @@ internal class AbsEveryLibraryBooks(
 
 /**
  * The page [page] (from 0) of [limit] items of the library [libraryId] that [request] asks for, in its sort, as the
- * server pages them: its genre's when it names one, by the server's genre filter. `limit=0` is the whole list.
+ * server pages them: its genre's when it names one, by the server's genre filter, asked by the library's own name of
+ * it ([AbsWholeLibrary.genreNames]). A library that writes the genre several ways ("Humour", "Humour ") has its
+ * whole list ([whole], read again once a pull to refresh said it stale) narrowed to them and sorted on the device
+ * instead. `limit=0` is the whole list.
  */
 internal suspend fun AbsRemote.libraryItems(
+    whole: AbsWholeLibrary,
     libraryId: String,
     request: BookListRequest,
     limit: Int,
     page: Int,
 ): AbsItemsPageDto {
-    val genre = request.genre?.takeIf { it.isNotBlank() }
+    val genre = request.genre?.trim()?.takeIf { it.isNotEmpty() }
         ?: return api.items(
             libraryId,
             limit,
@@ -91,9 +98,21 @@ internal suspend fun AbsRemote.libraryItems(
             AbsBookSorts.serverField(request.sort),
             AbsBookSorts.serverDesc(request.direction),
         )
+    val written = whole.genreNames.of(this, libraryId, genre)
+    if (written.size > 1) {
+        val all = AbsBookSorts.sorted(
+            whole.items(this, libraryId, refresh = null).filter { it.hasGenre(genre) },
+            request.sort,
+            request.direction,
+        )
+        return AbsItemsPageDto(if (limit == 0) all else all.pageOf(page, limit).items, all.size)
+    }
     val order = AbsBookSorts.serverOrder(request.sort, request.direction)
-    return api.groupItems(libraryId, genreFilter(genre), limit, page, order)
+    return api.groupItems(libraryId, genreFilter(written.singleOrNull() ?: genre), limit, page, order)
 }
+
+/** Whether the item is of the genre [shown], trimmed, however its library writes it. */
+internal fun AbsItemDto.hasGenre(shown: String): Boolean = media.metadata.genres.any { it.trim() == shown.trim() }
 
 /**
  * The server's filter for the genre [name]: `genres.` and the name in base64, which Retrofit then escapes as any

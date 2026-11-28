@@ -142,13 +142,15 @@ class AbsSearchTest {
     }
 
     @Test
-    fun `a library the account may not search is left out`() = runBlocking<Unit> {
+    fun `a library the account may not search, or that is not there, is left out`() = runBlocking<Unit> {
         routes.answer(searchPath(livresId(RecordedOn.Latest)), fixtureBody("search-herbert"))
-        routes.fail(searchPath(bdId(RecordedOn.Latest)), 403)
+        listOf(403, 404).forEach { code ->
+            routes.fail(searchPath(bdId(RecordedOn.Latest)), code)
 
-        val found = found("herbert")
+            val found = found("herbert")
 
-        assertThat(found.authors.items.map { it.name }).containsExactly("Frank Herbert")
+            assertThat(found.authors.items.map { it.name }).containsExactly("Frank Herbert")
+        }
     }
 
     @Test

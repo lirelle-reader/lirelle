@@ -26,9 +26,10 @@ internal val HomeRowExtent.size: Int
  * library's `continue-series` shelf, joined in the libraries' order: the server only makes it for a series with a
  * book finished and none in progress. Recently added is each book library's `recently-added` shelf, merged newest
  * first. Each row is cut at its size. The shelves of the libraries are asked at once, and shared between Up next and
- * Recently added for a few seconds ([AbsPersonalized], whose time [clock] tells). Audiobookshelf has no list of books
- * to read: Want to read is empty. The read states and progress come from the account's [progress]; a failure fails
- * the row.
+ * Recently added for a few seconds ([AbsPersonalized], whose time [clock] tells); a library the account may not open
+ * (403) or no longer has (404) is left out. Audiobookshelf has no list of books to read: Want to read is empty. The
+ * read states and progress come from the account's [progress], read again for each load of Home's rows
+ * ([AbsHomeLoads]): its first, a pull to refresh, Home shown again. Any other failure fails the row.
  */
 internal class AbsHome(
     private val server: AbsProfileServer,
@@ -37,14 +38,17 @@ internal class AbsHome(
     clock: () -> Long,
 ) {
     private val personalized = AbsPersonalized(clock)
+    private val loads = AbsHomeLoads(clock)
 
     /** The [kind] row, as long as [extent] asks. */
     suspend fun homeRow(kind: HomeRowKind, extent: HomeRowExtent): ApiResult<HomeRow> = server.call { remote ->
+        val asked = RowAsked(kind, extent, loads.refreshFor(kind, extent))
         when (kind) {
-            HomeRowKind.Continue -> inProgress(remote, extent.size)
-            HomeRowKind.UpNext -> shelfRow(kind, remote, extent, ContinueSeries) { it }
-            HomeRowKind.RecentlyAdded ->
-                shelfRow(kind, remote, extent, RecentlyAdded) { items -> items.sortedByDescending { it.addedAt } }
+            HomeRowKind.Continue -> inProgress(remote, extent.size, asked.refresh)
+            HomeRowKind.UpNext -> shelfRow(asked, remote, ContinueSeries) { it }
+            HomeRowKind.RecentlyAdded -> shelfRow(asked, remote, RecentlyAdded) { items ->
+                items.sortedByDescending { it.addedAt }
+            }
             HomeRowKind.WantToRead -> HomeRow(kind, emptyList(), hasMore = false)
         }
     }
@@ -55,39 +59,39 @@ internal class AbsHome(
      * read, as lately as the server says, whatever the account's progress, read a few seconds before, says of it.
      * The server holds more when it gave as many as were asked.
      */
-    private suspend fun inProgress(remote: AbsRemote, size: Int): HomeRow = coroutineScope {
-        val readings = async { progress.readings() }
-        val libraries = async { whole.libraries(remote, refresh = null) }
-        val items = remote.api.itemsInProgress(size).libraryItems
-        val bookLibraries = libraries.await().map { it.id }.toSet()
-        val books = items.filter { it.mediaType != PodcastMedia && it.libraryId in bookLibraries }.map { item ->
-            val book = remote.books.summary(item, readings.await(), libraries.await().coverShapeOf(item.libraryId))
-            book.copy(
-                readState = ReadState.Reading,
-                lastActivityAt = item.progressLastUpdate?.let(Instant::ofEpochMilli) ?: book.lastActivityAt,
-            )
+    private suspend fun inProgress(remote: AbsRemote, size: Int, refresh: AbsWholeLibrary.Refresh): HomeRow =
+        coroutineScope {
+            val readings = async { progress.readings(refresh) }
+            val libraries = async { whole.libraries(remote, refresh = null) }
+            val items = remote.api.itemsInProgress(size).libraryItems
+            val bookLibraries = libraries.await().map { it.id }.toSet()
+            val books = items.filter { it.mediaType != PodcastMedia && it.libraryId in bookLibraries }.map { item ->
+                val book = remote.books.summary(item, readings.await(), libraries.await().coverShapeOf(item.libraryId))
+                book.copy(
+                    readState = ReadState.Reading,
+                    lastActivityAt = item.progressLastUpdate?.let(Instant::ofEpochMilli) ?: book.lastActivityAt,
+                )
+            }
+            HomeRow(HomeRowKind.Continue, books, hasMore = items.size >= size)
         }
-        HomeRow(HomeRowKind.Continue, books, hasMore = items.size >= size)
-    }
 
     /**
-     * The row of the shelf [shelfId] of each book library, its items as [arrange] puts them, as many as [extent]
-     * asks. The server holds more when the shelves count more than the row shows.
+     * The row [asked] of the shelf [shelfId] of each book library, its items as [arrange] puts them, as many as its
+     * extent asks. The server holds more when the shelves count more than the row shows.
      */
     private suspend fun shelfRow(
-        kind: HomeRowKind,
+        asked: RowAsked,
         remote: AbsRemote,
-        extent: HomeRowExtent,
         shelfId: String,
         arrange: (List<AbsItemDto>) -> List<AbsItemDto>,
     ): HomeRow {
-        val all = shelves(kind, remote, extent)
+        val all = shelves(asked.kind, remote, asked.extent)
         val found = all.mapNotNull { library -> library.shelves.firstOrNull { it.id == shelfId } }
-        val items = arrange(found.flatMap { it.items() }).distinctBy { it.id }.take(extent.size)
-        val readings = progress.readings()
+        val items = arrange(found.flatMap { it.items() }).distinctBy { it.id }.take(asked.extent.size)
+        val readings = progress.readings(asked.refresh)
         val libraries = all.map { it.library }
         val books = items.map { remote.books.summary(it, readings, libraries.coverShapeOf(it.libraryId)) }
-        return HomeRow(kind, books, hasMore = found.sumOf { it.held() } > books.size)
+        return HomeRow(asked.kind, books, hasMore = found.sumOf { it.held() } > books.size)
     }
 
     /** The shelves of each book library, in their order, shared with the other row of shelves. */
@@ -95,10 +99,18 @@ internal class AbsHome(
         personalized.shelves(kind, extent) {
             val libraries = whole.libraries(remote, refresh = null)
             coroutineScope {
-                libraries.map { async { LibraryShelves(it, remote.api.personalized(it.id, extent.size)) } }.awaitAll()
+                libraries.map { library ->
+                    async {
+                        unlessLibraryGone { remote.api.personalized(library.id, extent.size) }
+                            ?.let { LibraryShelves(library, it) }
+                    }
+                }.awaitAll().filterNotNull()
             }
         }
 }
+
+/** A row Home asks: its [kind], as long as its [extent], for the load whose [refresh] it is. */
+private data class RowAsked(val kind: HomeRowKind, val extent: HomeRowExtent, val refresh: AbsWholeLibrary.Refresh)
 
 /** The items of a shelf of books; none for a shelf of series or authors. */
 private fun AbsShelfDto.items(): List<AbsItemDto> =

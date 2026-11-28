@@ -54,7 +54,7 @@ class AbsLibrariesTest {
         RecordedOn.entries.forEach { on ->
             server.enqueueJson(fixtureBody("libraries", on))
 
-            val libraries = (remote.libraries() as ApiResult.Success).value
+            val libraries = (remote.libraries(AbsWholeLibrary()) as ApiResult.Success).value
 
             assertWithMessage(on.name).that(libraries.map { it.name }).containsExactly("Livres", "BD").inOrder()
             assertWithMessage(on.name).that(libraries.first().id.value).hasLength(36)
@@ -68,7 +68,7 @@ class AbsLibrariesTest {
     fun `the libraries are ordered as the server orders them, whatever order they come in`() = runBlocking {
         server.enqueueJson(Unordered)
 
-        assertThat(remote.libraries()).isEqualTo(
+        assertThat(remote.libraries(AbsWholeLibrary())).isEqualTo(
             ApiResult.Success(
                 listOf(ServerLibrary(LibraryId("lib-a"), "Livres"), ServerLibrary(LibraryId("lib-b"), "BD")),
             ),
@@ -112,8 +112,8 @@ class AbsLibrariesTest {
         server.enqueueRefusal()
         server.enqueueText("Internal error", code = 500)
 
-        assertThat(remote.libraries()).isEqualTo(ApiResult.Failure(ApiError.SessionExpired))
-        assertThat(remote.libraries()).isEqualTo(ApiResult.Failure(ApiError.ServerFailed))
+        assertThat(remote.libraries(AbsWholeLibrary())).isEqualTo(ApiResult.Failure(ApiError.SessionExpired))
+        assertThat(remote.libraries(AbsWholeLibrary())).isEqualTo(ApiResult.Failure(ApiError.ServerFailed))
     }
 
     @Test

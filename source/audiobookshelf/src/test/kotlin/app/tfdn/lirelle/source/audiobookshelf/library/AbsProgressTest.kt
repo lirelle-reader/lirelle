@@ -19,8 +19,9 @@ private val Start: Instant = Instant.parse("2026-11-28T10:00:00Z")
 
 /**
  * The account's progress, all of it in `GET api/me`: no record, or one at nothing yet, is unread, a record moved and
- * not finished is reading, a finished one read; the furthest of the audio's and the ebook's progress is shown; a podcast's is not a book's.
- * It is read again when what was read is more than ten seconds old.
+ * not finished is reading, a finished one read; the furthest of the audio's and the ebook's progress is shown; a
+ * podcast's is not a book's. It is read again when what was read is more than ten seconds old, or for a pull to
+ * refresh.
  */
 class AbsProgressTest {
 
@@ -58,7 +59,7 @@ class AbsProgressTest {
         val readings = AbsReadings.of(
             listOf(
                 record("nothing", progress = 0.0, ebookProgress = null),
-                record("zero", progress = 0.0, ebookProgress = 0.0, currentTime = 0.0),
+                AbsMediaProgressDto("zero", progress = 0.0, ebookProgress = 0.0, currentTime = 0.0),
                 record("empty", progress = null, ebookProgress = null),
             ),
         )
@@ -73,7 +74,7 @@ class AbsProgressTest {
     fun `a record moved in its audio or its ebook is reading, as the server's in-progress filter says`() {
         val readings = AbsReadings.of(
             listOf(
-                record("audio", progress = 0.0, currentTime = 12.0),
+                AbsMediaProgressDto("audio", progress = 0.0, ebookProgress = 0.0, currentTime = 12.0),
                 record("ebook", progress = 0.0, ebookProgress = 0.001),
                 record("finished", progress = 0.0, finished = true),
             ),
@@ -113,6 +114,21 @@ class AbsProgressTest {
     }
 
     @Test
+    fun `a pull to refresh reads again what was read before it, once for it`() = runBlocking {
+        var reads = 0
+        val progress = AbsProgress(read = { reads++; listOf(record("a", progress = 0.1 * reads)) }, now = { Start })
+        val refresh = AbsWholeLibrary.Refresh()
+
+        assertThat(progress.readings().of("a")!!.percent).isEqualTo(10)
+        assertThat(progress.readings(refresh).of("a")!!.percent).isEqualTo(20)
+        assertThat(progress.readings(refresh).of("a")!!.percent).isEqualTo(20)
+        assertThat(progress.readings().of("a")!!.percent).isEqualTo(20)
+        assertThat(reads).isEqualTo(2)
+
+        assertThat(progress.readings(AbsWholeLibrary.Refresh()).of("a")!!.percent).isEqualTo(30)
+    }
+
+    @Test
     fun `one screen asking many times at once reads once`() = runBlocking {
         var reads = 0
         val progress = AbsProgress(
@@ -148,12 +164,10 @@ private fun record(
     ebookProgress: Double? = 0.0,
     episodeId: String? = null,
     finished: Boolean = false,
-    currentTime: Double? = null,
 ) = AbsMediaProgressDto(
     libraryItemId = itemId,
     episodeId = episodeId,
     progress = progress,
     ebookProgress = ebookProgress,
     isFinished = finished,
-    currentTime = currentTime,
 )

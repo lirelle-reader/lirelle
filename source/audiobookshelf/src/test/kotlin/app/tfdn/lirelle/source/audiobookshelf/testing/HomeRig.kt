@@ -23,11 +23,11 @@ internal fun personalizedPath(libraryId: String): String = "/api/libraries/$libr
 internal const val InProgressPath = "/api/me/items-in-progress"
 
 /**
- * Home's rows of the profile's server on [server], the account's progress read once (the clock does not move), and
- * the time Home's shelves are shared by, in milliseconds, which the test moves.
+ * Home's rows of the profile's server on [server], made with what [browse] holds (whose clock the test moves for the
+ * libraries and the progress), and the time Home's shelves are shared by, in milliseconds, which the test moves.
  */
 internal class HomeRig(server: MockWebServer) {
-    private val browse = BrowseRig(server)
+    val browse = BrowseRig(server)
     var now = 0L
     val home = AbsHome(browse.profileServer, browse.progress, browse.whole) { now }
 }

@@ -37,7 +37,7 @@ import app.tfdn.lirelle.core.network.ApiResult
 internal abstract class AbsLibraryLists(
     protected val server: AbsProfileServer,
     progress: AbsProgress,
-    whole: AbsWholeLibrary,
+    private val whole: AbsWholeLibrary,
 ) : LibraryRepository {
 
     private val bookList = AbsBookList(server, progress, whole)
@@ -47,7 +47,8 @@ internal abstract class AbsLibraryLists(
     private val finder = AbsSearch(server, progress, whole)
     private val genreList = AbsGenres(server, whole)
 
-    override suspend fun libraries(): ApiResult<List<ServerLibrary>> = server.libraries()
+    /** The book libraries, read now for the selector: what the profile keeps of them is replaced. */
+    override suspend fun libraries(): ApiResult<List<ServerLibrary>> = server.libraries(whole)
 
     /** The library's books, or a collection's or a playlist's; Audiobookshelf has no smart list. */
     override fun books(source: BookListSource, request: BookListRequest): PagedList<BookSummary> = when (source) {

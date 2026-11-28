@@ -29,10 +29,15 @@ internal fun bookListOn(server: MockWebServer, whole: AbsWholeLibrary = AbsWhole
     return AbsBookList(profileServer, progress, whole, pageSize = TestPageSize)
 }
 
-/** [routes] answer the recorded libraries, the reader's progress and the recorded lists of Livres and BD. */
+/**
+ * [routes] answer the recorded libraries, the reader's progress, the recorded lists of Livres and BD, Livres'
+ * recorded genres and two of BD's.
+ */
 internal fun answerRecordedLibrary(routes: LibraryRoutes) {
     routes.answer("/api/libraries", fixtureBody("libraries"))
     routes.answer("/api/me", fixtureBody("me"))
+    routes.answer(libraryPath(LivresId), fixtureBody("filterdata-livres"))
+    routes.answer(libraryPath(BdId), """{"filterdata": {"genres": ["Humour", "Bande dessinée"]}}""")
     routes.answer(itemsPath(LivresId), pagedItems("items-livres-all"))
     routes.answer(itemsPath(BdId), pagedItems("items-bd-added"))
 }
